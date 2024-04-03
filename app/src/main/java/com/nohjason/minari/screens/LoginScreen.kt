@@ -111,7 +111,7 @@ fun LoginScreen(
         }
 
         IconButton(onClick = {
-            navController.navigate("main")
+            navController.navigate("profile")
         }) {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_radio_button_unchecked_24),
