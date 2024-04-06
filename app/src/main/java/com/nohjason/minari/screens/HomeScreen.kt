@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 @Composable
 fun HomeScreen() {
     Column {
+        // 이슈 커밋 연습
         Text(text = "This is Main Screen")
     }
 }
