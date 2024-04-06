@@ -1,5 +1,6 @@
 package com.nohjason.minari.navigation
 
+import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,6 +8,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,10 +21,11 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.nohjason.minari.R
 import com.nohjason.minari.firebase.rememberFirebaseAuthLauncher
+import com.nohjason.minari.room.MainViewModel
 import com.nohjason.minari.screens.DictionaryScreen
 import com.nohjason.minari.screens.HomeScreen
 import com.nohjason.minari.screens.LoginScreen
-import com.nohjason.minari.screens.ProfileScreen
+import com.nohjason.minari.screens.ProfileSetup
 import com.nohjason.minari.screens.QuizScreen
 
 @Composable
@@ -46,6 +52,9 @@ fun BottomNavGraph(
             .build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
 
+
+    val owner = LocalViewModelStoreOwner.current
+
     NavHost(
         navController = navController,
         startDestination = BottomBarScreen.Home.rout
@@ -61,7 +70,16 @@ fun BottomNavGraph(
             HomeScreen()
         }
         composable(BottomBarScreen.Profile.rout) {
-            ProfileScreen()
+            owner?.let {
+                val viewModel: MainViewModel = viewModel(
+                    it,
+                    "MainViewModel",
+                    MainViewModelFactory(
+                        LocalContext.current.applicationContext as Application
+                    )
+                )
+                ProfileSetup(viewModel)
+            }
         }
         composable(BottomBarScreen.Dictionary.rout) {
             DictionaryScreen()
@@ -70,5 +88,10 @@ fun BottomNavGraph(
             QuizScreen()
         }
     }
+}
 
+class MainViewModelFactory(val application: Application) : ViewModelProvider.Factory {
+    override fun <T: ViewModel> create(modelClass: Class<T>): T {
+        return MainViewModel(application) as T
+    }
 }

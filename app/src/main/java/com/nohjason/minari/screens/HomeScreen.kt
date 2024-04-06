@@ -9,10 +9,5 @@ import androidx.compose.runtime.Composable
 fun HomeScreen() {
     Column {
         Text(text = "This is Main Screen")
-        Button(onClick = {
-//            navController.navigate("profile")
-        }) {
-            Text(text = "go to Profile")
-        }
     }
 }
