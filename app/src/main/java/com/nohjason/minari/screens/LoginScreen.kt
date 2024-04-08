@@ -6,10 +6,12 @@ import android.util.Log
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -43,6 +45,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.nohjason.minari.R
 import com.nohjason.minari.firebase.rememberFirebaseAuthLauncher
+import com.nohjason.minari.navigation.BottomBarScreen
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGray
 
@@ -53,97 +56,107 @@ fun LoginScreen(
     googleSignInClient: GoogleSignInClient
 ) {
     Column(
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.grape),
-            contentDescription = null,
-            tint = Color.Unspecified,
-        )
-
-        Spacer(modifier = Modifier.height(70.dp))
-
-        Row {
-            val size = 30
-            Column {
-                Text(
-                    text = "choung",
-                    fontSize = size.sp,
-                    color = MinariBlue,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = "For",
-                    fontSize = size.sp,
-                    color = MinariBlue,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = "do",
-                    fontSize = size.sp,
-                    color = MinariBlue,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-
-            Spacer(modifier = Modifier.width(20.dp))
-
-            Column {
-                Text(
-                    text = "소년을",
-                    fontSize = size.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = "경제",
-                    fontSize = size.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = "도우미",
-                    fontSize = size.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+        Text(text = "wo")
+        Button(onClick = { navController.navigate(BottomBarScreen.Home.rout) }) {
+            Text(text = "go to homepage")
         }
+    }
+//    Column(
+//        horizontalAlignment = Alignment.CenterHorizontally,
+//        verticalArrangement = Arrangement.Center
+//    ) {
+//        Icon(
+//            painter = painterResource(id = R.drawable.grape),
+//            contentDescription = null,
+//            tint = Color.Unspecified,
+//        )
+//
+//        Spacer(modifier = Modifier.height(70.dp))
+//
+//        Row {
+//            val size = 30
+//            Column {
+//                Text(
+//                    text = "choung",
+//                    fontSize = size.sp,
+//                    color = MinariBlue,
+//                    fontWeight = FontWeight.Bold
+//                )
+//                Text(
+//                    text = "For",
+//                    fontSize = size.sp,
+//                    color = MinariBlue,
+//                    fontWeight = FontWeight.Bold
+//                )
+//                Text(
+//                    text = "do",
+//                    fontSize = size.sp,
+//                    color = MinariBlue,
+//                    fontWeight = FontWeight.Bold
+//                )
+//            }
+//
+//            Spacer(modifier = Modifier.width(20.dp))
+//
+//            Column {
+//                Text(
+//                    text = "소년을",
+//                    fontSize = size.sp,
+//                    fontWeight = FontWeight.Bold
+//                )
+//                Text(
+//                    text = "경제",
+//                    fontSize = size.sp,
+//                    fontWeight = FontWeight.Bold
+//                )
+//                Text(
+//                    text = "도우미",
+//                    fontSize = size.sp,
+//                    fontWeight = FontWeight.Bold
+//                )
+//            }
+//        }
+//
+//        Spacer(modifier = Modifier.height(200.dp))
+//
+//        Text(
+//            text = "SNS 로그인",
+//            color = MinariGray,
+//            fontSize = 15.sp
+//        )
+//
+//        Canvas(
+//            modifier = Modifier
+//                .width(346.dp)
+//                .padding(top = 15.dp, bottom = 10.dp)
+//        ) {
+//            val canvasWidth = size.width
+//            val canvasHeight = size.height
+//            drawLine(
+//                start = Offset(x = 0.dp.toPx(), y = canvasHeight / 2),
+//                end = Offset(x = canvasWidth, y = canvasHeight / 2),
+//                color = MinariGray,
+//                strokeWidth = 1.dp.toPx() // instead of 5.dp.toPx() , you can also pass 5f
+//            )
+//        }
 
-        Spacer(modifier = Modifier.height(200.dp))
-        
-        Text(
-            text = "SNS 로그인",
-            color = MinariGray,
-            fontSize = 15.sp
-        )
-
-        Canvas(
-            modifier = Modifier
-                .width(346.dp)
-                .padding(top = 15.dp, bottom = 10.dp)
-        ) {
-            val canvasWidth = size.width
-            val canvasHeight = size.height
-            drawLine(
-                start = Offset(x = 0.dp.toPx(), y = canvasHeight / 2),
-                end = Offset(x = canvasWidth, y = canvasHeight / 2),
-                color = MinariGray,
-                strokeWidth = 1.dp.toPx() // instead of 5.dp.toPx() , you can also pass 5f
-            )
-        }
-
-        IconButton(onClick = {
-            launcher.launch(googleSignInClient.signInIntent)
-            navController.navigate("main")
-        }) {
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_radio_button_unchecked_24),
-                contentDescription = null
-            )
-        }
+//        IconButton(onClick = {
+//            launcher.launch(googleSignInClient.signInIntent)
+//            navController.navigate("main")
+//        }) {
+//            Icon(
+//                painter = painterResource(id = R.drawable.baseline_radio_button_unchecked_24),
+//                contentDescription = null
+//            )
+//        }
 //        Button(onClick = {
 //            googleSignInClient.signOut()
 //        }) {
 //            Text(text = "Logout")
 //        }
-    }
+//    }
 }

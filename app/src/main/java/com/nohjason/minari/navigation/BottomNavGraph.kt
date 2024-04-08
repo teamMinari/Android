@@ -48,7 +48,7 @@ fun BottomNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = BottomBarScreen.Home.rout
+        startDestination = BottomBarScreen.Login.rout
     ) {
         composable(BottomBarScreen.Login.rout) {
             LoginScreen(
