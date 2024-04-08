@@ -14,6 +14,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.nohjason.minari.navigation.BottomBar
 import com.nohjason.minari.navigation.BottomBarScreen
 import com.nohjason.minari.navigation.BottomNavGraph
 
@@ -21,57 +22,24 @@ import com.nohjason.minari.navigation.BottomNavGraph
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    var isBottomBarVisible = true
+
+    navBackStackEntry?.destination?.route.let { route->
+        isBottomBarVisible = when(route) {
+            BottomBarScreen.Login.rout -> false
+            else -> true
+        }
+    }
+
     Scaffold(
-        bottomBar = { BottomBar(navController = navController) }
+        bottomBar = {
+            if (isBottomBarVisible) BottomBar(
+                navController = navController,
+                navBackStackEntry = navBackStackEntry
+            )
+        }
     ) {
         BottomNavGraph(navController = navController)
     }
-}
-
-@Composable
-fun BottomBar(navController: NavHostController) {
-    val screens = listOf(
-        BottomBarScreen.Dictionary,
-        BottomBarScreen.Home,
-        BottomBarScreen.Quiz,
-        BottomBarScreen.Profile,
-    )
-
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
-
-    BottomNavigation {
-        screens.forEach { screen ->
-            AddItem(
-                screen = screen,
-                currentDestination = currentDestination,
-                navController = navController
-            )
-        }
-    }
-}
-
-@Composable
-fun RowScope.AddItem(
-    screen: BottomBarScreen,
-    currentDestination: NavDestination?,
-    navController: NavHostController
-) {
-    BottomNavigationItem(
-        label = {
-            Text(text = screen.title)
-        },
-        icon = {
-            Icon(
-                imageVector = screen.icon,
-                contentDescription = null
-            )
-        },
-        selected = currentDestination?.hierarchy?.any {
-            it.route == screen.rout
-        } == true,
-        onClick = {
-            navController.navigate(screen.rout)
-        }
-    )
 }
