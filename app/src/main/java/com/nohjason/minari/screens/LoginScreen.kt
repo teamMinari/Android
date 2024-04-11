@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -19,11 +20,13 @@ import com.google.firebase.ktx.Firebase
 import com.nohjason.minari.R
 import com.nohjason.minari.firebase.rememberFirebaseAuthLauncher
 
+
 @Composable
 fun LoginScreen(
     navController: NavHostController
 ) {
-    var user by remember { mutableStateOf(Firebase.auth.currentUser) }
+    val auth = Firebase.auth
+    var user by remember { mutableStateOf(auth.currentUser) }
     val launcher = rememberFirebaseAuthLauncher(
         onAuthComplete = { result ->
             user = result.user
@@ -42,6 +45,20 @@ fun LoginScreen(
             .build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
 
+    val mUser = FirebaseAuth.getInstance().currentUser
+    mUser!!.getIdToken(true)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val idToken = task.result.token
+                if (idToken != null) {
+                    Log.d("TAG", "LoginScreen: $idToken")
+                }
+                // Send token to your backend via HTTPS
+                // ...
+            } else {
+                // Handle error -> task.getException();
+            }
+        }
     Column {
         if (user == null) {
             Text("Not logged in")
