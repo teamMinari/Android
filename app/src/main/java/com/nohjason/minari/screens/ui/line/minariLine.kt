@@ -16,7 +16,7 @@ fun minariLine(
     Canvas(
         modifier = Modifier
             .width(width.dp)
-            .padding(top = 15.dp, bottom = 10.dp)
+//            .padding(top = 15.dp, bottom = 10.dp)
     ) {
         val canvasWidth = size.width
         val canvasHeight = size.height

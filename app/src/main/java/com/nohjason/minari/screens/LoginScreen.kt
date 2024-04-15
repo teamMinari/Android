@@ -23,8 +23,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.nohjason.minari.R
+import com.nohjason.minari.navigation.BottomBarScreen
 import com.nohjason.minari.screens.ui.line.minariLine
-import com.nohjason.minari.screens.ui.text.minariText
+import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGray
 
@@ -49,17 +50,17 @@ fun LoginScreen(
 
         Row {
             Column {
-                minariText(text = "choung", color = MinariBlue)
-                minariText(text = "For", color = MinariBlue)
-                minariText(text = "do", color = MinariBlue)
+                MinariText(text = "choung", color = MinariBlue)
+                MinariText(text = "For", color = MinariBlue)
+                MinariText(text = "do", color = MinariBlue)
             }
 
             Spacer(modifier = Modifier.width(20.dp))
 
             Column {
-                minariText(text = "소년을",)
-                minariText(text = "경제",)
-                minariText(text = "도우미",)
+                MinariText(text = "소년을",)
+                MinariText(text = "경제",)
+                MinariText(text = "도우미",)
             }
         }
 
@@ -74,8 +75,8 @@ fun LoginScreen(
         minariLine(width = 365)
 
         IconButton(onClick = {
-            launcher.launch(googleSignInClient.signInIntent)
-            navController.navigate("main")
+//            launcher.launch(googleSignInClient.signInIntent)
+            navController.navigate(BottomBarScreen.Home.rout)
         }) {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_radio_button_unchecked_24),
