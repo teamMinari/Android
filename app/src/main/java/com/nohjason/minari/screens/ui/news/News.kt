@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.ui
+package com.nohjason.minari.screens.ui.news
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,9 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -47,32 +45,12 @@ fun News() {
 
             minariLine(width = 275)
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             LazyColumn {
                 items(50) { index ->
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(70.dp)
-                    ) {
-                        Row {
-                            Image(
-                                painter = painterResource(R.drawable.ic_launcher_background),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(100.dp, 70.dp)
-                                    .border(1.dp, Color.Black)
-                            )
-
-                            Spacer(modifier = Modifier.width(10.dp))
-
-                            Column {
-                                MinariText(text = "제목", size = 13)
-                                MinariText(text = "간단한 내용", size = 7)
-                            }
-                        }
-                    }
+                    NewsCard()
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
                 item {
                     Spacer(modifier = Modifier.height(20.dp))

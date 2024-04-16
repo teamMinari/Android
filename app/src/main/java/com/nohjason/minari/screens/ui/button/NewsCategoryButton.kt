@@ -1,6 +1,9 @@
+@file:Suppress("UNUSED_EXPRESSION")
+
 package com.nohjason.minari.screens.ui.button
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,12 +23,15 @@ import androidx.compose.ui.unit.dp
 import com.nohjason.minari.screens.ui.text.MinariText
 
 @Composable
-fun NewsCategoryButton() {
+fun NewsCategoryButton(
+    onClick: () -> Unit,
+) {
     Box(
         modifier = Modifier
             .size(75.dp)
             .background(Color.White)
             .clip(RoundedCornerShape(10.dp))
+            .clickable { onClick },
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -48,8 +54,8 @@ fun NewsCategoryButton() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun TestNewsCategory() {
-    NewsCategoryButton()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun TestNewsCategory() {
+//    NewsCategoryButton()
+//}
