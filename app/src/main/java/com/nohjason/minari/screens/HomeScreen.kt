@@ -15,7 +15,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,7 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.ui.News
+import com.nohjason.minari.screens.ui.news.News
 import com.nohjason.minari.screens.ui.RecommendWords
 import com.nohjason.minari.screens.ui.button.NewsCategoryButton
 import com.nohjason.minari.screens.ui.text.MinariText
@@ -40,7 +42,6 @@ fun HomeScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize(),
-//            .padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
@@ -67,22 +68,25 @@ fun HomeScreen() {
                         .padding(horizontal = 30.dp)
                         .fillMaxWidth()
                         .background(MinariWhite, shape = CircleShape),
-//                        .padding(all = 16.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
+                    Spacer(modifier = Modifier.width(15.dp))
                     innerTextField()
                     Spacer(modifier = Modifier.weight(0.1f))
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(25.dp)
-                            .padding(end = 10.dp),
-                        tint = Color.DarkGray,
-                    )
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "",
+                            modifier = Modifier
+                                .size(20.dp),
+                            tint = Color.DarkGray,
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                    }
                 }
             },
         )
+
         Box(
             modifier = Modifier
                 .padding(top = 10.dp)
@@ -100,13 +104,13 @@ fun HomeScreen() {
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Row {
-                    NewsCategoryButton()
+                    NewsCategoryButton(onClick = {})
                     Spacer(modifier = Modifier.width(5.dp))
-                    NewsCategoryButton()
+                    NewsCategoryButton(onClick = {})
                     Spacer(modifier = Modifier.width(5.dp))
-                    NewsCategoryButton()
+                    NewsCategoryButton(onClick = {})
                     Spacer(modifier = Modifier.width(5.dp))
-                    NewsCategoryButton()
+                    NewsCategoryButton(onClick = {})
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
