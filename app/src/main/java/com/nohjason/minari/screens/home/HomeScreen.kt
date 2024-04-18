@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens
+package com.nohjason.minari.screens.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,13 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,10 +24,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.ui.news.News
-import com.nohjason.minari.screens.ui.RecommendWords
-import com.nohjason.minari.screens.ui.button.NewsCategoryButton
+import com.nohjason.minari.screens.home.news.News
+import com.nohjason.minari.screens.home.button.NewsCategoryButton
 import com.nohjason.minari.screens.ui.text.MinariText
+import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariWhite
 
 @Composable
@@ -58,34 +52,7 @@ fun HomeScreen() {
             Spacer(modifier = Modifier.fillMaxWidth())
         }
 
-        BasicTextField(
-            value = text,
-            onValueChange = { text = it },
-            decorationBox = { innerTextField ->
-                Row(
-                    modifier = Modifier
-                        .height(25.dp)
-                        .padding(horizontal = 30.dp)
-                        .fillMaxWidth()
-                        .background(MinariWhite, shape = CircleShape),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Spacer(modifier = Modifier.width(15.dp))
-                    innerTextField()
-                    Spacer(modifier = Modifier.weight(0.1f))
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "",
-                            modifier = Modifier
-                                .size(20.dp),
-                            tint = Color.DarkGray,
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                    }
-                }
-            },
-        )
+        MinariTextField(value = text) { text = it }
 
         Box(
             modifier = Modifier

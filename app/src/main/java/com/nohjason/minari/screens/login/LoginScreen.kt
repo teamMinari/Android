@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens
+package com.nohjason.minari.screens.login
 
 import android.content.Intent
 import androidx.activity.compose.ManagedActivityResultLauncher

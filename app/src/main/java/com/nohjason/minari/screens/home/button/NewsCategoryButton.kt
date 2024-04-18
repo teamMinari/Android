@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED_EXPRESSION")
 
-package com.nohjason.minari.screens.ui.button
+package com.nohjason.minari.screens.home.button
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
