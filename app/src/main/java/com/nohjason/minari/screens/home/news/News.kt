@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.ui.news
+package com.nohjason.minari.screens.home.news
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

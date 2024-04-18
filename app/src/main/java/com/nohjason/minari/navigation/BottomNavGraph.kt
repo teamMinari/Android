@@ -16,11 +16,11 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.nohjason.minari.R
 import com.nohjason.minari.firebase.rememberFirebaseAuthLauncher
-import com.nohjason.minari.screens.DictionaryScreen
-import com.nohjason.minari.screens.HomeScreen
-import com.nohjason.minari.screens.LoginScreen
-import com.nohjason.minari.screens.ProfileScreen
-import com.nohjason.minari.screens.QuizScreen
+import com.nohjason.minari.screens.dictionary.DictionaryScreen
+import com.nohjason.minari.screens.home.HomeScreen
+import com.nohjason.minari.screens.login.LoginScreen
+import com.nohjason.minari.screens.profile.ProfileScreen
+import com.nohjason.minari.screens.quiz.QuizScreen
 
 @Composable
 fun BottomNavGraph(

@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.ui
+package com.nohjason.minari.screens.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
