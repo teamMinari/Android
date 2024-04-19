@@ -26,9 +26,7 @@ import com.nohjason.minari.ui.theme.MinariWhite
 
 @Composable
 fun DictionaryScreen() {
-    var text by remember {
-        mutableStateOf("")
-    }
+    var text by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
             .fillMaxSize(),

@@ -7,27 +7,34 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.ui.theme.MinariBlue
+import com.nohjason.minari.ui.theme.MinariWhite
 
 @Composable
 fun CatagoryButton() {
+    var test by remember { mutableStateOf(false) }
+
     Box(
         modifier = Modifier
             .clip(CircleShape)
-            .background(MinariBlue)
-            .clickable { }
+            .background(if (test) MinariBlue else MinariWhite)
+            .clickable { test = !test }
     ) {
-        Text(
+        MinariText(
             text = "wow",
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(horizontal = 20.dp, vertical = 5.dp),
-            color = Color.White
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp),
+            color = if (test) Color.White else Color.Black,
+            size = 15
         )
     }
 }

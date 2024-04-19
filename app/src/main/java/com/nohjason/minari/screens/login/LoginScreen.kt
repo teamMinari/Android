@@ -3,6 +3,7 @@ package com.nohjason.minari.screens.login
 import android.content.Intent
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -75,7 +76,6 @@ fun LoginScreen(
         minariLine(width = 365)
 
         IconButton(onClick = {
-//            launcher.launch(googleSignInClient.signInIntent)
             navController.navigate(BottomBarScreen.Home.rout)
         }) {
             Icon(
@@ -83,10 +83,5 @@ fun LoginScreen(
                 contentDescription = null
             )
         }
-//        Button(onClick = {
-//            googleSignInClient.signOut()
-//        }) {
-//            Text(text = "Logout")
-//        }
     }
 }
