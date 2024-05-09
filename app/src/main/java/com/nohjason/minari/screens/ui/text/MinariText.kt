@@ -15,6 +15,7 @@ fun MinariText(
     color: Color = Color.Black
 ) {
     Text(
+        modifier = modifier,
         text = text,
         fontSize = size.sp,
         fontWeight = FontWeight.Bold,

@@ -1,4 +1,4 @@
-package com.nohjason.minari.navigation
+package com.nohjason.minari.navigation.bottombar
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,35 +16,31 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.nohjason.minari.R
 import com.nohjason.minari.firebase.rememberFirebaseAuthLauncher
-import com.nohjason.minari.screens.DictionaryScreen
-import com.nohjason.minari.screens.HomeScreen
-import com.nohjason.minari.screens.LoginScreen
-import com.nohjason.minari.screens.ProfileScreen
-import com.nohjason.minari.screens.QuizScreen
+import com.nohjason.minari.screens.dictionary.DictionaryScreen
+import com.nohjason.minari.screens.home.HomeScreen
+import com.nohjason.minari.screens.login.LoginScreen
+import com.nohjason.minari.screens.profile.ProfileScreen
+import com.nohjason.minari.screens.quiz.QuizScreen
 
 @Composable
-fun BottomNavGraph(
+fun LoginBottomNavGraph(
     navController: NavHostController,
 ) {
     val auth = Firebase.auth
     var user by remember { mutableStateOf(auth.currentUser) }
-    val launcher = rememberFirebaseAuthLauncher(
-        onAuthComplete = { result ->
-            user = result.user
-        },
-        onAuthError = {
-            user = null
-        }
-    )
+    val launcher = rememberFirebaseAuthLauncher(onAuthComplete = { result ->
+        user = result.user
+    }, onAuthError = {
+        user = null
+    })
     val token = stringResource(R.string.default_web_client_id)
     val context = LocalContext.current
 
-    val gso =
-        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(token)
-            .requestEmail()
-            .build()
+    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(token)
+        .requestEmail().build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
+
+
 
     NavHost(
         navController = navController,
@@ -57,18 +53,5 @@ fun BottomNavGraph(
                 googleSignInClient = googleSignInClient
             )
         }
-        composable(BottomBarScreen.Home.rout) {
-            HomeScreen()
-        }
-        composable(BottomBarScreen.Profile.rout) {
-            ProfileScreen()
-        }
-        composable(BottomBarScreen.Dictionary.rout) {
-            DictionaryScreen()
-        }
-        composable(BottomBarScreen.Quiz.rout) {
-            QuizScreen()
-        }
     }
-
 }
