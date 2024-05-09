@@ -20,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nohjason.minari.screens.dictionary.button.CatagoryButton
+import com.nohjason.minari.screens.dictionary.button.DictionaryButton
+import com.nohjason.minari.screens.dictionary.card.LikeWord
 import com.nohjason.minari.screens.dictionary.card.WordCard
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariWhite
@@ -33,7 +35,13 @@ fun DictionaryScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(15.dp))
-        MinariTextField(value = text) { text = it }
+
+        MinariTextField(
+            value = text,
+            onValueChange = {text = it},
+            onClick = {}
+        )
+
         Spacer(modifier = Modifier.height(15.dp))
         Box(
             modifier = Modifier
@@ -42,23 +50,9 @@ fun DictionaryScreen() {
                 .padding(10.dp)
         ) {
             Column {
-                LazyRow(
-                    modifier = Modifier.padding(5.dp)
-                ) {
-                    items(10) {
-                        CatagoryButton()
-                        Spacer(modifier = Modifier.width(10.dp))
-                    }
-                }
-
+                CatagoryButton()
                 Spacer(modifier = Modifier.height(10.dp))
-
-                LazyColumn {
-                    items(20) {
-                        WordCard()
-                        Spacer(modifier = Modifier.height(10.dp))
-                    }
-                }
+                LikeWord()
                 Spacer(modifier = Modifier.height(20.dp))
             }
         }

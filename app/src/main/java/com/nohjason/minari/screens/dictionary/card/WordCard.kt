@@ -1,6 +1,8 @@
 package com.nohjason.minari.screens.dictionary.card
 
+import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,7 +33,9 @@ import com.nohjason.minari.screens.ui.text.MinariText
 
 @Composable
 fun WordCard() {
+    val context = LocalContext.current
     var expanded by rememberSaveable { mutableStateOf(false) }
+    var color by rememberSaveable { mutableStateOf(true) }
 
     Box(
         modifier = Modifier
@@ -44,16 +50,22 @@ fun WordCard() {
             ) {
                 MinariText(text = "가계부실위험지수", size = 17)
                 Spacer(modifier = Modifier.weight(0.5f))
-                Icon(
-                    painter = painterResource(id = R.drawable.minari_hart),
-                    contentDescription = null
-                )
+                IconButton(onClick = {
+                    color = !color
+                    Toast.makeText(context, "좋아요 클릭", Toast.LENGTH_SHORT).show()
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.minari_hart),
+                        contentDescription = null,
+                        tint = if (color) Color.Unspecified else Color.White,
+                        modifier = if (!color) Modifier.border(1.dp, Color.Black) else Modifier.border(0.dp, Color.Unspecified)
+                    )
+                }
+
             }
 
             if (expanded) {
-                Spacer(modifier = Modifier.height(5.dp))
-                minariLine(width = 280)
-                Spacer(modifier = Modifier.height(5.dp))
+                minariLine()
                 Text(
                     text = """가구의 소득과 자산 상황을 고려해서 “ * * 가계부채 ” * * 의 위험을 평가하는 지표가 있어 .
                     | 이것은 원리금상환비율과 부채 / 자산비율을 합쳐서 계산돼 . 이걸 가계부실위험지수라고 해 .

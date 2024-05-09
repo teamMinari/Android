@@ -1,4 +1,4 @@
-package com.nohjason.minari.navigation
+package com.nohjason.minari.navigation.bottombar
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -13,27 +13,31 @@ sealed class BottomBarScreen(
     val title: String,
     val icon: ImageVector
 ) {
-    object Login: BottomBarScreen(
+    data object Login : BottomBarScreen(
         rout = "login",
         title = "Login",
         icon = Icons.Default.Lock
     )
-    object Home: BottomBarScreen(
+
+    data object Home : BottomBarScreen(
         rout = "home",
         title = "Home",
         icon = Icons.Default.Home
     )
-    object Profile: BottomBarScreen(
+
+    data object Profile : BottomBarScreen(
         rout = "profile",
         title = "Profile",
         icon = Icons.Default.Person
     )
-    object Dictionary: BottomBarScreen(
+
+    data object Dictionary : BottomBarScreen(
         rout = "dictionary",
         title = "Diction",
         icon = Icons.Default.AccountBox
     )
-    object Quiz: BottomBarScreen(
+
+    data object Quiz : BottomBarScreen(
         rout = "quiz",
         title = "Quiz",
         icon = Icons.Default.ThumbUp

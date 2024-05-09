@@ -27,8 +27,10 @@ import coil.size.Scale
 @Composable
 fun ProfileScreen() {
     var imageUri by remember { mutableStateOf("") }
-    val launcher = rememberLauncherForActivityResult(contract =
-    ActivityResultContracts.GetContent()) { uri: Uri? ->
+    val launcher = rememberLauncherForActivityResult(
+        contract =
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
         imageUri = uri.toString()
     }
 
@@ -46,7 +48,7 @@ fun ProfileScreen() {
         Image(
             painter = rememberImagePainter(
                 data = Uri.parse(imageUri),
-                builder = {scale(Scale.FIT)}
+                builder = { scale(Scale.FIT) }
             ),
             contentDescription = null,
             modifier = Modifier

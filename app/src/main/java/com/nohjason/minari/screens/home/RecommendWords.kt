@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,17 +24,18 @@ fun RecommendWords() {
     Box(
         modifier = Modifier
             .size(325.dp, 150.dp)
+            .clip(shape = RoundedCornerShape(15.dp))
             .background(Color.White)
-            .clip(shape = RoundedCornerShape(20.dp))
+            .padding(10.dp)
+
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp, vertical = 5.dp)
+                .padding()
         ) {
             MinariText(text = "오늘의 추천 경제 단어", size = 15)
-            Spacer(modifier = Modifier.height(5.dp))
-            minariLine(width = 275)
+            minariLine()
         }
     }
 }

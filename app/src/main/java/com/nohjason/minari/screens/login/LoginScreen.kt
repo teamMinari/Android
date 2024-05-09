@@ -3,7 +3,6 @@ package com.nohjason.minari.screens.login
 import android.content.Intent
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.nohjason.minari.R
-import com.nohjason.minari.navigation.BottomBarScreen
+import com.nohjason.minari.navigation.bottombar.BottomBarScreen
 import com.nohjason.minari.screens.ui.line.minariLine
 import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.ui.theme.MinariBlue
@@ -73,10 +72,14 @@ fun LoginScreen(
             fontSize = 15.sp
         )
 
-        minariLine(width = 365)
+        minariLine()
 
         IconButton(onClick = {
-            navController.navigate(BottomBarScreen.Home.rout)
+            navController.navigate(BottomBarScreen.Home.rout) {
+                popUpTo(navController.graph.id) {
+                    inclusive = true
+                }
+            }
         }) {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_radio_button_unchecked_24),

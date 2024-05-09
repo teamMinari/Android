@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -52,7 +53,11 @@ fun HomeScreen() {
             Spacer(modifier = Modifier.fillMaxWidth())
         }
 
-        MinariTextField(value = text) { text = it }
+        MinariTextField(
+            value = text,
+            onValueChange = { text = it },
+            onClick = {}
+        )
 
         Box(
             modifier = Modifier
@@ -67,21 +72,15 @@ fun HomeScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 RecommendWords()
-
                 Spacer(modifier = Modifier.height(20.dp))
-
-                Row {
-                    NewsCategoryButton(onClick = {})
-                    Spacer(modifier = Modifier.width(5.dp))
-                    NewsCategoryButton(onClick = {})
-                    Spacer(modifier = Modifier.width(5.dp))
-                    NewsCategoryButton(onClick = {})
-                    Spacer(modifier = Modifier.width(5.dp))
-                    NewsCategoryButton(onClick = {})
+                LazyRow() {
+                    items(4) {
+                        NewsCategoryButton(onClick = {})
+                        Spacer(modifier = Modifier.width(5.dp))
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
-
                 News()
             }
         }

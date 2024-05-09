@@ -21,12 +21,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.nohjason.minari.ui.theme.MinariGray
+import com.nohjason.minari.ui.theme.MinariLightGray
 import com.nohjason.minari.ui.theme.MinariWhite
 
 @Composable
 fun MinariTextField(
     value: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    onClick: () -> Unit,
 ) {
     BasicTextField(
         value = value,
@@ -37,13 +40,13 @@ fun MinariTextField(
                     .height(25.dp)
                     .padding(horizontal = 30.dp)
                     .fillMaxWidth()
-                    .background(MinariWhite, shape = CircleShape),
+                    .background(MinariLightGray, shape = CircleShape),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Spacer(modifier = Modifier.width(15.dp))
                 innerTextField()
                 Spacer(modifier = Modifier.weight(0.1f))
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = onClick) {
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = "",

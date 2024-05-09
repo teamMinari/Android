@@ -29,8 +29,8 @@ fun NewsCategoryButton(
     Box(
         modifier = Modifier
             .size(75.dp)
-            .background(Color.White)
             .clip(RoundedCornerShape(10.dp))
+            .background(Color.White)
             .clickable { onClick },
     ) {
         Column(
@@ -53,9 +53,3 @@ fun NewsCategoryButton(
         }
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun TestNewsCategory() {
-//    NewsCategoryButton()
-//}

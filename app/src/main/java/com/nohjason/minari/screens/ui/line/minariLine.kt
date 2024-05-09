@@ -1,30 +1,46 @@
 package com.nohjason.minari.screens.ui.line
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nohjason.minari.ui.theme.MinariGray
 
+sealed class BorderType(val size: Dp) {
+    data object Thin : BorderType(1.dp)
+    data object Border : BorderType(5.dp)
+}
+
 @Composable
 fun minariLine(
-    width: Int,
+    thickness: BorderType = BorderType.Thin
 ) {
-    Canvas(
+    Box(
         modifier = Modifier
-            .width(width.dp)
-//            .padding(top = 15.dp, bottom = 10.dp)
-    ) {
-        val canvasWidth = size.width
-        val canvasHeight = size.height
-        drawLine(
-            start = Offset(x = 0.dp.toPx(), y = canvasHeight / 2),
-            end = Offset(x = canvasWidth, y = canvasHeight / 2),
-            color = MinariGray,
-            strokeWidth = 1.dp.toPx() // instead of 5.dp.toPx() , you can also pass 5f
-        )
-    }
+            .fillMaxWidth()
+            .padding(10.dp)
+            .clip(CircleShape)
+            .background(MinariGray)
+            .height(thickness.size)
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Test() {
+    minariLine()
 }
