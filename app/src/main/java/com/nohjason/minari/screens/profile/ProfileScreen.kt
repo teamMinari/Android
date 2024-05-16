@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -21,11 +22,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.size.Scale
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(
+    navController: NavHostController,
+) {
     var imageUri by remember { mutableStateOf("") }
     val launcher = rememberLauncherForActivityResult(
         contract =
@@ -56,5 +60,10 @@ fun ProfileScreen() {
                 .clip(CircleShape),
             contentScale = ContentScale.FillWidth,
         )
+        Button(onClick = {
+            navController.navigate("myDictionary")
+        }) {
+            Text(text = "나만의 단어장")
+        }
     }
 }

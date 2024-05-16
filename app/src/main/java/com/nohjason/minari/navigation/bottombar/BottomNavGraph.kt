@@ -1,15 +1,12 @@
 package com.nohjason.minari.navigation.bottombar
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.window.isPopupLayout
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,13 +16,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.nohjason.minari.R
 import com.nohjason.minari.firebase.rememberFirebaseAuthLauncher
-import com.nohjason.minari.screens.dictionary.DictionaryScreen
+import com.nohjason.minari.screens.profile.my_dictionary.MyDictionaryScreen
 import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.login.LoginScreen
 import com.nohjason.minari.screens.profile.ProfileScreen
 import com.nohjason.minari.screens.quiz.QuizScreen
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.nohjason.minari.screens.term.Term
 
 @Composable
 fun BottomNavGraph(
@@ -63,13 +59,18 @@ fun BottomNavGraph(
             HomeScreen()
         }
         composable(BottomBarScreen.Profile.rout) {
-            ProfileScreen()
+            ProfileScreen(navController = navController)
         }
-        composable(BottomBarScreen.Dictionary.rout) {
-            DictionaryScreen()
+        composable(BottomBarScreen.Term.rout) {
+//            DictionaryScreen()
+            Term()
         }
         composable(BottomBarScreen.Quiz.rout) {
             QuizScreen()
+        }
+
+        composable("myDictionary") {
+            MyDictionaryScreen(navController = navController)
         }
     }
 }

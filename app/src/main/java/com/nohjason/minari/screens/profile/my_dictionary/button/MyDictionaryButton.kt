@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.dictionary.button
+package com.nohjason.minari.screens.profile.my_dictionary.button
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.ui.theme.MinariBlue
-import com.nohjason.minari.ui.theme.MinariWhite
 
 @Composable
 fun DictionaryButton() {

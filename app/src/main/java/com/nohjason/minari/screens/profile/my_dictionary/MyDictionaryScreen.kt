@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.dictionary
+package com.nohjason.minari.screens.profile.my_dictionary
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,17 +19,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.nohjason.minari.screens.dictionary.button.CatagoryButton
-import com.nohjason.minari.screens.dictionary.button.DictionaryButton
-import com.nohjason.minari.screens.dictionary.card.WordCard
+import androidx.navigation.NavHostController
+import com.nohjason.minari.screens.profile.my_dictionary.button.CatagoryButton
+import com.nohjason.minari.screens.profile.my_dictionary.card.WordCard
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariWhite
 
 @Composable
-fun DictionaryScreen() {
+fun MyDictionaryScreen(
+    navController: NavHostController,
+) {
     var text by remember { mutableStateOf("") }
     // kotlin.collections<T>.ImmutableList
-    val test = MutableList(10) { Test(it, "가계부실위험지수 ${it}", true)}.toList()
+    val test = MutableList(10) { Test(it, "가계부실위험지수 ${it}", true) }.toList()
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)
@@ -88,8 +88,8 @@ data class Test(
     val isLike: Boolean
 )
 
-@Preview(showBackground = true)
-@Composable
-fun TestDictionaryScreen() {
-    DictionaryScreen()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun TestDictionaryScreen() {
+//    MyDictionaryScreen()
+//}
