@@ -21,7 +21,7 @@ fun BottomBar(
     navBackStackEntry: NavBackStackEntry?
 ) {
     val screens = listOf(
-        BottomBarScreen.Dictionary,
+        BottomBarScreen.Term,
         BottomBarScreen.Home,
         BottomBarScreen.Quiz,
         BottomBarScreen.Profile,
@@ -50,10 +50,11 @@ fun RowScope.AddItem(
     BottomNavigationItem(
         label = {
             Text(text = screen.title)
+//            Text(text = "")
         },
         icon = {
             Icon(
-                imageVector = screen.icon,
+                imageVector = screen.icon(),
                 contentDescription = null
             )
         },

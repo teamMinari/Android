@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.dictionary.button
+package com.nohjason.minari.screens.profile.my_dictionary.button
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
