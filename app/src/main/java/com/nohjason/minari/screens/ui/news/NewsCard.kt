@@ -29,7 +29,7 @@ fun NewsCard() {
     ) {
         Row {
             Image(
-                painter = painterResource(R.drawable.ic_launcher_background),
+                painter = painterResource(R.drawable.ic_launcher_foreground),
                 contentDescription = null,
                 modifier = Modifier
                     .size(100.dp, 70.dp)

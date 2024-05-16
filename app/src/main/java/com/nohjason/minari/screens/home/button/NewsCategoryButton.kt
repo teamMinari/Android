@@ -43,7 +43,8 @@ fun NewsCategoryButton(
                 contentDescription = null,
                 modifier = Modifier
                     .size(30.dp)
-                    .background(Color.White)
+                    .background(Color.White),
+                tint = Color.Black
             )
             MinariText(
                 text = "쟂",

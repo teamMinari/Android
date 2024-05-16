@@ -25,7 +25,7 @@ fun DictionaryButton() {
     Box(
         modifier = Modifier
             .clip(CircleShape)
-            .background(if (test) MinariBlue else MinariWhite)
+            .background(if (test) MinariBlue else Color.White)
             .clickable { test = !test }
     ) {
         MinariText(
