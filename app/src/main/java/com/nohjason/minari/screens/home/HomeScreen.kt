@@ -95,12 +95,6 @@ fun HomeScreen() {
     }
 }
 
-data class Button(
-    val id: Int,
-    val icon: Icon,
-    val name: String
-)
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewHome() {
