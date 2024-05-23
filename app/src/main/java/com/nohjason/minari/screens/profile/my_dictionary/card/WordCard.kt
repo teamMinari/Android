@@ -27,7 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.ui.line.minariLine
+import com.nohjason.minari.screens.ui.line.MinariLine
 import com.nohjason.minari.screens.ui.text.MinariText
 
 @Composable
@@ -71,7 +71,7 @@ fun WordCard(
             }
 
             if (expanded) {
-                minariLine()
+                MinariLine()
                 Text(
                     text = """가구의 소득과 자산 상황을 고려해서 “ * * 가계부채 ” * * 의 위험을 평가하는 지표가 있어 .
                     | 이것은 원리금상환비율과 부채 / 자산비율을 합쳐서 계산돼 . 이걸 가계부실위험지수라고 해 .

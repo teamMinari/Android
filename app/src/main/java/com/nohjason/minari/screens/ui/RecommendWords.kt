@@ -15,7 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.nohjason.minari.screens.ui.line.minariLine
+import com.nohjason.minari.screens.ui.line.MinariLine
 import com.nohjason.minari.screens.ui.text.MinariText
 
 @Composable
@@ -33,7 +33,7 @@ fun RecommendWords() {
         ) {
             MinariText(text = "오늘의 추천 경제 단어", size = 15)
             Spacer(modifier = Modifier.height(5.dp))
-            minariLine()
+            MinariLine()
         }
     }
 }

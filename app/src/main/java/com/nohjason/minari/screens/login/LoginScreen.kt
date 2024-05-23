@@ -24,7 +24,7 @@ import androidx.navigation.NavHostController
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomBarScreen
-import com.nohjason.minari.screens.ui.line.minariLine
+import com.nohjason.minari.screens.ui.line.MinariLine
 import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGray
@@ -72,7 +72,7 @@ fun LoginScreen(
             fontSize = 15.sp
         )
 
-        minariLine()
+        MinariLine()
 
         IconButton(onClick = {
             navController.navigate(BottomBarScreen.Home.rout) {
