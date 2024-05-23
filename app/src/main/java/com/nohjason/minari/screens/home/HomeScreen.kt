@@ -1,6 +1,7 @@
 package com.nohjason.minari.screens.home
 
 import android.graphics.drawable.Icon
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,7 +15,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,13 +30,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.common.collect.ImmutableList
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.home.news.News
-import com.nohjason.minari.screens.home.button.NewsCategoryButton
+import com.nohjason.minari.screens.home.news.button.NewsCategoryButton
+import com.nohjason.minari.screens.home.news.button.getDummyNewsButton
+import com.nohjason.minari.screens.home.news.getDummyUsers
 import com.nohjason.minari.screens.home.words.RecommendWords
 import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.screens.ui.text.MinariTextField
@@ -81,14 +91,13 @@ fun HomeScreen() {
                 ) {
                     RecommendWords()
                     Spacer(modifier = Modifier.height(20.dp))
-                    Row(
+                    LazyRow(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceAround
                     ) {
-                        NewsCategoryButton(onClick = {  })
-                        NewsCategoryButton(onClick = {  })
-                        NewsCategoryButton(onClick = {  })
-                        NewsCategoryButton(onClick = {  })
+                        items(getDummyNewsButton()) { index ->
+                            NewsCategoryButton(icon = index.icon, title = index.title) {  }
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(20.dp))
@@ -98,6 +107,7 @@ fun HomeScreen() {
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
