@@ -7,10 +7,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,7 +24,7 @@ import com.nohjason.minari.screens.ui.text.MinariText
 fun News() {
     Box(
         modifier = Modifier
-            .width(340.dp)
+            .fillMaxWidth()
             .fillMaxHeight()
             .background(Color.White)
             .border(1.dp, Color.Black)
@@ -42,17 +43,29 @@ fun News() {
             Spacer(modifier = Modifier.height(20.dp))
 
             LazyColumn {
-                items(50) { index ->
-                    NewsCard()
+                items(getDummyUsers()) { index ->
+                    NewsCard(index.title, index.value)
                     Spacer(modifier = Modifier.height(10.dp))
-                }
-                item {
-                    Spacer(modifier = Modifier.height(20.dp))
                 }
             }
         }
     }
+}
 
+data class Test(
+    val id: Int,
+    val title: String,
+    val value: String
+)
+
+fun getDummyUsers(): List<Test> {
+    return listOf(
+        Test(1, "[뭔말이지?]브리핑 영업", "브리핑 영업은 법인보험대리점(GA) 설계사가 회사나 단체를 방문해 다수의 소비자에게 보험 상품"),
+        Test(2, "[뭔말이지?]브리핑 영업", "브리핑 영업은 법인보험대리점(GA) 설계사가 회사나 단체를 방문해 다수의 소비자에게 보험 상품"),
+        Test(3, "[뭔말이지?]브리핑 영업", "브리핑 영업은 법인보험대리점(GA) 설계사가 회사나 단체를 방문해 다수의 소비자에게 보험 상품"),
+        Test(4, "[뭔말이지?]브리핑 영업", "브리핑 영업은 법인보험대리점(GA) 설계사가 회사나 단체를 방문해 다수의 소비자에게 보험 상품"),
+        Test(5, "[뭔말이지?]브리핑 영업", "브리핑 영업은 법인보험대리점(GA) 설계사가 회사나 단체를 방문해 다수의 소비자에게 보험 상품")
+    )
 }
 
 @Preview(showBackground = true)
