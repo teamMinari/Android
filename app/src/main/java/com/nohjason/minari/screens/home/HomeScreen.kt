@@ -2,6 +2,7 @@ package com.nohjason.minari.screens.home
 
 import android.graphics.drawable.Icon
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -74,17 +75,20 @@ fun HomeScreen() {
             ) {
                 Column(
                     modifier = Modifier
-                        .padding(10.dp)
+                        .padding(horizontal = 20.dp, vertical = 10.dp)
                         .fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     RecommendWords()
                     Spacer(modifier = Modifier.height(20.dp))
-                    LazyRow {
-                        items(4) {
-                            NewsCategoryButton(onClick = {})
-                            Spacer(modifier = Modifier.width(5.dp))
-                        }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround
+                    ) {
+                        NewsCategoryButton(onClick = {  })
+                        NewsCategoryButton(onClick = {  })
+                        NewsCategoryButton(onClick = {  })
+                        NewsCategoryButton(onClick = {  })
                     }
 
                     Spacer(modifier = Modifier.height(20.dp))

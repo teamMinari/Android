@@ -11,21 +11,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.ui.text.MinariText
 
 @Composable
-fun NewsCard() {
+fun NewsCard(
+    title: String,
+    value: String
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(70.dp)
-            .clickable {  }
+            .clickable { }
     ) {
         Row {
             Image(
@@ -39,8 +44,14 @@ fun NewsCard() {
             Spacer(modifier = Modifier.width(10.dp))
 
             Column {
-                MinariText(text = "제목", size = 13)
-                MinariText(text = "간단한 내용", size = 7)
+                MinariText(text = title, size = 13)
+                MinariText(
+                    text = value,
+                    size = 10,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = Color.Gray
+                )
             }
         }
     }

@@ -1,20 +1,14 @@
 package com.nohjason.minari.screens.ui.line
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -26,7 +20,7 @@ sealed class BorderType(val size: Dp) {
 }
 
 @Composable
-fun minariLine(
+fun MinariLine(
     thickness: BorderType = BorderType.Thin
 ) {
     Box(
@@ -42,5 +36,5 @@ fun minariLine(
 @Preview(showBackground = true)
 @Composable
 fun Test() {
-    minariLine()
+    MinariLine()
 }
