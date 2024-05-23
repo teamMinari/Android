@@ -43,9 +43,6 @@ fun RecommendWords() {
         ) {
             MinariText(text = "오늘의 추천 경제 단어", size = 15)
             MinariLine()
-
-            MinariLine()
-
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
