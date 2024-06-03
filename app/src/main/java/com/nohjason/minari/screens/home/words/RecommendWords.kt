@@ -129,9 +129,3 @@ fun Card(
 fun TestRecommend() {
     RecommendWords()
 }
-
-@Preview(showBackground = true)
-@Composable
-fun Cardprivew() {
-    Card(30.dp, 5.dp, Color.LightGray)
-}
