@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.term
+package com.nohjason.minari.screens.term.card
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -27,7 +27,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.nohjason.minari.R
+import com.nohjason.minari.data.button.DummyTermSimilarButton
 import com.nohjason.minari.screens.ui.text.MinariText
 
 @Composable
@@ -35,9 +37,11 @@ fun TermCard(
     title: String,
     value: String,
     starCount: Int,
-    dummyTermSimilarButton: List<DummyTermSimilarButton>
+    dummyTermSimilarButton: List<DummyTermSimilarButton>,
+    navController: NavController
 ) {
     val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -86,7 +90,10 @@ fun TermCard(
                         .background(Color.White)
                         .border(1.dp, Color.Black, shape = CircleShape) // CircleShape을 명시적으로 설정
                         .padding(vertical = 3.dp, horizontal = 10.dp)
-                        .clickable { },
+                        .clickable {
+                           // 화면 이동
+                            navController.navigate("test/${item.title}")
+                        },
                 ) {
                     MinariText(text = item.title, size = 10)
                 }

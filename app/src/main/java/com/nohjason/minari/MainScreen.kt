@@ -15,7 +15,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.navigation.bottombar.BottomBar
 import com.nohjason.minari.navigation.bottombar.BottomBarScreen
-import com.nohjason.minari.navigation.bottombar.BottomNavGraph
+import com.nohjason.minari.navigation.NavGraph
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -41,7 +41,7 @@ fun MainScreen() {
         }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
-            BottomNavGraph(navController = navController)
+            NavGraph(navController = navController)
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.nohjason.minari.navigation.bottombar
+package com.nohjason.minari.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,15 +16,17 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.nohjason.minari.R
 import com.nohjason.minari.firebase.rememberFirebaseAuthLauncher
+import com.nohjason.minari.navigation.bottombar.BottomBarScreen
 import com.nohjason.minari.screens.profile.my_dictionary.MyDictionaryScreen
 import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.login.LoginScreen
 import com.nohjason.minari.screens.profile.ProfileScreen
 import com.nohjason.minari.screens.quiz.QuizScreen
 import com.nohjason.minari.screens.term.Term
+import com.nohjason.minari.screens.term.Test
 
 @Composable
-fun BottomNavGraph(
+fun NavGraph(
     navController: NavHostController,
 ) {
     val auth = Firebase.auth
@@ -62,15 +64,17 @@ fun BottomNavGraph(
             ProfileScreen(navController = navController)
         }
         composable(BottomBarScreen.Term.rout) {
-//            DictionaryScreen()
-            Term()
+            Term(navController = navController)
         }
         composable(BottomBarScreen.Quiz.rout) {
             QuizScreen()
         }
-
         composable("myDictionary") {
             MyDictionaryScreen(navController = navController)
+        }
+        composable("test/{text}") { backStackEntry ->
+            val text = backStackEntry.arguments?.getString("text") ?: ""
+            Test(text)
         }
     }
 }
