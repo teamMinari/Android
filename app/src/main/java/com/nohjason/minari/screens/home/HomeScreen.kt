@@ -35,6 +35,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.google.common.collect.ImmutableList
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.home.news.News
@@ -47,7 +49,9 @@ import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariWhite
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavController
+) {
     var text by remember { mutableStateOf("") }
     Box(modifier = Modifier
         .fillMaxSize()
@@ -74,7 +78,7 @@ fun HomeScreen() {
             MinariTextField(
                 value = text,
                 onValueChange = { text = it },
-                onClick = {}
+                onClick = {navController.navigate("test/${text}")}
             )
 
             Box(
@@ -112,5 +116,5 @@ fun HomeScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewHome() {
-    HomeScreen()
+    HomeScreen(navController = rememberNavController())
 }

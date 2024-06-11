@@ -58,7 +58,7 @@ fun NavGraph(
             )
         }
         composable(BottomBarScreen.Home.rout) {
-            HomeScreen()
+            HomeScreen(navController = navController)
         }
         composable(BottomBarScreen.Profile.rout) {
             ProfileScreen(navController = navController)
