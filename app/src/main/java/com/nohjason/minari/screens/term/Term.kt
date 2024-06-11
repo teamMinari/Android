@@ -22,22 +22,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.nohjason.minari.data.button.DummyButton1
-import com.nohjason.minari.data.word.allWords
 import com.nohjason.minari.screens.term.button.GetDummyTermButton
 import com.nohjason.minari.screens.term.button.TermButton
 import com.nohjason.minari.screens.term.button.TermButtonViewModel
-import com.nohjason.minari.screens.term.card.TermCard
 import com.nohjason.minari.screens.ui.line.MinariLine
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariWhite
 
 @Composable
 fun Term(
-    viewModel: TermButtonViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    navController: NavController
+    viewModel: TermButtonViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     var text by remember { mutableStateOf("") }
     Column {
@@ -67,26 +61,7 @@ fun Term(
                         TermButton(viewModel = viewModel, title = index.title, initialState = initialState)
                     }
                 }
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 10.dp)
-                        .clip(RoundedCornerShape(10.dp, 10.dp, 0.dp, 0.dp))
-                        .background(Color.White),
-                ) {
-                    itemsIndexed(items = allWords) { index, item ->
-                        TermCard(
-                            title = item.title,
-                            value = item.value,
-                            starCount = item.starCount,
-                            dummyTermSimilarButton = item.dummyTermSimilarButton,
-                            navController = navController
-                        )
-                        if (index != allWords.size-1) { // 마지막 항목이 아닌 경우에만 Divider 추가
-                            MinariLine()
-                        }
-                    }
-                }
+
 //                LazyColumn(
 //                    modifier = Modifier
 //                        .fillMaxSize()
@@ -115,5 +90,5 @@ fun Term(
 @Preview
 @Composable
 fun Testterm() {
-    Term(navController = rememberNavController())
+    Term()
 }
