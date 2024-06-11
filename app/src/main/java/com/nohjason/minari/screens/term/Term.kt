@@ -91,9 +91,3 @@ fun Term(
         }
     }
 }
-
-@Preview
-@Composable
-fun Testterm() {
-    Term(navController = rememberNavController())
-}
