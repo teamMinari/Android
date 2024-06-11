@@ -69,12 +69,6 @@ fun Term(
                         .clip(RoundedCornerShape(10.dp, 10.dp, 0.dp, 0.dp))
                         .background(Color.White),
                 ) {
-//                    itemsIndexed(items = GetDummyTermCard()) { index, item ->
-//                        TermCard(item.title, item.detail, item.starCount, item.dummyTermSimilarButton)
-//                        if (index != GetDummyTermCard().size-1) { // 마지막 항목이 아닌 경우에만 Divider 추가
-//                            MinariLine()
-//                        }
-//                    }
                 }
             }
         }
