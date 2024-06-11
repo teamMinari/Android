@@ -62,14 +62,26 @@ fun Term(
                     }
                 }
 
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 10.dp)
-                        .clip(RoundedCornerShape(10.dp, 10.dp, 0.dp, 0.dp))
-                        .background(Color.White),
-                ) {
-                }
+//                LazyColumn(
+//                    modifier = Modifier
+//                        .fillMaxSize()
+//                        .padding(horizontal = 10.dp)
+//                        .clip(RoundedCornerShape(10.dp, 10.dp, 0.dp, 0.dp))
+//                        .background(Color.White),
+//                ) {
+//                    itemsIndexed(items = allWords) { index, item ->
+//                        TermCard(
+//                            title = item.title,
+//                            value = item.value,
+//                            starCount = item.starCount,
+//                            dummyTermSimilarButton = item.dummyTermSimilarButton,
+//                            navController = navController
+//                        )
+//                        if (index != allWords.size-1) { // 마지막 항목이 아닌 경우에만 Divider 추가
+//                            MinariLine()
+//                        }
+//                    }
+//                }
             }
         }
     }
