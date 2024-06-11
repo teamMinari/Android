@@ -86,9 +86,3 @@ fun Term(
         }
     }
 }
-
-@Preview
-@Composable
-fun Testterm() {
-    Term()
-}
