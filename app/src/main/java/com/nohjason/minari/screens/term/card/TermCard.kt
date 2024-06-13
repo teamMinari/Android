@@ -38,64 +38,67 @@ fun TermCard(
     value: String,
     starCount: Int,
     dummyTermSimilarButton: List<DummyTermSimilarButton>,
-    navController: NavController
+    navController: NavController,
 ) {
     val context = LocalContext.current
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 5.dp)
+    Box(
+        Modifier.clickable { navController.navigate("test/${title}") }
     ) {
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp, vertical = 5.dp)
         ) {
-            MinariText(text = title, size = 20)
 
-            Spacer(modifier = Modifier.width(5.dp))
-
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(3.dp)
+            Row(
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                items(starCount) {
-                    Icon(
-                        painter = painterResource(R.drawable.star),
-                        contentDescription = "star",
-                        tint = Color.Unspecified,
-                        modifier = Modifier.size(15.dp)
-                    )
+                MinariText(text = title, size = 20)
+
+                Spacer(modifier = Modifier.width(5.dp))
+
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(3.dp)
+                ) {
+                    items(starCount) {
+                        Icon(
+                            painter = painterResource(R.drawable.star),
+                            contentDescription = "star",
+                            tint = Color.Unspecified,
+                            modifier = Modifier.size(15.dp)
+                        )
+                    }
                 }
             }
-        }
 
 
-        Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-        MinariText(
-            text = value,
-            size = 11,
-            maxLines = 3,
-            overflow = TextOverflow.Ellipsis,
-            color = Color.Gray
-        )
+            MinariText(
+                text = value,
+                size = 11,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+                color = Color.Gray
+            )
 
-        Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-            items(dummyTermSimilarButton) { item ->
-                Box(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(Color.White)
-                        .border(1.dp, Color.Black, shape = CircleShape) // CircleShape을 명시적으로 설정
-                        .padding(vertical = 3.dp, horizontal = 10.dp)
-                        .clickable {
-                           // 화면 이동
-                            navController.navigate("test/${item.title}")
-                        },
-                ) {
-                    MinariText(text = item.title, size = 10)
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                items(dummyTermSimilarButton) { item ->
+                    Box(
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .background(Color.White)
+                            .border(1.dp, Color.Black, shape = CircleShape) // CircleShape을 명시적으로 설정
+                            .padding(vertical = 3.dp, horizontal = 10.dp)
+                            .clickable {
+                                // 화면 이동
+                                navController.navigate("test/${title}")
+                            },
+                    ) {
+                        MinariText(text = item.title, size = 10)
+                    }
                 }
             }
         }

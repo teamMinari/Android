@@ -74,7 +74,7 @@ fun NavGraph(
         }
         composable("test/{text}") { backStackEntry ->
             val text = backStackEntry.arguments?.getString("text") ?: ""
-            Test(text)
+            Test(text, navController = navController)
         }
     }
 }

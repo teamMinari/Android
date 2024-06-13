@@ -54,7 +54,11 @@ fun Term(
                         .background(Color.White)
                         .padding(vertical = 15.dp)
                 ) {
-                    MinariTextField(value = text, onValueChange = { text = it }) {}
+                    MinariTextField(
+                        value = text,
+                        onValueChange = { text = it },
+                        onClick = {navController.navigate("test/${text}")}
+                    )
                 }
                 LazyRow(
                     modifier = Modifier
