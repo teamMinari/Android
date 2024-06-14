@@ -16,10 +16,15 @@ import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.navigation.bottombar.BottomBar
 import com.nohjason.minari.navigation.bottombar.BottomBarScreen
 import com.nohjason.minari.navigation.NavGraph
+import com.nohjason.minari.screens.profile.my_dictionary.db.MainViewModel
+import com.nohjason.minari.screens.profile.my_dictionary.db.UserEntity
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    allProduct: List<UserEntity>,
+    viewModel: MainViewModel
+) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     var showBottomBar by remember { mutableStateOf(true) }
@@ -41,7 +46,11 @@ fun MainScreen() {
         }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
-            NavGraph(navController = navController)
+            NavGraph(
+                navController = navController,
+                allProduct = allProduct,
+                viewModel = viewModel
+            )
         }
     }
 }

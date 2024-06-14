@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.term.card
 
+import android.text.BoringLayout
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,8 +18,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,6 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.nohjason.minari.R
 import com.nohjason.minari.data.button.DummyTermSimilarButton
+import com.nohjason.minari.screens.profile.my_dictionary.db.MainViewModel
+import com.nohjason.minari.screens.profile.my_dictionary.db.UserEntity
 import com.nohjason.minari.screens.ui.text.MinariText
 
 @Composable
@@ -39,6 +48,7 @@ fun TermCard(
     starCount: Int,
     dummyTermSimilarButton: List<DummyTermSimilarButton>,
     navController: NavController,
+    viewModel: MainViewModel
 ) {
     val context = LocalContext.current
     Box(
@@ -69,6 +79,21 @@ fun TermCard(
                         )
                     }
                 }
+            // --------------------------------------------------------------------------------
+                var check by remember { mutableStateOf(false) }
+                IconButton(onClick = {
+                    check = !check
+                    viewModel.upsertProduct(
+                        UserEntity(id = title, check)
+                    )
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_radio_button_unchecked_24),
+                        contentDescription = null,
+                        modifier = Modifier.size(10.dp)
+                    )
+                }
+            // --------------------------------------------------------------------------------
             }
 
 
@@ -94,7 +119,7 @@ fun TermCard(
                             .padding(vertical = 3.dp, horizontal = 10.dp)
                             .clickable {
                                 // 화면 이동
-                                navController.navigate("test/${title}")
+                                navController.navigate("test/${item.title}")
                             },
                     ) {
                         MinariText(text = item.title, size = 10)

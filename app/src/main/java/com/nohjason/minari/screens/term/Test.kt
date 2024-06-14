@@ -23,6 +23,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +43,7 @@ import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
 import com.nohjason.minari.data.word.allWords
 import com.nohjason.minari.navigation.bottombar.BottomBarScreen
+import com.nohjason.minari.screens.inproduct.InProduction
 import com.nohjason.minari.screens.ui.line.MinariLine
 import com.nohjason.minari.screens.ui.news.NewsCard
 import com.nohjason.minari.screens.ui.text.MinariText
@@ -58,39 +62,38 @@ fun Test(
     val word =
         if (title.isNotEmpty()) allWords.find { it.title == title }
         else null
-    var text by remember { mutableStateOf("") }
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(MinariWhite)
-    ) {
-        Column {
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(0.dp, 0.dp, 10.dp, 10.dp))
-                    .fillMaxWidth()
-                    .background(Color.White)
-                    .padding(vertical = 5.dp)
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = { navController.navigate(BottomBarScreen.Home.rout) }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_radio_button_unchecked_24),
-                            contentDescription = null,
+    if (word == null) {
+        navController.navigate("InProduction/아직 추가되지 않은 용어 입니다/서비스 이용에 불편을 드려서 죄송합니다")
+    } else {
+        var text by remember { mutableStateOf("") }
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(MinariWhite)
+        ) {
+            Column {
+                TopAppBar(
+                    title = {
+                        MinariTextField(
+                            modifier = Modifier
+                                .height(25.dp)
+                                .padding(end = 30.dp)
+                                .fillMaxWidth()
+                                .background(MinariLightGray, shape = CircleShape),
+                            value = text,
+                            onValueChange = {text = it},
+                            onClick = {navController.navigate("test/${title}")},
                         )
+                    },
+                    backgroundColor =  Color.White,
+                    navigationIcon = {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            androidx.compose.material3.Icon(Icons.Filled.ArrowBack, null)
+                        }
                     }
-                    MinariTextField(
-                        value = text,
-                        onValueChange = {text = it},
-                        onClick = {navController.navigate("test/${title}")},
-                    )
-                }
-            }
+                )
 
-            Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
-            if (word != null) {
                 Box(
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
@@ -112,6 +115,7 @@ fun Test(
                                     )
                                 }
                             }
+                            Spacer(modifier = Modifier.height(10.dp))
                             MinariText(text = word.title)
                             MinariLine()
                             MinariText(text = word.value, size = 13)
@@ -140,6 +144,7 @@ fun Test(
                                             shape = CircleShape
                                         )
                                         .padding(vertical = 3.dp, horizontal = 10.dp)
+                                        .clickable { navController.navigate("test/${text}") }
                                 ) {
                                     MinariText(text = item.title, size = 10)
                                 }
@@ -148,6 +153,8 @@ fun Test(
                                 }
                             }
                         }
+
+                        // news
                         LazyColumn(
                             modifier = Modifier
                                 .padding(10.dp)
@@ -163,10 +170,7 @@ fun Test(
                     }
                 }
 
-            } else {
-                MinariText(text = "정보 없음")
             }
-
         }
     }
 }
