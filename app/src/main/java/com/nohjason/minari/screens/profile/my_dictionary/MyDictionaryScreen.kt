@@ -25,6 +25,7 @@ import com.nohjason.minari.screens.profile.my_dictionary.card.WordCard
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariWhite
 
+//@Preview
 @Composable
 fun MyDictionaryScreen(
     navController: NavHostController,
