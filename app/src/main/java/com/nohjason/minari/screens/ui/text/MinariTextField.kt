@@ -27,6 +27,7 @@ import com.nohjason.minari.ui.theme.MinariWhite
 
 @Composable
 fun MinariTextField(
+    modifier: Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     onClick: () -> Unit,
@@ -36,11 +37,11 @@ fun MinariTextField(
         onValueChange = onValueChange,
         decorationBox = { innerTextField ->
             Row(
-                modifier = Modifier
-                    .height(25.dp)
-                    .padding(horizontal = 30.dp)
-                    .fillMaxWidth()
-                    .background(MinariLightGray, shape = CircleShape),
+                modifier = modifier,
+//                    .height(25.dp)
+//                    .padding(horizontal = 30.dp)
+//                    .fillMaxWidth()
+//                    .background(MinariLightGray, shape = CircleShape),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Spacer(modifier = Modifier.width(15.dp))

@@ -6,11 +6,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,18 +28,23 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.data.button.DummyButton1
 import com.nohjason.minari.data.word.allWords
+import com.nohjason.minari.screens.profile.my_dictionary.db.MainViewModel
+import com.nohjason.minari.screens.profile.my_dictionary.db.UserEntity
 import com.nohjason.minari.screens.term.button.GetDummyTermButton
 import com.nohjason.minari.screens.term.button.TermButton
 import com.nohjason.minari.screens.term.button.TermButtonViewModel
 import com.nohjason.minari.screens.term.card.TermCard
 import com.nohjason.minari.screens.ui.line.MinariLine
 import com.nohjason.minari.screens.ui.text.MinariTextField
+import com.nohjason.minari.ui.theme.MinariLightGray
 import com.nohjason.minari.ui.theme.MinariWhite
 
 @Composable
 fun Term(
     viewModel: TermButtonViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    navController: NavController
+    navController: NavController,
+    allProduct: List<UserEntity>,
+    mainViewModel: MainViewModel
 ) {
     var text by remember { mutableStateOf("") }
     Column {
@@ -55,22 +62,30 @@ fun Term(
                         .padding(vertical = 15.dp)
                 ) {
                     MinariTextField(
+                        modifier = Modifier
+                            .height(25.dp)
+                            .padding(horizontal = 30.dp)
+                            .fillMaxWidth()
+                            .background(MinariLightGray, shape = CircleShape),
                         value = text,
                         onValueChange = { text = it },
                         onClick = {navController.navigate("test/${text}")}
                     )
                 }
-                LazyRow(
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    items(GetDummyTermButton()) { index ->
-                        val initialState = if (index.title == "전체") false else true
-                        TermButton(viewModel = viewModel, title = index.title, initialState = initialState)
-                    }
-                }
+                // ----------------------------------------------------
+                // 카테고리 버튼 영역
+//                LazyRow(
+//                    modifier = Modifier
+//                        .padding(10.dp)
+//                        .fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+//                ) {
+//                    items(GetDummyTermButton()) { index ->
+//                        val initialState = if (index.title == "전체") false else true
+//                        TermButton(viewModel = viewModel, title = index.title, initialState = initialState)
+//                    }
+//                }
+                // ----------------------------------------------------
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -84,7 +99,8 @@ fun Term(
                             value = item.value,
                             starCount = item.starCount,
                             dummyTermSimilarButton = item.dummyTermSimilarButton,
-                            navController = navController
+                            navController = navController,
+                            viewModel = mainViewModel,
                         )
                         if (index != allWords.size-1) { // 마지막 항목이 아닌 경우에만 Divider 추가
                             MinariLine()

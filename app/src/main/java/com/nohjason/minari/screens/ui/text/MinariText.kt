@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 
@@ -17,6 +18,7 @@ fun MinariText(
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
     overflow: TextOverflow = TextOverflow.Clip,
+    textAlign: TextAlign = TextAlign.Center
 ) {
     Text(
         modifier = modifier,
@@ -26,6 +28,7 @@ fun MinariText(
         color = color,
         maxLines = maxLines,
         minLines = minLines,
-        overflow = overflow
+        overflow = overflow,
+        textAlign = textAlign
     )
 }

@@ -52,6 +52,16 @@ android {
 }
 
 dependencies {
+    // Coroutin
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
+
+    // Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    implementation(libs.androidx.runtime.livedata)
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))

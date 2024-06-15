@@ -44,7 +44,7 @@ fun WordCard(
         modifier = Modifier
             .clickable { expanded = !expanded }
             .clip(RoundedCornerShape(if (expanded) 3 else 10))
-            .background(Color.White)
+            .background(Color.LightGray)
             .padding(10.dp),
     ) {
         Column {

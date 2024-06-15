@@ -19,8 +19,11 @@ import com.nohjason.minari.firebase.rememberFirebaseAuthLauncher
 import com.nohjason.minari.navigation.bottombar.BottomBarScreen
 import com.nohjason.minari.screens.profile.my_dictionary.MyDictionaryScreen
 import com.nohjason.minari.screens.home.HomeScreen
+import com.nohjason.minari.screens.inproduct.InProduction
 import com.nohjason.minari.screens.login.LoginScreen
 import com.nohjason.minari.screens.profile.ProfileScreen
+import com.nohjason.minari.screens.profile.my_dictionary.db.MainViewModel
+import com.nohjason.minari.screens.profile.my_dictionary.db.UserEntity
 import com.nohjason.minari.screens.quiz.QuizScreen
 import com.nohjason.minari.screens.term.Term
 import com.nohjason.minari.screens.term.Test
@@ -28,6 +31,8 @@ import com.nohjason.minari.screens.term.Test
 @Composable
 fun NavGraph(
     navController: NavHostController,
+    allProduct: List<UserEntity>,
+    viewModel: MainViewModel
 ) {
     val auth = Firebase.auth
     var user by remember { mutableStateOf(auth.currentUser) }
@@ -64,17 +69,30 @@ fun NavGraph(
             ProfileScreen(navController = navController)
         }
         composable(BottomBarScreen.Term.rout) {
-            Term(navController = navController)
+            Term(
+                navController = navController,
+                allProduct = allProduct,
+                mainViewModel = viewModel
+            )
         }
         composable(BottomBarScreen.Quiz.rout) {
             QuizScreen()
         }
         composable("myDictionary") {
-            MyDictionaryScreen(navController = navController)
+            MyDictionaryScreen(
+                navController = navController,
+                mainViewModel = viewModel
+            )
         }
         composable("test/{text}") { backStackEntry ->
             val text = backStackEntry.arguments?.getString("text") ?: ""
             Test(text, navController = navController)
+        }
+
+        composable("InProduction/{title}/{value}") { backStackEntry ->
+            val title = backStackEntry.arguments?.getString("title") ?: ""
+            val value = backStackEntry.arguments?.getString("value") ?: ""
+            InProduction(title = title, value = value)
         }
     }
 }

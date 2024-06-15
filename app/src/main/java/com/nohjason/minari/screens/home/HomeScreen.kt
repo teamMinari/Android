@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.CheckCircle
@@ -46,6 +47,7 @@ import com.nohjason.minari.screens.home.news.getDummyUsers
 import com.nohjason.minari.screens.home.words.RecommendWords
 import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.screens.ui.text.MinariTextField
+import com.nohjason.minari.ui.theme.MinariLightGray
 import com.nohjason.minari.ui.theme.MinariWhite
 
 @Composable
@@ -76,6 +78,11 @@ fun HomeScreen(
             }
 
             MinariTextField(
+                modifier = Modifier
+                    .height(25.dp)
+                    .padding(horizontal = 30.dp)
+                    .fillMaxWidth()
+                    .background(MinariLightGray, shape = CircleShape),
                 value = text,
                 onValueChange = { text = it },
                 onClick = {navController.navigate("test/${text}")}
