@@ -15,9 +15,9 @@ fun Access_not(){
     Text(text = "서비스 이용에 불편을 드려서 죄송합니다. ")
 }
 
-@Preview(showBackground = true)
-@Composable
-fun Access_notScreenPreview() {
-    val navController = rememberNavController()
-    ProfileScreen(navController = navController)
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun Access_notScreenPreview() {
+//    val navController = rememberNavController()
+//    ProfileScreen(navController = navController)
+//}

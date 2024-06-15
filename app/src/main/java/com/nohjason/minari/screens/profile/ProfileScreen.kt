@@ -103,9 +103,10 @@ fun ProfileScreen(
                     Column {
                         Button(
                             onClick = { /*TODO*/ },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color.White)
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                            modifier = Modifier.width(50.dp).height(15.dp)
                         ) {
-                            Text(text = "로그아웃", color = Color(0xFF7C21E9))
+                            Text(text = "로그아웃", color = Color(0xFF7C21E9),)
                         }
                         Image(
                             painter = rememberImagePainter(
@@ -186,9 +187,9 @@ fun ProfileScreen(
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun ProfileScreenPreview() {
-//    val navController = rememberNavController()
-//    ProfileScreen(navController = navController)
-//}
+@Preview(showBackground = true)
+@Composable
+fun ProfileScreenPreview() {
+    val navController = rememberNavController()
+    ProfileScreen(navController = navController)
+}
