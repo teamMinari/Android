@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.term
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -36,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -63,7 +65,24 @@ fun Test(
         if (title.isNotEmpty()) allWords.find { it.title == title }
         else null
     if (word == null) {
-        navController.navigate("InProduction/아직 추가되지 않은 용어 입니다/서비스 이용에 불편을 드려서 죄송합니다")
+        Column {
+            TopAppBar(
+                title = {  },
+                backgroundColor =  Color.White,
+                navigationIcon = {
+                    IconButton(
+                        onClick = { navController.popBackStack() },
+                    ) {
+                        androidx.compose.material3.Icon(
+                            Icons.Filled.ArrowBack,
+                            null,
+                            tint = Color.Black
+                        )
+                    }
+                }
+            )
+            InProduction(title = "아직 추가되지 않은 용어 입니다", value = "서비스 이용에 불편을 드려서 죄송합니다")
+        }
     } else {
         var text by remember { mutableStateOf("") }
         Box(modifier = Modifier
@@ -87,7 +106,7 @@ fun Test(
                     backgroundColor =  Color.White,
                     navigationIcon = {
                         IconButton(onClick = { navController.popBackStack() }) {
-                            androidx.compose.material3.Icon(Icons.Filled.ArrowBack, null)
+                            androidx.compose.material3.Icon(Icons.Filled.ArrowBack, null, tint = Color.Black)
                         }
                     }
                 )
@@ -98,7 +117,7 @@ fun Test(
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
                         .background(Color.White)
-                        .weight(0.4f)
+                        .weight(0.6f)
                 ) {
                     LazyColumn(
                         modifier = Modifier
@@ -118,7 +137,11 @@ fun Test(
                             Spacer(modifier = Modifier.height(10.dp))
                             MinariText(text = word.title)
                             MinariLine()
-                            MinariText(text = word.value, size = 13)
+                            MinariText(
+                                text = word.value,
+                                size = 13,
+                                textAlign = TextAlign.Left
+                            )
                         }
                     }
                 }
@@ -128,7 +151,7 @@ fun Test(
                 Box(
                     modifier = Modifier
                         .padding(horizontal = 10.dp)
-                        .weight(0.6f)
+                        .weight(0.4f)
                 ) {
                     Column {
                         MinariText(text = "관련 용어", size = 15)
@@ -144,7 +167,10 @@ fun Test(
                                             shape = CircleShape
                                         )
                                         .padding(vertical = 3.dp, horizontal = 10.dp)
-                                        .clickable { navController.navigate("test/${text}") }
+                                        .clickable {
+                                            navController.navigate("test/${item.title}")
+//                                            Log.d("TAG", "Test: ${item.title}")
+                                        }
                                 ) {
                                     MinariText(text = item.title, size = 10)
                                 }

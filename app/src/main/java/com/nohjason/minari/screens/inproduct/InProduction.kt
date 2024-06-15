@@ -1,6 +1,7 @@
 package com.nohjason.minari.screens.inproduct
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,7 +41,11 @@ fun InProduction(
     title: String,
     value: String
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
         Column(
             modifier = Modifier.align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -50,12 +56,14 @@ fun InProduction(
                 modifier = Modifier.size(200.dp)
             )
             Spacer(modifier = Modifier.height(10.dp))
-            MinariText(text = title)
+            MinariText(
+                text = title,
+            )
             Spacer(modifier = Modifier.height(10.dp))
             MinariText(
                 text = value,
                 size = 17,
-                color = MinariBlue
+                color = MinariBlue,
             )
         }
     }

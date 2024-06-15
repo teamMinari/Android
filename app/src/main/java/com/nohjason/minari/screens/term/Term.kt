@@ -72,17 +72,20 @@ fun Term(
                         onClick = {navController.navigate("test/${text}")}
                     )
                 }
-                LazyRow(
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    items(GetDummyTermButton()) { index ->
-                        val initialState = if (index.title == "전체") false else true
-                        TermButton(viewModel = viewModel, title = index.title, initialState = initialState)
-                    }
-                }
+                // ----------------------------------------------------
+                // 카테고리 버튼 영역
+//                LazyRow(
+//                    modifier = Modifier
+//                        .padding(10.dp)
+//                        .fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+//                ) {
+//                    items(GetDummyTermButton()) { index ->
+//                        val initialState = if (index.title == "전체") false else true
+//                        TermButton(viewModel = viewModel, title = index.title, initialState = initialState)
+//                    }
+//                }
+                // ----------------------------------------------------
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()

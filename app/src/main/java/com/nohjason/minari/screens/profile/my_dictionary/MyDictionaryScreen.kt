@@ -75,7 +75,7 @@ fun MyDictionaryScreen(
             backgroundColor =  Color.White,
             navigationIcon = {
                 IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(Icons.Filled.ArrowBack, null)
+                    Icon(Icons.Filled.ArrowBack, null, tint = Color.Black)
                 }
             }
         )
@@ -93,25 +93,31 @@ fun MyDictionaryScreen(
             }
 
             Column {
-                Spacer(modifier = Modifier.height(10.dp))
-
                 if (test.size - count != 0) {
-                    LazyColumn(modifier = Modifier.padding(10.dp)) {
-                        items(test) { item ->
-                            if (item.check != false) {
-                                WordCard(
-                                    title = item.id,
-                                    isLike = item.check
-                                ) {
-                                    mainViewModel.upsertProduct(
-                                        UserEntity(id = item.id, check = !item.check)
-                                    )
+                    Box(modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.White)
+                    ) {
+                        LazyColumn(
+                            modifier = Modifier
+                                .padding(10.dp)
+                        ) {
+                            items(test) { item ->
+                                if (item.check != false) {
+                                    WordCard(
+                                        title = item.id,
+                                        isLike = item.check
+                                    ) {
+                                        mainViewModel.upsertProduct(
+                                            UserEntity(id = item.id, check = !item.check)
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.padding(5.dp))
                                 }
-                                Spacer(modifier = Modifier.padding(5.dp))
                             }
                         }
+                        Spacer(modifier = Modifier.height(20.dp))
                     }
-                    Spacer(modifier = Modifier.height(20.dp))
                 } else {
                     InProduction(
                         "아직 추가된 용어가 없습니다",
