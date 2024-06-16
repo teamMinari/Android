@@ -31,7 +31,7 @@ fun MyWordCard(){
                     .width(150.dp)
             )
             Row {
-                Image(painter = painterResource(id = R.drawable.fix_icon), contentDescription = "fix icon")
+                Image(painter = painterResource(id = R.drawable.fixicon), contentDescription = "fix icon")
                 Text(text = "아직 제작 중에 있는\n" + "기능이에요.")
             }
         }

@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun MinariText(
     modifier: Modifier = Modifier,
+    fontWeight: FontWeight = FontWeight.Bold,
     text: String,
     size: Int = 30,
     color: Color = Color.Black,
@@ -24,7 +25,7 @@ fun MinariText(
         modifier = modifier,
         text = text,
         fontSize = size.sp,
-        fontWeight = FontWeight.Bold,
+        fontWeight = fontWeight,
         color = color,
         maxLines = maxLines,
         minLines = minLines,
