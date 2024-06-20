@@ -26,7 +26,7 @@ fun MinariLine(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)
+            .padding(vertical = 10.dp)
             .clip(CircleShape)
             .background(MinariGray)
             .height(thickness.size)
