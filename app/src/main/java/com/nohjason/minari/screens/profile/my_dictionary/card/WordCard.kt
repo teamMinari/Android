@@ -8,14 +8,18 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -24,9 +28,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nohjason.minari.R
+import com.nohjason.minari.data.word.allWords
 import com.nohjason.minari.screens.ui.line.MinariLine
 import com.nohjason.minari.screens.ui.text.MinariText
 
@@ -39,6 +45,7 @@ fun WordCard(
 
     val context = LocalContext.current
     var expanded by rememberSaveable { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -55,8 +62,8 @@ fun WordCard(
                 Spacer(modifier = Modifier.weight(0.5f))
                 if (isLike) {
                     IconButton(onClick = {
-                        onLikeClick(!isLike)
-                        Toast.makeText(context, "좋아요 클릭", Toast.LENGTH_SHORT).show()
+//                        onLikeClick(!isLike)
+                        showDialog = !showDialog
                     }) {
                         Icon(
                             painter = painterResource(id = R.drawable.minari_hart),
@@ -66,8 +73,6 @@ fun WordCard(
                         )
                     }
                 }
-
-
             }
 
             if (expanded) {
@@ -82,5 +87,26 @@ fun WordCard(
                 )
             }
         }
+    }
+    if (showDialog == true) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = {},
+            text = { Text("용어 삭제하겠습니까?", Modifier.fillMaxWidth(), textAlign = TextAlign.Center) },
+            dismissButton = {
+                Button(onClick = { showDialog = false }) {
+                    Text("취소")
+                }
+            },
+            confirmButton = {
+                Button(onClick = {
+                    showDialog = false
+                    onLikeClick(!isLike)
+                    Toast.makeText(context, "용어가 삭제 되었습니다", Toast.LENGTH_SHORT).show()
+                }) {
+                    Text("확인")
+                }
+            }
+        )
     }
 }
