@@ -1,5 +1,6 @@
 package com.nohjason.minari.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,6 +18,9 @@ import com.google.firebase.ktx.Firebase
 import com.nohjason.minari.R
 import com.nohjason.minari.firebase.rememberFirebaseAuthLauncher
 import com.nohjason.minari.navigation.bottombar.BottomBarScreen
+import com.nohjason.minari.screens.QizeScreen.Commentary_CorrectO
+import com.nohjason.minari.screens.QizeScreen.Commentary_CorrectX
+import com.nohjason.minari.screens.QizeScreen.QuizScreen_play
 import com.nohjason.minari.screens.profile.my_dictionary.MyDictionaryScreen
 import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.inproduct.InProduction
@@ -24,9 +28,15 @@ import com.nohjason.minari.screens.login.LoginScreen
 import com.nohjason.minari.screens.profile.ProfileScreen
 import com.nohjason.minari.screens.profile.my_dictionary.db.MainViewModel
 import com.nohjason.minari.screens.profile.my_dictionary.db.UserEntity
+import com.nohjason.minari.screens.quiz.QuizEndScreen
 import com.nohjason.minari.screens.quiz.QuizScreen
+import com.nohjason.minari.screens.quiz.data.Question
+import com.nohjason.minari.screens.quiz.data.QuestionData
+import com.nohjason.minari.screens.quiz.data.TemporaryPoint
+import com.nohjason.minari.screens.quiz.data.Temporary_pointData
 import com.nohjason.minari.screens.term.Term
 import com.nohjason.minari.screens.term.Test
+import kotlin.random.Random
 
 @Composable
 fun NavGraph(
@@ -49,6 +59,9 @@ fun NavGraph(
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
 
 
+    val question = QuestionData.getQuestion()[0]
+    val dummy_user = Temporary_pointData.getPoint().first()
+
 
     NavHost(
         navController = navController,
@@ -65,6 +78,9 @@ fun NavGraph(
         composable(BottomBarScreen.Home.rout) {
             HomeScreen(navController = navController)
         }
+        composable(BottomBarScreen.Quiz.rout) {
+            QuizScreen(navController = navController, que = question, user = dummy_user)
+        }
         composable(BottomBarScreen.Profile.rout) {
             ProfileScreen(navController = navController)
         }
@@ -74,9 +90,6 @@ fun NavGraph(
                 allProduct = allProduct,
                 mainViewModel = viewModel
             )
-        }
-        composable(BottomBarScreen.Quiz.rout) {
-            QuizScreen()
         }
         composable("myDictionary") {
             MyDictionaryScreen(
@@ -94,5 +107,26 @@ fun NavGraph(
             val value = backStackEntry.arguments?.getString("value") ?: ""
             InProduction(title = title, value = value)
         }
+
+
+        //퀴즈-------------------------------------
+        composable("quizStartRoute") {
+            QuizScreen(navController = navController, que = question, user = dummy_user)
+        }
+        composable("quizQuestionRoute") {
+            QuizScreen_play(que = question, navController = navController, user = dummy_user)
+        }
+        composable("quizQuestionORoute/{questionId}") { backStackEntry ->
+            Commentary_CorrectO(que = question, navController = navController, user = dummy_user)
+            // 퀴즈 O질문 결과 화면
+        }
+        composable("quizQuestionXRoute/{questionId}") { backStackEntry ->
+            Commentary_CorrectX(que = question, navController = navController, user = dummy_user)
+            // 퀴즈 X질문 결과 화면
+        }
+        composable("quizComentoryRoute/{questionId}") { backStackEntry ->
+            QuizEndScreen()
+        }
+        //--------------------------------------------
     }
 }
