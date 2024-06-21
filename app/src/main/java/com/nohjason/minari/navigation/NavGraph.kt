@@ -61,7 +61,7 @@ fun NavGraph(
 
     val question = QuestionData.getQuestion()[0]
     val dummyUser = Temporary_pointData.getPoint()
-    val list = QuizScreen(navController = navController, user = user)
+//    val list = QuizScreen(navController = navController, user = user)
 
 
     NavHost(
@@ -80,7 +80,7 @@ fun NavGraph(
             HomeScreen(navController = navController)
         }
         composable(BottomBarScreen.Quiz.rout, ) {
-            QuizScreen(navController = navController, que = question, user = dummyUser)
+            QuizScreen(navController = navController, user = dummyUser)
         }
         composable(BottomBarScreen.Profile.rout) {
             ProfileScreen(navController = navController)
@@ -112,7 +112,7 @@ fun NavGraph(
 
         //퀴즈-------------------------------------{questionId}부분 지워야함
         composable("quizStartRoute") {
-            QuizScreen(navController = navController, que = question, user = dummyUser)
+            QuizScreen(navController = navController, user = dummyUser)
         }
         composable("quizQuestionRoute") {
             QuizScreen_play(que = question, navController = navController, user = dummyUser, )
