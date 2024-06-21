@@ -1,6 +1,7 @@
 package com.nohjason.minari.screens.term.card
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,9 +34,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.nohjason.minari.R
@@ -52,6 +57,7 @@ fun TermCard(
     navController: NavController,
     viewModel: MainViewModel
 ) {
+    val context = LocalContext.current
     Box(
         Modifier.clickable { navController.navigate("test/${title}") }
     ) {
@@ -83,8 +89,6 @@ fun TermCard(
 
                 Spacer(modifier = Modifier.weight(0.1f))
                 // --------------------------------------------------------------------------------
-                var check by remember { mutableStateOf(false) }
-
                 Box(
                     modifier = Modifier
                         .clip(CircleShape)
@@ -92,14 +96,14 @@ fun TermCard(
                         .border(1.dp, Color.Black, shape = CircleShape) // CircleShape을 명시적으로 설정
                         .padding(vertical = 3.dp, horizontal = 10.dp)
                         .clickable {
-                            check = !check
                             viewModel.upsertProduct(
-                                UserEntity(id = title, check)
+                                UserEntity(id = title, true)
                             )
+                            Toast.makeText(context, "용어가 단어장에 추가 되었습니다", Toast.LENGTH_SHORT).show()
                         }
                         .padding(3.dp)
                 ) {
-                    MinariText(text = "단어장 추가/삭제", size = 10)
+                    MinariText(text = "단어장 추가", size = 10)
                 }
 //                IconButton(onClick = {
 
@@ -146,4 +150,30 @@ fun TermCard(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun PopupView() {
+    var showDialog by remember { mutableStateOf(false) }
+    AlertDialog(
+        onDismissRequest = { showDialog = false },
+        title = {},
+        text = { Text("용어 삭제하겠습니까?", Modifier.fillMaxWidth(), textAlign = TextAlign.Center) },
+        dismissButton = {
+            Button(onClick = { showDialog = false }) {
+                Text("취소")
+            }
+        },
+        confirmButton = {
+            Button(onClick = {
+                showDialog = false
+//                viewModel.upsertProduct(
+//                    UserEntity(id = title, true)
+//                )
+            }) {
+                Text("확인")
+            }
+        }
+    )
 }

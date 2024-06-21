@@ -2,6 +2,7 @@ package com.nohjason.minari.screens.profile
 
 import android.app.Activity
 import android.net.Uri
+import android.util.Log
 import android.widget.ImageButton
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -176,13 +177,14 @@ fun ProfileScreen(
                     ) {
                         Box(modifier = Modifier.align(Alignment.Center)) {
                             AsyncImage(
-                                model = selectedImageUri,
+                                model = if(selectedImageUri == null) R.drawable.default_profile else TODO(),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(100.dp)
                                     .clip(CircleShape),
                                 contentScale = ContentScale.Crop
                             )
+                            Log.d("TAG", "ProfileScreen: $selectedImageUri")
                             Image(
                                 painter = painterResource(id = R.drawable.profile_fix),
                                 contentDescription = "profile fix",
@@ -237,7 +239,10 @@ fun ProfileScreen(
                                 Icon(
                                     imageVector = items.image(),
                                     contentDescription = null,
-                                    tint = Color.Unspecified
+                                    tint = Color.Unspecified,
+                                    modifier = Modifier.clickable {
+                                        if (items.title == "단어장") navController.navigate("myDictionary") else null
+                                    }
                                 )
                                 Spacer(modifier = Modifier.height(5.dp))
                                 MinariText(
