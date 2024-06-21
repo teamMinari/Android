@@ -28,18 +28,21 @@ import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.screens.quiz.data.Question
 import com.nohjason.minari.screens.quiz.data.QuestionData
 import com.nohjason.minari.screens.quiz.data.TemporaryPoint
+import com.nohjason.minari.screens.quiz.data.Temporary_pointData
 import com.nohjason.minari.ui.theme.MinariBlue
 import kotlin.random.Random
-
+fun randomqueID(): List<Int> {
+    val numbers = (0..9).toMutableList()  //문제 몇가지 있는지 갯수 필요
+    numbers.shuffle(Random(System.currentTimeMillis()))
+    return numbers
+}
 @Composable
 fun QuizScreen_play(
     que: Question,
     navController: NavHostController,
-    user: TemporaryPoint
-) {
-
-
-    Column (
+    user: TemporaryPoint,
+//     allQuestions: List<Question>
+) { Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ){
@@ -71,12 +74,13 @@ fun QuizScreen_play(
             //버튼O------------------------------
             TextButton(
                 onClick = {
+                    //정답 판별
                     user.user_answer = "O"
                     if(que.answer == "O"){
-                        user.Correct+=1
-                        navController.navigate("quizQuestionORoute/${que.id}")
+                        user.correct+=1
+                        navController.navigate("quizQuestionORoute/{questionId}")
                     } else{
-                        navController.navigate("quizQuestionXRoute/${que.id}")
+                        navController.navigate("quizQuestionXRoute/{questionId}")
                     }
                     user.replies += 1
                 },
@@ -93,12 +97,13 @@ fun QuizScreen_play(
             //버튼X------------------------------
             TextButton(
                 onClick = {
+                    //정답 판별
                     user.user_answer = "X"
                     if(que.answer == "O"){
-                        navController.navigate("quizQuestionORoute/${que.id}")
+                        navController.navigate("quizQuestionORoute/{questionId}")
                     } else{
-                        user.Correct+=1
-                        navController.navigate("quizQuestionXRoute/${que.id}")
+                        user.correct+=1
+                        navController.navigate("quizQuestionXRoute/{questionId}")
                     }
                     user.replies += 1
                 },
@@ -119,6 +124,7 @@ fun QuizScreen_play(
         Button(
             onClick = {
                 que.id += 1
+                user.replies += 1
                 navController.navigate("quizQuestionRoute")
                       },
             modifier = Modifier
@@ -142,7 +148,10 @@ fun Commentary_CorrectO(
     Column (horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()) {
         val correct_answer = if(que.answer == user.user_answer) "정답!" else "오답"
-        user.point = user.point+user.Correct//포인트 얼마씩 추가할지 지정해야함
+        if(que.answer == user.user_answer){
+            user.point += 1//포인트 값 정해야함
+        }
+
         Text(
             text = correct_answer,
             Modifier.padding(end = 250.dp, top = 65.dp),
@@ -160,7 +169,11 @@ fun Commentary_CorrectO(
 
         Button(
             onClick = {
-                navController.navigate("quizQuestionRoute")
+                if (user.replies > 10){
+                    navController.navigate("quizStartRoute")
+                } else{
+                    navController.navigate("quizQuestionRoute")
+                }
             },
             modifier = Modifier
                 .width(305.dp)
@@ -178,9 +191,12 @@ fun Commentary_CorrectX(
     que: Question,
     user: TemporaryPoint
 ){
-    val correct_answer = if(que.answer == user.user_answer) "정답!" else "오답"
     Column (horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()) {
+        val correct_answer = if(que.answer == user.user_answer) "정답!" else "오답"
+        if(que.answer == user.user_answer){
+            user.point += 1//포인트 값 정해야함
+        }
         Text(text = correct_answer,
             Modifier.padding(end = 250.dp, top = 65.dp),
 //            fontFamily = pretendardFamily,
@@ -197,7 +213,7 @@ fun Commentary_CorrectX(
 
         Button(
             onClick = {
-                if (user.replies > 11){
+                if (user.replies > 10){
                     navController.navigate("quizStartRoute")
                 } else{
                     navController.navigate("quizQuestionRoute")

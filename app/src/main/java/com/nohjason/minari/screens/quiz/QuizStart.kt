@@ -2,6 +2,7 @@
 
 package com.nohjason.minari.screens.quiz
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,18 +29,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.room.util.query
 import com.nohjason.minari.screens.quiz.data.Question
 import com.nohjason.minari.screens.quiz.data.QuestionData
 import com.nohjason.minari.screens.quiz.data.TemporaryPoint
 import com.nohjason.minari.ui.theme.MinariBlue
-
+import kotlin.random.Random
 
 @Composable
 fun QuizScreen(
     navController: NavHostController,
-    que: Question,
-    user: TemporaryPoint
+    user: TemporaryPoint,
+//    allQuestions: List<Question>
 ) {
+    val TestList = arrayListOf(5)
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
@@ -69,6 +72,8 @@ fun QuizScreen(
 
         Button(  onClick = {
             user.replies = 0
+            val tag = "MyAppTag"
+//            Log.d(tag, "${randomIDList}")
             navController.navigate("quizQuestionRoute")
             },
             modifier = Modifier

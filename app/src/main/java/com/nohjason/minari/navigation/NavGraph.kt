@@ -16,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.nohjason.minari.R
+//import com.nohjason.minari.R
 import com.nohjason.minari.firebase.rememberFirebaseAuthLauncher
 import com.nohjason.minari.navigation.bottombar.BottomBarScreen
 import com.nohjason.minari.screens.QizeScreen.Commentary_CorrectO
@@ -58,9 +59,9 @@ fun NavGraph(
         .requestEmail().build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
 
-
     val question = QuestionData.getQuestion()[0]
-    val dummy_user = Temporary_pointData.getPoint().first()
+    val dummyUser = Temporary_pointData.getPoint()
+    val list = QuizScreen(navController = navController, user = user)
 
 
     NavHost(
@@ -78,8 +79,8 @@ fun NavGraph(
         composable(BottomBarScreen.Home.rout) {
             HomeScreen(navController = navController)
         }
-        composable(BottomBarScreen.Quiz.rout) {
-            QuizScreen(navController = navController, que = question, user = dummy_user)
+        composable(BottomBarScreen.Quiz.rout, ) {
+            QuizScreen(navController = navController, que = question, user = dummyUser)
         }
         composable(BottomBarScreen.Profile.rout) {
             ProfileScreen(navController = navController)
@@ -109,19 +110,19 @@ fun NavGraph(
         }
 
 
-        //퀴즈-------------------------------------
+        //퀴즈-------------------------------------{questionId}부분 지워야함
         composable("quizStartRoute") {
-            QuizScreen(navController = navController, que = question, user = dummy_user)
+            QuizScreen(navController = navController, que = question, user = dummyUser)
         }
         composable("quizQuestionRoute") {
-            QuizScreen_play(que = question, navController = navController, user = dummy_user)
+            QuizScreen_play(que = question, navController = navController, user = dummyUser, )
         }
         composable("quizQuestionORoute/{questionId}") { backStackEntry ->
-            Commentary_CorrectO(que = question, navController = navController, user = dummy_user)
+            Commentary_CorrectO(que = question, navController = navController, user = dummyUser)
             // 퀴즈 O질문 결과 화면
         }
         composable("quizQuestionXRoute/{questionId}") { backStackEntry ->
-            Commentary_CorrectX(que = question, navController = navController, user = dummy_user)
+            Commentary_CorrectX(que = question, navController = navController, user = dummyUser)
             // 퀴즈 X질문 결과 화면
         }
         composable("quizComentoryRoute/{questionId}") { backStackEntry ->
