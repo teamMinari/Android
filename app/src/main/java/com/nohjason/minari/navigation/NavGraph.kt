@@ -63,7 +63,6 @@ fun NavGraph(
 
     val question = QuestionData.getQuestion()
     val dummyUser = Temporary_pointData.getPoint()
-//    val list = QuizScreen(navController = navController, user = user)
 
 
     NavHost(

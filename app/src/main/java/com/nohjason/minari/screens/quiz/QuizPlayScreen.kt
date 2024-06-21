@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
+import com.nohjason.minari.screens.quiz.QuizScreen
 import com.nohjason.minari.screens.quiz.data.Question
 import com.nohjason.minari.screens.quiz.data.QuestionData
 import com.nohjason.minari.screens.quiz.data.TemporaryPoint
@@ -119,7 +120,7 @@ fun QuizScreen_play(
                 Image(painterResource(
                     id = R.drawable.o),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(Color(0x585858))
+//                    colorFilter = ColorFilter.tint(Color(0x585858))
                 )
             }
 
@@ -149,10 +150,15 @@ fun QuizScreen_play(
 
         Button(
             onClick = {
-                queIDnum += 1
                 user.replies += 1
-                navController.navigate("quizQuestionRoute")
-                      },
+                if (user.replies > 9) {
+                    queIDnum = 0
+                    queIDList = queIDList()
+                    navController.navigate("quizComentoryRoute")
+                } else {
+                    navController.navigate("quizQuestionRoute")
+                }
+                queIDnum += 1 },
             modifier = Modifier
                 .width(305.dp)
                 .padding(top = 100.dp),
@@ -399,5 +405,5 @@ fun Commentary_CorrectX(
 @Preview(showBackground = true)
 @Composable
 fun QuizScreenPrevirw(){
-//    QuizScreen()
+//    QuizScreen(navController = , user = )
 }
