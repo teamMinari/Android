@@ -111,12 +111,9 @@ fun NavGraph(
         }
 
 
-        //퀴즈-------------------------------------{questionId}부분 지워야함
+        //퀴즈
         composable("quizStartRoute") {
             QuizScreen(navController = navController, user = dummyUser)
-//            val jsonString = it.arguments?.getString("arrayList")  // 'it'을 사용하여 arguments를 참조합니다
-//            val arrayListType = object : TypeToken<ArrayList<String>>() {}.type  // ArrayList<String> 타입 정보를 얻기 위한 TypeToken 생성
-//            val arrayList: ArrayList<String> = Gson().fromJson(jsonString, arrayListType)  // JSON 문자열을 ArrayList<String> 객체로 변환
         }
         composable("quizQuestionRoute") {
             QuizScreen_play(que = question, navController = navController, user = dummyUser, )
@@ -132,6 +129,5 @@ fun NavGraph(
         composable("quizComentoryRoute") { backStackEntry ->
             QuizEndScreen(navController = navController, user = dummyUser)
         }
-        //--------------------------------------------
     }
 }
