@@ -35,6 +35,14 @@ import com.nohjason.minari.screens.quiz.data.QuestionData
 import com.nohjason.minari.screens.quiz.data.TemporaryPoint
 import com.nohjason.minari.ui.theme.MinariBlue
 import kotlin.random.Random
+fun queIDList(): List<Int> {
+    val numbers = (0..9).toMutableList()  //문제 몇가지 있는지 갯수 필요
+    numbers.shuffle(Random(System.currentTimeMillis()))
+    return numbers
+}
+//val jsonString = Gson().toJson(arrayList)
+
+
 
 @Composable
 fun QuizScreen(
@@ -72,8 +80,6 @@ fun QuizScreen(
 
         Button(  onClick = {
             user.replies = 0
-            val tag = "MyAppTag"
-//            Log.d(tag, "${randomIDList}")
             navController.navigate("quizQuestionRoute")
             },
             modifier = Modifier

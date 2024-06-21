@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.common.reflect.TypeToken
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.nohjason.minari.R
@@ -22,6 +23,7 @@ import com.nohjason.minari.navigation.bottombar.BottomBarScreen
 import com.nohjason.minari.screens.QizeScreen.Commentary_CorrectO
 import com.nohjason.minari.screens.QizeScreen.Commentary_CorrectX
 import com.nohjason.minari.screens.QizeScreen.QuizScreen_play
+import com.nohjason.minari.screens.QizeScreen.queIDList
 import com.nohjason.minari.screens.profile.my_dictionary.MyDictionaryScreen
 import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.inproduct.InProduction
@@ -59,7 +61,7 @@ fun NavGraph(
         .requestEmail().build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
 
-    val question = QuestionData.getQuestion()[0]
+    val question = QuestionData.getQuestion()
     val dummyUser = Temporary_pointData.getPoint()
 //    val list = QuizScreen(navController = navController, user = user)
 
@@ -113,19 +115,22 @@ fun NavGraph(
         //퀴즈-------------------------------------{questionId}부분 지워야함
         composable("quizStartRoute") {
             QuizScreen(navController = navController, user = dummyUser)
+//            val jsonString = it.arguments?.getString("arrayList")  // 'it'을 사용하여 arguments를 참조합니다
+//            val arrayListType = object : TypeToken<ArrayList<String>>() {}.type  // ArrayList<String> 타입 정보를 얻기 위한 TypeToken 생성
+//            val arrayList: ArrayList<String> = Gson().fromJson(jsonString, arrayListType)  // JSON 문자열을 ArrayList<String> 객체로 변환
         }
         composable("quizQuestionRoute") {
             QuizScreen_play(que = question, navController = navController, user = dummyUser, )
         }
-        composable("quizQuestionORoute/{questionId}") { backStackEntry ->
+        composable("quizQuestionORoute") { backStackEntry ->
             Commentary_CorrectO(que = question, navController = navController, user = dummyUser)
             // 퀴즈 O질문 결과 화면
         }
-        composable("quizQuestionXRoute/{questionId}") { backStackEntry ->
+        composable("quizQuestionXRoute") { backStackEntry ->
             Commentary_CorrectX(que = question, navController = navController, user = dummyUser)
             // 퀴즈 X질문 결과 화면
         }
-        composable("quizComentoryRoute/{questionId}") { backStackEntry ->
+        composable("quizComentoryRoute") { backStackEntry ->
             QuizEndScreen()
         }
         //--------------------------------------------

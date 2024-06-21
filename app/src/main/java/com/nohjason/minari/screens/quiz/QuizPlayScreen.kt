@@ -31,14 +31,24 @@ import com.nohjason.minari.screens.quiz.data.TemporaryPoint
 import com.nohjason.minari.screens.quiz.data.Temporary_pointData
 import com.nohjason.minari.ui.theme.MinariBlue
 import kotlin.random.Random
-fun randomqueID(): List<Int> {
-    val numbers = (0..9).toMutableList()  //문제 몇가지 있는지 갯수 필요
-    numbers.shuffle(Random(System.currentTimeMillis()))
-    return numbers
+
+fun queIDList(): List<Int> {
+    val random = MutableList(QuestionData.getQuestion().size) { 0 }
+    for (i in random.indices) {
+        random[i] = i
+    }
+    random.shuffle(Random(System.currentTimeMillis()))
+    return random
 }
+var queIDList = queIDList()
+var queIDnum = 0
+
+
+
+
 @Composable
 fun QuizScreen_play(
-    que: Question,
+    que: List<Question>,
     navController: NavHostController,
     user: TemporaryPoint,
 //     allQuestions: List<Question>
@@ -64,7 +74,7 @@ fun QuizScreen_play(
                 color = Color(0xFF3B88FB))
         }
 
-        Text(text = que.question,
+        Text(text = que[queIDList[queIDnum]].question,
 //            fontFamily = pretendardFamily,
             fontWeight = FontWeight.Medium,
             modifier = Modifier.padding(top = 5.dp, end = 110.dp))
@@ -76,13 +86,13 @@ fun QuizScreen_play(
                 onClick = {
                     //정답 판별
                     user.user_answer = "O"
-                    if(que.answer == "O"){
-                        user.correct+=1
-                        navController.navigate("quizQuestionORoute/{questionId}")
-                    } else{
-                        navController.navigate("quizQuestionXRoute/{questionId}")
-                    }
                     user.replies += 1
+                    if(que[queIDList[queIDnum]].answer == "O"){
+                        user.correct+=1
+                        navController.navigate("quizQuestionORoute")
+                    } else{
+                        navController.navigate("quizQuestionXRoute")
+                    }
                 },
                 modifier = Modifier
                     .wrapContentSize()
@@ -99,13 +109,13 @@ fun QuizScreen_play(
                 onClick = {
                     //정답 판별
                     user.user_answer = "X"
-                    if(que.answer == "O"){
-                        navController.navigate("quizQuestionORoute/{questionId}")
+                    user.replies += 1
+                    if(que[queIDList[queIDnum]].answer == "O"){
+                        navController.navigate("quizQuestionORoute")
                     } else{
                         user.correct+=1
-                        navController.navigate("quizQuestionXRoute/{questionId}")
+                        navController.navigate("quizQuestionXRoute")
                     }
-                    user.replies += 1
                 },
                 modifier = Modifier
                     .wrapContentSize()
@@ -123,7 +133,7 @@ fun QuizScreen_play(
 
         Button(
             onClick = {
-                que.id += 1
+                queIDnum += 1
                 user.replies += 1
                 navController.navigate("quizQuestionRoute")
                       },
@@ -142,13 +152,13 @@ fun QuizScreen_play(
 @Composable
 fun Commentary_CorrectO(
     navController: NavHostController,
-    que: Question,
+    que: List<Question>,
     user: TemporaryPoint
 ){
     Column (horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()) {
-        val correct_answer = if(que.answer == user.user_answer) "정답!" else "오답"
-        if(que.answer == user.user_answer){
+        val correct_answer = if(que[queIDList[queIDnum]].answer == user.user_answer) "정답!" else "오답"
+        if(que[queIDList[queIDnum]].answer == user.user_answer){
             user.point += 1//포인트 값 정해야함
         }
 
@@ -160,7 +170,7 @@ fun Commentary_CorrectO(
             fontSize = 17.sp,
             color = MinariBlue)
 
-        Text(text = que.Commentary,
+        Text(text = que[queIDList[queIDnum]].Commentary,
             Modifier.padding(end = 40.dp),
 //            fontFamily = pretendardFamily,
             fontWeight = FontWeight.Medium,
@@ -169,11 +179,14 @@ fun Commentary_CorrectO(
 
         Button(
             onClick = {
-                if (user.replies > 10){
-                    navController.navigate("quizStartRoute")
+                if (user.replies > 9){
+                    queIDnum = 0
+                    queIDList = queIDList()
+                    navController.navigate("quizComentoryRoute")
                 } else{
                     navController.navigate("quizQuestionRoute")
                 }
+                queIDnum += 1
             },
             modifier = Modifier
                 .width(305.dp)
@@ -188,13 +201,13 @@ fun Commentary_CorrectO(
 @Composable
 fun Commentary_CorrectX(
     navController: NavHostController,
-    que: Question,
+    que: List<Question>,
     user: TemporaryPoint
 ){
     Column (horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()) {
-        val correct_answer = if(que.answer == user.user_answer) "정답!" else "오답"
-        if(que.answer == user.user_answer){
+        val correct_answer = if(que[queIDList[queIDnum]].answer == user.user_answer) "정답!" else "오답"
+        if(que[queIDList[queIDnum]].answer == user.user_answer){
             user.point += 1//포인트 값 정해야함
         }
         Text(text = correct_answer,
@@ -204,7 +217,7 @@ fun Commentary_CorrectX(
             fontSize = 17.sp,
             color = MinariBlue)
 
-        Text(text = que.answer,
+        Text(text =que[queIDList[queIDnum]].answer,
             Modifier.padding(end = 40.dp),
 //            fontFamily = pretendardFamily,
             fontWeight = FontWeight.Medium,
@@ -213,11 +226,14 @@ fun Commentary_CorrectX(
 
         Button(
             onClick = {
-                if (user.replies > 10){
-                    navController.navigate("quizStartRoute")
+                if (user.replies > 9){
+                    queIDnum = 0
+                    queIDList = queIDList()
+                    navController.navigate("quizComentoryRoute")
                 } else{
                     navController.navigate("quizQuestionRoute")
                 }
+                queIDnum += 1
             },
             modifier = Modifier
                 .width(305.dp)
