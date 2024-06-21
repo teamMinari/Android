@@ -131,7 +131,7 @@ fun NavGraph(
             // 퀴즈 X질문 결과 화면
         }
         composable("quizComentoryRoute") { backStackEntry ->
-            QuizEndScreen()
+            QuizEndScreen(navController = navController, user = dummyUser)
         }
         //--------------------------------------------
     }

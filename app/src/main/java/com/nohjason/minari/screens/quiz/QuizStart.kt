@@ -24,12 +24,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.room.util.query
+import com.nohjason.minari.R
 import com.nohjason.minari.screens.quiz.data.Question
 import com.nohjason.minari.screens.quiz.data.QuestionData
 import com.nohjason.minari.screens.quiz.data.TemporaryPoint
@@ -40,7 +44,12 @@ fun queIDList(): List<Int> {
     numbers.shuffle(Random(System.currentTimeMillis()))
     return numbers
 }
-//val jsonString = Gson().toJson(arrayList)
+
+val pretendardFamily = FontFamily(
+    Font(R.font.pretendard_semibold, FontWeight.SemiBold),
+    Font(R.font.pretendard_medium, FontWeight.Medium),
+    Font(R.font.pretendard_regular, FontWeight.Thin),
+    Font(R.font.pretendard_bold, FontWeight.Bold),)
 
 
 
@@ -48,7 +57,6 @@ fun queIDList(): List<Int> {
 fun QuizScreen(
     navController: NavHostController,
     user: TemporaryPoint,
-//    allQuestions: List<Question>
 ) {
     val TestList = arrayListOf(5)
     Column (
@@ -63,7 +71,7 @@ fun QuizScreen(
                 .padding(top = 200.dp)
                 .align(Alignment.CenterHorizontally),
             textAlign = TextAlign.Center,
-//            fontSize = 30.sp, fontWeight = FontWeight.SemiBold, fontFamily = pretendardFamily,
+            fontSize = 30.sp, fontWeight = FontWeight.SemiBold, fontFamily = pretendardFamily,
             color = Color.Black
         )
 
@@ -74,7 +82,7 @@ fun QuizScreen(
                 .fillMaxWidth()
                 .padding(top = 6.dp)
                 .align(Alignment.CenterHorizontally),
-//            fontWeight = FontWeight.Medium, fontFamily = pretendardFamily,
+            fontWeight = FontWeight.Medium, fontFamily = pretendardFamily,
             color = MinariBlue
         )
 
@@ -94,7 +102,7 @@ fun QuizScreen(
             Text(
                 text = "도전하기",
                 color = Color.White,
-//                fontFamily = pretendardFamily,
+                fontFamily = pretendardFamily,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -124,12 +132,12 @@ fun QuizPoint_box(
     ) {
         Row (verticalAlignment = Alignment.CenterVertically){
             Text(text = "My 포인트",
-//                fontSize = 20.sp, fontFamily = pretendardFamily, fontWeight = FontWeight.SemiBold,
+                fontSize = 20.sp, fontFamily = pretendardFamily, fontWeight = FontWeight.SemiBold,
                 color = Color.White
             )
             Text(text = user.point.toString(),
                 modifier = Modifier.padding(start = 38.dp),
-//                fontSize = 40.sp,fontFamily = pretendardFamily, fontWeight = FontWeight.Bold,
+                fontSize = 40.sp,fontFamily = pretendardFamily, fontWeight = FontWeight.Bold,
                 color = Color.White
             )
         }
