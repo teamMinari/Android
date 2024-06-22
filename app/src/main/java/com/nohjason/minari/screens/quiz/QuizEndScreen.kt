@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,11 +20,15 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -51,28 +56,67 @@ fun QuizEndScreen(
         }
         Image(painterResource(R.drawable.suprise_emoji), contentDescription = "suprise",
             modifier = Modifier
-                .height(150.dp).width(150.dp)
+                .height(150.dp)
+                .width(150.dp)
                 .padding(top = 90.dp)
         )
-        Text(text = "대단해요!", fontFamily = com.nohjason.minari.screens.QizeScreen.pretendardFamily,)
-        Text(text = "총 " + user.correct + "문제를 맞췄어요!", fontFamily = pretendardFamily)
+        Text(text = "대단해요!",
+            fontFamily = com.nohjason.minari.screens.QizeScreen.pretendardFamily,
+            fontWeight = FontWeight.SemiBold
+        )
+//        Text(text = buildAnnotatedString {
+//            append("총 ")
+//            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold), Color = Color(0x373DD6)) {
+//                append("${user.correct}")
+//            }
+//            append("문제를 맞췄어요!")
+//        },
+//            fontFamily = pretendardFamily,
+//            fontWeight = FontWeight.SemiBold // 기본 스타일은 SemiBold로 설정)
+//        )
+        Text(
+            text = buildAnnotatedString {
+                append("총 ")
+                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, color = Color(0xFF373DD6))) {
+                    append("${user.correct}")
+                }
+                append("문제를 맞췄어요!")
+            },
+            fontFamily = pretendardFamily,
+            fontWeight = FontWeight.SemiBold // 기본 스타일은 SemiBold로 설정
+        )
 
         Box(
-            modifier = Modifier.background(
+            modifier = Modifier
+                .background(
                     brush = Brush.linearGradient(
-                    colors = listOf(MinariBlue, MinariBlue),
-                    start = Offset(1300f, 800f),
-                    end = Offset(300f, 0f)),
+                        colors = listOf(MinariBlue, MinariBlue),
+                        start = Offset(1300f, 800f),
+                        end = Offset(300f, 0f)
+                    ),
                     shape = RoundedCornerShape(
-                    topStart = CornerSize(30.dp), topEnd = CornerSize(30.dp),
-                    bottomEnd = CornerSize(30.dp), bottomStart = CornerSize(30.dp)
+                        topStart = CornerSize(30.dp), topEnd = CornerSize(30.dp),
+                        bottomEnd = CornerSize(30.dp), bottomStart = CornerSize(30.dp)
+                    )
                 )
-            ).width(330.dp).height(120.dp)
-//            , horizontalAlignment = Alignment.CenterHorizontally,
+                .width(330.dp)
+                .height(120.dp),
+            contentAlignment = Alignment.Center
         ){
-            Text(text = "My 포인트" + user.point.toString()
-                , color = Color.White
-                , fontFamily = pretendardFamily)
+            Row (verticalAlignment = Alignment.CenterVertically){
+                Text(text = "My 포인트"
+                    , color = Color.White
+                    , fontFamily = pretendardFamily
+                    , fontWeight = FontWeight.SemiBold
+                )
+                Text(text = user.point.toString()
+                    , color = Color.White
+                    , fontFamily = pretendardFamily
+                    , fontWeight = FontWeight.Bold
+                    , fontSize = 25.sp
+                    , modifier = Modifier.padding(start = 15.dp)
+                    )
+            }
         }
     }
 }

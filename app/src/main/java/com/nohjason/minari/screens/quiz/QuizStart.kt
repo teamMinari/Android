@@ -32,12 +32,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import androidx.room.util.query
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.quiz.data.Question
 import com.nohjason.minari.screens.quiz.data.QuestionData
 import com.nohjason.minari.screens.quiz.data.TemporaryPoint
+import com.nohjason.minari.screens.quiz.data.Temporary_pointData
 import com.nohjason.minari.ui.theme.MinariBlue
+import com.nohjason.minari.ui.theme.MinariPurple
 import kotlin.random.Random
 fun queIDList(): List<Int> {
     val numbers = (0..9).toMutableList()  //문제 몇가지 있는지 갯수 필요
@@ -119,7 +122,7 @@ fun QuizPoint_box(
             .fillMaxHeight(0.1475f)
             .background(
                 brush = Brush.linearGradient(
-                    colors = listOf(MinariBlue, MinariBlue),
+                    colors = listOf(MinariPurple, MinariBlue),
                     start = Offset(1300f, 800f),
                     end = Offset(300f, 0f),
                 ),
@@ -147,5 +150,5 @@ fun QuizPoint_box(
 @Preview(showBackground = true)
 @Composable
 fun QuizScreenPrevirw(){
-//    QuizScreen()
+    QuizScreen(navController = rememberNavController(), user = Temporary_pointData.getPoint())
 }

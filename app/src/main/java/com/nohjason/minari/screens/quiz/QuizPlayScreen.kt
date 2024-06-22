@@ -41,6 +41,7 @@ import com.nohjason.minari.screens.quiz.data.QuestionData
 import com.nohjason.minari.screens.quiz.data.TemporaryPoint
 import com.nohjason.minari.screens.quiz.data.Temporary_pointData
 import com.nohjason.minari.ui.theme.MinariBlue
+import com.nohjason.minari.ui.theme.MinariPurple
 import kotlin.math.log
 import kotlin.random.Random
 
@@ -68,34 +69,34 @@ fun QuizScreen_play(
     navController: NavHostController,
     user: TemporaryPoint,
 ) { Column (
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ){
-        IconButton(onClick = { navController.popBackStack() },
-            modifier = Modifier
-                .padding(end = 361.dp)
-        ) {
-            Image(painterResource(id = R.drawable.befor_arrow), contentDescription = null)
-        }
+    modifier = Modifier.fillMaxSize(),
+    horizontalAlignment = Alignment.CenterHorizontally,
+){
+    IconButton(onClick = { navController.popBackStack() },
+        modifier = Modifier
+            .padding(end = 361.dp)
+    ) {
+        Image(painterResource(id = R.drawable.befor_arrow), contentDescription = null)
+    }
 
-        Row (modifier = Modifier.padding(end = 272.dp, top = 60.dp)){
-            Text(text = user.replies.toString(),
-                fontFamily = pretendardFamily,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF3B88FB)
-            )
-            Text(text = "/10",
-                fontFamily = pretendardFamily,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF3B88FB))
-        }
-
-        Text(text = que[queIDList[queIDnum]].question,
+    Row (modifier = Modifier.padding(end = 272.dp, top = 60.dp)){
+        Text(text = user.replies.toString(),
             fontFamily = pretendardFamily,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(top = 5.dp, end = 110.dp, start = 5.dp),
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF3B88FB)
+        )
+        Text(text = "/10",
+            fontFamily = pretendardFamily,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF3B88FB))
+    }
 
-            )
+
+    Text(text = que[queIDList[queIDnum]].question,
+        fontFamily = pretendardFamily,
+        fontWeight = FontWeight.Medium,
+        modifier = Modifier.padding(top = 5.dp, end = 110.dp, start = 45.dp),
+    )
 
 
         Row (modifier = Modifier.padding(top = 35.dp)) {
@@ -118,9 +119,8 @@ fun QuizScreen_play(
                     .background(color = Color(0xFFEAEAEA), shape = RoundedCornerShape(10.dp))
             ) {
                 Image(painterResource(
-                    id = R.drawable.o),
+                    id = R.drawable.o_not),
                     contentDescription = null,
-//                    colorFilter = ColorFilter.tint(Color(0x585858))
                 )
             }
 
@@ -142,7 +142,7 @@ fun QuizScreen_play(
                     .padding(start = 5.dp)
                     .background(color = Color(0xFFEAEAEA), shape = RoundedCornerShape(10.dp))
             ) {
-                Image(painterResource(id = R.drawable.x), contentDescription = null)
+                Image(painterResource(id = R.drawable.x_not), contentDescription = null)
 
             }
         }
@@ -208,7 +208,7 @@ fun Commentary_CorrectO(
             text = que[queIDList[queIDnum]].question,
             fontFamily = pretendardFamily,
             fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(top = 5.dp, end = 110.dp)
+            modifier = Modifier.padding(top = 5.dp, end = 110.dp, start = 45.dp),
         )
 
 
@@ -221,7 +221,7 @@ fun Commentary_CorrectO(
                     .height(180.dp)
                     .background(
                         brush = Brush.linearGradient(
-                            colors = listOf(MinariBlue, MinariBlue),
+                            colors = listOf(MinariPurple, MinariBlue),
                             start = Offset(1300f, 800f),
                             end = Offset(300f, 0f),
                         ),
@@ -240,7 +240,7 @@ fun Commentary_CorrectO(
                     .padding(start = 5.dp)
                     .background(color = Color(0xFFEAEAEA), shape = RoundedCornerShape(10.dp))
             ) {
-                Image(painterResource(id = R.drawable.x), contentDescription = null)
+                Image(painterResource(id = R.drawable.x_not), contentDescription = null)
 
             }
         }
@@ -264,7 +264,7 @@ fun Commentary_CorrectO(
 
             Text(
                 text = que[queIDList[queIDnum]].Commentary,
-                Modifier.padding(end = 40.dp,start = 5.dp),
+                modifier = Modifier.padding(top = 5.dp, end = 60.dp, start = 60.dp),
                 fontFamily = pretendardFamily,
                 fontWeight = FontWeight.Medium,
                 fontSize = 15.sp
@@ -283,7 +283,7 @@ fun Commentary_CorrectO(
                 },
                 modifier = Modifier
                     .width(305.dp)
-                    .padding(top = 1.dp),
+                    .padding(top = 5.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = MinariBlue)
             ) {
                 Text(text = "다음")
@@ -301,8 +301,15 @@ fun Commentary_CorrectX(
     user: TemporaryPoint
 ) { Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxSize(),
     ) {
+        IconButton(
+            onClick = { navController.popBackStack() },
+            modifier = Modifier
+                .padding(end = 361.dp)
+        ) {
+            Image(painterResource(id = R.drawable.befor_arrow), contentDescription = null)
+        }
         Row(modifier = Modifier.padding(end = 272.dp, top = 60.dp)) {
             Text(
                 text = user.replies.toString(),
@@ -322,7 +329,7 @@ fun Commentary_CorrectX(
             text = que[queIDList[queIDnum]].question,
             fontFamily = pretendardFamily,
             fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(top = 5.dp, end = 110.dp)
+            modifier = Modifier.padding(top = 5.dp, end = 110.dp, start = 45.dp),
         )
 
 
@@ -335,7 +342,7 @@ fun Commentary_CorrectX(
                     .height(180.dp)
                     .background(color = Color(0xFFEAEAEA), shape = RoundedCornerShape(10.dp))
             ) {
-                Image(painterResource(id = R.drawable.o), contentDescription = null)
+                Image(painterResource(id = R.drawable.o_not), contentDescription = null)
             }
 
             TextButton(
@@ -347,7 +354,7 @@ fun Commentary_CorrectX(
                     .padding(start = 5.dp)
                     .background(
                         brush = Brush.linearGradient(
-                            colors = listOf(MinariBlue, MinariBlue),
+                            colors = listOf(MinariPurple, MinariBlue),
                             start = Offset(1300f, 800f),
                             end = Offset(300f, 0f),
                         ),
@@ -375,7 +382,7 @@ fun Commentary_CorrectX(
 
         Text(
             text = que[queIDList[queIDnum]].Commentary,
-            Modifier.padding(end = 40.dp),
+            modifier = Modifier.padding(top = 5.dp, end = 60.dp, start = 60.dp),
             fontFamily = pretendardFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 15.sp
@@ -394,7 +401,7 @@ fun Commentary_CorrectX(
             },
             modifier = Modifier
                 .width(305.dp)
-                .padding(top = 100.dp),
+                .padding(top = 5.dp),
             colors = ButtonDefaults.buttonColors(containerColor = MinariBlue)
         ) {
             Text(text = "다음")
@@ -404,6 +411,16 @@ fun Commentary_CorrectX(
 
 @Preview(showBackground = true)
 @Composable
-fun QuizScreenPrevirw(){
-//    QuizScreen(navController = , user = )
+fun QuizScreenPrevirw() {
+//    QuizScreen_play(que = QuestionData.getQuestion(), navController = rememberNavController(), user = Temporary_pointData.getPoint())
+//    Commentary_CorrectO(
+//        que = QuestionData.getQuestion(),
+//        navController = rememberNavController(),
+//        user = Temporary_pointData.getPoint()
+//    )
+//    Commentary_CorrectX(
+//        que = QuestionData.getQuestion(),
+//        navController = rememberNavController(),
+//        user = Temporary_pointData.getPoint()
+//    )
 }
