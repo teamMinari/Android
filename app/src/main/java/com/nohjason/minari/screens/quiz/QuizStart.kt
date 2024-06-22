@@ -2,7 +2,6 @@
 
 package com.nohjason.minari.screens.quiz
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,21 +32,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import androidx.room.util.query
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.quiz.data.Question
-import com.nohjason.minari.screens.quiz.data.QuestionData
 import com.nohjason.minari.screens.quiz.data.TemporaryPoint
 import com.nohjason.minari.screens.quiz.data.Temporary_pointData
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariPurple
-import kotlin.random.Random
-fun queIDList(): List<Int> {
-    val numbers = (0..9).toMutableList()  //문제 몇가지 있는지 갯수 필요
-    numbers.shuffle(Random(System.currentTimeMillis()))
-    return numbers
-}
-
 val pretendardFamily = FontFamily(
     Font(R.font.pretendard_semibold, FontWeight.SemiBold),
     Font(R.font.pretendard_medium, FontWeight.Medium),
@@ -61,7 +50,6 @@ fun QuizScreen(
     navController: NavHostController,
     user: TemporaryPoint,
 ) {
-    val TestList = arrayListOf(5)
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()

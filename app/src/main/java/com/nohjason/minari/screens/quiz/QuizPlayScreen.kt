@@ -1,9 +1,7 @@
 package com.nohjason.minari.screens.QizeScreen
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -33,16 +30,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.quiz.QuizScreen
 import com.nohjason.minari.screens.quiz.data.Question
 import com.nohjason.minari.screens.quiz.data.QuestionData
 import com.nohjason.minari.screens.quiz.data.TemporaryPoint
-import com.nohjason.minari.screens.quiz.data.Temporary_pointData
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariPurple
-import kotlin.math.log
 import kotlin.random.Random
 
 fun queIDList(): List<Int> {
@@ -51,7 +44,8 @@ fun queIDList(): List<Int> {
         random[i] = i
     }
     random.shuffle(Random(System.currentTimeMillis()))
-    return random
+    val queList = random.subList(0, 10)
+    return queList
 }
 var queIDList = queIDList()
 var queIDnum = 0
@@ -60,7 +54,7 @@ val pretendardFamily = FontFamily(
     Font(R.font.pretendard_medium, FontWeight.Medium),
     Font(R.font.pretendard_regular, FontWeight.Thin),
     Font(R.font.pretendard_bold, FontWeight.Bold),)
-
+var correct_answer = ""
 
 
 @Composable
@@ -252,7 +246,7 @@ fun Commentary_CorrectO(
             modifier = Modifier.fillMaxWidth()
         ) {
             //정답 나누고 포인트
-            val correct_answer =
+            correct_answer =
                 if (que[queIDList[queIDnum]].answer == user.user_answer) "정답!" else "오답"
 
             Text(
@@ -368,7 +362,7 @@ fun Commentary_CorrectX(
         }
 
         //정답 나누고 포인트
-        val correct_answer = if (que[queIDList[queIDnum]].answer == user.user_answer) "정답!" else "오답"
+        correct_answer = if (que[queIDList[queIDnum]].answer == user.user_answer) "정답!" else "오답"
         if (que[queIDList[queIDnum]].answer == user.user_answer) {
             user.point += 1//포인트 값 정해야함
             user.correct += 1
