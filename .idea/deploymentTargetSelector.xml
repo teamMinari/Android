@@ -11,6 +11,9 @@
       <SelectionState runConfigName="QuizScreenPrevirw">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="QuizEndPrevirw">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>

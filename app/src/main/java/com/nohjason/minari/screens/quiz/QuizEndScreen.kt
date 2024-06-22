@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,6 +39,7 @@ import com.nohjason.minari.navigation.bottombar.BottomBarScreen
 import com.nohjason.minari.screens.quiz.data.TemporaryPoint
 import com.nohjason.minari.screens.quiz.data.Temporary_pointData
 import com.nohjason.minari.ui.theme.MinariBlue
+import com.nohjason.minari.ui.theme.MinariPurple
 
 
 @Composable
@@ -56,24 +59,16 @@ fun QuizEndScreen(
         }
         Image(painterResource(R.drawable.suprise_emoji), contentDescription = "suprise",
             modifier = Modifier
-                .height(150.dp)
-                .width(150.dp)
-                .padding(top = 90.dp)
+                .size(150.dp)
+                .offset(y = 90.dp)
+
         )
         Text(text = "대단해요!",
             fontFamily = com.nohjason.minari.screens.QizeScreen.pretendardFamily,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 30.sp,
+            modifier = Modifier.padding(top = 100.dp)
         )
-//        Text(text = buildAnnotatedString {
-//            append("총 ")
-//            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold), Color = Color(0x373DD6)) {
-//                append("${user.correct}")
-//            }
-//            append("문제를 맞췄어요!")
-//        },
-//            fontFamily = pretendardFamily,
-//            fontWeight = FontWeight.SemiBold // 기본 스타일은 SemiBold로 설정)
-//        )
         Text(
             text = buildAnnotatedString {
                 append("총 ")
@@ -83,14 +78,15 @@ fun QuizEndScreen(
                 append("문제를 맞췄어요!")
             },
             fontFamily = pretendardFamily,
-            fontWeight = FontWeight.SemiBold // 기본 스타일은 SemiBold로 설정
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(bottom = 10.dp, top = 5.dp)
         )
 
         Box(
             modifier = Modifier
                 .background(
                     brush = Brush.linearGradient(
-                        colors = listOf(MinariBlue, MinariBlue),
+                        colors = listOf(MinariPurple, MinariBlue),
                         start = Offset(1300f, 800f),
                         end = Offset(300f, 0f)
                     ),
@@ -108,13 +104,14 @@ fun QuizEndScreen(
                     , color = Color.White
                     , fontFamily = pretendardFamily
                     , fontWeight = FontWeight.SemiBold
+                    , fontSize = 20.sp
                 )
                 Text(text = user.point.toString()
                     , color = Color.White
                     , fontFamily = pretendardFamily
                     , fontWeight = FontWeight.Bold
-                    , fontSize = 25.sp
-                    , modifier = Modifier.padding(start = 15.dp)
+                    , fontSize = 30.sp
+                    , modifier = Modifier.padding(start = 20.dp)
                     )
             }
         }

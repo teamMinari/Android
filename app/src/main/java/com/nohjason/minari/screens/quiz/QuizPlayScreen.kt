@@ -72,7 +72,9 @@ fun QuizScreen_play(
     modifier = Modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
 ){
-    IconButton(onClick = { navController.popBackStack() },
+    IconButton(onClick = { navController.navigate("quizStartRoute")
+            queIDnum = 0
+            queIDList = queIDList() },
         modifier = Modifier
             .padding(end = 361.dp)
     ) {
