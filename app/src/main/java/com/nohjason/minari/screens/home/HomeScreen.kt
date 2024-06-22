@@ -1,8 +1,8 @@
 package com.nohjason.minari.screens.home
 
-import android.graphics.drawable.Icon
-import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,15 +13,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,24 +26,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.google.common.collect.ImmutableList
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.home.news.News
+import com.nohjason.minari.screens.home.news.button.CategoryNewsButton
 import com.nohjason.minari.screens.home.news.button.NewsCategoryButton
-import com.nohjason.minari.screens.home.news.button.getDummyNewsButton
-import com.nohjason.minari.screens.home.news.getDummyUsers
 import com.nohjason.minari.screens.home.words.RecommendWords
+import com.nohjason.minari.screens.profile.Menu
 import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.screens.ui.text.MinariTextField
-import com.nohjason.minari.ui.theme.MinariLightGray
 import com.nohjason.minari.ui.theme.MinariWhite
 
 @Composable
@@ -55,9 +48,11 @@ fun HomeScreen(
     navController: NavController
 ) {
     var text by remember { mutableStateOf("") }
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.White)) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize(),
@@ -79,13 +74,13 @@ fun HomeScreen(
 
             MinariTextField(
                 modifier = Modifier
-                    .height(25.dp)
+                    .height(30.dp)
                     .padding(horizontal = 30.dp)
                     .fillMaxWidth()
-                    .background(MinariLightGray, shape = CircleShape),
+                    .background(MinariWhite, shape = CircleShape),
                 value = text,
                 onValueChange = { text = it },
-                onClick = {navController.navigate("test/${text}")}
+                onClick = { if (text.isNotEmpty()) navController.navigate("test/${text}") }
             )
 
             Box(
@@ -101,14 +96,31 @@ fun HomeScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     RecommendWords()
+
                     Spacer(modifier = Modifier.height(20.dp))
-                    LazyRow(
+                    Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceAround
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        items(getDummyNewsButton()) { index ->
-                            NewsCategoryButton(icon = index.icon, title = index.title) {  }
-                        }
+                        NewsCategoryButton(
+                            image = painterResource(id = R.drawable.img_house),
+                            onClick = {}
+                        )
+
+                        NewsCategoryButton(
+                            image = painterResource(id = R.drawable.img_chart),
+                            onClick = {}
+                        )
+
+                        NewsCategoryButton(
+                            image = painterResource(id = R.drawable.img_coin),
+                            onClick = {}
+                        )
+
+                        NewsCategoryButton(
+                            image = painterResource(id = R.drawable.img_folder),
+                            onClick = {}
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(20.dp))
@@ -124,4 +136,22 @@ fun HomeScreen(
 @Composable
 fun PreviewHome() {
     HomeScreen(navController = rememberNavController())
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TestMinariTextField() {
+    var text by remember { mutableStateOf("") }
+    Box(modifier = Modifier.fillMaxSize()) {
+        MinariTextField(
+            value = text,
+            onValueChange = { text = it },
+            onClick = {},
+            modifier = Modifier
+                .height(30.dp)
+                .padding(horizontal = 30.dp)
+                .fillMaxWidth()
+                .background(MinariWhite, shape = CircleShape),
+        )
+    }
 }

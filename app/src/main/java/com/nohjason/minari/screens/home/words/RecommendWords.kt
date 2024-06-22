@@ -34,7 +34,6 @@ import com.nohjason.minari.screens.ui.text.MinariText
 
 @Composable
 fun RecommendWords() {
-
     Box(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(15.dp))

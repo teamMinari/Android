@@ -177,7 +177,7 @@ fun ProfileScreen(
                     ) {
                         Box(modifier = Modifier.align(Alignment.Center)) {
                             AsyncImage(
-                                model = if(selectedImageUri == null) R.drawable.default_profile else TODO(),
+                                model = if(selectedImageUri == null) R.drawable.default_profile else selectedImageUri,
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(100.dp)

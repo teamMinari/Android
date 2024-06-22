@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGray
 import com.nohjason.minari.ui.theme.MinariLightGray
 import com.nohjason.minari.ui.theme.MinariWhite
@@ -38,10 +39,6 @@ fun MinariTextField(
         decorationBox = { innerTextField ->
             Row(
                 modifier = modifier,
-//                    .height(25.dp)
-//                    .padding(horizontal = 30.dp)
-//                    .fillMaxWidth()
-//                    .background(MinariLightGray, shape = CircleShape),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Spacer(modifier = Modifier.width(15.dp))
@@ -53,7 +50,7 @@ fun MinariTextField(
                         contentDescription = "",
                         modifier = Modifier
                             .size(20.dp),
-                        tint = Color.DarkGray,
+                        tint = MinariBlue,
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                 }

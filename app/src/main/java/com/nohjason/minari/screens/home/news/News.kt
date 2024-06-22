@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,10 +26,10 @@ import com.nohjason.minari.screens.ui.text.MinariText
 fun News() {
     Box(
         modifier = Modifier
+            .clip(RoundedCornerShape(10.dp))
             .fillMaxWidth()
             .fillMaxHeight()
             .background(Color.White)
-            .border(1.dp, Color.Black)
     ) {
         Column(
             modifier = Modifier
@@ -36,11 +38,9 @@ fun News() {
         ) {
             MinariText(text = "오늘의 경제 기사/사건", size = 15)
 
-            Spacer(modifier = Modifier.height(10.dp))
-
             MinariLine()
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             LazyColumn {
                 items(getDummyUsers()) { index ->

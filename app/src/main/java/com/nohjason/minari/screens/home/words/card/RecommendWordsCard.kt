@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.ui.text.MinariText
+import com.nohjason.minari.ui.theme.MinariWhite
 
 @Composable
 fun RecommedWordsCard(
@@ -40,7 +41,7 @@ fun RecommedWordsCard(
             modifier = Modifier
                 .weight(0.5f)
                 .clip(RoundedCornerShape(5.dp))
-                .background(Color.LightGray)
+                .background(MinariWhite)
                 .padding(5.dp)
         ) {
             Column {
@@ -64,7 +65,7 @@ fun RecommedWordsCard(
             modifier = Modifier
                 .weight(0.5f)
                 .clip(RoundedCornerShape(5.dp))
-                .background(Color.LightGray)
+                .background(MinariWhite)
                 .padding(5.dp)
         ) {
             Column {
