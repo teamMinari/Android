@@ -38,7 +38,7 @@ fun News() {
         ) {
             MinariText(text = "오늘의 경제 기사/사건", size = 15)
 
-            MinariLine()
+            MinariLine(horizontalPadding = 0.dp)
 
             Spacer(modifier = Modifier.height(10.dp))
 

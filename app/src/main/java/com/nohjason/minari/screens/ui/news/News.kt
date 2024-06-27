@@ -37,7 +37,7 @@ fun News() {
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            MinariLine()
+            MinariLine(horizontalPadding = 0.dp)
 
             Spacer(modifier = Modifier.height(20.dp))
 

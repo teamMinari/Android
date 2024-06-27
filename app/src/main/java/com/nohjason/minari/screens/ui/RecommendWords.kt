@@ -33,7 +33,7 @@ fun RecommendWords() {
         ) {
             MinariText(text = "오늘의 추천 경제 단어", size = 15)
             Spacer(modifier = Modifier.height(5.dp))
-            MinariLine()
+            MinariLine(horizontalPadding = 0.dp)
         }
     }
 }

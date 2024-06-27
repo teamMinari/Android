@@ -104,22 +104,26 @@ fun HomeScreen(
                     ) {
                         NewsCategoryButton(
                             image = painterResource(id = R.drawable.img_house),
-                            onClick = {}
+                            onClick = {},
+                            title = "부동산"
                         )
 
                         NewsCategoryButton(
                             image = painterResource(id = R.drawable.img_chart),
-                            onClick = {}
+                            onClick = {},
+                            title = "증권"
                         )
 
                         NewsCategoryButton(
                             image = painterResource(id = R.drawable.img_coin),
-                            onClick = {}
+                            onClick = {},
+                            title = "금융"
                         )
 
                         NewsCategoryButton(
                             image = painterResource(id = R.drawable.img_folder),
-                            onClick = {}
+                            onClick = {},
+                            title = "채권"
                         )
                     }
 

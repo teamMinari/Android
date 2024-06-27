@@ -26,6 +26,7 @@ import com.nohjason.minari.screens.ui.text.MinariText
 fun NewsCategoryButton(
     image: Painter,
     onClick: () -> Unit,
+    title: String,
 ) {
     Box(
         modifier = Modifier
@@ -45,7 +46,7 @@ fun NewsCategoryButton(
                 tint = Color.Unspecified,
                 modifier = Modifier.size(40.dp)
             )
-            MinariText(text = "부동산", size = 10)
+            MinariText(text = title, size = 10)
         }
     }
 }

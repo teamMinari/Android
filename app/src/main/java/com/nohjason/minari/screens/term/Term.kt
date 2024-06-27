@@ -10,10 +10,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.IconButton
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,21 +26,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.nohjason.minari.data.button.DummyButton1
 import com.nohjason.minari.data.word.allWords
 import com.nohjason.minari.screens.profile.my_dictionary.db.MainViewModel
 import com.nohjason.minari.screens.profile.my_dictionary.db.UserEntity
-import com.nohjason.minari.screens.term.button.GetDummyTermButton
-import com.nohjason.minari.screens.term.button.TermButton
 import com.nohjason.minari.screens.term.button.TermButtonViewModel
 import com.nohjason.minari.screens.term.card.TermCard
 import com.nohjason.minari.screens.ui.line.MinariLine
 import com.nohjason.minari.screens.ui.text.MinariTextField
-import com.nohjason.minari.ui.theme.MinariLightGray
 import com.nohjason.minari.ui.theme.MinariWhite
 
 @Composable
@@ -48,43 +46,51 @@ fun Term(
 ) {
     var text by remember { mutableStateOf("") }
     Column {
+        TopAppBar(
+            title = {
+                MinariTextField(
+                    modifier = Modifier
+                        .height(30.dp)
+                        .padding(end = 30.dp)
+                        .fillMaxWidth()
+                        .background(MinariWhite, shape = CircleShape),
+                    value = text,
+                    onValueChange = { text = it },
+                    onClick = { navController.navigate("test/${text}") }
+                )
+            },
+            backgroundColor = Color.White,
+            navigationIcon = {
+                IconButton(
+                    onClick = { navController.popBackStack() },
+                ) {
+                    Icon(
+                        Icons.Filled.ArrowBack,
+                        null,
+                        tint = Color.Black
+                    )
+                }
+            }
+        )
         Box(
             modifier = Modifier
                 .background(MinariWhite)
                 .fillMaxSize()
         ) {
             Column {
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(0.dp, 0.dp, 10.dp, 10.dp))
-                        .fillMaxWidth()
-                        .background(Color.White)
-                        .padding(vertical = 15.dp)
-                ) {
-                    MinariTextField(
-                        modifier = Modifier
-                            .height(25.dp)
-                            .padding(horizontal = 30.dp)
-                            .fillMaxWidth()
-                            .background(MinariLightGray, shape = CircleShape),
-                        value = text,
-                        onValueChange = { text = it },
-                        onClick = {navController.navigate("test/${text}")}
-                    )
-                }
                 // ----------------------------------------------------
                 // 카테고리 버튼 영역
-//                LazyRow(
-//                    modifier = Modifier
-//                        .padding(10.dp)
-//                        .fillMaxWidth(),
-//                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-//                ) {
+                LazyRow(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
 //                    items(GetDummyTermButton()) { index ->
 //                        val initialState = if (index.title == "전체") false else true
 //                        TermButton(viewModel = viewModel, title = index.title, initialState = initialState)
 //                    }
-//                }
+                }
                 // ----------------------------------------------------
                 LazyColumn(
                     modifier = Modifier
@@ -102,8 +108,8 @@ fun Term(
                             navController = navController,
                             viewModel = mainViewModel,
                         )
-                        if (index != allWords.size-1) { // 마지막 항목이 아닌 경우에만 Divider 추가
-                            MinariLine()
+                        if (index != allWords.size - 1) { // 마지막 항목이 아닌 경우에만 Divider 추가
+                            MinariLine(horizontalPadding = 10.dp)
                         }
                     }
                 }

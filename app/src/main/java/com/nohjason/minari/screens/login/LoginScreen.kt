@@ -72,7 +72,7 @@ fun LoginScreen(
             fontSize = 15.sp
         )
 
-        MinariLine()
+        MinariLine(horizontalPadding = 30.dp)
 
         IconButton(onClick = {
             navController.navigate(BottomBarScreen.Home.rout) {

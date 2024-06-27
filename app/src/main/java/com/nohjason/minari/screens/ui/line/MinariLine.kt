@@ -2,6 +2,7 @@ package com.nohjason.minari.screens.ui.line
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,12 +22,14 @@ sealed class BorderType(val size: Dp) {
 
 @Composable
 fun MinariLine(
-    thickness: BorderType = BorderType.Thin
+    thickness: BorderType = BorderType.Thin,
+    verticalPadding: Dp = 10.dp,
+    horizontalPadding: Dp,
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 10.dp)
+            .padding(vertical = verticalPadding, horizontal = horizontalPadding)
             .clip(CircleShape)
             .background(MinariGray)
             .height(thickness.size)
@@ -36,5 +39,5 @@ fun MinariLine(
 @Preview(showBackground = true)
 @Composable
 fun Test() {
-    MinariLine()
+    MinariLine(horizontalPadding = 30.dp)
 }
