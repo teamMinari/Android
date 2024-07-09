@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
@@ -32,24 +33,39 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.nohjason.minari.R
+import com.nohjason.minari.screens.QizeScreen.queIDList
+import com.nohjason.minari.screens.QizeScreen.queIDnum
 import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.ui.theme.MinariBlue
 
 @Composable
 fun InProduction(
     title: String,
-    value: String
+    value: String,
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-        Column(
-            modifier = Modifier.align(Alignment.Center),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        //전 단계로 돌아가는
+//        Column(
+//            modifier = Modifier.align(Alignment.Center),
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ) {
+//            androidx.compose.material3.IconButton(
+//                onClick = {
+////                    navController.popBackStack()
+//                    queIDnum = 0
+//                    queIDList = queIDList()
+//                },
+//                modifier = Modifier
+//                    .padding(end = 361.dp)
+//            ) {
+//                Image(painterResource(id = R.drawable.befor_arrow), contentDescription = null)
+//            }
             Image(
                 painter = painterResource(id = R.drawable.rectangle),
                 contentDescription = null,
