@@ -53,7 +53,7 @@ fun Term(
                         .height(30.dp)
                         .padding(end = 30.dp)
                         .fillMaxWidth()
-                        .background(MinariWhite, shape = CircleShape),
+                        .background(Color.Transparent, shape = CircleShape),
                     value = text,
                     onValueChange = { text = it },
                     onClick = { navController.navigate("test/${text}") }

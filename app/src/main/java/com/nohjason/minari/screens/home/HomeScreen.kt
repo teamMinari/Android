@@ -77,7 +77,7 @@ fun HomeScreen(
                     .height(30.dp)
                     .padding(horizontal = 30.dp)
                     .fillMaxWidth()
-                    .background(MinariWhite, shape = CircleShape),
+                    .background(Color.Transparent, shape = CircleShape),
                 value = text,
                 onValueChange = { text = it },
                 onClick = { if (text.isNotEmpty()) navController.navigate("test/${text}") }

@@ -51,7 +51,6 @@ fun Test(
     title: String,
     navController: NavController
 ) {
-
     val word =
         if (title.isNotEmpty()) allWords.find { it.title == title }
         else null
@@ -88,7 +87,7 @@ fun Test(
                                 .height(25.dp)
                                 .padding(end = 30.dp)
                                 .fillMaxWidth()
-                                .background(MinariLightGray, shape = CircleShape),
+                                .background(Color.Transparent, shape = CircleShape),
                             value = text,
                             onValueChange = {text = it},
                             onClick = {navController.navigate("test/${title}")},
