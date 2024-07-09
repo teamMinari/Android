@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.nohjason.minari.data.word.Word
 import com.nohjason.minari.data.word.allWords
 import com.nohjason.minari.screens.home.words.card.RecommedWordsCard
@@ -24,7 +25,9 @@ import com.nohjason.minari.screens.ui.line.MinariLine
 import com.nohjason.minari.screens.ui.text.MinariText
 
 @Composable
-fun RecommendWords() {
+fun RecommendWords(
+    navController: NavController
+) {
     Box(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(15.dp))
@@ -53,6 +56,7 @@ fun RecommendWords() {
                     verticalArrangement = Arrangement.SpaceAround
                 ) {
                     RecommedWordsCard(
+                        navController = navController,
                         title1 = random[0].title,
                         starCount1 = random[0].starCount,
                         title2 = random[1].title,
@@ -60,6 +64,7 @@ fun RecommendWords() {
                     )
 
                     RecommedWordsCard(
+                        navController = navController,
                         title1 = random[2].title,
                         starCount1 = random[2].starCount,
                         title2 = random[3].title,
@@ -76,8 +81,8 @@ fun getRandomWords(words: List<Word>, count: Int): List<Word> {
     return words.shuffled().take(count)
 }
 
-@Preview(showBackground = true)
-@Composable
-fun TestRecommend() {
-    RecommendWords()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun TestRecommend() {
+//    RecommendWords()
+//}

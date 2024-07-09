@@ -83,7 +83,6 @@ fun InProduction(
             )
         }
     }
-}
 
 @Preview(showBackground = true)
 @Composable
