@@ -1,6 +1,5 @@
 package com.nohjason.minari.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,7 +12,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.common.reflect.TypeToken
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.nohjason.minari.R
@@ -23,7 +21,6 @@ import com.nohjason.minari.navigation.bottombar.BottomBarScreen
 import com.nohjason.minari.screens.QizeScreen.Commentary_CorrectO
 import com.nohjason.minari.screens.QizeScreen.Commentary_CorrectX
 import com.nohjason.minari.screens.QizeScreen.QuizScreen_play
-import com.nohjason.minari.screens.QizeScreen.queIDList
 import com.nohjason.minari.screens.profile.my_dictionary.MyDictionaryScreen
 import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.inproduct.InProduction
@@ -33,13 +30,10 @@ import com.nohjason.minari.screens.profile.my_dictionary.db.MainViewModel
 import com.nohjason.minari.screens.profile.my_dictionary.db.UserEntity
 import com.nohjason.minari.screens.quiz.QuizEndScreen
 import com.nohjason.minari.screens.quiz.QuizScreen
-import com.nohjason.minari.screens.quiz.data.Question
 import com.nohjason.minari.screens.quiz.data.QuestionData
-import com.nohjason.minari.screens.quiz.data.TemporaryPoint
 import com.nohjason.minari.screens.quiz.data.Temporary_pointData
 import com.nohjason.minari.screens.term.Term
 import com.nohjason.minari.screens.term.Test
-import kotlin.random.Random
 
 @Composable
 fun NavGraph(
