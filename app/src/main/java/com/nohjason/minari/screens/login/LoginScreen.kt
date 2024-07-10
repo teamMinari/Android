@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -65,6 +66,11 @@ fun LoginScreen(
         }
 
         Spacer(modifier = Modifier.height(200.dp))
+
+        //***test를 위해 잠시 버튼 넣겠습니다.***
+        Button(onClick = { navController.navigate("Login") }) {
+            Text(text = "로그인")
+        }
 
         Text(
             text = "SNS 로그인",

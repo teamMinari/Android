@@ -25,6 +25,8 @@ import com.nohjason.minari.screens.profile.my_dictionary.MyDictionaryScreen
 import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.inproduct.InProduction
 import com.nohjason.minari.screens.login.LoginScreen
+import com.nohjason.minari.screens.login.UI.SelfLoginScreen
+import com.nohjason.minari.screens.login.UI.SelfSingUpScreen
 import com.nohjason.minari.screens.profile.ProfileScreen
 import com.nohjason.minari.screens.profile.my_dictionary.db.MainViewModel
 import com.nohjason.minari.screens.profile.my_dictionary.db.UserEntity
@@ -122,6 +124,14 @@ fun NavGraph(
         }
         composable("quizComentoryRoute") { backStackEntry ->
             QuizEndScreen(navController = navController, user = dummyUser)
+        }
+        
+//        로그인
+        composable("Singup"){
+//            SelfSingUpScreen(navController = navController)
+        }
+        composable("Login"){
+//            SelfLoginScreen(navController = navController)
         }
     }
 }
