@@ -43,17 +43,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.nohjason.minari.R
 import com.nohjason.minari.data.button.DummyTermSimilarButton
-import com.nohjason.minari.screens.profile.my_dictionary.db.MainViewModel
-import com.nohjason.minari.screens.profile.my_dictionary.db.UserEntity
 import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.ui.theme.MinariBlue
+import com.nohjason.myapplication.network.MainViewModel
 
 @Composable
 fun TermCard(
     title: String,
     value: String,
     starCount: Int,
-    dummyTermSimilarButton: List<DummyTermSimilarButton>,
+//    dummyTermSimilarButton: List<DummyTermSimilarButton>,
     navController: NavController,
     viewModel: MainViewModel
 ) {
@@ -95,12 +94,12 @@ fun TermCard(
                         .background(Color.White)
                         .border(1.dp, Color.Black, shape = CircleShape) // CircleShape을 명시적으로 설정
                         .padding(vertical = 3.dp, horizontal = 10.dp)
-                        .clickable {
-                            viewModel.upsertProduct(
-                                UserEntity(id = title, true)
-                            )
-                            Toast.makeText(context, "용어가 단어장에 추가 되었습니다", Toast.LENGTH_SHORT).show()
-                        }
+//                        .clickable {
+//                            viewModel.upsertProduct(
+//                                UserEntity(id = title, true)
+//                            )
+//                            Toast.makeText(context, "용어가 단어장에 추가 되었습니다", Toast.LENGTH_SHORT).show()
+//                        }
                         .padding(3.dp)
                 ) {
                     MinariText(text = "단어장 추가", size = 10)
@@ -131,23 +130,23 @@ fun TermCard(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-                items(dummyTermSimilarButton) { item ->
-                    Box(
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .background(Color.White)
-                            .border(1.dp, Color.Black, shape = CircleShape) // CircleShape을 명시적으로 설정
-                            .padding(vertical = 3.dp, horizontal = 10.dp)
-                            .clickable {
-                                // 화면 이동
-                                navController.navigate("test/${item.title}")
-                            },
-                    ) {
-                        MinariText(text = item.title, size = 10)
-                    }
-                }
-            }
+//            LazyRow(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+//                items(dummyTermSimilarButton) { item ->
+//                    Box(
+//                        modifier = Modifier
+//                            .clip(CircleShape)
+//                            .background(Color.White)
+//                            .border(1.dp, Color.Black, shape = CircleShape) // CircleShape을 명시적으로 설정
+//                            .padding(vertical = 3.dp, horizontal = 10.dp)
+//                            .clickable {
+//                                // 화면 이동
+//                                navController.navigate("test/${item.title}")
+//                            },
+//                    ) {
+//                        MinariText(text = item.title, size = 10)
+//                    }
+//                }
+//            }
         }
     }
 }

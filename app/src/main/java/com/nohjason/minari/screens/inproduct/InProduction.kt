@@ -81,7 +81,7 @@ fun InProduction(
                 size = 17,
                 color = MinariBlue,
             )
-        }
+//        }
     }
 }
 

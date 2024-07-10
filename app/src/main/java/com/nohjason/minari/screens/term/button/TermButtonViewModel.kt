@@ -5,16 +5,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class TermButtonViewModel : ViewModel() {
-    private val _stateMap = MutableStateFlow(mapOf<String, Boolean>())
-    val stateMap: StateFlow<Map<String, Boolean>> = _stateMap
+    private val _selectedButton = MutableStateFlow<String?>("전체")
+    val selectedButton: StateFlow<String?> = _selectedButton
 
-
-    fun setState(key: String, state: Boolean) {
-        _stateMap.value = _stateMap.value.toMutableMap().apply { put(key, state) }
-    }
-
-    fun toggleState(key: String) {
-        val currentState = _stateMap.value[key] ?: true
-        _stateMap.value = _stateMap.value.toMutableMap().apply { put(key, !currentState) }
+    fun selectButton(key: String) {
+        _selectedButton.value = key
     }
 }

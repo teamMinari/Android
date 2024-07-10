@@ -22,6 +22,8 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,36 +46,22 @@ import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariLightGray
 import com.nohjason.minari.ui.theme.MinariWhite
+import com.nohjason.myapplication.network.MainViewModel
 
 // home스크린에서 받은 글자를 표시하는 테스트 화면
 @Composable
 fun Test(
     title: String,
-    navController: NavController
+    navController: NavController,
+    viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
-    val word =
-        if (title.isNotEmpty()) allWords.find { it.title == title }
-        else null
-    if (word == null) {
-        Column {
-            TopAppBar(
-                title = {  },
-                backgroundColor =  Color.White,
-                navigationIcon = {
-                    IconButton(
-                        onClick = { navController.popBackStack() },
-                    ) {
-                        androidx.compose.material3.Icon(
-                            Icons.Filled.ArrowBack,
-                            null,
-                            tint = Color.Black
-                        )
-                    }
-                }
-            )
-            InProduction(title = "아직 추가되지 않은 용어 입니다", value = "서비스 이용에 불편을 드려서 죄송합니다")
-        }
-    } else {
+    val term by viewModel.term.collectAsState()
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.fetchTerm(title)
+    }
+
+    if (term != null) {
         var text by remember { mutableStateOf("") }
         Box(modifier = Modifier
             .fillMaxSize()
@@ -115,7 +103,8 @@ fun Test(
                     ) {
                         item {
                             LazyRow {
-                                items(word.starCount) { item ->
+                                val starCount = term!!.termDifficulty[3].toString().toInt()
+                                items(starCount) { item ->
                                     Icon(
                                         painter = painterResource(R.drawable.star),
                                         contentDescription = null,
@@ -125,10 +114,10 @@ fun Test(
                                 }
                             }
                             Spacer(modifier = Modifier.height(10.dp))
-                            MinariText(text = word.title)
+                            MinariText(text = term!!.termNm)
                             MinariLine(horizontalPadding = 0.dp)
                             MinariText(
-                                text = word.value,
+                                text = term!!.termExplain,
                                 size = 13,
                                 textAlign = TextAlign.Left
                             )
@@ -145,30 +134,30 @@ fun Test(
                 ) {
                     Column {
                         MinariText(text = "관련 용어", size = 15)
-                        LazyRow(modifier = Modifier.padding(vertical = 5.dp)) {
-                            itemsIndexed(word.dummyTermSimilarButton) { index, item ->
-                                Box(
-                                    modifier = Modifier
-                                        .clip(CircleShape)
-                                        .background(Color.White)
-                                        .border(
-                                            1.dp,
-                                            Color.Black,
-                                            shape = CircleShape
-                                        )
-                                        .padding(vertical = 3.dp, horizontal = 10.dp)
-                                        .clickable {
-                                            navController.navigate("test/${item.title}")
-//                                            Log.d("TAG", "Test: ${item.title}")
-                                        }
-                                ) {
-                                    MinariText(text = item.title, size = 10)
-                                }
-                                if (index != word.dummyTermSimilarButton.size - 1) {
-                                    Spacer(modifier = Modifier.width(5.dp))
-                                }
-                            }
-                        }
+//                        LazyRow(modifier = Modifier.padding(vertical = 5.dp)) {
+//                            itemsIndexed(word.dummyTermSimilarButton) { index, item ->
+//                                Box(
+//                                    modifier = Modifier
+//                                        .clip(CircleShape)
+//                                        .background(Color.White)
+//                                        .border(
+//                                            1.dp,
+//                                            Color.Black,
+//                                            shape = CircleShape
+//                                        )
+//                                        .padding(vertical = 3.dp, horizontal = 10.dp)
+//                                        .clickable {
+//                                            navController.navigate("test/${item.title}")
+////                                            Log.d("TAG", "Test: ${item.title}")
+//                                        }
+//                                ) {
+//                                    MinariText(text = item.title, size = 10)
+//                                }
+//                                if (index != word.dummyTermSimilarButton.size - 1) {
+//                                    Spacer(modifier = Modifier.width(5.dp))
+//                                }
+//                            }
+//                        }
 
                         // news
                         LazyColumn(
@@ -187,6 +176,25 @@ fun Test(
                 }
 
             }
+        }
+    } else {
+        Column {
+            TopAppBar(
+                title = {  },
+                backgroundColor =  Color.White,
+                navigationIcon = {
+                    IconButton(
+                        onClick = { navController.popBackStack() },
+                    ) {
+                        androidx.compose.material3.Icon(
+                            Icons.Filled.ArrowBack,
+                            null,
+                            tint = Color.Black
+                        )
+                    }
+                }
+            )
+            InProduction(title = "아직 추가되지 않은 용어 입니다", value = "서비스 이용에 불편을 드려서 죄송합니다")
         }
     }
 }

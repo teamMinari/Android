@@ -4,6 +4,7 @@ import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -16,10 +17,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.nohjason.minari.screens.profile.my_dictionary.db.MainViewModel
+//import com.nohjason.minari.screens.profile.my_dictionary.db.MainViewModel
 import com.nohjason.minari.ui.theme.MinariTheme
+import com.nohjason.myapplication.network.MainViewModel
 
 class MainActivity : ComponentActivity() {
+    private val viewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -29,18 +33,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val owner = LocalViewModelStoreOwner.current
-
-                    owner?.let {
-                        val viewModel: MainViewModel = viewModel(
-                            it,
-                            "MainViewModel",
-                            MainViewModelFactory(
-                                LocalContext.current.applicationContext as Application
-                            )
-                        )
-                        ScreenSetup(viewModel)
-                    }
+                    ScreenSetup(viewModel)
                 }
             }
         }
@@ -49,16 +42,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ScreenSetup(viewModel: MainViewModel) {
-    val allProducts by viewModel.allProducts.observeAsState(listOf())
-
     MainScreen(
-        allProduct = allProducts,
         viewModel = viewModel
     )
-}
-
-class MainViewModelFactory(val application: Application) : ViewModelProvider.Factory {
-    override fun <T: ViewModel> create(modelClass: Class<T>): T {
-        return MainViewModel(application) as T
-    }
 }
