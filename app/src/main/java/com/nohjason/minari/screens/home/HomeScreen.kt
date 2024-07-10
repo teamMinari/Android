@@ -95,7 +95,7 @@ fun HomeScreen(
                         .fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    RecommendWords()
+                    RecommendWords(navController = navController)
 
                     Spacer(modifier = Modifier.height(20.dp))
                     Row(
