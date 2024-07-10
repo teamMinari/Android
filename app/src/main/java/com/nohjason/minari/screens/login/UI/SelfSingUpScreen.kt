@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -19,20 +20,22 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomBarScreen
-import com.nohjason.minari.screens.login.Data.LoginResponse
 import com.nohjason.minari.screens.login.Data.SinguUpRequest
-import com.nohjason.minari.screens.login.Data.SinguUpResponse
+import com.nohjason.minari.screens.login.Data.UserResponse
 import com.nohjason.minari.ui.theme.MinariBlue
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -97,6 +100,7 @@ fun SelfSingUpScreen(
         )
 
         var password by remember { mutableStateOf("") }
+        var oneVisiblePassword by remember { mutableStateOf(false) }
         Row {
             OutlinedTextField(
                 value = password,
@@ -104,36 +108,36 @@ fun SelfSingUpScreen(
                 label = { Text("비밀번호") }, // 입력란에 표시될 라벨
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 8.dp)
-                ,
+                    .padding(bottom = 8.dp),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password, // 이메일 형식의 키보드를 사용
                     imeAction = ImeAction.Next // 다음 입력란으로 이동하는 액션 설정
                 ),
-                visualTransformation = PasswordVisualTransformation(),
-//                trailingIcon = {
-//                    val icon = if (isVisiblePassword) {
-//                        //눈 뜸
-//                    } else {
-//                        //눈 끔
-//                    }
-//                    IconButton(onClick = { isVisiblePassword = !isVisiblePassword })
-//                    { Icon(imageVector = icon, contentDescription = null,) }
-//                    VisualTransformation = if (isVisiblePassword) {
-//                        VisualTransformation.None
-//                    } else {
-//                        PasswordVisualTransformation()
-//                    }
-//                },
+                visualTransformation = if (oneVisiblePassword) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    IconButton(onClick = { oneVisiblePassword = !oneVisiblePassword }) {
+                        if (oneVisiblePassword) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.baseline_visibility_24),
+                                contentDescription = "비밀번호 숨기기"
+                            )
+                        } else {
+                            Icon(
+                                painter = painterResource(id = R.drawable.baseline_visibility_off_24),
+                                contentDescription = "비밀번호 보이기"
+                            )
+                        }
+                    }
+                }
             )
         }
 
+        var seconVisiblePassword by remember { mutableStateOf(false) }
         var repassword by remember { mutableStateOf("") }
-        // 닉네임 입력란을 구현합니다.
+        // 비밀번호 재입력란
         OutlinedTextField(
             value = repassword,
             onValueChange = { repassword = it },
-            visualTransformation = PasswordVisualTransformation(),
             label = { Text("비밀번호 재확인") }, // 입력란에 표시될 라벨
             modifier = Modifier
                 .fillMaxWidth()
@@ -142,12 +146,31 @@ fun SelfSingUpScreen(
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password, // 이메일 형식의 키보드를 사용
                 imeAction = ImeAction.Next // 다음 입력란으로 이동하는 액션 설정
-            )
+            ),
+            visualTransformation = if (seconVisiblePassword) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                IconButton(onClick = { seconVisiblePassword = !seconVisiblePassword }) {
+                    if (seconVisiblePassword) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_visibility_24),
+                            contentDescription = "비밀번호 숨기기"
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_visibility_off_24),
+                            contentDescription = "비밀번호 보이기"
+                        )
+                    }
+                }
+            }
         )
+
+
+
+
 
         val scope = rememberCoroutineScope()
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-//        var showPopup by remember { mutableStateOf(false) }
         var popupMessage by remember { mutableStateOf("") }
         val context = LocalContext.current
 
@@ -195,7 +218,7 @@ fun PreSing(){
     SelfSingUpScreen()
 }
 
-suspend fun SingUPUser(id: String, password: String, confirmPassword: String, email: String): LoginResponse? {
+suspend fun SingUPUser(id: String, password: String, confirmPassword: String, email: String): UserResponse? {
     try {
         // Retrofit 인스턴스 생성
         val retrofit = Retrofit.Builder()
@@ -232,5 +255,5 @@ suspend fun SingUPUser(id: String, password: String, confirmPassword: String, em
 
 interface SingUpPOST {
     @POST("http://cheong.baekjoon.kr/member/register") // POST 요청을 보낼 엔드포인트 URL을 지정합니다.
-    suspend fun login(@Body request: SinguUpRequest): Response<SinguUpResponse>
+    suspend fun login(@Body request: SinguUpRequest): Response<UserResponse>
 }

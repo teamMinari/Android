@@ -15,6 +15,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -39,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,7 +50,7 @@ import androidx.navigation.NavController
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomBarScreen
 import com.nohjason.minari.screens.login.Data.LoginRequest
-import com.nohjason.minari.screens.login.Data.LoginResponse
+import com.nohjason.minari.screens.login.Data.UserResponse
 import com.nohjason.minari.ui.theme.MinariBlue
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
@@ -99,39 +101,15 @@ fun SelfLoginScreen(
             }
         )
 
-        var email by remember { mutableStateOf("") }
-
-        // 키보드 컨트롤러와 컨텍스트를 가져옵니다.
-        val context = LocalContext.current
-
-        // 이메일 입력란을 구현합니다.
-//        TextField(
-//            value = email,
-//            onValueChange = { email = it },
-//            label = { Text("아이디") }, // 입력란에 표시될 라벨
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(bottom = 8.dp)
-//            ,
-//            keyboardOptions = KeyboardOptions(
-//                keyboardType = KeyboardType.Email, // 이메일 형식의 키보드를 사용
-//                imeAction = ImeAction.Next // 다음 입력란으로 이동하는 액션 설정
-//            )
-//        )
+        var id by remember { mutableStateOf("") }
         OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
+            value = id,
+            onValueChange = { id = it },
             label = {
                 Row {
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.ic_email), // Replace with your icon resource
-//                        contentDescription = null,
-//                        modifier = Modifier.size(24.dp)
-//                    )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = "아이디",
-//                        color = if (isFocused) Color(0xFF000842) else Color(0xFF999999)
                     )
                 }
             },
@@ -139,27 +117,20 @@ fun SelfLoginScreen(
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
                 .background(Color.White)
-//                .onFocusChanged { focusState ->
-//                    isFocused = focusState.isFocused
-//                },
                     ,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
             ),
-//            colors = TextFieldDefaults.outlinedTextFieldColors(
-//                focusedBorderColor = Color(0xFF000842),
-//                unfocusedBorderColor = Color(0xFF999999)
-//            )
         )
 
 
         var password by rememberSaveable { mutableStateOf("") }
+        var isVisiblePassword by remember { mutableStateOf(false) }
 
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            visualTransformation = PasswordVisualTransformation(), // 비밀번호를 마스킹하여 보여줍니다
             label = { Text("비밀번호를 입력하세요") },
             modifier = Modifier
                 .fillMaxWidth()
@@ -170,14 +141,29 @@ fun SelfLoginScreen(
             ),
             singleLine = true,
             isError = false, // 에러 상태는 여기서는 false로 설정합니다
+            visualTransformation = if (isVisiblePassword) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                IconButton(onClick = { isVisiblePassword = !isVisiblePassword }) {
+                    if (isVisiblePassword) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_visibility_24),
+                            contentDescription = "비밀번호 숨기기"
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_visibility_off_24),
+                            contentDescription = "비밀번호 보이기"
+                        )
+                    }
+                }
+            }
         )
 
 
-
-        val checkState = remember {
-            mutableStateOf(false)
-        }
-        //토큰 필요 및 가입 시 이메일 확인 과정 필요
+        //로그인 저장, 비번 찾기
+//        val checkState = remember {
+//            mutableStateOf(false)
+//        }
 //        Row {
 //            Checkbox(checked = true, onCheckedChange = {ischecked -> checkState.value = ischecked })
 //            Text(text = "이 계정 기억하기")
@@ -192,7 +178,7 @@ fun SelfLoginScreen(
         var responseMessage by remember { mutableStateOf("") }
         Button(onClick = {
             scope.launch {
-                val result = loginUser(id = email, password = password)
+                val result = loginUser(id = id, password = password)
                 result?.let {
                     if (result.success){
 //                        navController.navigate(BottomBarScreen.Home.rout)
@@ -219,7 +205,7 @@ fun PreLogin(){
     SelfLoginScreen()
 }
 
-suspend fun loginUser(id: String, password: String): LoginResponse? {
+suspend fun loginUser(id: String, password: String): UserResponse? {
     try {
         // Retrofit 인스턴스 생성
         val retrofit = Retrofit.Builder()
@@ -252,7 +238,7 @@ suspend fun loginUser(id: String, password: String): LoginResponse? {
 
 interface LoginPOST {
     @POST("http://cheong.baekjoon.kr/member/login") // POST 요청을 보낼 엔드포인트 URL을 지정합니다.
-    suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
+    suspend fun login(@Body request: LoginRequest): Response<UserResponse>
 }
 
 

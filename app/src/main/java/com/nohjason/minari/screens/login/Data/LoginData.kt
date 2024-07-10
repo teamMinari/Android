@@ -1,6 +1,6 @@
 package com.nohjason.minari.screens.login.Data
 
-data class LoginResponse(
+data class UserResponse(
     val success: Boolean,
     val status: String,
     val message: String,
@@ -10,14 +10,6 @@ data class LoginResponse(
 data class LoginRequest(
     val id: String,
     val password: String
-)
-
-
-data class SinguUpResponse(
-    val success: Boolean,
-    val status: String,
-    val message: String,
-    val data: List<Any>? = null
 )
 
 data class SinguUpRequest(
