@@ -28,19 +28,17 @@ import com.nohjason.minari.screens.login.LoginScreen
 import com.nohjason.minari.screens.login.UI.SelfLoginScreen
 import com.nohjason.minari.screens.login.UI.SelfSingUpScreen
 import com.nohjason.minari.screens.profile.ProfileScreen
-import com.nohjason.minari.screens.profile.my_dictionary.db.MainViewModel
-import com.nohjason.minari.screens.profile.my_dictionary.db.UserEntity
 import com.nohjason.minari.screens.quiz.QuizEndScreen
 import com.nohjason.minari.screens.quiz.QuizScreen
 import com.nohjason.minari.screens.quiz.data.QuestionData
 import com.nohjason.minari.screens.quiz.data.Temporary_pointData
 import com.nohjason.minari.screens.term.Term
 import com.nohjason.minari.screens.term.Test
+import com.nohjason.myapplication.network.MainViewModel
 
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    allProduct: List<UserEntity>,
     viewModel: MainViewModel
 ) {
     val auth = Firebase.auth
@@ -85,14 +83,13 @@ fun NavGraph(
         composable(BottomBarScreen.Term.rout) {
             Term(
                 navController = navController,
-                allProduct = allProduct,
-                mainViewModel = viewModel
+                viewModel = viewModel
             )
         }
         composable("myDictionary") {
             MyDictionaryScreen(
                 navController = navController,
-                mainViewModel = viewModel
+                viewModel = viewModel
             )
         }
         composable("test/{text}") { backStackEntry ->

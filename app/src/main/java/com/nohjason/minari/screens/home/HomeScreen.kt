@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,12 +34,14 @@ import com.nohjason.minari.screens.home.words.RecommendWords
 import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariWhite
+import com.nohjason.myapplication.network.MainViewModel
 
 @Composable
 fun HomeScreen(
-    navController: NavController
+    navController: NavController,
 ) {
     var text by remember { mutableStateOf("") }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -86,7 +89,7 @@ fun HomeScreen(
                         .fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    RecommendWords()
+                    RecommendWords(navController = navController)
 
                     Spacer(modifier = Modifier.height(20.dp))
                     Row(
