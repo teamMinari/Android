@@ -42,7 +42,6 @@ import com.nohjason.minari.screens.ui.line.MinariLine
 import com.nohjason.minari.screens.ui.news.NewsCard
 import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.screens.ui.text.MinariTextField
-import com.nohjason.minari.ui.theme.MinariLightGray
 import com.nohjason.minari.ui.theme.MinariWhite
 
 // home스크린에서 받은 글자를 표시하는 테스트 화면

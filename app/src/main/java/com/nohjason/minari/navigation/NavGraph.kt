@@ -128,10 +128,10 @@ fun NavGraph(
         
 //        로그인
         composable("Singup"){
-//            SelfSingUpScreen(navController = navController)
+            SelfSingUpScreen(navController = navController)
         }
         composable("Login"){
-//            SelfLoginScreen(navController = navController)
+            SelfLoginScreen(navController = navController)
         }
     }
 }

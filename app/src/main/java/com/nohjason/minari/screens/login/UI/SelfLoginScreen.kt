@@ -1,8 +1,10 @@
 package com.nohjason.minari.screens.login.UI
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,8 +13,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,8 +32,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -51,7 +60,9 @@ import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomBarScreen
 import com.nohjason.minari.screens.login.Data.LoginRequest
 import com.nohjason.minari.screens.login.Data.UserResponse
+import com.nohjason.minari.screens.login.LoginTextField
 import com.nohjason.minari.ui.theme.MinariBlue
+import com.nohjason.minari.ui.theme.MinariPurple
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -63,7 +74,7 @@ import kotlin.math.max
 
 @Composable
 fun SelfLoginScreen(
-//    navController: NavController
+    navController: NavController
 ){
     val poppinsFamily = FontFamily(
         Font(R.font.poppins_semibold, FontWeight.SemiBold),
@@ -72,15 +83,23 @@ fun SelfLoginScreen(
         Font(R.font.poppins_bold, FontWeight.Bold),)
 
     Column (
-        modifier = Modifier.fillMaxWidth().fillMaxHeight()
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .padding(start = 25.dp, top = 14.dp),
     ){
         Image(painterResource(id = R.drawable.grape), contentDescription = null,
-            modifier = Modifier.width(21.dp).height(34.dp))
-        Text(text = "로그인", style = androidx.compose.ui.text.TextStyle(
-            fontSize = 30.sp,
-            fontFamily = poppinsFamily,
-            fontWeight = FontWeight.SemiBold
-        )
+            modifier = Modifier
+                .width(21.dp)
+                .height(34.dp)
+                .padding(top = 0.dp, start = 0.dp))
+        Text(text = "로그인",
+                modifier = Modifier.padding(top = 55.dp),
+                style = androidx.compose.ui.text.TextStyle(
+                fontSize = 30.sp,
+                fontFamily = poppinsFamily,
+                fontWeight = FontWeight.SemiBold
+            )
         )
 
 
@@ -95,69 +114,37 @@ fun SelfLoginScreen(
 
         Text(
             text = annotatedText,
-            modifier = Modifier.clickable {
-//                navController.navigate("Singup")
-                println("클릭됨")
-            }
+            modifier = Modifier
+                .padding(top = 22.dp, bottom = 50.dp)
+                .clickable {
+                navController.navigate("Singup")
+                }
         )
 
         var id by remember { mutableStateOf("") }
-        OutlinedTextField(
+        LoginTextField(
+            modifier = Modifier,
             value = id,
-            onValueChange = { id = it },
-            label = {
-                Row {
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = "아이디",
-                    )
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp)
-                .background(Color.White)
-                    ,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Next
-            ),
-        )
+            icon_name = "아이디",
+            text = "아이디을 입력하세요",
+            onValueChange = {id = it},
+            visibility = true
+        ) {
+
+        }
 
 
         var password by rememberSaveable { mutableStateOf("") }
-        var isVisiblePassword by remember { mutableStateOf(false) }
-
-        OutlinedTextField(
+        LoginTextField(
+            modifier = Modifier,
             value = password,
-            onValueChange = { password = it },
-            label = { Text("비밀번호를 입력하세요") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp)
-            ,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password, // 비밀번호 형식의 키보드를 사용
-            ),
-            singleLine = true,
-            isError = false, // 에러 상태는 여기서는 false로 설정합니다
-            visualTransformation = if (isVisiblePassword) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon = {
-                IconButton(onClick = { isVisiblePassword = !isVisiblePassword }) {
-                    if (isVisiblePassword) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_visibility_24),
-                            contentDescription = "비밀번호 숨기기"
-                        )
-                    } else {
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_visibility_off_24),
-                            contentDescription = "비밀번호 보이기"
-                        )
-                    }
-                }
-            }
-        )
+            icon_name = "비밀번호",
+            text = "비밀번호를 입력하세요",
+            onValueChange = {password = it},
+            visibility = true
+        ) {
+
+        }
 
 
         //로그인 저장, 비번 찾기
@@ -174,19 +161,28 @@ fun SelfLoginScreen(
 //                    .padding(10.dp))
 //        }
 
+
         val scope = rememberCoroutineScope()
-        var responseMessage by remember { mutableStateOf("") }
-        Button(onClick = {
-            scope.launch {
-                val result = loginUser(id = id, password = password)
-                result?.let {
-                    if (result.success){
-//                        navController.navigate(BottomBarScreen.Home.rout)
+        val context = LocalContext.current
+        Button(
+            onClick = {
+                scope.launch {
+                    val result = loginUser(id = id, password = password)
+                    result?.let {
+                        if(result.success){
+                            navController.navigate(BottomBarScreen.Home.rout)
+                        } else{
+                            Toast.makeText(context, "다른 아이디나 비번으로 시도해주세요.", Toast.LENGTH_SHORT ).show()
+                        }
                     }
                 }
-            }
-        }) {
-            Text(text = "로그인")
+            }   ,colors = ButtonDefaults.buttonColors(containerColor = MinariBlue)
+                ,modifier = Modifier
+                .wrapContentSize()
+                .width(320.dp)
+                .padding(top = 95.dp, start = 60.dp)
+        ) {
+                Text(text = "로그인")
         }
     }
 }
@@ -199,11 +195,11 @@ fun SelfLoginScreen(
 
 
 
-@Preview(showBackground = true)
-@Composable
-fun PreLogin(){
-    SelfLoginScreen()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreLogin(){
+//    SelfLoginScreen()
+//}
 
 suspend fun loginUser(id: String, password: String): UserResponse? {
     try {

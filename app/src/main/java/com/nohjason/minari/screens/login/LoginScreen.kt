@@ -9,8 +9,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -68,7 +71,12 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(200.dp))
 
         //***test를 위해 잠시 버튼 넣겠습니다.***
-        Button(onClick = { navController.navigate("Login") }) {
+        Button(onClick = { navController.navigate("Login") }
+            ,colors = ButtonDefaults.buttonColors(containerColor = MinariBlue)
+            ,modifier = Modifier
+                .wrapContentSize()
+                .width(320.dp)
+        ) {
             Text(text = "로그인")
         }
 
