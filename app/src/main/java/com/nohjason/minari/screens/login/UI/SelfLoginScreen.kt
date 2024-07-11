@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.login.UI
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -27,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -168,42 +170,49 @@ fun SelfLoginScreen(
         Button(
             onClick = {
                 scope.launch {
-                    val result = loginUser(id = id, password = password)
-                    result?.let {
-                        if(result.success){
-                            TokenManager.saveTokens(context, result.data.toString(), result.data.toString())
-                            Log.d("TokenTest", "Access Token: ${TokenManager.getAccessToken(context)}")
-                            Log.d("TokenTest", "Refresh Token: ${TokenManager.getRefreshToken(context)}")
-                            navController.navigate(BottomBarScreen.Home.rout)
-                        } else{
-                            Toast.makeText(context, "다른 아이디나 비번으로 시도해주세요.", Toast.LENGTH_SHORT ).show()
+                    try {
+                        // 로그인 요청 보내기
+                        val result = loginUser(id = id, password = password)
+                        result?.let {
+                            if (result.success) {
+                                // 로그인 성공 시 처리
+                                TokenManager.saveTokens(
+                                    context,
+                                    result.data.toString(),
+                                    result.data.toString()
+                                )
+                                navController.navigate(BottomBarScreen.Home.rout)
+                            } else {
+                                // 로그인 실패 시 Toast 메시지 표시
+                                Toast.makeText(
+                                    context,
+                                    "다른 아이디나 비밀번호로 시도해주세요.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
+                    } catch (e: Exception) {
+                        // 네트워크 오류 등 예외 처리
+                        Toast.makeText(
+                            context,
+                            "다른 아이디나 비밀번호로 시도해주세요.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        e.printStackTrace()
                     }
                 }
-            }   ,colors = ButtonDefaults.buttonColors(containerColor = MinariBlue)
-                ,modifier = Modifier
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = MinariBlue),
+            modifier = Modifier
                 .wrapContentSize()
                 .width(320.dp)
                 .padding(top = 95.dp, start = 60.dp)
         ) {
-                Text(text = "로그인")
+            Text(text = "로그인")
         }
     }
+
 }
-
-
-
-
-
-
-
-
-
-//@Preview(showBackground = true)
-//@Composable
-//fun PreLogin(){
-//    SelfLoginScreen()
-//}
 
 suspend fun loginUser(id: String, password: String): UserResponse? {
     try {
@@ -212,7 +221,7 @@ suspend fun loginUser(id: String, password: String): UserResponse? {
             .baseUrl("http://cheong.baekjoon.kr/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        
+
         // ApiService 인터페이스 구현체 생성
         val apiService = retrofit.create(LoginPOST::class.java)
 
@@ -222,18 +231,18 @@ suspend fun loginUser(id: String, password: String): UserResponse? {
 
         // 서버 응답 처리
         if (response.isSuccessful) {
-            println("서버 요청 성공")
-            return response.body() // response body 반환
+            println("서버 요청 성공: ${response.code()}, ${response.body()}, ${response.message()}")
+            return response.body()
         } else {
+            // 서버 요청 실패 처리
             println("서버 요청 실패: ${response.code()}, ${response.message()}")
+            throw Exception("서버 요청 실패: ${response.code()}, ${response.message()}")
         }
     } catch (e: Exception) {
-        println("오류: ${e.message}")
         // 네트워크 오류 등 예외 처리
-        e.printStackTrace()
+        println("오류: ${e.message}")
+        throw e
     }
-
-    return null
 }
 
 interface LoginPOST {

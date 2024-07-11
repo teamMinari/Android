@@ -121,7 +121,7 @@ fun SelfSingUpScreen(
             icon_name = "아이디",
             text = "아이디를 입력하세요",
             onValueChange = {id = it},
-            visibility = false
+            visibility = true
         ){}
 
         var password by remember { mutableStateOf("") }
@@ -175,24 +175,23 @@ fun SelfSingUpScreen(
                 }
                 else -> {
                     scope.launch {
-                        val result = SingUPUser(id = id, password = password, confirmPassword = repassword, email = email)
-                        result?.let {
-//                            when{
-//                                result.success -> {
-//                                    navController.navigate(BottomBarScreen.Home.rout)
-//                                }
-//                                else -> {
-//                                    popupMessage = "다른 아이디나 비번으로 시도해주세요."
-//                                    Toast.makeText(context, popupMessage, Toast.LENGTH_SHORT ).show()
-//                                }
-//
-//                            }
-                            if(result.success){
-                                navController.navigate(BottomBarScreen.Home.rout)
-                            } else{
-                                popupMessage = "다른 아이디나 비번으로 시도해주세요."
-                                Toast.makeText(context, popupMessage, Toast.LENGTH_SHORT ).show()
+                        try {
+                            val result = SingUPUser(id = id, password = password, confirmPassword = repassword, email = email)
+                            result?.let {
+                                if(result.success){
+                                    navController.navigate(BottomBarScreen.Home.rout)
+                                } else{
+                                    Toast.makeText(context, "다른 아이디나 비밀번호로 시도해주세요.", Toast.LENGTH_SHORT).show()
+                                }
                             }
+                        }catch (e: Exception) {
+                            // 네트워크 오류 등 예외 처리
+                            Toast.makeText(
+                                context,
+                                "다른 아이디나 비밀번호로 시도해주세요.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            e.printStackTrace()
                         }
                     }
                 }
@@ -240,16 +239,16 @@ suspend fun SingUPUser(id: String, password: String, confirmPassword: String, em
         // 서버 응답 처리
         if (response.isSuccessful) {
             println("서버 요청 성공: ${response.code()}, ${response.body()}, ${response.message()}")
-            val SingUpResponse = response.body() //response값 받음
-            println(SingUpResponse)
+            return response.body()
 
         } else {
             // 서버 요청 실패 처리
             println("서버 요청 실패: ${response.code()}, ${response.message()}")
+            throw Exception("서버 요청 실패: ${response.code()}, ${response.message()}")
         }
     } catch (e: Exception) {
         println("오류: ${e}, ${e.message}")
-        e.printStackTrace()
+        throw e
     }
 
     return null
