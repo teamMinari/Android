@@ -66,23 +66,24 @@ fun InProduction(
 //            ) {
 //                Image(painterResource(id = R.drawable.befor_arrow), contentDescription = null)
 //            }
-            Image(
-                painter = painterResource(id = R.drawable.rectangle),
-                contentDescription = null,
-                modifier = Modifier.size(200.dp)
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            MinariText(
-                text = title,
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            MinariText(
-                text = value,
-                size = 17,
-                color = MinariBlue,
-            )
+        Image(
+            painter = painterResource(id = R.drawable.rectangle),
+            contentDescription = null,
+            modifier = Modifier.size(200.dp)
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        MinariText(
+            text = title,
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        MinariText(
+            text = value,
+            size = 17,
+            color = MinariBlue,
+        )
 //        }
     }
+}
 
 @Preview(showBackground = true)
 @Composable
