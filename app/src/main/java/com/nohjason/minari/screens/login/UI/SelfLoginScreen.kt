@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.login.UI
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -170,7 +171,9 @@ fun SelfLoginScreen(
                     val result = loginUser(id = id, password = password)
                     result?.let {
                         if(result.success){
-                            println(result.data)
+                            TokenManager.saveTokens(context, result.data.toString(), result.data.toString())
+                            Log.d("TokenTest", "Access Token: ${TokenManager.getAccessToken(context)}")
+                            Log.d("TokenTest", "Refresh Token: ${TokenManager.getRefreshToken(context)}")
                             navController.navigate(BottomBarScreen.Home.rout)
                         } else{
                             Toast.makeText(context, "다른 아이디나 비번으로 시도해주세요.", Toast.LENGTH_SHORT ).show()

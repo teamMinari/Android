@@ -177,6 +177,16 @@ fun SelfSingUpScreen(
                     scope.launch {
                         val result = SingUPUser(id = id, password = password, confirmPassword = repassword, email = email)
                         result?.let {
+//                            when{
+//                                result.success -> {
+//                                    navController.navigate(BottomBarScreen.Home.rout)
+//                                }
+//                                else -> {
+//                                    popupMessage = "다른 아이디나 비번으로 시도해주세요."
+//                                    Toast.makeText(context, popupMessage, Toast.LENGTH_SHORT ).show()
+//                                }
+//
+//                            }
                             if(result.success){
                                 navController.navigate(BottomBarScreen.Home.rout)
                             } else{
@@ -192,7 +202,7 @@ fun SelfSingUpScreen(
         ,modifier = Modifier
                 .wrapContentSize()
                 .width(320.dp)
-                .padding(top = 95.dp, start = 20.dp)
+                .padding(top = 10.dp, start = 20.dp)
         ) {
             Text(text = "회원가입")
         }
