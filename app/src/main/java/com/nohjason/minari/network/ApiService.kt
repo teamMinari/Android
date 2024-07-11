@@ -1,10 +1,14 @@
 package com.nohjason.myapplication.network
 
+import com.nohjason.minari.network.response.AddDeleteTerm
 import com.nohjason.minari.network.response.BookResponse
+import com.nohjason.minari.screens.home.news.Test
 import com.nohjason.myapplication.network.response.Term
 import com.nohjason.myapplication.network.response.TermResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface ApiService {
@@ -48,23 +52,23 @@ interface ApiService {
 
     @GET("/terms/all")
     suspend fun getTerms(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoiam9tYmlAZHVjay5jb20iLCJpYXQiOjE3MjA1NzY3OTEsImV4cCI6MTcyMDY2MzE5MX0.RC6qwMPwj7-LvGAAn7Bm1DfJr7F9Mnwz6SlrDDWlNxA'",
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA2MjA3MTYsImV4cCI6MTcyMDcwNzExNn0.HB5DqAsVW82Gke00pFnMH8SY0SbMjyJhuY0GKKxcbbA",
     ): List<TermResponse>
 
     @GET("/terms")
     suspend fun getOneTerm(
         @Query("termNm") termNm: String,
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoiam9tYmlAZHVjay5jb20iLCJpYXQiOjE3MjA1NzY3OTEsImV4cCI6MTcyMDY2MzE5MX0.RC6qwMPwj7-LvGAAn7Bm1DfJr7F9Mnwz6SlrDDWlNxA'",
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA2MjA3MTYsImV4cCI6MTcyMDcwNzExNn0.HB5DqAsVW82Gke00pFnMH8SY0SbMjyJhuY0GKKxcbbA",
     ): Term
 
-//    @PATCH("/likes/toggle")
-//    suspend fun addWord(
-//        @Query("word") word: String,
-//        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoiam9tYmlAZHVjay5jb20iLCJpYXQiOjE3MjA1NzY3OTEsImV4cCI6MTcyMDY2MzE5MX0.RC6qwMPwj7-LvGAAn7Bm1DfJr7F9Mnwz6SlrDDWlNxA'",
-//    ): Book
+    @PATCH("/likes/toggle")
+    suspend fun addDeleteTerm(
+        @Query("word") word: String,
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA2MjA3MTYsImV4cCI6MTcyMDcwNzExNn0.HB5DqAsVW82Gke00pFnMH8SY0SbMjyJhuY0GKKxcbbA",
+    ): AddDeleteTerm
 
     @GET("/likes/my")
     suspend fun getBookTerms(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoiam9tYmlAZHVjay5jb20iLCJpYXQiOjE3MjA1NzY3OTEsImV4cCI6MTcyMDY2MzE5MX0.RC6qwMPwj7-LvGAAn7Bm1DfJr7F9Mnwz6SlrDDWlNxA'"
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA2MjA3MTYsImV4cCI6MTcyMDcwNzExNn0.HB5DqAsVW82Gke00pFnMH8SY0SbMjyJhuY0GKKxcbbA"
     ): BookResponse
 }

@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.term.card
 
+import android.text.BoringLayout
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -25,6 +26,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -52,11 +55,17 @@ fun TermCard(
     title: String,
     value: String,
     starCount: Int,
-//    dummyTermSimilarButton: List<DummyTermSimilarButton>,
+    viewModel: MainViewModel,
     navController: NavController,
-    viewModel: MainViewModel
 ) {
+    val bookTerms by viewModel.books.collectAsState()
+//    val foundTerm = bookTerms?.data?.find { it.termNm == title }
     val context = LocalContext.current
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.fetchAllTerms()
+    }
+
     Box(
         Modifier.clickable { navController.navigate("test/${title}") }
     ) {
@@ -94,25 +103,18 @@ fun TermCard(
                         .background(Color.White)
                         .border(1.dp, Color.Black, shape = CircleShape) // CircleShape을 명시적으로 설정
                         .padding(vertical = 3.dp, horizontal = 10.dp)
-//                        .clickable {
-//                            viewModel.upsertProduct(
-//                                UserEntity(id = title, true)
-//                            )
-//                            Toast.makeText(context, "용어가 단어장에 추가 되었습니다", Toast.LENGTH_SHORT).show()
-//                        }
+                        .clickable {
+                            viewModel.addDelete(title)
+//                            if (foundTerm == null) {
+//                                Toast.makeText(context, "용어가 단어장에 추가 되었습니다", Toast.LENGTH_SHORT).show()
+//                            } else {
+//                                Toast.makeText(context, "용어가 단어장에 삭제 되었습니다", Toast.LENGTH_SHORT).show()
+//                            }
+                        }
                         .padding(3.dp)
                 ) {
-                    MinariText(text = "단어장 추가", size = 10)
+                    MinariText(text = "단어장 추가/삭제", size = 10)
                 }
-//                IconButton(onClick = {
-
-//                }) {
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.minari_hart),
-//                        contentDescription = null,
-//                        modifier = Modifier.size(10.dp)
-//                    )
-//                }
                 // --------------------------------------------------------------------------------
             }
 
@@ -149,30 +151,4 @@ fun TermCard(
 //            }
         }
     }
-}
-
-@Preview
-@Composable
-fun PopupView() {
-    var showDialog by remember { mutableStateOf(false) }
-    AlertDialog(
-        onDismissRequest = { showDialog = false },
-        title = {},
-        text = { Text("용어 삭제하겠습니까?", Modifier.fillMaxWidth(), textAlign = TextAlign.Center) },
-        dismissButton = {
-            Button(onClick = { showDialog = false }) {
-                Text("취소")
-            }
-        },
-        confirmButton = {
-            Button(onClick = {
-                showDialog = false
-//                viewModel.upsertProduct(
-//                    UserEntity(id = title, true)
-//                )
-            }) {
-                Text("확인")
-            }
-        }
-    )
 }

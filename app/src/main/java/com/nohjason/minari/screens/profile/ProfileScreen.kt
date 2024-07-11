@@ -25,7 +25,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
@@ -43,6 +45,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,6 +54,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -58,6 +63,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -73,6 +80,7 @@ import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGradation
 import com.nohjason.minari.ui.theme.MinariWhite
+import com.nohjason.myapplication.network.MainViewModel
 
 sealed class Menu(
     val title: String,
@@ -97,6 +105,7 @@ sealed class Menu(
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
+    viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
 ) {
     var selectedImageUri by remember {
         mutableStateOf<Uri?>(null)
@@ -184,7 +193,6 @@ fun ProfileScreen(
                                     .clip(CircleShape),
                                 contentScale = ContentScale.Crop
                             )
-                            Log.d("TAG", "ProfileScreen: $selectedImageUri")
                             Image(
                                 painter = painterResource(id = R.drawable.profile_fix),
                                 contentDescription = "profile fix",
@@ -196,6 +204,7 @@ fun ProfileScreen(
                                                 ActivityResultContracts.PickVisualMedia.ImageOnly
                                             )
                                         )
+                                        Log.d("TAG", "ProfileScreen: $selectedImageUri")
                                     }
                             )
                         }
@@ -316,21 +325,45 @@ fun ProfileScreen(
                                 .background(Color.Gray)
                                 .height(1.dp)
                         )
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            Row(
-                                modifier = Modifier
-                                    .align(Alignment.Center)
-                                    .padding(20.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.fixicon),
-                                    contentDescription = "fix icon",
-                                    modifier = Modifier.size(60.dp)
-                                )
-                                MinariText(text = "아직 제작 중에 있는\n" + "기능이에요.", size = 10, color = Color.Gray)
+
+                        val bookTerms by viewModel.books.collectAsState()
+                        LaunchedEffect(key1 = Unit) {
+                            viewModel.fetchAllBookTerms()
+                        }
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(vertical = 10.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+
+                            items(bookTerms) { item ->
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clip(RoundedCornerShape(10.dp))
+                                        .background(MinariWhite)
+                                        .padding(10.dp)
+                                ) {
+                                    Text(text = item.termNm)
+                                }
                             }
                         }
+//                        Box(modifier = Modifier.fillMaxSize()) {
+//                            Row(
+//                                modifier = Modifier
+//                                    .align(Alignment.Center)
+//                                    .padding(20.dp),
+//                                verticalAlignment = Alignment.CenterVertically
+//                            ) {
+//                                Image(
+//                                    painter = painterResource(id = R.drawable.fixicon),
+//                                    contentDescription = "fix icon",
+//                                    modifier = Modifier.size(60.dp)
+//                                )
+//                                MinariText(text = "아직 제작 중에 있는\n" + "기능이에요.", size = 10, color = Color.Gray)
+//                            }
+//                        }
                     }
                 }
             }
