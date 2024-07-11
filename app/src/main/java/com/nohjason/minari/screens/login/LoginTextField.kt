@@ -67,16 +67,16 @@ fun LoginTextField(
                 }
             )
             Spacer(modifier = Modifier.weight(0.1f))
-            if (icon_name == "password") { // password인 경우에만 보이기/숨기기 아이콘 표시
+            if (icon_name == "비밀번호" || icon_name == "비밀번호 재확인") { // password인 경우에만 보이기/숨기기 아이콘 표시
                 IconButton(onClick = { isVisiblePassword = !isVisiblePassword }) {
                     if (isVisiblePassword) {
                         Icon(
-                            painter = painterResource(id = R.drawable.baseline_visibility_off_24),
+                            painter = painterResource(id = R.drawable.baseline_visibility_24),
                             contentDescription = "비밀번호 숨기기"
                         )
                     } else {
                         Icon(
-                            painter = painterResource(id = R.drawable.baseline_visibility_24),
+                            painter = painterResource(id = R.drawable.baseline_visibility_off_24),
                             contentDescription = "비밀번호 보이기"
                         )
                     }
@@ -92,17 +92,17 @@ fun LoginTextField(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreText() {
-    var email by remember { mutableStateOf("") }
-    LoginTextField(
-        modifier = Modifier,
-        value = email,
-        icon_name = "이메일",
-        text = "비밀번호",
-        onValueChange = { email = it },
-        visibility = true,
-        onClick = {}
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreText() {
+//    var email by remember { mutableStateOf("") }
+//    LoginTextField(
+//        modifier = Modifier,
+//        value = email,
+//        icon_name = "비밀번호",
+//        text = "비밀번호",
+//        onValueChange = { email = it },
+//        visibility = true,
+//        onClick = {}
+//    )
+//}

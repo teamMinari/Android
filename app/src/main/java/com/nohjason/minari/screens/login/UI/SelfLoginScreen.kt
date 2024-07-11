@@ -141,7 +141,7 @@ fun SelfLoginScreen(
             icon_name = "비밀번호",
             text = "비밀번호를 입력하세요",
             onValueChange = {password = it},
-            visibility = true
+            visibility = false
         ) {
 
         }
@@ -170,6 +170,7 @@ fun SelfLoginScreen(
                     val result = loginUser(id = id, password = password)
                     result?.let {
                         if(result.success){
+                            println(result.data)
                             navController.navigate(BottomBarScreen.Home.rout)
                         } else{
                             Toast.makeText(context, "다른 아이디나 비번으로 시도해주세요.", Toast.LENGTH_SHORT ).show()
