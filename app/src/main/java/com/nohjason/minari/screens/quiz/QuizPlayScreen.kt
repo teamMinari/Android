@@ -147,7 +147,7 @@ fun QuizScreen_play(
         Button(
             onClick = {
                 user.replies += 1
-                if (user.replies > 9) {
+                if (user.replies >= 10) {
                     queIDnum = 0
                     queIDList = queIDList()
                     navController.navigate("quizComentoryRoute")
@@ -268,7 +268,7 @@ fun Commentary_CorrectO(
 
             Button(
                 onClick = {
-                    if (user.replies > 9) {
+                    if (user.replies >= 10) {
                         queIDnum = 0
                         queIDList = queIDList()
                         navController.navigate("quizComentoryRoute")
@@ -386,7 +386,7 @@ fun Commentary_CorrectX(
 
         Button(
             onClick = {
-                if (user.replies > 9) {
+                if (user.replies >= 10) {
                     queIDnum = 0
                     queIDList = queIDList()
                     navController.navigate("quizComentoryRoute")

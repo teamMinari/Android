@@ -179,26 +179,28 @@ fun Test(
             }
         }
     } else {
+        TopAppBar(
+            title = {  },
+            backgroundColor =  Color.White,
+            navigationIcon = {
+                IconButton(
+                    onClick = {
+
+                    },
+                ) {
+                    androidx.compose.material3.Icon(
+                        Icons.Filled.ArrowBack,
+                        null,
+                        tint = Color.Black
+                    )
+                }
+            }
+        )
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            TopAppBar(
-                title = {  },
-                backgroundColor =  Color.White,
-                navigationIcon = {
-                    IconButton(
-                        onClick = { navController.popBackStack() },
-                    ) {
-                        androidx.compose.material3.Icon(
-                            Icons.Filled.ArrowBack,
-                            null,
-                            tint = Color.Black
-                        )
-                    }
-                }
-            )
 //            InProduction(title = "아직 추가되지 않은 용어 입니다", value = "서비스 이용에 불편을 드려서 죄송합니다")
             MinariText(text = "아직 추가되지 않은 용어 입니다")
         }
@@ -208,5 +210,29 @@ fun Test(
 @Preview
 @Composable
 fun TermTest() {
-    Test(title = "황금낙하산", navController = rememberNavController())
+    TopAppBar(
+        title = {  },
+        backgroundColor =  Color.White,
+        navigationIcon = {
+            IconButton(
+                onClick = {
+
+                },
+            ) {
+                androidx.compose.material3.Icon(
+                    Icons.Filled.ArrowBack,
+                    null,
+                    tint = Color.Black
+                )
+            }
+        }
+    )
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+//            InProduction(title = "아직 추가되지 않은 용어 입니다", value = "서비스 이용에 불편을 드려서 죄송합니다")
+        MinariText(text = "아직 추가되지 않은 용어 입니다")
+    }
 }
