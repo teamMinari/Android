@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.quiz
+package com.nohjason.minari.screens.quiz.play_ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,14 +24,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
@@ -64,7 +61,7 @@ fun QuizEndScreen(
 
         )
         Text(text = "대단해요!",
-            fontFamily = com.nohjason.minari.screens.QizeScreen.pretendardFamily,
+            fontFamily = pretendardFamily,
             fontWeight = FontWeight.SemiBold,
             fontSize = 30.sp,
             modifier = Modifier.padding(top = 100.dp)

@@ -11,7 +11,6 @@ data class Question (
 )
 
 data class TemporaryPoint(
-    var name: String,
     var point: Int,
     var replies: Int, //사용자의 답변 제출 횟수
     var user_answer: String,
@@ -131,9 +130,8 @@ object QuestionData {
 object Temporary_pointData {
     fun getPoint(): TemporaryPoint {
         return TemporaryPoint(
-            "나영",
             1444,
-            1,
+            2,
             "",
             0
         )

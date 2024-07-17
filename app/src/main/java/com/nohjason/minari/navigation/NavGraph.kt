@@ -18,9 +18,9 @@ import com.nohjason.minari.R
 //import com.nohjason.minari.R
 import com.nohjason.minari.firebase.rememberFirebaseAuthLauncher
 import com.nohjason.minari.navigation.bottombar.BottomBarScreen
-import com.nohjason.minari.screens.QizeScreen.Commentary_CorrectO
-import com.nohjason.minari.screens.QizeScreen.Commentary_CorrectX
-import com.nohjason.minari.screens.QizeScreen.QuizScreen_play
+import com.nohjason.minari.screens.quiz.play_ui.Commentary_CorrectO
+import com.nohjason.minari.screens.quiz.play_ui.Commentary_CorrectX
+import com.nohjason.minari.screens.quiz.play_ui.QuizScreen_play
 import com.nohjason.minari.screens.profile.my_dictionary.MyDictionaryScreen
 import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.inproduct.InProduction
@@ -28,8 +28,8 @@ import com.nohjason.minari.screens.login.LoginScreen
 import com.nohjason.minari.screens.login.UI.SelfLoginScreen
 import com.nohjason.minari.screens.login.UI.SelfSingUpScreen
 import com.nohjason.minari.screens.profile.ProfileScreen
-import com.nohjason.minari.screens.quiz.QuizEndScreen
-import com.nohjason.minari.screens.quiz.QuizScreen
+import com.nohjason.minari.screens.quiz.play_ui.QuizEndScreen
+import com.nohjason.minari.screens.quiz.play_ui.QuizScreen
 import com.nohjason.minari.screens.quiz.data.QuestionData
 import com.nohjason.minari.screens.quiz.data.Temporary_pointData
 import com.nohjason.minari.screens.term.Term

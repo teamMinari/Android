@@ -1,5 +1,6 @@
-package com.nohjason.minari.screens.QizeScreen
+package com.nohjason.minari.screens.quiz.play_ui
 
+import android.nfc.Tag
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -26,7 +27,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -36,6 +36,7 @@ import com.nohjason.minari.screens.quiz.data.QuestionData
 import com.nohjason.minari.screens.quiz.data.TemporaryPoint
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariPurple
+import kotlin.math.log
 import kotlin.random.Random
 
 fun queIDList(): List<Int> {
@@ -101,6 +102,7 @@ fun QuizScreen_play(
                 onClick = {
                     user.user_answer = "O"
                     user.replies += 1
+                    print(user.replies)
                     if (que[queIDList[queIDnum]].answer == "O") {
                         user.point += 1//포인트 값 정해야함
                         user.correct += 1
@@ -125,6 +127,7 @@ fun QuizScreen_play(
                 onClick = {
                     user.user_answer = "X"
                     user.replies += 1
+                    print(user.replies)
                     navController.navigate("quizQuestionXRoute")
                     if (que[queIDList[queIDnum]].answer == "X") {
                         user.point += 1//포인트 값 정해야함
@@ -147,6 +150,7 @@ fun QuizScreen_play(
         Button(
             onClick = {
                 user.replies += 1
+                print(user.replies)
                 if (user.replies > 9) {
                     queIDnum = 0
                     queIDList = queIDList()
@@ -386,6 +390,7 @@ fun Commentary_CorrectX(
 
         Button(
             onClick = {
+                print(user.replies)
                 if (user.replies > 9) {
                     queIDnum = 0
                     queIDList = queIDList()
@@ -405,9 +410,9 @@ fun Commentary_CorrectX(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun QuizScreenPrevirw() {
+//@Preview(showBackground = true)
+//@Composable
+//fun QuizScreenPrevirw() {
 //    QuizScreen_play(que = QuestionData.getQuestion(), navController = rememberNavController(), user = Temporary_pointData.getPoint())
 //    Commentary_CorrectO(
 //        que = QuestionData.getQuestion(),
@@ -419,4 +424,4 @@ fun QuizScreenPrevirw() {
 //        navController = rememberNavController(),
 //        user = Temporary_pointData.getPoint()
 //    )
-}
+//}
