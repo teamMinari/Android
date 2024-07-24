@@ -29,6 +29,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,14 +59,18 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomBarScreen
 import com.nohjason.minari.screens.login.Data.LoginRequest
 import com.nohjason.minari.screens.login.Data.UserResponse
 import com.nohjason.minari.screens.login.LoginTextField
+import com.nohjason.minari.screens.login.LoginViewModel
+import com.nohjason.minari.screens.login.PreferencesManager
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariPurple
+import com.nohjason.myapplication.network.MainViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -77,28 +82,35 @@ import kotlin.math.max
 
 @Composable
 fun SelfLoginScreen(
-    navController: NavController
-){
+    context: Context,
+    navController: NavController,
+    mainViewModel: MainViewModel,
+    loginViewModel: LoginViewModel
+) {
     val poppinsFamily = FontFamily(
         Font(R.font.poppins_semibold, FontWeight.SemiBold),
         Font(R.font.poppins_medium, FontWeight.Medium),
         Font(R.font.poppins_regular),
-        Font(R.font.poppins_bold, FontWeight.Bold),)
+        Font(R.font.poppins_bold, FontWeight.Bold),
+    )
 
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
             .padding(start = 25.dp, top = 14.dp),
-    ){
-        Image(painterResource(id = R.drawable.grape), contentDescription = null,
+    ) {
+        Image(
+            painterResource(id = R.drawable.grape), contentDescription = null,
             modifier = Modifier
                 .width(21.dp)
                 .height(34.dp)
-                .padding(top = 0.dp, start = 0.dp))
-        Text(text = "로그인",
-                modifier = Modifier.padding(top = 55.dp),
-                style = androidx.compose.ui.text.TextStyle(
+                .padding(top = 0.dp, start = 0.dp)
+        )
+        Text(
+            text = "로그인",
+            modifier = Modifier.padding(top = 55.dp),
+            style = androidx.compose.ui.text.TextStyle(
                 fontSize = 30.sp,
                 fontFamily = poppinsFamily,
                 fontWeight = FontWeight.SemiBold
@@ -120,7 +132,7 @@ fun SelfLoginScreen(
             modifier = Modifier
                 .padding(top = 22.dp, bottom = 50.dp)
                 .clickable {
-                navController.navigate("Singup")
+                    navController.navigate("Singup")
                 }
         )
 
@@ -130,7 +142,7 @@ fun SelfLoginScreen(
             value = id,
             icon_name = "아이디",
             text = "아이디을 입력하세요",
-            onValueChange = {id = it},
+            onValueChange = { id = it },
             visibility = true
         ) {
 
@@ -143,7 +155,7 @@ fun SelfLoginScreen(
             value = password,
             icon_name = "비밀번호",
             text = "비밀번호를 입력하세요",
-            onValueChange = {password = it},
+            onValueChange = { password = it },
             visibility = false
         ) {
 
@@ -165,42 +177,55 @@ fun SelfLoginScreen(
 //        }
 
 
-        val scope = rememberCoroutineScope()
-        val context = LocalContext.current
+//        val scope = rememberCoroutineScope()
+        val preferencesManager = remember { PreferencesManager(context) }
+        val loginResponse by loginViewModel.loginResponse.collectAsState()
+//        val data = remember { mutableStateOf(preferencesManager.getData("accessToken", "")) }
+
         Button(
             onClick = {
-                scope.launch {
-                    try {
-                        // 로그인 요청 보내기
-                        val result = loginUser(id = id, password = password)
-                        result?.let {
-                            if (result.success) {
-                                // 로그인 성공 시 처리
-                                TokenManager.saveTokens(
-                                    context,
-                                    result.data.toString(),
-                                    result.data.toString()
-                                )
-                                navController.navigate(BottomBarScreen.Home.rout)
-                            } else {
-                                // 로그인 실패 시 Toast 메시지 표시
-                                Toast.makeText(
-                                    context,
-                                    "다른 아이디나 비밀번호로 시도해주세요.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                    } catch (e: Exception) {
-                        // 네트워크 오류 등 예외 처리
-                        Toast.makeText(
-                            context,
-                            "다른 아이디나 비밀번호로 시도해주세요.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        e.printStackTrace()
+                loginViewModel.login(id = id, password = password)
+                if (loginResponse != null) {
+                    if (loginResponse!!.success) {
+                        val token = loginResponse!!.data[0]
+                        preferencesManager.saveData("accessToken", token.accessToken)
+                        Log.d("TAG", "SelfLoginScreen: ${preferencesManager.getData("accessToken", "")}")
+                        navController.navigate(BottomBarScreen.Home.rout)
+                    } else {
+                        Log.d("TAG", "Login Failed: ${loginResponse!!.message}")
                     }
                 }
+//                scope.launch {
+//                    try {
+//                        // 로그인 요청 보내기
+//                        val result = loginUser(id = id, password = password)
+//                        result?.let {
+//                            if (result.success) {
+//                                // 로그인 성공 시 처리
+//                                TokenManager.saveTokens(
+//                                    context,
+//                                    result.data.toString(),
+//                                    result.data.toString()
+//                                )
+//                            } else {
+//                                // 로그인 실패 시 Toast 메시지 표시
+//                                Toast.makeText(
+//                                    context,
+//                                    "다른 아이디나 비밀번호로 시도해주세요.",
+//                                    Toast.LENGTH_SHORT
+//                                ).show()
+//                            }
+//                        }
+//                    } catch (e: Exception) {
+//                        // 네트워크 오류 등 예외 처리
+//                        Toast.makeText(
+//                            context,
+//                            "다른 아이디나 비밀번호로 시도해주세요.",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                        e.printStackTrace()
+//                    }
+//                }
             },
             colors = ButtonDefaults.buttonColors(containerColor = MinariBlue),
             modifier = Modifier
@@ -210,6 +235,18 @@ fun SelfLoginScreen(
         ) {
             Text(text = "로그인")
         }
+
+//        val tokens by loginViewModel.tokens.collectAsState()
+//        Button(onClick = {
+//            loginViewModel.loadTokens()
+//            if (tokens != null) {
+//                val (accessToken, refreshToken) = tokens!!
+//                Log.d("TAG", "SelfLoginScreen: $accessToken.")
+//                Log.d("TAG", "SelfLoginScreen: $refreshToken.")
+//            }
+//        }) {
+//            Text("Load Tokens")
+//        }
     }
 
 }

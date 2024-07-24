@@ -1,9 +1,15 @@
 package com.nohjason.myapplication.network
 
+import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.traceEventStart
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nohjason.minari.network.response.BookResponse
+import com.nohjason.minari.network.response.LoginResponse
+import com.nohjason.minari.screens.login.Data.LoginRequest
 import com.nohjason.minari.screens.profile.my_dictionary.model.DictionaryModel
 import com.nohjason.minari.screens.profile.my_dictionary.model.toModel
 import com.nohjason.myapplication.network.RetrofitInstance.api
@@ -18,15 +24,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainViewModel : ViewModel() {
+class MainViewModel() : ViewModel() {
 
     private val _routine = MutableStateFlow<List<TermResponse>>(emptyList())
     val routines = _routine.asStateFlow()
 
-    fun fetchAllTerms() {
+    fun fetchAllTerms(token: String) {
         viewModelScope.launch {
             try {
-                val response = withContext(Dispatchers.IO) { RetrofitInstance.api.getTerms() }
+                val response = withContext(Dispatchers.IO) { api.getTerms(token = token) }
 //                _routine.value = response.map {
 //                    it.toModel()
 //                }
@@ -41,10 +47,10 @@ class MainViewModel : ViewModel() {
     private val _term = MutableStateFlow<Term?>(null)
     val term: StateFlow<Term?> = _term
 
-    fun fetchTerm(termNm: String) {
+    fun fetchTerm(termNm: String, token: String) {
         viewModelScope.launch {
             try {
-                val term = api.getOneTerm(termNm = termNm)
+                val term = api.getOneTerm(termNm = termNm, token = token)
                 _term.value = term
             } catch (e: Exception) {
                 // 오류 처리

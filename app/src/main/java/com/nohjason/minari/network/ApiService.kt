@@ -2,9 +2,10 @@ package com.nohjason.myapplication.network
 
 import com.nohjason.minari.network.response.AddDeleteTerm
 import com.nohjason.minari.network.response.BookResponse
-import com.nohjason.minari.screens.home.news.Test
+import com.nohjason.minari.network.response.LoginResponse
 import com.nohjason.myapplication.network.response.Term
 import com.nohjason.myapplication.network.response.TermResponse
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
@@ -52,23 +53,29 @@ interface ApiService {
 
     @GET("/terms/all")
     suspend fun getTerms(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA3NTA4MjksImV4cCI6MTcyMDgzNzIyOX0.6Hsd6pW_OuuTQLx10io5h8xeBuL9YJ0Yoeolnt42z1c",
+        @Header("Authorization") token: String
     ): List<TermResponse>
 
     @GET("/terms")
     suspend fun getOneTerm(
         @Query("termNm") termNm: String,
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA3NTA4MjksImV4cCI6MTcyMDgzNzIyOX0.6Hsd6pW_OuuTQLx10io5h8xeBuL9YJ0Yoeolnt42z1c",
+        @Header("Authorization") token: String,
     ): Term
 
     @PATCH("/likes/toggle")
     suspend fun addDeleteTerm(
         @Query("word") word: String,
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA3NTA4MjksImV4cCI6MTcyMDgzNzIyOX0.6Hsd6pW_OuuTQLx10io5h8xeBuL9YJ0Yoeolnt42z1c",
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjEzNDkwNTcsImV4cCI6MTcyMTQzNTQ1N30.jPSZd92VVJZugTtBhfGtdbZYCwNIAwRb2TqughfIsfs",
     ): AddDeleteTerm
 
     @GET("/likes/my")
     suspend fun getBookTerms(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA3NTA4MjksImV4cCI6MTcyMDgzNzIyOX0.6Hsd6pW_OuuTQLx10io5h8xeBuL9YJ0Yoeolnt42z1c"
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjEzNDkwNTcsImV4cCI6MTcyMTQzNTQ1N30.jPSZd92VVJZugTtBhfGtdbZYCwNIAwRb2TqughfIsfs"
     ): BookResponse
+
+    // login
+    @POST("/member/login")
+    suspend fun login(
+        @Body loginResponse: com.nohjason.minari.network.response.LoginRequest
+    ): LoginResponse
 }

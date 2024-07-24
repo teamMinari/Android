@@ -17,12 +17,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.nohjason.minari.screens.login.LoginViewModel
 //import com.nohjason.minari.screens.profile.my_dictionary.db.MainViewModel
 import com.nohjason.minari.ui.theme.MinariTheme
 import com.nohjason.myapplication.network.MainViewModel
 
 class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
+    private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +35,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ScreenSetup(viewModel)
+                    ScreenSetup(viewModel, loginViewModel)
                 }
             }
         }
@@ -41,8 +43,9 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ScreenSetup(viewModel: MainViewModel) {
+fun ScreenSetup(viewModel: MainViewModel, loginViewModel: LoginViewModel) {
     MainScreen(
-        viewModel = viewModel
+        viewModel = viewModel,
+        loginViewModel
     )
 }

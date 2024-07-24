@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.term
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -54,12 +55,17 @@ import com.nohjason.myapplication.network.MainViewModel
 fun Test(
     title: String,
     navController: NavController,
-    viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
 ) {
     val term by viewModel.term.collectAsState()
+//    val tokens by loginViewModel.tokens.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.fetchTerm(title)
+//        loginViewModel.loadTokens()
+//        if (tokens != null) {
+//            val (accessToken, refreshToken) = tokens!!
+//            viewModel.fetchTerm(title, accessToken!!)
+//        }
     }
 
     if (term != null) {

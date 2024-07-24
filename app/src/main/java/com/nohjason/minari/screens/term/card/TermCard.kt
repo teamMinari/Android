@@ -62,9 +62,13 @@ fun TermCard(
 //    val foundTerm = bookTerms?.data?.find { it.termNm == title }
     val context = LocalContext.current
 
-    LaunchedEffect(key1 = Unit) {
-        viewModel.fetchAllTerms()
-    }
+//    LaunchedEffect(key1 = Unit) {
+//        loginViewModel.loadTokens()
+//        if (tokens != null) {
+//            val (accessToken, refreshToken) = tokens!!
+//            viewModel.fetchAllTerms(accessToken!!)
+//        }
+//    }
 
     Box(
         Modifier.clickable { navController.navigate("test/${title}") }

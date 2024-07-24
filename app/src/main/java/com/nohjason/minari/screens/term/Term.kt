@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.term
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -33,6 +34,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.nohjason.minari.screens.login.LoginViewModel
+import com.nohjason.minari.screens.login.PreferencesManager
 import com.nohjason.minari.screens.term.button.GetDummyTermButton
 import com.nohjason.minari.screens.term.button.TermButton
 import com.nohjason.minari.screens.term.card.TermCard
@@ -40,18 +43,24 @@ import com.nohjason.minari.screens.ui.line.MinariLine
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariWhite
 import com.nohjason.myapplication.network.MainViewModel
+import kotlin.math.log
 
 @Composable
 fun Term(
+    context: Context,
     navController: NavController,
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
 ) {
     val routin by viewModel.routines.collectAsState()
     var text by remember { mutableStateOf("") }
+    val preferencesManager = remember { PreferencesManager(context) }
 //    val category = remember { mutableStateOf("전체") }
+//    val tokens by loginViewModel.tokens.collectAsState()
+    val accessToken = preferencesManager.getData("accessToken", "")
+
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.fetchAllTerms()
+        viewModel.fetchAllTerms(token = accessToken)
     }
 
     Column {

@@ -16,12 +16,14 @@ import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.navigation.bottombar.BottomBar
 import com.nohjason.minari.navigation.bottombar.BottomBarScreen
 import com.nohjason.minari.navigation.NavGraph
+import com.nohjason.minari.screens.login.LoginViewModel
 import com.nohjason.myapplication.network.MainViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
+    loginViewModel: LoginViewModel
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -46,7 +48,8 @@ fun MainScreen(
         Column(modifier = Modifier.padding(innerPadding)) {
             NavGraph(
                 navController = navController,
-                viewModel = viewModel
+                viewModel = viewModel,
+                loginViewModel
             )
         }
     }

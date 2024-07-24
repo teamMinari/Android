@@ -25,6 +25,7 @@ import com.nohjason.minari.screens.profile.my_dictionary.MyDictionaryScreen
 import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.inproduct.InProduction
 import com.nohjason.minari.screens.login.LoginScreen
+import com.nohjason.minari.screens.login.LoginViewModel
 import com.nohjason.minari.screens.login.UI.SelfLoginScreen
 import com.nohjason.minari.screens.login.UI.SelfSingUpScreen
 import com.nohjason.minari.screens.profile.ProfileScreen
@@ -39,7 +40,8 @@ import com.nohjason.myapplication.network.MainViewModel
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
+    loginViewModel: LoginViewModel
 ) {
     val auth = Firebase.auth
     var user by remember { mutableStateOf(auth.currentUser) }
@@ -82,8 +84,9 @@ fun NavGraph(
         }
         composable(BottomBarScreen.Term.rout) {
             Term(
+                context = context,
                 navController = navController,
-                viewModel = viewModel
+                viewModel = viewModel,
             )
         }
         composable("myDictionary") {
@@ -128,7 +131,12 @@ fun NavGraph(
             SelfSingUpScreen(navController = navController)
         }
         composable("Login"){
-            SelfLoginScreen(navController = navController)
+            SelfLoginScreen(
+                context = context,
+                navController = navController,
+                mainViewModel = viewModel,
+                loginViewModel = loginViewModel
+            )
         }
     }
 }
