@@ -2,6 +2,7 @@ package com.nohjason.myapplication.network
 
 import com.nohjason.minari.network.response.AddDeleteTerm
 import com.nohjason.minari.network.response.BookResponse
+import com.nohjason.minari.network.response.LoginRequest
 import com.nohjason.minari.network.response.LoginResponse
 import com.nohjason.myapplication.network.response.Term
 import com.nohjason.myapplication.network.response.TermResponse
@@ -76,6 +77,6 @@ interface ApiService {
     // login
     @POST("/member/login")
     suspend fun login(
-        @Body loginResponse: com.nohjason.minari.network.response.LoginRequest
+        @Body loginResponse: LoginRequest
     ): LoginResponse
 }

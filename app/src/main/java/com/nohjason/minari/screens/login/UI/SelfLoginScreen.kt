@@ -71,7 +71,9 @@ import com.nohjason.minari.screens.login.PreferencesManager
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariPurple
 import com.nohjason.myapplication.network.MainViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
@@ -180,21 +182,25 @@ fun SelfLoginScreen(
 //        val scope = rememberCoroutineScope()
         val preferencesManager = remember { PreferencesManager(context) }
         val loginResponse by loginViewModel.loginResponse.collectAsState()
-//        val data = remember { mutableStateOf(preferencesManager.getData("accessToken", "")) }
+
+        LaunchedEffect(loginResponse) {
+            loginResponse?.let {
+                Log.d("TAG", "SelfLoginScreen: $it")
+                if (it.success) {
+                    val token = it.data[0]
+                    preferencesManager.saveData("accessToken", token.accessToken)
+                    Log.d("TAG", "SelfLoginScreen: ${preferencesManager.getData("accessToken", "")}")
+                    navController.navigate(BottomBarScreen.Home.rout)
+                } else {
+                    Log.d("TAG", "Login Failed: ${it.message}")
+                }
+            }
+        }
 
         Button(
             onClick = {
                 loginViewModel.login(id = id, password = password)
-                if (loginResponse != null) {
-                    if (loginResponse!!.success) {
-                        val token = loginResponse!!.data[0]
-                        preferencesManager.saveData("accessToken", token.accessToken)
-                        Log.d("TAG", "SelfLoginScreen: ${preferencesManager.getData("accessToken", "")}")
-                        navController.navigate(BottomBarScreen.Home.rout)
-                    } else {
-                        Log.d("TAG", "Login Failed: ${loginResponse!!.message}")
-                    }
-                }
+                //------------
 //                scope.launch {
 //                    try {
 //                        // 로그인 요청 보내기
