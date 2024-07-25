@@ -6,10 +6,6 @@ import androidx.compose.runtime.traceEventStart
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.nohjason.minari.network.response.BookResponse
-import com.nohjason.minari.network.response.LoginResponse
-import com.nohjason.minari.screens.login.Data.LoginRequest
 import com.nohjason.minari.screens.profile.my_dictionary.model.DictionaryModel
 import com.nohjason.minari.screens.profile.my_dictionary.model.toModel
 import com.nohjason.myapplication.network.RetrofitInstance.api
@@ -61,10 +57,10 @@ class MainViewModel() : ViewModel() {
     private val _book = MutableStateFlow<List<DictionaryModel>>(emptyList())
     val books = _book.asStateFlow()
 
-    fun fetchAllBookTerms() {
+    fun fetchAllBookTerms(token: String) {
         viewModelScope.launch {
             try {
-                val book = RetrofitInstance.api.getBookTerms()
+                val book = api.getBookTerms(token)
                 _book.value = book.data.map {
                     it.toModel()
                 }
@@ -75,12 +71,12 @@ class MainViewModel() : ViewModel() {
         }
     }
 
-    fun addDelete(word: String) {
+    fun addDelete(word: String, token: String) {
         viewModelScope.launch {
             try {
-                val job = async { RetrofitInstance.api.addDeleteTerm(word) }
+                val job = async { api.addDeleteTerm(word, token) }
                 job.await()
-                fetchAllBookTerms()
+                fetchAllBookTerms(token)
             } catch (e: Exception) {
                 Log.e("TAG", "addDelete: ", e)
             }

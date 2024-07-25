@@ -21,10 +21,10 @@ fun BottomBar(
     navBackStackEntry: NavBackStackEntry?
 ) {
     val screens = listOf(
-        BottomBarScreen.Term,
-        BottomBarScreen.Home,
-        BottomBarScreen.Quiz,
-        BottomBarScreen.Profile,
+        Screen.Term,
+        Screen.Home,
+        Screen.Quiz,
+        Screen.Profile,
     )
 
 //    val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -43,7 +43,7 @@ fun BottomBar(
 
 @Composable
 fun RowScope.AddItem(
-    screen: BottomBarScreen,
+    screen: Screen,
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {

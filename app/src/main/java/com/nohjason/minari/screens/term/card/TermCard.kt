@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.nohjason.minari.R
 import com.nohjason.minari.data.button.DummyTermSimilarButton
+import com.nohjason.minari.screens.login.PreferencesManager
 import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.myapplication.network.MainViewModel
@@ -61,14 +62,8 @@ fun TermCard(
     val bookTerms by viewModel.books.collectAsState()
 //    val foundTerm = bookTerms?.data?.find { it.termNm == title }
     val context = LocalContext.current
-
-//    LaunchedEffect(key1 = Unit) {
-//        loginViewModel.loadTokens()
-//        if (tokens != null) {
-//            val (accessToken, refreshToken) = tokens!!
-//            viewModel.fetchAllTerms(accessToken!!)
-//        }
-//    }
+    val preferencesManager = remember { PreferencesManager(context) }
+    val accessToken = preferencesManager.getData("accessToken", "")
 
     Box(
         Modifier.clickable { navController.navigate("test/${title}") }
@@ -108,7 +103,7 @@ fun TermCard(
                         .border(1.dp, Color.Black, shape = CircleShape) // CircleShape을 명시적으로 설정
                         .padding(vertical = 3.dp, horizontal = 10.dp)
                         .clickable {
-                            viewModel.addDelete(title)
+                            viewModel.addDelete(title, accessToken)
 //                            if (foundTerm == null) {
 //                                Toast.makeText(context, "용어가 단어장에 추가 되었습니다", Toast.LENGTH_SHORT).show()
 //                            } else {

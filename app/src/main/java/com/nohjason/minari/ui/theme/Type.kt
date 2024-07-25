@@ -2,9 +2,11 @@ package com.nohjason.minari.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.nohjason.minari.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -32,3 +34,6 @@ val Typography = Typography(
     )
     */
 )
+val rixfont = FontFamily(Font(R.font.test))
+val pretendard_medium = FontFamily(Font(R.font.pretendard_medium))
+val pretendard_bold = FontFamily(Font(R.font.pretendard_bold))

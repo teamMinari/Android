@@ -1,5 +1,8 @@
 package com.nohjason.minari.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,7 +20,7 @@ import com.google.firebase.ktx.Firebase
 import com.nohjason.minari.R
 //import com.nohjason.minari.R
 import com.nohjason.minari.firebase.rememberFirebaseAuthLauncher
-import com.nohjason.minari.navigation.bottombar.BottomBarScreen
+import com.nohjason.minari.navigation.bottombar.Screen
 import com.nohjason.minari.screens.QizeScreen.Commentary_CorrectO
 import com.nohjason.minari.screens.QizeScreen.Commentary_CorrectX
 import com.nohjason.minari.screens.QizeScreen.QuizScreen_play
@@ -63,34 +66,35 @@ fun NavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = BottomBarScreen.Login.rout
+        startDestination = Screen.FirstScreen.rout
     ) {
 
-        composable(BottomBarScreen.Login.rout) {
+        composable(Screen.FirstScreen.rout) {
             LoginScreen(
                 navController = navController,
-                launcher = launcher,
-                googleSignInClient = googleSignInClient
+//                launcher = launcher,
+//                googleSignInClient = googleSignInClient
             )
         }
-        composable(BottomBarScreen.Home.rout) {
+        composable(Screen.Home.rout) {
             HomeScreen(navController = navController)
         }
-        composable(BottomBarScreen.Quiz.rout, ) {
+        composable(Screen.Quiz.rout, ) {
             QuizScreen(navController = navController, user = dummyUser)
         }
-        composable(BottomBarScreen.Profile.rout) {
+        composable(Screen.Profile.rout) {
             ProfileScreen(navController = navController)
         }
-        composable(BottomBarScreen.Term.rout) {
+        composable(Screen.Term.rout) {
             Term(
                 context = context,
                 navController = navController,
                 viewModel = viewModel,
             )
         }
-        composable("myDictionary") {
+        composable(Screen.MyDictionary.rout) {
             MyDictionaryScreen(
+                context,
                 navController = navController,
                 viewModel = viewModel
             )
@@ -127,14 +131,24 @@ fun NavGraph(
         }
         
 //        로그인
-        composable("Singup"){
-            SelfSingUpScreen(navController = navController)
+        composable(
+            route = Screen.Signup.rout,
+        ){
+            SelfSingUpScreen(
+                navController = navController
+            )
         }
-        composable("Login"){
+        composable(
+            route = Screen.Login.rout,
+            enterTransition = {
+                fadeIn(animationSpec = tween(700))
+            },
+            exitTransition = {
+                fadeOut(animationSpec = tween(700))
+            }
+        ){
             SelfLoginScreen(
-                context = context,
                 navController = navController,
-                mainViewModel = viewModel,
                 loginViewModel = loginViewModel
             )
         }

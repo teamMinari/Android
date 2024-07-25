@@ -54,8 +54,6 @@ fun Term(
     val routin by viewModel.routines.collectAsState()
     var text by remember { mutableStateOf("") }
     val preferencesManager = remember { PreferencesManager(context) }
-//    val category = remember { mutableStateOf("전체") }
-//    val tokens by loginViewModel.tokens.collectAsState()
     val accessToken = preferencesManager.getData("accessToken", "")
 
 

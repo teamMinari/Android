@@ -24,18 +24,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
-import com.nohjason.minari.navigation.bottombar.BottomBarScreen
+import com.nohjason.minari.navigation.bottombar.Screen
 import com.nohjason.minari.screens.quiz.data.TemporaryPoint
 import com.nohjason.minari.screens.quiz.data.Temporary_pointData
 import com.nohjason.minari.ui.theme.MinariBlue
@@ -49,7 +46,7 @@ fun QuizEndScreen(
 ){
     Column (modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,){
         IconButton(onClick = {
-            navController.navigate(BottomBarScreen.Home.rout)
+            navController.navigate(Screen.Home.rout)
             user.correct = 0
             },
             modifier = Modifier

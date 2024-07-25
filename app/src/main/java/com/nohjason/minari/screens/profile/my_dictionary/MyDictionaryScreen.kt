@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.profile.my_dictionary
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -49,6 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.nohjason.minari.R
+import com.nohjason.minari.screens.login.PreferencesManager
 import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariWhite
@@ -56,28 +58,21 @@ import com.nohjason.myapplication.network.MainViewModel
 
 @Composable
 fun MyDictionaryScreen(
+    context: Context,
     navController: NavHostController,
     viewModel: MainViewModel,
 ) {
+    val preferencesManager = remember { PreferencesManager(context) }
+    val accessToken = preferencesManager.getData("accessToken", "")
     LaunchedEffect(Unit) {
-        viewModel.fetchAllBookTerms()
+        viewModel.fetchAllBookTerms(accessToken)
     }
     val bookTerms by viewModel.books.collectAsState()
     var text by remember { mutableStateOf("") }
 
     Column {
         TopAppBar(
-            title = {
-//                MinariTextField(
-//                    modifier = Modifier
-//                        .height(25.dp)
-//                        .padding(end = 30.dp)
-//                        .fillMaxWidth()
-//                        .background(Color.Transparent, shape = CircleShape),
-//                    value = text,
-//                    onValueChange = { text = it }
-//                ) { }
-            },
+            title = {},
             backgroundColor = Color.White,
             navigationIcon = {
                 IconButton(onClick = { navController.popBackStack() }) {
@@ -85,46 +80,6 @@ fun MyDictionaryScreen(
                 }
             }
         )
-//        LazyVerticalStaggeredGrid(
-//            columns = StaggeredGridCells.Adaptive(190.dp),
-//            verticalItemSpacing = 10.dp,
-//            horizontalArrangement = Arrangement.spacedBy(10.dp),
-//            content = {
-//                items(bookTerms) { item ->
-//                    Box(
-//                        modifier = Modifier
-//                            .clickable {
-
-//                            }
-//                            .shadow(5.dp, RoundedCornerShape(10.dp))
-//                            .background(Color.White)
-//                            .padding(10.dp)
-//                    ) {
-//                        Column {
-//                            MinariText(text = item.termNm, size = 20)
-//                            if (item.isChecked) {
-//                                androidx.compose.material.Text(text = item.termDifficulty, color = Color.Red, fontWeight = FontWeight.Bold)
-//                            }
-//                            MinariText(
-//                                text = item.termExplain,
-//                                fontWeight = FontWeight.Light,
-//                                textAlign = TextAlign.Left,
-//                                size = 13,
-//                                maxLines = if (item.isChecked) Int.MAX_VALUE else 20,
-//                                overflow = TextOverflow.Ellipsis
-//                            )
-//                            Row {
-//                                Spacer(modifier = Modifier.weight(0.1f))
-//                            }
-//                        }
-//                    }
-//                }
-//            },
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(10.dp)
-//        )
-//------------------------------------------------------------
         LazyColumn(
             modifier = Modifier
                 .padding(10.dp)
@@ -164,7 +119,7 @@ fun MyDictionaryScreen(
                                 imageVector = Icons.Default.Clear,
                                 contentDescription = null,
                                 Modifier.clickable {
-                                    viewModel.addDelete(item.termNm)
+//                                    viewModel.addDelete(item.termNm, accessToken)
                                 }
                             )
                         }
@@ -177,57 +132,6 @@ fun MyDictionaryScreen(
                             )
                         }
                     }
-                }
-            }
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Test() {
-    Wow()
-}
-
-data class Test(
-    val id: Int,
-    val termNm: String,
-    val termDifficulty: String
-)
-
-fun generateDummyBookTerms(): List<Test> {
-    return listOf(
-        Test(1, "용어 1", "Lv_1"),
-        Test(2, "용어 2", "Lv_1"),
-        Test(3, "용어 3", "Lv_3"),
-        Test(4, "용어 4", "Lv_2"),
-        Test(5, "용어 5", "Lv_2")
-        // 필요에 따라 추가적으로 데이터를 생성할 수 있습니다.
-    )
-}
-
-@Composable()
-fun Wow() {
-    LazyColumn(
-        modifier = Modifier
-            .padding(10.dp)
-            .fillMaxSize()
-            .background(MinariWhite),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        items(generateDummyBookTerms()) { item ->
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(Color.White)
-                    .fillMaxWidth()
-                    .padding(10.dp)
-                    .clickable { }
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    MinariText(text = item.termNm, size = 20)
-                    Spacer(modifier = Modifier.width(10.dp))
-                    MinariText(text = item.termDifficulty, size = 10, color = Color.Red)
                 }
             }
         }

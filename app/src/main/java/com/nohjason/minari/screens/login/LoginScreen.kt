@@ -1,17 +1,21 @@
 package com.nohjason.minari.screens.login
 
-import android.content.Intent
-import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.activity.result.ActivityResult
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -20,76 +24,102 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
-import com.nohjason.minari.navigation.bottombar.BottomBarScreen
+import com.nohjason.minari.navigation.bottombar.Screen
 import com.nohjason.minari.screens.ui.line.MinariLine
 import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGray
+import com.nohjason.minari.ui.theme.pretendard_bold
+import com.nohjason.minari.ui.theme.pretendard_medium
+import com.nohjason.minari.ui.theme.rixfont
 
 @Composable
 fun LoginScreen(
     navController: NavHostController,
-    launcher: ManagedActivityResultLauncher<Intent, ActivityResult>,
-    googleSignInClient: GoogleSignInClient
+//    launcher: ManagedActivityResultLauncher<Intent, ActivityResult>,
+//    googleSignInClient: GoogleSignInClient
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.grape),
-            contentDescription = null,
-            tint = Color.Unspecified,
-        )
-
-        Spacer(modifier = Modifier.height(70.dp))
-
+        Spacer(modifier = Modifier.weight(0.3f))
         Row {
             Column {
-                MinariText(text = "choung", color = MinariBlue)
-                MinariText(text = "For", color = MinariBlue)
-                MinariText(text = "do", color = MinariBlue)
+                Icon(
+                    painter = painterResource(id = R.drawable.grape),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(60.dp)
+                )
+                Spacer(modifier = Modifier.height(7.dp))
             }
-
-            Spacer(modifier = Modifier.width(20.dp))
-
-            Column {
-                MinariText(text = "소년을",)
-                MinariText(text = "경제",)
-                MinariText(text = "도우미",)
-            }
+            MinariText(
+                text = "청포도",
+                color = MinariBlue,
+                fontFamily = rixfont,
+                size = 40,
+                modifier = Modifier.align(Alignment.Bottom)
+            )
         }
+        Text(text = "청소년을 위한 포켓 경제 도우미", fontSize = 17.sp, fontFamily = pretendard_medium)
 
-        Spacer(modifier = Modifier.height(200.dp))
 
-        //***test를 위해 잠시 버튼 넣겠습니다.***
-        Button(onClick = { navController.navigate("Login") }
-            ,colors = ButtonDefaults.buttonColors(containerColor = MinariBlue)
-            ,modifier = Modifier
-                .wrapContentSize()
-                .width(320.dp)
+        Spacer(modifier = Modifier.weight(0.3f))
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 35.dp)
+                .clip(CircleShape)
+                .background(MinariBlue)
+                .clickable { navController.navigate(Screen.Login.rout) },
         ) {
-            Text(text = "로그인")
+            Text(
+                text = "로그인",
+                color = Color.White,
+                fontFamily = pretendard_bold,
+                modifier = Modifier
+                    .padding(13.dp)
+                    .align(Alignment.Center)
+
+            )
         }
 
-        Text(
-            text = "SNS 로그인",
-            color = MinariGray,
-            fontSize = 15.sp
-        )
+        Spacer(modifier = Modifier.height(10.dp))
 
-        MinariLine(horizontalPadding = 30.dp)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 35.dp)
+                .clip(CircleShape)
+                .background(Color.White)
+                .clickable { navController.navigate(Screen.Login.rout) }
+                .border(1.dp, MinariBlue, shape = CircleShape),
+        ) {
+            Text(
+                text = "회원가입",
+                color = MinariBlue,
+                fontFamily = pretendard_bold,
+                modifier = Modifier
+                    .padding(13.dp)
+                    .align(Alignment.Center)
+
+            )
+        }
 
         IconButton(onClick = {
-            navController.navigate(BottomBarScreen.Home.rout) {
+            navController.navigate(Screen.Home.rout) {
                 popUpTo(navController.graph.id) {
                     inclusive = true
                 }
@@ -100,5 +130,12 @@ fun LoginScreen(
                 contentDescription = null
             )
         }
+        Spacer(modifier = Modifier.weight(0.2f))
     }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun Test() {
+    LoginScreen(navController = rememberNavController())
 }
