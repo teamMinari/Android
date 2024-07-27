@@ -1,9 +1,6 @@
-package com.nohjason.myapplication.network
+package com.nohjason.minari.network
 
-import android.content.Context
 import android.util.Log
-import androidx.compose.runtime.traceEventStart
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nohjason.minari.screens.profile.my_dictionary.model.DictionaryModel

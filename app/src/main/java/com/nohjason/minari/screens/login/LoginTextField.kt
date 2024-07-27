@@ -39,7 +39,7 @@ fun LoginTextField(
     Column (
         modifier = Modifier.width(320.dp)
     ){
-        Text(text = icon_name, color = Color(0xFF999999), fontWeight = FontWeight.Bold)
+//        Text(text = icon_name, color = Color(0xFF999999), fontWeight = FontWeight.Bold)
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {

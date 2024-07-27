@@ -1,6 +1,11 @@
 package com.nohjason.minari.screens.home
 
+import android.annotation.SuppressLint
+import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,8 +16,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -21,135 +34,322 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.home.news.News
-import com.nohjason.minari.screens.home.news.button.NewsCategoryButton
-import com.nohjason.minari.screens.home.words.RecommendWords
-import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.screens.ui.text.MinariTextField
-import com.nohjason.minari.ui.theme.MinariWhite
-import com.nohjason.myapplication.network.MainViewModel
+import com.nohjason.minari.ui.theme.MinariBlue
+import com.nohjason.minari.ui.theme.MinariGradation
+import com.nohjason.minari.ui.theme.pretendard_bold
+import com.nohjason.minari.ui.theme.pretendard_semibold
+import java.text.SimpleDateFormat
+import java.util.Date
 
+@SuppressLint("SimpleDateFormat")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
 ) {
-    var text by remember { mutableStateOf("") }
+    val now = System.currentTimeMillis()
+    val date = Date(now)
+    val sdf = SimpleDateFormat("yyyy-MM-dd")
+    val getTime = sdf.format(date)
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
+    LaunchedEffect(key1 = Unit) {
+        Log.d("TAG", "HomeScreen: $getTime")
+    }
+
+
+    var text by remember { mutableStateOf("") }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color.White,
+//                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = {
+                    MinariTextField(
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .background(Color.LightGray)
+                            .padding(6.dp),
+                        value = text,
+                        onValueChange = {text = it}
+                    ) {
+
+                    }
+                },
+                scrollBehavior = scrollBehavior,
+            )
+        }
+    ) { innerPadding ->
         Column(
             modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(innerPadding)
+                .fillMaxSize()
+                .background(Color(0xFFF5F6FA))
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(10.dp)
+            Box(
+                modifier = Modifier.height(200.dp)
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.grape),
-                    contentDescription = null,
-                    tint = Color.Unspecified,
-                    modifier = Modifier.size(35.dp)
-                )
-                MinariText(text = "청For도", size = 20)
-                Spacer(modifier = Modifier.fillMaxWidth())
+                Column {
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp))
+                            .weight(0.3f)
+                            .fillMaxWidth()
+                            .background(Color.White)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .align(Alignment.Center),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Image(
+                                modifier = Modifier.size(100.dp),
+                                painter = painterResource(R.drawable.image_27),
+                                contentDescription = null
+                            )
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    modifier = Modifier.padding(5.dp),
+                                    text = "경제의 시작"
+                                )
+                                Box(
+                                    modifier = Modifier
+                                        .size(50.dp)
+                                        .clip(CircleShape)
+                                        .border(4.dp, MinariBlue, CircleShape)
+                                ) {
+                                    Text(
+                                        modifier = Modifier.align(Alignment.Center),
+                                        text = "100%"
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height((55/2).dp))
+                }
+                Box(
+                    modifier = Modifier
+                        .drawColoredShadow(
+                            color = Color.Black,
+                            alpha = 0.3f,
+                            borderRadius = 100.dp,
+                            shadowRadius = 8.dp,
+                            offsetX = 5.dp,
+                            offsetY = 5.dp
+                        )
+                        .clip(CircleShape)
+                        .height(55.dp)
+                        .background(
+                            brush = Brush.linearGradient(
+                                colors = MinariGradation,
+                                start = androidx.compose.ui.geometry.Offset(1300f, 800f),
+                                end = androidx.compose.ui.geometry.Offset(0f, 0f),
+                            )
+                        )
+                        .align(Alignment.BottomCenter)
+                        .padding(horizontal = 70.dp)
+                        .clickable { }
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .align(Alignment.Center),
+                        text = "학습하러 가기",
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontFamily = pretendard_semibold
+                    )
+                }
             }
 
-            MinariTextField(
-                modifier = Modifier
-                    .height(30.dp)
-                    .padding(horizontal = 30.dp)
-                    .fillMaxWidth()
-                    .background(Color.Transparent, shape = CircleShape),
-                value = text,
-                onValueChange = { text = it },
-                onClick = { if (text.isNotEmpty()) navController.navigate("test/${text}") }
-            )
-
-            Box(
-                modifier = Modifier
-                    .padding(top = 10.dp)
-                    .fillMaxSize()
-                    .background(MinariWhite),
+            Column(
+                modifier = Modifier.padding(25.dp)
             ) {
-                Column(
+                Box(
                     modifier = Modifier
-                        .padding(horizontal = 20.dp, vertical = 10.dp)
-                        .fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .clip(RoundedCornerShape(20.dp))
+                        .fillMaxWidth()
+                        .background(Color.White)
+                        .padding(vertical = 15.dp, horizontal = 20.dp)
                 ) {
-                    RecommendWords(navController = navController)
-
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        NewsCategoryButton(
-                            image = painterResource(id = R.drawable.img_house),
-                            onClick = {},
-                            title = "부동산"
-                        )
-
-                        NewsCategoryButton(
-                            image = painterResource(id = R.drawable.img_chart),
-                            onClick = {},
-                            title = "증권"
-                        )
-
-                        NewsCategoryButton(
-                            image = painterResource(id = R.drawable.img_coin),
-                            onClick = {},
-                            title = "금융"
-                        )
-
-                        NewsCategoryButton(
-                            image = painterResource(id = R.drawable.img_folder),
-                            onClick = {},
-                            title = "채권"
-                        )
+                    Column {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                modifier = Modifier.padding(10.dp),
+                                painter = painterResource(id = R.drawable.mage_calendar),
+                                contentDescription = null,
+                                tint = Color.Unspecified
+                            )
+                            Text(
+                                text = "출석체크",
+                                fontSize = 15.sp,
+                                fontFamily = pretendard_semibold
+                            )
+                        }
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceAround
+                        ) {
+                            items(7) { item ->
+                                Text(
+                                    text = "$item",
+                                    fontSize = 17.sp,
+                                    fontFamily = pretendard_bold
+                                )
+                            }
+                        }
                     }
-
-                    Spacer(modifier = Modifier.height(20.dp))
-                    News()
                 }
             }
         }
     }
+
+//    Box(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .background(Color.White)
+//    ) {
+//        Column(
+//            modifier = Modifier
+//                .fillMaxSize(),
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ) {
+//            Row(
+//                verticalAlignment = Alignment.CenterVertically,
+//                modifier = Modifier.padding(10.dp)
+//            ) {
+//                Icon(
+//                    painter = painterResource(id = R.drawable.grape),
+//                    contentDescription = null,
+//                    tint = Color.Unspecified,
+//                    modifier = Modifier.size(35.dp)
+//                )
+//                MinariText(text = "청For도", size = 20)
+//                Spacer(modifier = Modifier.fillMaxWidth())
+//            }
+//
+//            MinariTextField(
+//                modifier = Modifier
+//                    .height(30.dp)
+//                    .padding(horizontal = 30.dp)
+//                    .fillMaxWidth()
+//                    .background(Color.Transparent, shape = CircleShape),
+//                value = text,
+//                onValueChange = { text = it },
+//                onClick = { if (text.isNotEmpty()) navController.navigate("test/${text}") }
+//            )
+//
+//            Box(
+//                modifier = Modifier
+//                    .padding(top = 10.dp)
+//                    .fillMaxSize()
+//                    .background(MinariWhite),
+//            ) {
+//                Column(
+//                    modifier = Modifier
+//                        .padding(horizontal = 20.dp, vertical = 10.dp)
+//                        .fillMaxSize(),
+//                    horizontalAlignment = Alignment.CenterHorizontally
+//                ) {
+//                    RecommendWords(navController = navController)
+//
+//                    Spacer(modifier = Modifier.height(20.dp))
+//                    Row(
+//                        modifier = Modifier.fillMaxWidth(),
+//                        horizontalArrangement = Arrangement.SpaceBetween
+//                    ) {
+//                        NewsCategoryButton(
+//                            image = painterResource(id = R.drawable.img_house),
+//                            onClick = {},
+//                            title = "부동산"
+//                        )
+//
+//                        NewsCategoryButton(
+//                            image = painterResource(id = R.drawable.img_chart),
+//                            onClick = {},
+//                            title = "증권"
+//                        )
+//
+//                        NewsCategoryButton(
+//                            image = painterResource(id = R.drawable.img_coin),
+//                            onClick = {},
+//                            title = "금융"
+//                        )
+//
+//                        NewsCategoryButton(
+//                            image = painterResource(id = R.drawable.img_folder),
+//                            onClick = {},
+//                            title = "채권"
+//                        )
+//                    }
+//
+//                    Spacer(modifier = Modifier.height(20.dp))
+//                    News()
+//                }
+//            }
+//        }
+//    }
+}
+
+fun Modifier.drawColoredShadow(
+    color: Color,
+    alpha: Float = 0.2f,
+    borderRadius: Dp = 0.dp,
+    shadowRadius: Dp = 20.dp,
+    offsetY: Dp = 0.dp,
+    offsetX: Dp = 0.dp
+) = this.drawBehind {
+    val transparentColor = android.graphics.Color.toArgb(color.copy(alpha = 0.0f).value.toLong())
+    val shadowColor = android.graphics.Color.toArgb(color.copy(alpha = alpha).value.toLong())
+    this.drawIntoCanvas {
+        val paint = Paint()
+        val frameworkPaint = paint.asFrameworkPaint()
+        frameworkPaint.color = transparentColor
+        frameworkPaint.setShadowLayer(
+            shadowRadius.toPx(),
+            offsetX.toPx(),
+            offsetY.toPx(),
+            shadowColor
+        )
+        it.drawRoundRect(
+            0f,
+            0f,
+            this.size.width,
+            this.size.height,
+            borderRadius.toPx(),
+            borderRadius.toPx(),
+            paint
+        )
+    }
 }
 
 
-@Preview(showBackground = true)
+@Preview(showSystemUi = true)
 @Composable
 fun PreviewHome() {
     HomeScreen(navController = rememberNavController())
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TestMinariTextField() {
-    var text by remember { mutableStateOf("") }
-    Box(modifier = Modifier.fillMaxSize()) {
-        MinariTextField(
-            value = text,
-            onValueChange = { text = it },
-            onClick = {},
-            modifier = Modifier
-                .height(30.dp)
-                .padding(horizontal = 30.dp)
-                .fillMaxWidth()
-                .background(MinariWhite, shape = CircleShape),
-        )
-    }
 }

@@ -1,18 +1,20 @@
-package com.nohjason.minari.screens.login.UI
+package com.nohjason.minari.screens.login.screen.login
 
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,79 +24,75 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.Screen
 import com.nohjason.minari.screens.login.LoginTextField
 import com.nohjason.minari.screens.login.LoginViewModel
 import com.nohjason.minari.screens.login.PreferencesManager
 import com.nohjason.minari.ui.theme.MinariBlue
+import com.nohjason.minari.ui.theme.poppins_regular
+import com.nohjason.minari.ui.theme.poppins_semibold
+import com.nohjason.minari.ui.theme.pretendard_bold
 
 @Composable
 fun SelfLoginScreen(
     navController: NavController,
     loginViewModel: LoginViewModel
 ) {
-    val poppinsFamily = FontFamily(
-        Font(R.font.poppins_semibold, FontWeight.SemiBold),
-        Font(R.font.poppins_medium, FontWeight.Medium),
-        Font(R.font.poppins_regular),
-        Font(R.font.poppins_bold, FontWeight.Bold),
-    )
+//    val poppinsFamily = FontFamily(
+//        Font(R.font.poppins_semibold, FontWeight.SemiBold),
+//        Font(R.font.poppins_medium, FontWeight.Medium),
+//        Font(R.font.poppins_regular),
+//        Font(R.font.poppins_bold, FontWeight.Bold),
+//    )
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .padding(start = 25.dp, top = 14.dp),
+            .fillMaxSize()
+            .padding(horizontal = 25.dp, vertical = 14.dp),
     ) {
         Image(
-            painterResource(id = R.drawable.grape), contentDescription = null,
-            modifier = Modifier
-                .width(21.dp)
-                .height(34.dp)
-                .padding(top = 0.dp, start = 0.dp)
+            painterResource(id = R.drawable.grape),
+            contentDescription = null,
+            modifier = Modifier.size(40.dp)
         )
+
+        Spacer(modifier = Modifier.weight(0.1f))
+
         Text(
             text = "로그인",
-            modifier = Modifier.padding(top = 55.dp),
-            style = androidx.compose.ui.text.TextStyle(
-                fontSize = 30.sp,
-                fontFamily = poppinsFamily,
-                fontWeight = FontWeight.SemiBold
-            )
+            fontFamily = poppins_semibold,
+            fontSize = 25.sp
         )
-
-
-        val annotatedText = buildAnnotatedString {
-            append("아직 회원가입을 하지 않으셨다면\n여기서 ")
-            pushStringAnnotation("SignUp", " 가입하세요")
-            withStyle(SpanStyle(color = MinariBlue, textDecoration = TextDecoration.Underline)) {
-                append("가입하세요")
-            }
-            pop()
-        }
-
         Text(
-            text = annotatedText,
+            text = "아직 회원가입을 하지 않았다면",
+            fontSize = 15.sp,
+            fontFamily = poppins_regular
+        )
+        Text(
+            text = "회원가입",
+            color = MinariBlue,
+            fontSize = 15.sp,
+            fontFamily = poppins_semibold,
             modifier = Modifier
-                .padding(top = 22.dp, bottom = 50.dp)
                 .clickable {
                     navController.navigate("Signup")
-                }
+                },
         )
+
+        Spacer(modifier = Modifier.weight(0.1f))
 
         var id by remember { mutableStateOf("") }
         LoginTextField(
@@ -108,6 +106,7 @@ fun SelfLoginScreen(
 
         }
 
+        Spacer(modifier = Modifier.weight(0.1f))
 
         var password by rememberSaveable { mutableStateOf("") }
         LoginTextField(
@@ -144,17 +143,45 @@ fun SelfLoginScreen(
             }
         }
 
-        Button(
-            onClick = {
-                loginViewModel.login(id = id, password = password)
-            },
-            colors = ButtonDefaults.buttonColors(containerColor = MinariBlue),
-            modifier = Modifier
-                .wrapContentSize()
-                .width(320.dp)
-                .padding(top = 95.dp, start = 60.dp)
+        var check by rememberSaveable { mutableStateOf(false) }
+        Row(
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "로그인")
+            Checkbox(checked = check, onCheckedChange = { check = it })
+            Text(text = "로그인 저장")
+            Spacer(modifier = Modifier.weight(0.1f))
+            Text(
+                text = "비밀번호를 잊으셨나요?",
+                modifier = Modifier.clickable {  }
+            )
         }
+
+        Spacer(modifier = Modifier.weight(0.1f))
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(CircleShape)
+                .background(MinariBlue)
+                .clickable { loginViewModel.login(id = id, password = password) }
+        ) {
+            Text(
+                text = "로그인",
+                color = Color.White,
+                fontFamily = pretendard_bold,
+                modifier = Modifier
+                    .padding(13.dp)
+                    .align(Alignment.Center)
+
+            )
+        }
+
+        Spacer(modifier = Modifier.weight(0.6f))
     }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun Test() {
+    SelfLoginScreen(navController = rememberNavController(), loginViewModel = viewModel())
 }

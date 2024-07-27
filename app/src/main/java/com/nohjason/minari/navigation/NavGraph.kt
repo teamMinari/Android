@@ -1,8 +1,8 @@
 package com.nohjason.minari.navigation
 
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,10 +27,13 @@ import com.nohjason.minari.screens.QizeScreen.QuizScreen_play
 import com.nohjason.minari.screens.profile.my_dictionary.MyDictionaryScreen
 import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.inproduct.InProduction
-import com.nohjason.minari.screens.login.LoginScreen
+import com.nohjason.minari.screens.login.screen.LoginScreen
 import com.nohjason.minari.screens.login.LoginViewModel
-import com.nohjason.minari.screens.login.UI.SelfLoginScreen
-import com.nohjason.minari.screens.login.UI.SelfSingUpScreen
+import com.nohjason.minari.screens.login.Test
+import com.nohjason.minari.screens.login.screen.login.SelfLoginScreen
+import com.nohjason.minari.screens.login.screen.signup.Questionnaire
+import com.nohjason.minari.screens.login.screen.signup.SelfSignUpLastScreen
+import com.nohjason.minari.screens.login.screen.signup.SelfSignUpScreen
 import com.nohjason.minari.screens.profile.ProfileScreen
 import com.nohjason.minari.screens.quiz.QuizEndScreen
 import com.nohjason.minari.screens.quiz.QuizScreen
@@ -38,7 +41,7 @@ import com.nohjason.minari.screens.quiz.data.QuestionData
 import com.nohjason.minari.screens.quiz.data.Temporary_pointData
 import com.nohjason.minari.screens.term.Term
 import com.nohjason.minari.screens.term.Test
-import com.nohjason.myapplication.network.MainViewModel
+import com.nohjason.minari.network.MainViewModel
 
 @Composable
 fun NavGraph(
@@ -66,10 +69,10 @@ fun NavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = Screen.FirstScreen.rout
+        startDestination = Test.FirstScreen.rout
     ) {
 
-        composable(Screen.FirstScreen.rout) {
+        composable(Test.FirstScreen.rout) {
             LoginScreen(
                 navController = navController,
 //                launcher = launcher,
@@ -94,7 +97,7 @@ fun NavGraph(
         }
         composable(Screen.MyDictionary.rout) {
             MyDictionaryScreen(
-                context,
+                context = context,
                 navController = navController,
                 viewModel = viewModel
             )
@@ -132,19 +135,78 @@ fun NavGraph(
         
 //        로그인
         composable(
-            route = Screen.Signup.rout,
+            route = Test.Signup.rout,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(700)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> -fullWidth },
+                    animationSpec = tween(700)
+                )
+            }
         ){
-            SelfSingUpScreen(
+            SelfSignUpScreen(
                 navController = navController
             )
         }
+
         composable(
-            route = Screen.Login.rout,
+            route = Test.Question.rout,
             enterTransition = {
-                fadeIn(animationSpec = tween(700))
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(700)
+                )
             },
             exitTransition = {
-                fadeOut(animationSpec = tween(700))
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> -fullWidth },
+                    animationSpec = tween(700)
+                )
+            }
+        ){
+            Questionnaire(
+                navController = navController
+            )
+        }
+
+        composable(
+            route = Test.LastSignup.rout,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(700)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> -fullWidth },
+                    animationSpec = tween(700)
+                )
+            }
+        ){
+            SelfSignUpLastScreen(
+                navController = navController
+            )
+        }
+
+        composable(
+            route = Test.Login.rout,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(700)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> -fullWidth },
+                    animationSpec = tween(700)
+                )
             }
         ){
             SelfLoginScreen(

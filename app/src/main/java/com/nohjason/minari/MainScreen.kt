@@ -11,9 +11,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.navigation.bottombar.BottomBar
 import com.nohjason.minari.navigation.NavGraph
-import com.nohjason.minari.navigation.bottombar.Screen
 import com.nohjason.minari.screens.login.LoginViewModel
-import com.nohjason.myapplication.network.MainViewModel
+import com.nohjason.minari.screens.login.Test
+import com.nohjason.minari.network.MainViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -28,10 +28,13 @@ fun MainScreen(
     Scaffold(
         bottomBar = {
             if (currentDestination?.route !in listOf(
-                    Screen.FirstScreen.rout,
-                    Screen.Login.rout,
-                    Screen.Signup.rout
-            )) {
+                    Test.FirstScreen.rout,
+                    Test.Login.rout,
+                    Test.Signup.rout,
+                    Test.Question.rout,
+                    Test.LastSignup.rout
+                )
+            ) {
                 BottomBar(
                     navController = navController,
                     navBackStackEntry = navBackStackEntry

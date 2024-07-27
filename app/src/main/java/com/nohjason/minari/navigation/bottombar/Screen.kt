@@ -14,24 +14,6 @@ sealed class Screen(
     val title: String,
     val icon: @Composable () -> ImageVector
 ) {
-    data object FirstScreen : Screen(
-        rout = "firstScreen",
-        title = "First",
-        icon = { Icons.Default.Lock }
-    )
-
-    data object Login : Screen(
-        rout = "login",
-        title = "Login",
-        icon = { Icons.Default.Lock }
-    )
-
-    data object Signup : Screen(
-        rout = "signup",
-        title = "Signup",
-        icon = { Icons.Default.Lock }
-    )
-
     data object Home : Screen(
         rout = "home",
         title = "Home",

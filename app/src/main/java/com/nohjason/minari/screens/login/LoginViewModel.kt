@@ -12,6 +12,8 @@ import com.nohjason.myapplication.network.RetrofitInstance.api
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 
 class LoginViewModel : ViewModel() {
     private val _loginResponse = MutableStateFlow<LoginResponse?>(null)
@@ -23,12 +25,33 @@ class LoginViewModel : ViewModel() {
                 val response = api.login(LoginRequest(id, password))
                 _loginResponse.value = response
                 Log.d("TAG", "login: 로그인 성공")
+            } catch (e: IOException) {
+                // 네트워크 연결 오류 처리
+                Log.e("TAG", "login: Network connection error", e)
+                _loginResponse.value = LoginResponse(
+                    success = false,
+                    status = "network_error",
+                    message = "Network connection error",
+                    data = listOf(Token("", ""))
+                )
+            } catch (e: HttpException) {
+                // 서버 응답 오류 처리
+                Log.e("TAG", "login: Server error ${e.code()}", e)
+                _loginResponse.value = LoginResponse(
+                    success = false,
+                    status = "server_error",
+                    message = "Server error: ${e.message()}",
+                    data = listOf(Token("", ""))
+                )
             } catch (e: Exception) {
-                // 오류 처리
-                Log.e("TAG", "login: $e", e)
-                _loginResponse.value = LoginResponse(success = false, status = "error", message = "error", data = listOf<Token>(
-                    Token("", "")
-                ))
+                // 일반적인 예외 처리
+                Log.e("TAG", "login: Unexpected error", e)
+                _loginResponse.value = LoginResponse(
+                    success = false,
+                    status = "error",
+                    message = "Unexpected error occurred",
+                    data = listOf(Token("", ""))
+                )
             }
         }
     }

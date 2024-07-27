@@ -1,4 +1,4 @@
-package com.nohjason.myapplication.network
+package com.nohjason.minari.network
 
 import com.nohjason.minari.network.response.AddDeleteTerm
 import com.nohjason.minari.network.response.BookResponse
