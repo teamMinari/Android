@@ -52,6 +52,10 @@ android {
 }
 
 dependencies {
+    // Pager
+    implementation ("com.google.accompanist:accompanist-pager:0.28.0")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.28.0")
+
     // EncryptedSharedPreferences
     implementation ("androidx.security:security-crypto:1.1.0-alpha06")
 
