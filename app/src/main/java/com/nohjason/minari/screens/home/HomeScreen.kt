@@ -23,7 +23,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -71,6 +74,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.nohjason.minari.R
+import com.nohjason.minari.screens.login.screen.signup.array
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGradation
@@ -314,16 +318,7 @@ fun HomeScreen(
                                 fontSize = 17.sp
                             )
                         }
-//                        LazyColumn(verticalArrangement = Arrangement.spacedBy(20.dp)) {
-//                            items(20) {
-//                                Box(
-//                                    modifier = Modifier
-//                                        .height(30.dp)
-//                                        .fillMaxWidth()
-//                                        .background(Color.Black)
-//                                )
-//                            }
-//                        }
+                        TodayTerm(list = listOf("test1", "test2", "test3", "test4", "test5"))
                     }
                 }
             }
@@ -331,91 +326,15 @@ fun HomeScreen(
     }
 }
 
-//    Box(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(Color.White)
-//    ) {
-//        Column(
-//            modifier = Modifier
-//                .fillMaxSize(),
-//            horizontalAlignment = Alignment.CenterHorizontally
-//        ) {
-//            Row(
-//                verticalAlignment = Alignment.CenterVertically,
-//                modifier = Modifier.padding(10.dp)
-//            ) {
-//                Icon(
-//                    painter = painterResource(id = R.drawable.grape),
-//                    contentDescription = null,
-//                    tint = Color.Unspecified,
-//                    modifier = Modifier.size(35.dp)
-//                )
-//                MinariText(text = "청For도", size = 20)
-//                Spacer(modifier = Modifier.fillMaxWidth())
-//            }
-//
-//            MinariTextField(
-//                modifier = Modifier
-//                    .height(30.dp)
-//                    .padding(horizontal = 30.dp)
-//                    .fillMaxWidth()
-//                    .background(Color.Transparent, shape = CircleShape),
-//                value = text,
-//                onValueChange = { text = it },
-//                onClick = { if (text.isNotEmpty()) navController.navigate("test/${text}") }
-//            )
-//
-//            Box(
-//                modifier = Modifier
-//                    .padding(top = 10.dp)
-//                    .fillMaxSize()
-//                    .background(MinariWhite),
-//            ) {
-//                Column(
-//                    modifier = Modifier
-//                        .padding(horizontal = 20.dp, vertical = 10.dp)
-//                        .fillMaxSize(),
-//                    horizontalAlignment = Alignment.CenterHorizontally
-//                ) {
-//                    RecommendWords(navController = navController)
-//
-//                    Spacer(modifier = Modifier.height(20.dp))
-//                    Row(
-//                        modifier = Modifier.fillMaxWidth(),
-//                        horizontalArrangement = Arrangement.SpaceBetween
-//                    ) {
-//                        NewsCategoryButton(
-//                            image = painterResource(id = R.drawable.img_house),
-//                            onClick = {},
-//                            title = "부동산"
-//                        )
-//
-//                        NewsCategoryButton(
-//                            image = painterResource(id = R.drawable.img_chart),
-//                            onClick = {},
-//                            title = "증권"
-//                        )
-//
-//                        NewsCategoryButton(
-//                            image = painterResource(id = R.drawable.img_coin),
-//                            onClick = {},
-//                            title = "금융"
-//                        )
-//
-//                        NewsCategoryButton(
-//                            image = painterResource(id = R.drawable.img_folder),
-//                            onClick = {},
-//                            title = "채권"
-//                        )
-//                    }
-//
-//                    Spacer(modifier = Modifier.height(20.dp))
-//                    News()
-//                }
-//            }
-//        }
-//    }
+@Composable
+private fun LazyItemScope.TodayTerm(list: List<String>) {
+    list.forEach {
+        Box(modifier = Modifier.size(100.dp)) {
+            Text(text = it, modifier = Modifier.align(Alignment.Center))
+        }
+    }
+}
+
 
 fun Modifier.drawColoredShadow(
     color: Color,
