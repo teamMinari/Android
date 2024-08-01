@@ -31,6 +31,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.rememberSwipeableState
@@ -81,6 +82,7 @@ import com.nohjason.minari.ui.theme.MinariGradation
 import com.nohjason.minari.ui.theme.pretendard_bold
 import com.nohjason.minari.ui.theme.pretendard_semibold
 import java.text.SimpleDateFormat
+import java.util.ArrayList
 import java.util.Date
 import kotlin.math.roundToInt
 
@@ -297,6 +299,7 @@ fun HomeScreen(
                 }
             }
             item {
+                var array by remember { mutableStateOf(mutableListOf("test1")) }
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(20.dp))
@@ -318,7 +321,16 @@ fun HomeScreen(
                                 fontSize = 17.sp
                             )
                         }
-                        TodayTerm(list = listOf("test1", "test2", "test3", "test4", "test5"))
+                        TodayTerm(list = array)
+                        Button(onClick = {
+                            array = array.toMutableList().apply {
+                                repeat(3) {
+                                    add("test${size + 1}")
+                                }
+                            }
+                        }) {
+                            Text(text = "더보기+")
+                        }
                     }
                 }
             }
@@ -327,7 +339,7 @@ fun HomeScreen(
 }
 
 @Composable
-private fun LazyItemScope.TodayTerm(list: List<String>) {
+private fun TodayTerm(list: MutableList<String>) {
     list.forEach {
         Box(modifier = Modifier.size(100.dp)) {
             Text(text = it, modifier = Modifier.align(Alignment.Center))
