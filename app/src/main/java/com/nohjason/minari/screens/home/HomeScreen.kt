@@ -1,15 +1,16 @@
 package com.nohjason.minari.screens.home
 
-import android.annotation.SuppressLint
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,24 +19,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyItemScope
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FractionalThreshold
-import androidx.compose.material.rememberSwipeableState
-import androidx.compose.material.swipeable
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -55,18 +44,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -75,32 +66,20 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.login.screen.signup.array
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGradation
-import com.nohjason.minari.ui.theme.pretendard_bold
+import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_semibold
-import java.text.SimpleDateFormat
-import java.util.ArrayList
-import java.util.Date
-import kotlin.math.roundToInt
+import java.time.LocalDate
+import java.time.temporal.WeekFields
+import java.util.Locale
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class, ExperimentalPagerApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
 ) {
-//    val now = System.currentTimeMillis()
-//    val date = Date(now)
-//    val sdf = SimpleDateFormat("yyyy-MM-dd")
-//    val getTime = sdf.format(date)
-//
-//    LaunchedEffect(key1 = Unit) {
-//        Log.d("TAG", "HomeScreen: $getTime")
-//    }
-
-
     var text by remember { mutableStateOf("") }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val context = LocalContext.current
@@ -147,50 +126,71 @@ fun HomeScreen(
                 .background(Color(0xFFF5F6FA))
         ) {
             item {
-                Box(
-                    modifier = Modifier.height(200.dp)
-                ) {
-                    Column {
-                        Box(
+                val animatedValue = remember { Animatable(0f) }
+
+                // 특정 값으로 색을 채우는 Animation
+                LaunchedEffect(Unit) {
+                    animatedValue.animateTo(
+                        targetValue = 360 * 0.5f,
+                        animationSpec = tween(durationMillis = 2000, easing = LinearEasing),
+                    )
+                }
+                Column {
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp))
+//                        .weight(0.3f)
+                            .fillMaxWidth()
+                            .background(Color.White)
+                    ) {
+                        Row(
                             modifier = Modifier
-                                .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp))
-                                .weight(0.3f)
-                                .fillMaxWidth()
-                                .background(Color.White)
+                                .align(Alignment.Center),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Row(
-                                modifier = Modifier
-                                    .align(Alignment.Center),
-                                verticalAlignment = Alignment.CenterVertically
+                            Image(
+                                modifier = Modifier.size(140.dp),
+                                painter = painterResource(R.drawable.image_27),
+                                contentDescription = null,
+                            )
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                Image(
-                                    modifier = Modifier.size(140.dp),
-                                    painter = painterResource(R.drawable.image_27),
-                                    contentDescription = null
+                                Text(
+                                    text = "경제의 시작"
                                 )
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally
+                                Canvas(
+                                    modifier = Modifier.size(130.dp),
                                 ) {
-                                    Text(
-                                        modifier = Modifier.padding(5.dp),
-                                        text = "경제의 시작"
+                                    val sizeArc = size / 1.75F
+                                    drawArc(
+                                        color = Color(0xFFE1E2E9),
+                                        startAngle = 0f,
+                                        sweepAngle = 360f,
+                                        useCenter = false,
+                                        topLeft = Offset(
+                                            (size.width - sizeArc.width) / 2f,
+                                            (size.height - sizeArc.height) / 2f
+                                        ),
+                                        size = sizeArc,
+                                        style = Stroke(width = 25f)
                                     )
-                                    Box(
-                                        modifier = Modifier
-                                            .size(70.dp)
-                                            .clip(CircleShape)
-                                            .border(4.dp, MinariBlue, CircleShape)
-                                    ) {
-                                        Text(
-                                            modifier = Modifier
-                                                .align(Alignment.Center),
-                                            text = "100%"
-                                        )
-                                    }
+
+                                    drawArc(
+                                        color = MinariBlue,
+                                        startAngle = 100f,
+                                        sweepAngle = animatedValue.value,
+                                        useCenter = false,
+                                        topLeft = Offset(
+                                            (size.width - sizeArc.width) / 2f,
+                                            (size.height - sizeArc.height) / 2f
+                                        ),
+                                        size = sizeArc,
+                                        style = Stroke(width = 25f, cap = StrokeCap.Round)
+                                    )
                                 }
                             }
                         }
-                        Spacer(modifier = Modifier.height((55 / 2).dp))
                     }
                     Box(
                         modifier = Modifier
@@ -203,6 +203,7 @@ fun HomeScreen(
                                 offsetY = 5.dp
                             )
                             .clip(CircleShape)
+                            .clickable { }
                             .height(55.dp)
                             .background(
                                 brush = Brush.linearGradient(
@@ -211,9 +212,9 @@ fun HomeScreen(
                                     end = androidx.compose.ui.geometry.Offset(0f, 0f),
                                 )
                             )
-                            .align(Alignment.BottomCenter)
+//                            .align(Alignment.BottomCenter)
                             .padding(horizontal = 70.dp)
-                            .clickable { }
+                            .align(Alignment.CenterHorizontally)
                     ) {
                         Text(
                             modifier = Modifier
@@ -228,110 +229,21 @@ fun HomeScreen(
             }
             item {
                 Column(
-                    modifier = Modifier.padding(25.dp)
+                    modifier = Modifier.padding(25.dp),
+                    verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(20.dp))
-                            .fillMaxWidth()
-                            .background(Color.White)
-                            .padding(vertical = 15.dp, horizontal = 20.dp)
-                    ) {
-                        Column {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.mage_calendar),
-                                    contentDescription = null,
-                                    tint = Color.Unspecified
-                                )
-                                Spacer(modifier = Modifier.width(10.dp))
-                                Text(
-                                    text = "출석체크",
-                                    fontSize = 15.sp,
-                                    fontFamily = pretendard_semibold
-                                )
-                                Spacer(modifier = Modifier.weight(0.1f))
-                                Icon(
-                                    modifier = Modifier
-                                        .rotate(180f)
-                                        .size(15.dp),
-                                    painter = painterResource(id = R.drawable.befor_arrow),
-                                    contentDescription = null
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(10.dp))
-                            LazyRow(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                items(7) { item ->
-                                    Text(
-                                        text = "$item",
-                                        fontSize = 17.sp,
-                                        fontFamily = pretendard_bold
-                                    )
-                                }
-                            }
-                        }
-                    }
+                    AttendanceCalendar()
                 }
             }
             item {
-                val pagerState = rememberPagerState()
-
-                HorizontalPager(
-                    count = 10, // 아이템 개수
-                    state = pagerState
-                ) { page ->
-                    // 페이지 내용
-                    Box(
-                        modifier = Modifier
-                            .padding(horizontal = 25.dp)
-                            .clip(RoundedCornerShape(20.dp))
-                            .fillMaxWidth()
-                            .height(150.dp)
-                            .background(Color.LightGray)
-                    ) {
-                        Text(text = "$page", modifier = Modifier.align(Alignment.Center))
-                    }
-                }
+                SwipeNews()
             }
             item {
-                var array by remember { mutableStateOf(mutableListOf("test1")) }
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .fillMaxWidth()
-                        .background(Color.White)
+                Column(
+                    modifier = Modifier.padding(25.dp),
+                    verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
-                    Column(
-                        modifier = Modifier.padding(20.dp)
-                    ) {
-                        Row {
-                            Icon(
-                                painter = painterResource(id = R.drawable.mdi_cards),
-                                contentDescription = null,
-                                tint = Color.Unspecified
-                            )
-                            Text(
-                                text = "오늘의 경제 단어",
-                                fontFamily = pretendard_semibold,
-                                fontSize = 17.sp
-                            )
-                        }
-                        TodayTerm(list = array)
-                        Button(onClick = {
-                            array = array.toMutableList().apply {
-                                repeat(3) {
-                                    add("test${size + 1}")
-                                }
-                            }
-                        }) {
-                            Text(text = "더보기+")
-                        }
-                    }
+                    TodayWords()
                 }
             }
         }
@@ -339,10 +251,181 @@ fun HomeScreen(
 }
 
 @Composable
-private fun TodayTerm(list: MutableList<String>) {
+private fun AttendanceCalendar() {
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(20.dp))
+            .fillMaxWidth()
+            .background(Color.White)
+            .padding(vertical = 15.dp, horizontal = 20.dp)
+    ) {
+        Column {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.mage_calendar),
+                    contentDescription = null,
+                    tint = Color.Unspecified
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = "출석체크",
+                    fontSize = 15.sp,
+                    fontFamily = pretendard_semibold
+                )
+                Spacer(modifier = Modifier.weight(0.1f))
+                Icon(
+                    modifier = Modifier
+                        .rotate(180f)
+                        .size(15.dp),
+                    painter = painterResource(id = R.drawable.befor_arrow),
+                    contentDescription = null
+                )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+
+            val currentWeek = remember { getCurrentWeek() }
+            val today = LocalDate.now()
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                currentWeek.forEach { date ->
+                    val backgroundColor = if (date == today) Color.Blue else Color.Transparent
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .background(color = backgroundColor),
+                    ) {
+                        Text(
+                            text = date.dayOfMonth.toString(),
+                            modifier = Modifier.align(Alignment.Center),
+                            fontFamily = pretendard_semibold,
+                            fontSize = 17.sp,
+                            color = if (date == today) Color.White else Color.Black
+                        )
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+fun getCurrentWeek(): List<LocalDate> {
+    val today = LocalDate.now()
+    val weekFields = WeekFields.of(Locale.getDefault())
+    val firstDayOfWeek = today.with(weekFields.dayOfWeek(), 1)
+    return List(7) { i -> firstDayOfWeek.plusDays(i.toLong()) }
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+private fun SwipeNews() {
+    val pagerState = rememberPagerState()
+    HorizontalPager(
+        count = 10, // 아이템 개수
+        state = pagerState,
+        itemSpacing = 20.dp // 페이지 간의 간격을 설정
+    ) { page ->
+        // 페이지 내용
+        Row {
+            Spacer(modifier = Modifier.width(25.dp))
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(20.dp))
+                    .weight(0.1f)
+                    .height(150.dp)
+                    .background(Color.LightGray),
+            ) {
+                Text(text = "$page", modifier = Modifier.align(Alignment.Center))
+            }
+            Spacer(modifier = Modifier.width(25.dp))
+        }
+    }
+}
+
+@Composable
+private fun TodayWords() {
+    var array by remember {
+        mutableStateOf(
+            mutableListOf(
+                "가산금리",
+                "추가경정예산",
+                "금리",
+                "추정손실"
+            )
+        )
+    }
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(20.dp))
+            .fillMaxWidth()
+            .background(Color.White)
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp)
+        ) {
+            Row {
+                Icon(
+                    painter = painterResource(id = R.drawable.mdi_cards),
+                    contentDescription = null,
+                    tint = Color.Unspecified
+                )
+                Text(
+                    text = "오늘의 경제 단어",
+                    fontFamily = pretendard_semibold,
+                    fontSize = 17.sp
+                )
+            }
+            EconomyTerm(list = array)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        array = array
+                            .toMutableList()
+                            .apply {
+                                repeat(3) {
+                                    add("test${size + 1}")
+                                }
+                            }
+                    }
+            ) {
+                Text(
+                    text = "더보기+",
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun EconomyTerm(list: MutableList<String>) {
     list.forEach {
-        Box(modifier = Modifier.size(100.dp)) {
-            Text(text = it, modifier = Modifier.align(Alignment.Center))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = it,
+                    modifier = Modifier.padding(vertical = 10.dp),
+                    fontFamily = pretendard_medium,
+                    fontSize = 16.sp
+                )
+                Spacer(modifier = Modifier.weight(0.1f))
+                Icon(
+                    painter = painterResource(id = R.drawable.minari_hart),
+                    contentDescription = null,
+                    tint = Color.Unspecified
+                )
+            }
         }
     }
 }
