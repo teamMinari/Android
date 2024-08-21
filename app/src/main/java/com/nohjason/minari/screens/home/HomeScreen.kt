@@ -1,8 +1,10 @@
 package com.nohjason.minari.screens.home
 
+import android.os.Build
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -22,13 +24,21 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -55,11 +65,13 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -119,6 +131,61 @@ fun HomeScreen(
             )
         }
     ) { innerPadding ->
+        var openDialog by remember { mutableStateOf(true) }
+
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(onClick = { openDialog = true }) {
+                Text("다이얼로그 열기")
+            }
+        }
+
+        if (openDialog) {
+            Dialog(onDismissRequest = { openDialog = false }) {
+                Surface(
+                    shape = RoundedCornerShape(16.dp),
+                    color = Color.White, // 배경색 설정
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        val dateNow = LocalDate.now()
+                        CalendarMonthItem(currentDate = dateNow)
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(5.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(Color.Gray)
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 30.dp, vertical = 10.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.party_icon),
+                                    contentDescription = null,
+                                    tint = Color.Unspecified,
+                                    modifier = Modifier
+                                        .size(70.dp)
+                                )
+                                Column {
+                                    Text(
+                                        text = "이번 달 출석 횟수는",
+                                    )
+                                    Text(text = "총 6회!")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -426,6 +493,90 @@ private fun EconomyTerm(list: MutableList<String>) {
                     tint = Color.Unspecified
                 )
             }
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun CalendarMonthItem(
+    modifier: Modifier = Modifier,
+    currentDate: LocalDate,
+) {
+    val lastDay by remember { mutableStateOf(currentDate.lengthOfMonth()) }
+    val firstDayOfWeek by remember { mutableStateOf(currentDate.dayOfWeek.value) }
+    val days by remember { mutableStateOf(IntRange(1, lastDay).toList()) }
+
+    Column(modifier = Modifier) {
+        val list = listOf("일", "월", "화", "수", "목", "금", "토")
+        LazyRow(
+            Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            items(list) { item ->
+                Text(
+                    text = "$item",
+                    fontSize = 15.sp,
+                    color = Color(0xFF959599)
+                )
+            }
+        }
+        LazyVerticalGrid(columns = GridCells.Fixed(7)) {
+            // 처음 날짜가 시작하는 요일 전까지 빈 박스를 생성한다.
+            for (i in 1..7 - firstDayOfWeek) { // 처음 날짜가 시작하는 요일 전까지 빈 박스 생성
+                item {
+                    Box(
+                        modifier = Modifier
+                            .size(30.dp)
+                            .padding(top = 10.dp)
+                    )
+                }
+            }
+            items(days) { day ->
+                // 이번 달의 날짜를 day로 치환하여 CalendarDay로 넘긴다.
+                val date = currentDate.withDayOfMonth(day)
+                CalendarDay(
+                    modifier = Modifier.padding(top = 10.dp),
+                    date = date,
+                    isToday = date == LocalDate.now(),
+                )
+            }
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun CalendarDay(
+    modifier: Modifier = Modifier,
+    date: LocalDate,
+    isToday: Boolean,
+) {
+    val hasEvent = false // TODO
+    Column(
+        modifier = modifier
+            .wrapContentSize()
+            .size(30.dp)
+            .clip(shape = CircleShape)
+            .background(if (isToday) Color(0xFFA4A6F2) else Color.Unspecified),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+
+    ) {
+        Text(
+            modifier = Modifier,
+            textAlign = TextAlign.Center,
+            text = date.dayOfMonth.toString(),
+            color = if (isToday) Color.White else Color.Black,
+            fontSize = 15.sp,
+            fontWeight = FontWeight.Bold
+        )
+        if (hasEvent) {
+            Box(
+                modifier = Modifier
+                    .size(4.dp)
+                    .clip(shape = RoundedCornerShape(4.dp))
+            )
         }
     }
 }

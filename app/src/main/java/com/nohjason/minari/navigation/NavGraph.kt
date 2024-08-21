@@ -49,20 +49,20 @@ fun NavGraph(
     viewModel: MainViewModel,
     loginViewModel: LoginViewModel
 ) {
-    val auth = Firebase.auth
-    var user by remember { mutableStateOf(auth.currentUser) }
-    val launcher = rememberFirebaseAuthLauncher(onAuthComplete = { result ->
-        user = result.user
-    }, onAuthError = {
-        user = null
-    })
-    val token = stringResource(R.string.default_web_client_id)
+//    val auth = Firebase.auth
+//    var user by remember { mutableStateOf(auth.currentUser) }
+//    val launcher = rememberFirebaseAuthLauncher(onAuthComplete = { result ->
+//        user = result.user
+//    }, onAuthError = {
+//        user = null
+//    })
+//    val token = stringResource(R.string.default_web_client_id)
     val context = LocalContext.current
-
-    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(token)
-        .requestEmail().build()
-    val googleSignInClient = GoogleSignIn.getClient(context, gso)
-
+//
+//    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(token)
+//        .requestEmail().build()
+//    val googleSignInClient = GoogleSignIn.getClient(context, gso)
+//
     val question = QuestionData.getQuestion()
     val dummyUser = Temporary_pointData.getPoint()
 
