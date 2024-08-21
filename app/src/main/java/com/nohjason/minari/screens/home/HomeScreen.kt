@@ -1,6 +1,7 @@
 package com.nohjason.minari.screens.home
 
 import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -11,7 +12,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -62,7 +62,6 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -178,7 +177,7 @@ fun HomeScreen(
                                     Text(
                                         text = "이번 달 출석 횟수는",
                                     )
-                                    Text(text = "총 6회!")
+                                    Text(text = "총 n회!")
                                 }
                             }
                         }
@@ -299,7 +298,9 @@ fun HomeScreen(
                     modifier = Modifier.padding(25.dp),
                     verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
-                    AttendanceCalendar()
+                    AttendanceCalendar(
+                        onClick = {openDialog = true}
+                    )
                 }
             }
             item {
@@ -318,12 +319,15 @@ fun HomeScreen(
 }
 
 @Composable
-private fun AttendanceCalendar() {
+private fun AttendanceCalendar(
+    onClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(20.dp))
             .fillMaxWidth()
             .background(Color.White)
+            .clickable { onClick() }
             .padding(vertical = 15.dp, horizontal = 20.dp)
     ) {
         Column {
