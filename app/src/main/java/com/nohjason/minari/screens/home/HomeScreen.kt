@@ -1,23 +1,20 @@
 package com.nohjason.minari.screens.home
 
 import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,17 +30,14 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,12 +48,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -70,7 +61,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -78,7 +68,6 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.ui.text.MinariTextField
-import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGradation
 import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_semibold
@@ -130,61 +119,6 @@ fun HomeScreen(
             )
         }
     ) { innerPadding ->
-        var openDialog by remember { mutableStateOf(true) }
-
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Button(onClick = { openDialog = true }) {
-                Text("다이얼로그 열기")
-            }
-        }
-
-        if (openDialog) {
-            Dialog(onDismissRequest = { openDialog = false }) {
-                Surface(
-                    shape = RoundedCornerShape(16.dp),
-                    color = Color.White, // 배경색 설정
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        val dateNow = LocalDate.now()
-                        CalendarMonthItem(currentDate = dateNow)
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(5.dp)
-                                .clip(RoundedCornerShape(10.dp))
-                                .background(Color.Gray)
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(horizontal = 30.dp, vertical = 10.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.party_icon),
-                                    contentDescription = null,
-                                    tint = Color.Unspecified,
-                                    modifier = Modifier
-                                        .size(70.dp)
-                                )
-                                Column {
-                                    Text(
-                                        text = "이번 달 출석 횟수는",
-                                    )
-                                    Text(text = "총 n회!")
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -192,20 +126,10 @@ fun HomeScreen(
                 .background(Color(0xFFF5F6FA))
         ) {
             item {
-                val animatedValue = remember { Animatable(0f) }
-
-                // 특정 값으로 색을 채우는 Animation
-                LaunchedEffect(Unit) {
-                    animatedValue.animateTo(
-                        targetValue = 360 * 0.5f,
-                        animationSpec = tween(durationMillis = 2000, easing = LinearEasing),
-                    )
-                }
                 Column {
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp))
-//                        .weight(0.3f)
                             .fillMaxWidth()
                             .background(Color.White)
                     ) {
@@ -225,36 +149,6 @@ fun HomeScreen(
                                 Text(
                                     text = "경제의 시작"
                                 )
-                                Canvas(
-                                    modifier = Modifier.size(130.dp),
-                                ) {
-                                    val sizeArc = size / 1.75F
-                                    drawArc(
-                                        color = Color(0xFFE1E2E9),
-                                        startAngle = 0f,
-                                        sweepAngle = 360f,
-                                        useCenter = false,
-                                        topLeft = Offset(
-                                            (size.width - sizeArc.width) / 2f,
-                                            (size.height - sizeArc.height) / 2f
-                                        ),
-                                        size = sizeArc,
-                                        style = Stroke(width = 25f)
-                                    )
-
-                                    drawArc(
-                                        color = MinariBlue,
-                                        startAngle = 100f,
-                                        sweepAngle = animatedValue.value,
-                                        useCenter = false,
-                                        topLeft = Offset(
-                                            (size.width - sizeArc.width) / 2f,
-                                            (size.height - sizeArc.height) / 2f
-                                        ),
-                                        size = sizeArc,
-                                        style = Stroke(width = 25f, cap = StrokeCap.Round)
-                                    )
-                                }
                             }
                         }
                     }
@@ -298,8 +192,10 @@ fun HomeScreen(
                     modifier = Modifier.padding(25.dp),
                     verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
-                    AttendanceCalendar(
-                        onClick = {openDialog = true}
+                    XpBar(
+                        progress = 123f,
+                        maxProgress = 200f,
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
             }
@@ -319,77 +215,68 @@ fun HomeScreen(
 }
 
 @Composable
-private fun AttendanceCalendar(
-    onClick: () -> Unit
+fun XpBar(
+    progress: Float,
+    maxProgress: Float,
+    modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
-            .clip(RoundedCornerShape(20.dp))
+        modifier = modifier
+            .height(40.dp)
             .fillMaxWidth()
-            .background(Color.White)
-            .clickable { onClick() }
-            .padding(vertical = 15.dp, horizontal = 20.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .background(Color.LightGray)
     ) {
-        Column {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.mage_calendar),
-                    contentDescription = null,
-                    tint = Color.Unspecified
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = "출석체크",
-                    fontSize = 15.sp,
-                    fontFamily = pretendard_semibold
-                )
-                Spacer(modifier = Modifier.weight(0.1f))
-                Icon(
-                    modifier = Modifier
-                        .rotate(180f)
-                        .size(15.dp),
-                    painter = painterResource(id = R.drawable.befor_arrow),
-                    contentDescription = null
-                )
-            }
-            Spacer(modifier = Modifier.height(10.dp))
+        // Progress Bar
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth(progress / maxProgress)
+                .clip(RoundedCornerShape(20.dp))
+                .background(Color(0xFF7CFC00))  // 밝은 녹색
+        )
 
-            val currentWeek = remember { getCurrentWeek() }
-            val today = LocalDate.now()
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                currentWeek.forEach { date ->
-                    val backgroundColor = if (date == today) Color.Blue else Color.Transparent
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clip(CircleShape)
-                            .background(color = backgroundColor),
-                    ) {
-                        Text(
-                            text = date.dayOfMonth.toString(),
-                            modifier = Modifier.align(Alignment.Center),
-                            fontFamily = pretendard_semibold,
-                            fontSize = 17.sp,
-                            color = if (date == today) Color.White else Color.Black
-                        )
-                    }
-                }
-            }
-
+        // Start Circle with Number
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(CircleShape)
+                .background(Color(0xFF7CFC00))  // 밝은 녹색
+                .align(Alignment.CenterStart),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "16",
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
         }
-    }
-}
 
-fun getCurrentWeek(): List<LocalDate> {
-    val today = LocalDate.now()
-    val weekFields = WeekFields.of(Locale.getDefault())
-    val firstDayOfWeek = today.with(weekFields.dayOfWeek(), 1)
-    return List(7) { i -> firstDayOfWeek.plusDays(i.toLong()) }
+        // End Circle with Number
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(CircleShape)
+                .background(Color.White)
+                .border(2.dp, Color.LightGray, CircleShape)
+                .align(Alignment.CenterEnd),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "17",
+                color = Color.Black,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        // XP Text
+        Text(
+            text = "$progress",
+            modifier = Modifier.align(Alignment.Center),
+            color = Color.Black,
+            fontWeight = FontWeight.Bold
+        )
+    }
 }
 
 @OptIn(ExperimentalPagerApi::class)
@@ -500,91 +387,6 @@ private fun EconomyTerm(list: MutableList<String>) {
         }
     }
 }
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun CalendarMonthItem(
-    modifier: Modifier = Modifier,
-    currentDate: LocalDate,
-) {
-    val lastDay by remember { mutableStateOf(currentDate.lengthOfMonth()) }
-    val firstDayOfWeek by remember { mutableStateOf(currentDate.dayOfWeek.value) }
-    val days by remember { mutableStateOf(IntRange(1, lastDay).toList()) }
-
-    Column(modifier = Modifier) {
-        val list = listOf("일", "월", "화", "수", "목", "금", "토")
-        LazyRow(
-            Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-            items(list) { item ->
-                Text(
-                    text = "$item",
-                    fontSize = 15.sp,
-                    color = Color(0xFF959599)
-                )
-            }
-        }
-        LazyVerticalGrid(columns = GridCells.Fixed(7)) {
-            // 처음 날짜가 시작하는 요일 전까지 빈 박스를 생성한다.
-            for (i in 1..7 - firstDayOfWeek) { // 처음 날짜가 시작하는 요일 전까지 빈 박스 생성
-                item {
-                    Box(
-                        modifier = Modifier
-                            .size(30.dp)
-                            .padding(top = 10.dp)
-                    )
-                }
-            }
-            items(days) { day ->
-                // 이번 달의 날짜를 day로 치환하여 CalendarDay로 넘긴다.
-                val date = currentDate.withDayOfMonth(day)
-                CalendarDay(
-                    modifier = Modifier.padding(top = 10.dp),
-                    date = date,
-                    isToday = date == LocalDate.now(),
-                )
-            }
-        }
-    }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun CalendarDay(
-    modifier: Modifier = Modifier,
-    date: LocalDate,
-    isToday: Boolean,
-) {
-    val hasEvent = false // TODO
-    Column(
-        modifier = modifier
-            .wrapContentSize()
-            .size(30.dp)
-            .clip(shape = CircleShape)
-            .background(if (isToday) Color(0xFFA4A6F2) else Color.Unspecified),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-
-    ) {
-        Text(
-            modifier = Modifier,
-            textAlign = TextAlign.Center,
-            text = date.dayOfMonth.toString(),
-            color = if (isToday) Color.White else Color.Black,
-            fontSize = 15.sp,
-            fontWeight = FontWeight.Bold
-        )
-        if (hasEvent) {
-            Box(
-                modifier = Modifier
-                    .size(4.dp)
-                    .clip(shape = RoundedCornerShape(4.dp))
-            )
-        }
-    }
-}
-
 
 fun Modifier.drawColoredShadow(
     color: Color,

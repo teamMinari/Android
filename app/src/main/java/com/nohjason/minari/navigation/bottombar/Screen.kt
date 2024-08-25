@@ -26,10 +26,10 @@ sealed class Screen(
         icon = { Icons.Default.Person }
     )
 
-    data object Term : Screen(
-        rout = "term",
-        title = "Term",
-        icon = { ImageVector.vectorResource(id = R.drawable.term) }
+    data object News : Screen(
+        rout = "news",
+        title = "News",
+        icon = { ImageVector.vectorResource(id = R.drawable.news) }
     )
 
     data object MyDictionary : Screen(
@@ -42,5 +42,11 @@ sealed class Screen(
         rout = "quiz",
         title = "Quiz",
         icon = { ImageVector.vectorResource(id = R.drawable.quiz) }
+    )
+
+    data object Rout : Screen(
+        rout = "rout",
+        title = "Rout",
+        icon = { ImageVector.vectorResource(id = R.drawable.rout) }
     )
 }

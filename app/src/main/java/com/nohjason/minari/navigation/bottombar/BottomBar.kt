@@ -21,13 +21,13 @@ fun BottomBar(
     navBackStackEntry: NavBackStackEntry?
 ) {
     val screens = listOf(
-        Screen.Term,
+        Screen.Rout,
+        Screen.News,
         Screen.Home,
         Screen.Quiz,
         Screen.Profile,
     )
 
-//    val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
     BottomNavigation {
@@ -50,7 +50,6 @@ fun RowScope.AddItem(
     BottomNavigationItem(
         label = {
             Text(text = screen.title)
-//            Text(text = "")
         },
         icon = {
             Icon(

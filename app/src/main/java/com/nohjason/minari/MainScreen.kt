@@ -32,7 +32,7 @@ fun MainScreen(
                     Test.Login.rout,
                     Test.Signup.rout,
                     Test.Question.rout,
-                    Test.LastSignup.rout
+                    Test.LastSignup.rout,
                 )
             ) {
                 BottomBar(

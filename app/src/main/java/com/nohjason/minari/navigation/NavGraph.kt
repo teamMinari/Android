@@ -4,22 +4,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.nohjason.minari.R
 //import com.nohjason.minari.R
-import com.nohjason.minari.firebase.rememberFirebaseAuthLauncher
 import com.nohjason.minari.navigation.bottombar.Screen
 import com.nohjason.minari.screens.QizeScreen.Commentary_CorrectO
 import com.nohjason.minari.screens.QizeScreen.Commentary_CorrectX
@@ -42,6 +31,8 @@ import com.nohjason.minari.screens.quiz.data.Temporary_pointData
 import com.nohjason.minari.screens.term.Term
 import com.nohjason.minari.screens.term.Test
 import com.nohjason.minari.network.MainViewModel
+import com.nohjason.minari.screens.news.News
+import com.nohjason.minari.screens.rout.Rout
 
 @Composable
 fun NavGraph(
@@ -89,13 +80,13 @@ fun NavGraph(
         composable(Screen.Profile.rout) {
             ProfileScreen(navController = navController)
         }
-        composable(Screen.Term.rout) {
-            Term(
-                context = context,
-                navController = navController,
-                viewModel = viewModel,
-            )
+        composable(Screen.News.rout) {
+            News()
         }
+        composable(Screen.Rout.rout) {
+            Rout()
+        }
+
         composable(Screen.MyDictionary.rout) {
             MyDictionaryScreen(
                 context = context,
