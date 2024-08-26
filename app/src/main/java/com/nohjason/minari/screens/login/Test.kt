@@ -28,4 +28,9 @@ sealed class Test(
         rout = "lastsignup",
         title = "LastSignup",
     )
+
+    data object Style : Test(
+        rout = "userstyle",
+        title = "UserStyle",
+    )
 }

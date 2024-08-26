@@ -32,6 +32,7 @@ import com.nohjason.minari.screens.term.Term
 import com.nohjason.minari.screens.term.Test
 import com.nohjason.minari.network.MainViewModel
 import com.nohjason.minari.screens.news.News
+import com.nohjason.minari.screens.profile.name_style.Style
 import com.nohjason.minari.screens.rout.Rout
 
 @Composable
@@ -105,6 +106,13 @@ fun NavGraph(
             InProduction(title = title, value = value)
         }
 
+        // 칭호
+        composable(Test.Style.rout) {
+            Style(
+                navController = navController,
+            )
+        }
+
 
         //퀴즈
         composable("quizStartRoute") {
@@ -125,7 +133,7 @@ fun NavGraph(
             QuizEndScreen(navController = navController, user = dummyUser)
         }
         
-//        로그인
+        // 로그인
         composable(
             route = Test.Signup.rout,
             enterTransition = {

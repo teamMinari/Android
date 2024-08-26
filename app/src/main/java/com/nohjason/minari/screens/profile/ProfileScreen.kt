@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,11 +18,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,25 +36,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.Screen
-import com.nohjason.minari.screens.ui.text.MinariText
-import com.nohjason.minari.ui.theme.MinariGradation
 import com.nohjason.minari.ui.theme.MinariWhite
 import com.nohjason.minari.network.MainViewModel
+import com.nohjason.minari.screens.home.XpBar
+import com.nohjason.minari.screens.login.Test
+import com.nohjason.minari.ui.theme.MinariBlue
+import com.nohjason.minari.ui.theme.pretendard_medium
+import com.nohjason.minari.ui.theme.pretendard_semibold
 
 sealed class Menu(
     val title: String,
@@ -89,192 +93,247 @@ fun ProfileScreen(
         }
     )
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(MinariWhite)
+            .padding(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        /* 프로필 박스 */
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(0.dp, 0.dp, 50.dp, 50.dp))
-                .height(170.dp)
-                .align(Alignment.CenterHorizontally)
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = MinariGradation,
-                        start = androidx.compose.ui.geometry.Offset(1300f, 800f),
-                        end = androidx.compose.ui.geometry.Offset(300f, 0f),
-                    ),
+        item {
+            Row {
+                Spacer(modifier = Modifier.weight(0.1f))
+                Icon(
+                    painter = painterResource(id = R.drawable.signout),
+                    contentDescription = null
                 )
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(5.dp)
-            ) {
-                Row {
-                    Spacer(modifier = Modifier.weight(0.1f))
-                    Box(
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .background(Color.White)
-                            .padding(horizontal = 10.dp, vertical = 1.dp)
-                    ) {
-                        MinariText(text = "로그아웃", size = 9, color = Color(0xFF7C21E9))
-                    }
-                }
-                Row {
-                    Box(modifier = Modifier.padding(20.dp)) {
-                        val textStyle = TextStyle(color = Color.White)
-                        Column {
-                            Text(text = "소비대왕", style = textStyle, fontWeight = FontWeight.SemiBold)
-                            MinariText(text = "박지민", size = 27, color = Color.White)
-                            MinariText(
-                                text = "rhdiddl6691@gmail.com",
-                                color = Color.White,
-                                fontWeight = FontWeight.Light,
-                                size = 10
-                            )
-                            Divider(
-                                color = Color.White,
-                                thickness = 1.dp,
-                                modifier = Modifier
-                                    .padding(vertical = 3.dp)
-                                    .width(150.dp)
-                            )
-                            MinariText(
-                                text = "관심 주제: " + "선택한 카테고리",
-                                color = Color.White,
-                                fontWeight = FontWeight.Light,
-                                size = 10
-                            )
-                        }
-                    }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(10.dp)
-                    ) {
-                        Box(modifier = Modifier.align(Alignment.Center)) {
-                            AsyncImage(
-                                model = if(selectedImageUri == null) R.drawable.default_profile else selectedImageUri,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(100.dp)
-                                    .clip(CircleShape),
-                                contentScale = ContentScale.Crop
-                            )
-                            Image(
-                                painter = painterResource(id = R.drawable.profile_fix),
-                                contentDescription = "profile fix",
-                                modifier = Modifier
-                                    .align(Alignment.BottomEnd)
-                                    .clickable {
-                                        singlePhotoPickerLauncher.launch(
-                                            PickVisualMediaRequest(
-                                                ActivityResultContracts.PickVisualMedia.ImageOnly
-                                            )
-                                        )
-                                        Log.d("TAG", "ProfileScreen: $selectedImageUri")
-                                    }
-                            )
-                        }
-                    }
-                }
             }
-        }
-
-        Box(modifier = Modifier.padding(10.dp)) {
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .clickable {
+                        singlePhotoPickerLauncher.launch(
+                            PickVisualMediaRequest(
+                                ActivityResultContracts.PickVisualMedia.ImageOnly
+                            )
+                        )
+                    }
+            ) {
+                AsyncImage(
+                    model = if(selectedImageUri == null) R.drawable.default_profile else selectedImageUri,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(150.dp)
+                        .clip(CircleShape),
+                )
+            }
             Column(
                 modifier = Modifier.padding(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row {
-                    MinariText(text = "My 포인트", size = 15)
-                    Spacer(modifier = Modifier.weight(0.5f))
-                }
-
-                MinariText(text = "1,440P", size = 40, modifier = Modifier.padding(30.dp))
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp)
-                        .clip(RoundedCornerShape(15.dp))
-                        .background(Color.White)
+                val test = listOf("금융", "글로벌 경제", "채권")
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    LazyRow(
+                    val name = "박지민"
+                    val userStyle = "소비대왕"
+                    Text(
+                        text = "$name 님",
+                        fontFamily = pretendard_semibold,
+                        fontSize = 20.sp
+                    )
+                    Box(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(10.dp),
-                        horizontalArrangement = Arrangement.SpaceAround,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        val menu = listOf(
-                            Menu.VocabularyBook,
-                            Menu.Stor,
-                            Menu.StorHistory
-                        )
-                        itemsIndexed(menu) { index, items ->
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    imageVector = items.image(),
-                                    contentDescription = null,
-                                    tint = Color.Unspecified,
-                                    modifier = Modifier.clickable {
-                                        if (items.title == "단어장") navController.navigate(Screen.MyDictionary.rout) else null
-                                    }
-                                )
-                                Spacer(modifier = Modifier.height(5.dp))
-                                MinariText(
-                                    text = items.title,
-                                    size = 12,
-                                    color = Color.Gray
-                                )
-                            }
-                        }
+                            .padding(horizontal = 5.dp)
+                            .height(15.dp)
+                            .width(1.dp)
+                            .background(Color.Black)
+                    )
+                    Text(text = "$userStyle")
+                }
+                Text(text = "nohjason07@gmail.com")
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "관심주제 : ",
+                        fontSize = 16.sp,
+                        fontFamily = pretendard_semibold,
+                        fontWeight = FontWeight.Bold,
+                        color = MinariBlue
+                    )
+                    for (i in test) {
+                        Text(text = "$i, ")
                     }
                 }
-                // 포인트 상점
-//                Box(
-//                    modifier = Modifier
-//                        .padding(10.dp)
-//                        .fillMaxWidth()
-//                        .clip(RoundedCornerShape(15.dp))
-//                        .background(Color.White)
-//                        .weight(0.5f)
-//                ) {
-//                    Column(
-//                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
-//                    ) {
-//                        MinariText(
-//                            text = "포인트 상점",
-//                            size = 15,
-//                            modifier = Modifier.padding(vertical = 5.dp)
-//                        )
-//                        Spacer(
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .background(Color.Gray)
-//                                .height(1.dp)
-//                        )
-//                        Box(modifier = Modifier.fillMaxSize()) {
-//                            Row(
-//                                modifier = Modifier
-//                                    .align(Alignment.Center)
-//                                    .padding(20.dp),
-//                                verticalAlignment = Alignment.CenterVertically
-//                            ) {
-//                                Image(
-//                                    painter = painterResource(id = R.drawable.fixicon),
-//                                    contentDescription = "fix icon",
-//                                    modifier = Modifier.size(60.dp)
-//                                )
-//                                MinariText(text = "아직 제작 중에 있는\n" + "기능이에요.", size = 10, color = Color.Gray)
-//                            }
-//                        }
-//                    }
-//                }
+            }
+            Row(
+                modifier = Modifier.padding(vertical = 10.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                CustomButton(
+                    title = "칭호",
+                    onclick = { navController.navigate(Test.Style.rout) }
+                )
+                CustomButton(
+                    title = "관심사",
+                    onclick = { navController.navigate(Test.Question.rout) }
+                )
+            }
+
+            XpBar(
+                progress = 123f,
+                maxProgress = 200f,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+            )
+
+            SaveList(
+                title = "저장 목록",
+                icon = painterResource(R.drawable.list)
+            )
+        }
+    }
+}
+
+@Composable
+fun CustomButton(
+    title: String,
+    onclick: () -> Unit
+) {
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        elevation = 4.dp,
+        modifier = Modifier.clickable { onclick() }
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .background(Color(0xFF3D5AFE), RoundedCornerShape(8.dp))
+                    .padding(8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Star,
+                    contentDescription = "Star",
+                    tint = Color.White
+                )
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column {
+                Text(
+                    text = "내 $title",
+                    style = MaterialTheme.typography.subtitle1,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = "확인하러 가기>",
+                    style = MaterialTheme.typography.body2,
+                    color = Color(0xFF3D5AFE)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SaveList(
+    title: String,
+    icon: Painter
+) {
+    var array by remember {
+        mutableStateOf(
+            mutableListOf(
+                "가산금리",
+                "추가경정예산",
+                "금리",
+                "추정손실"
+            )
+        )
+    }
+    Box(
+        modifier = Modifier
+            .padding(vertical = 10.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .fillMaxWidth()
+            .background(Color.White)
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = icon,
+                    contentDescription = null,
+                    tint = Color.Unspecified
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    text = title,
+                    fontFamily = pretendard_semibold,
+                    fontSize = 17.sp
+                )
+            }
+            SaveCard(list = array)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(CircleShape)
+                    .background(MinariBlue)
+                    .clickable {
+                        array = array
+                            .toMutableList()
+                            .apply {
+                                repeat(3) {
+                                    add("test${size + 1}")
+                                }
+                            }
+                    }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(5.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SaveCard(list: MutableList<String>) {
+    list.forEach {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = it,
+                    modifier = Modifier.padding(vertical = 10.dp),
+                    fontFamily = pretendard_medium,
+                    fontSize = 16.sp
+                )
+                Spacer(modifier = Modifier.weight(0.1f))
+                Icon(
+                    painter = painterResource(id = R.drawable.other),
+                    contentDescription = null,
+                    tint = Color.Unspecified
+                )
             }
         }
     }
