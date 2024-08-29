@@ -33,6 +33,7 @@ import com.nohjason.minari.screens.term.Test
 import com.nohjason.minari.network.MainViewModel
 import com.nohjason.minari.screens.news.News
 import com.nohjason.minari.screens.profile.name_style.Style
+import com.nohjason.minari.screens.rout.Grape
 import com.nohjason.minari.screens.rout.Rout
 
 @Composable
@@ -85,7 +86,10 @@ fun NavGraph(
             News()
         }
         composable(Screen.Rout.rout) {
-            Rout()
+            Rout(navController = navController)
+        }
+        composable(Test.Grape.rout) {
+            Grape()
         }
 
         composable(Screen.MyDictionary.rout) {

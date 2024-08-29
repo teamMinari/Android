@@ -37,6 +37,7 @@ val Typography = Typography(
 val rixfont = FontFamily(Font(R.font.test))
 val pretendard_medium = FontFamily(Font(R.font.pretendard_medium))
 val pretendard_bold = FontFamily(Font(R.font.pretendard_bold))
+val pretendard_extra_bold = FontFamily(Font(R.font.pretendard_extra_bold))
 val pretendard_semibold = FontFamily(Font(R.font.pretendard_semibold))
 val poppins_semibold = FontFamily(Font(R.font.poppins_semibold))
 val poppins_regular = FontFamily(Font(R.font.poppins_regular))

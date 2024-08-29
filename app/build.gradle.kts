@@ -52,6 +52,11 @@ android {
 }
 
 dependencies {
+    // Coil
+    implementation ("io.coil-kt:coil:2.6.0")
+    implementation ("io.coil-kt:coil-compose:2.6.0")
+
+
     // Pager
     implementation ("com.google.accompanist:accompanist-pager:0.28.0")
     implementation ("com.google.accompanist:accompanist-pager-indicators:0.28.0")
