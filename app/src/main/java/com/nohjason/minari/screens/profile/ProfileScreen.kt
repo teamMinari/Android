@@ -181,13 +181,9 @@ fun ProfileScreen(
                 )
             }
 
-            XpBar(
-                progress = 123f,
-                maxProgress = 200f,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp)
-            )
+//            XpBar(
+//
+//            )
 
             SaveList(
                 title = "저장 목록",

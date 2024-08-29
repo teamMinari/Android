@@ -1,10 +1,8 @@
 package com.nohjason.minari.screens.home
 
-import android.os.Build
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,13 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -47,7 +39,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
@@ -56,10 +47,10 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -71,9 +62,6 @@ import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariGradation
 import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_semibold
-import java.time.LocalDate
-import java.time.temporal.WeekFields
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -193,9 +181,9 @@ fun HomeScreen(
                     verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
                     XpBar(
-                        progress = 123f,
-                        maxProgress = 200f,
-                        modifier = Modifier.fillMaxWidth()
+                        currentXp = 100,
+                        maxXp = 400,
+                        modifier = Modifier.padding(10.dp)
                     )
                 }
             }
@@ -216,66 +204,81 @@ fun HomeScreen(
 
 @Composable
 fun XpBar(
-    progress: Float,
-    maxProgress: Float,
+    currentXp: Int,
+    maxXp: Int,
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier
-            .height(40.dp)
+        modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(20.dp))
-            .background(Color.LightGray)
+            .clip(RoundedCornerShape(15.dp))
+            .background(Color.White)
+            .padding(10.dp)
     ) {
-        // Progress Bar
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth(progress / maxProgress)
-                .clip(RoundedCornerShape(20.dp))
-                .background(Color(0xFF7CFC00))  // 밝은 녹색
-        )
+        Column {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.present),
+                    contentDescription = null,
+                    tint = Color.Unspecified
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text("보상", fontFamily = pretendard_semibold, fontSize = 15.sp)
+            }
+            Row(
+                modifier = modifier
+                    .height(40.dp)
+                    .fillMaxWidth()
+                    .clip(CircleShape)
+                    .border(1.dp, Color(0xFFECEFFB), shape = RoundedCornerShape(20.dp)),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val safeCurrentScore = currentXp.coerceAtMost(maxXp)
 
-        // Start Circle with Number
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .background(Color(0xFF7CFC00))  // 밝은 녹색
-                .align(Alignment.CenterStart),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "16",
-                color = Color.White,
-                fontWeight = FontWeight.Bold
-            )
+                // 백분율 계산 (0.0f ~ 1.0f 사이의 값)
+                val percentage = if (maxXp > 0) safeCurrentScore.toFloat() / maxXp.toFloat() else 0f
+
+                // 나머지 비율 계산
+                val remainingPercentage = 1f - percentage
+                Box(
+                    modifier = Modifier
+                        .weight(percentage)
+                        .width(50.dp)
+                        .fillMaxHeight()
+                        .clip(CircleShape)
+                        .background(Color(0xFF4169E1)),  // Royal Blue
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "${percentage * 100}%",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Spacer(modifier = Modifier.weight(remainingPercentage))
+
+//                Spacer(modifier = Modifier.weight()
+                Box(
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .size(32.dp)
+                        .clip(CircleShape)
+                        .border(2.dp, Color(0xFF4169E1), CircleShape)
+                        .background(Color.White),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.grape),
+                        contentDescription = "test",
+                        modifier = Modifier.size(20.dp),
+                        tint = Color.Unspecified
+                    )
+
+                }
+            }
         }
-
-        // End Circle with Number
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .background(Color.White)
-                .border(2.dp, Color.LightGray, CircleShape)
-                .align(Alignment.CenterEnd),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "17",
-                color = Color.Black,
-                fontWeight = FontWeight.Bold
-            )
-        }
-
-        // XP Text
-        Text(
-            text = "$progress",
-            modifier = Modifier.align(Alignment.Center),
-            color = Color.Black,
-            fontWeight = FontWeight.Bold
-        )
     }
 }
 
