@@ -2,6 +2,7 @@ package com.nohjason.minari.screens.profile
 
 import android.net.Uri
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -92,6 +93,10 @@ fun ProfileScreen(
             selectedImageUri = uri
         }
     )
+
+    BackHandler(onBack = {
+        navController.popBackStack(Screen.Home.rout, inclusive = false)
+    })
 
     LazyColumn(
         modifier = Modifier

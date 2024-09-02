@@ -38,4 +38,8 @@ sealed class Test(
         rout = "grape",
         title = "Grape",
     )
+    data object Grapes : Test(
+        rout = "grapes",
+        title = "Grapes",
+    )
 }

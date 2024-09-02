@@ -2,6 +2,7 @@
 
 package com.nohjason.minari.screens.quiz
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
+import com.nohjason.minari.navigation.bottombar.Screen
 import com.nohjason.minari.screens.quiz.data.TemporaryPoint
 import com.nohjason.minari.screens.quiz.data.Temporary_pointData
 import com.nohjason.minari.ui.theme.MinariBlue
@@ -50,6 +52,11 @@ fun QuizScreen(
     navController: NavHostController,
     user: TemporaryPoint,
 ) {
+    BackHandler(onBack = {
+        navController.popBackStack(Screen.Home.rout, inclusive = false)
+    })
+
+
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()

@@ -28,12 +28,12 @@ import com.nohjason.minari.screens.quiz.QuizEndScreen
 import com.nohjason.minari.screens.quiz.QuizScreen
 import com.nohjason.minari.screens.quiz.data.QuestionData
 import com.nohjason.minari.screens.quiz.data.Temporary_pointData
-import com.nohjason.minari.screens.term.Term
 import com.nohjason.minari.screens.term.Test
 import com.nohjason.minari.network.MainViewModel
 import com.nohjason.minari.screens.news.News
 import com.nohjason.minari.screens.profile.name_style.Style
 import com.nohjason.minari.screens.rout.Grape
+import com.nohjason.minari.screens.rout.Grapes
 import com.nohjason.minari.screens.rout.Rout
 
 @Composable
@@ -83,13 +83,17 @@ fun NavGraph(
             ProfileScreen(navController = navController)
         }
         composable(Screen.News.rout) {
-            News()
+            News(navController = navController)
         }
+        // 튜토리얼
         composable(Screen.Rout.rout) {
             Rout(navController = navController)
         }
         composable(Test.Grape.rout) {
-            Grape()
+            Grape(navController = navController)
+        }
+        composable(Test.Grapes.rout) {
+            Grapes(navController = navController)
         }
 
         composable(Screen.MyDictionary.rout) {

@@ -2,6 +2,7 @@ package com.nohjason.minari.network
 
 import com.nohjason.minari.network.response.AddDeleteTerm
 import com.nohjason.minari.network.response.BookResponse
+import com.nohjason.minari.network.response.rout.GrapesAll
 import com.nohjason.minari.screens.login.response.LoginRequest
 import com.nohjason.minari.screens.login.response.LoginResponse
 import com.nohjason.minari.screens.login.response.RegisterRequest

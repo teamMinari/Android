@@ -1,5 +1,9 @@
 package com.nohjason.minari.screens.rout
 
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
+import com.nohjason.minari.navigation.bottombar.Screen
 import com.nohjason.minari.screens.login.Test
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.pretendard_bold
@@ -45,6 +50,9 @@ import com.nohjason.minari.ui.theme.pretendard_semibold
 fun Rout(
     navController: NavController
 ) {
+    BackHandler(onBack = {
+        navController.popBackStack(Screen.Home.rout, inclusive = false)
+    })
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -77,7 +85,7 @@ fun Rout(
             }
         }
         items(5) {
-            Gps(onClick = {navController.navigate(Test.Grape.rout)})
+            Gps(onClick = { navController.navigate(Test.Grapes.rout) })
         }
     }
 }
