@@ -14,13 +14,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
 import com.nohjason.minari.R
 //import com.nohjason.minari.R
 import com.nohjason.minari.firebase.rememberFirebaseAuthLauncher
 import com.nohjason.minari.navigation.bottombar.BottomBarScreen
-import com.nohjason.minari.screens.quiz.play_ui.Commentary_CorrectO
-import com.nohjason.minari.screens.quiz.play_ui.Commentary_CorrectX
-import com.nohjason.minari.screens.quiz.play_ui.QuizScreen_play
 import com.nohjason.minari.screens.profile.my_dictionary.MyDictionaryScreen
 import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.inproduct.InProduction
@@ -28,10 +26,10 @@ import com.nohjason.minari.screens.login.LoginScreen
 import com.nohjason.minari.screens.login.UI.SelfLoginScreen
 import com.nohjason.minari.screens.login.UI.SelfSingUpScreen
 import com.nohjason.minari.screens.profile.ProfileScreen
-import com.nohjason.minari.screens.quiz.play_ui.QuizEndScreen
-import com.nohjason.minari.screens.quiz.play_ui.QuizScreen
-import com.nohjason.minari.screens.quiz.data.QuestionData
-import com.nohjason.minari.screens.quiz.data.Temporary_pointData
+import com.nohjason.minari.screens.quiz.QuizPlayScreen
+import com.nohjason.minari.screens.quiz.data.PlayData
+import com.nohjason.minari.screens.quiz.dummyResponse
+import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
 import com.nohjason.minari.screens.term.Term
 import com.nohjason.minari.screens.term.Test
 import com.nohjason.myapplication.network.MainViewModel
@@ -55,8 +53,6 @@ fun NavGraph(
         .requestEmail().build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
 
-    val question = QuestionData.getQuestion()
-    val dummyUser = Temporary_pointData.getPoint()
 
 
     NavHost(
@@ -75,7 +71,8 @@ fun NavGraph(
             HomeScreen(navController = navController)
         }
         composable(BottomBarScreen.Quiz.rout, ) {
-            QuizScreen(navController = navController, user = dummyUser)
+            //퀴즈
+            QuizMainScreen(qtAll = dummyResponse, navHostController = navController)
         }
         composable(BottomBarScreen.Profile.rout) {
             ProfileScreen(navController = navController)
@@ -105,24 +102,21 @@ fun NavGraph(
 
 
         //퀴즈
-        composable("quizStartRoute") {
-            QuizScreen(navController = navController, user = dummyUser)
+        composable("quizplay/{playDataJson}"){ backStackEntry ->
+            val playDataJson = backStackEntry.arguments?.getString("playDataJson")  // 전달된 JSON 데이터를 추출
+//            val playData = Gson().fromJson(playDataJson, PlayData::class.java)  // JSON 데이터를 PlayData 객체로 변환
+            println(playDataJson)
+//            QuizPlayScreen(qestion = playData)
         }
-        composable("quizQuestionRoute") {
-            QuizScreen_play(que = question, navController = navController, user = dummyUser, )
-        }
-        composable("quizQuestionORoute") { backStackEntry ->
-            Commentary_CorrectO(que = question, navController = navController, user = dummyUser)
-            // 퀴즈 O질문 결과 화면
-        }
-        composable("quizQuestionXRoute") { backStackEntry ->
-            Commentary_CorrectX(que = question, navController = navController, user = dummyUser)
-            // 퀴즈 X질문 결과 화면
-        }
-        composable("quizComentoryRoute") { backStackEntry ->
-            QuizEndScreen(navController = navController, user = dummyUser)
-        }
-        
+//        composable(
+//            route = "quizplay/{playDataJson}",  // 경로 정의
+//            arguments = listOf(navArgument("playDataJson") { type = NavType.StringType })  // 인자 설정
+//        ) { backStackEntry ->
+//            val playDataJson = backStackEntry.arguments?.getString("playDataJson")  // 전달된 JSON 데이터를 추출
+//            val playData = Gson().fromJson(playDataJson, PlayData::class.java)  // JSON 데이터를 PlayData 객체로 변환
+//            QuizPlayScreen(question = playData)  // QuizPlayScreen에 변환된 데이터를 전달
+//        }
+
 //        로그인
         composable("Singup"){
             SelfSingUpScreen(navController = navController)

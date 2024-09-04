@@ -11,11 +11,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nohjason.minari.R
 import com.nohjason.minari.ui.theme.MinariBlue
-import com.nohjason.minari.ui.theme.MinariGray
 
 @Composable
 fun LoginTextField(
@@ -28,12 +26,12 @@ fun LoginTextField(
     onClick: () -> Unit,
 ) {
     val imageVector = when (icon_name) {
-        "이메일" -> R.drawable.email
-        "비밀번호" -> R.drawable.password
-        "비밀번호 재확인" -> R.drawable.password
-        "아이디" -> R.drawable.user
+        "이메일" -> R.drawable.ic_email
+        "비밀번호" -> R.drawable.ic_password
+        "비밀번호 재확인" -> R.drawable.ic_password
+        "아이디" -> R.drawable.ic_user
         // 필요한 다른 아이콘들에 대해서도 추가 가능
-        else -> R.drawable.o_not // 기본값으로 설정할 아이콘 지정
+        else -> R.drawable.ic_noun // 기본값으로 설정할 아이콘 지정
     }
     var isVisiblePassword by remember { mutableStateOf(visibility) } // visibility 초기화
     Column (
@@ -71,12 +69,12 @@ fun LoginTextField(
                 IconButton(onClick = { isVisiblePassword = !isVisiblePassword }) {
                     if (isVisiblePassword) {
                         Icon(
-                            painter = painterResource(id = R.drawable.baseline_visibility_24),
+                            painter = painterResource(id = R.drawable.ic_visibility),
                             contentDescription = "비밀번호 숨기기"
                         )
                     } else {
                         Icon(
-                            painter = painterResource(id = R.drawable.baseline_visibility_off_24),
+                            painter = painterResource(id = R.drawable.ic_visibility_off),
                             contentDescription = "비밀번호 보이기"
                         )
                     }
