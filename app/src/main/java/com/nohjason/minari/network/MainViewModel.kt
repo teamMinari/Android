@@ -4,8 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nohjason.minari.network.response.BookResponse
-import com.nohjason.minari.screens.profile.my_dictionary.model.DictionaryModel
-import com.nohjason.minari.screens.profile.my_dictionary.model.toModel
 import com.nohjason.myapplication.network.RetrofitInstance.api
 import com.nohjason.myapplication.network.response.Term
 import com.nohjason.myapplication.network.response.TermResponse
@@ -52,46 +50,46 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    private val _book = MutableStateFlow<List<DictionaryModel>>(emptyList())
-    val books = _book.asStateFlow()
+//    private val _book = MutableStateFlow<List<DictionaryModel>>(emptyList())
+//    val books = _book.asStateFlow()
 
-    fun fetchAllBookTerms() {
-        viewModelScope.launch {
-            try {
-                val book = RetrofitInstance.api.getBookTerms()
-                _book.value = book.data.map {
-                    it.toModel()
-                }
-            } catch (e: Exception) {
-                // Handle error
-                Log.e("TAG", "fetch ALL", e)
-            }
-        }
-    }
+//    fun fetchAllBookTerms() {
+//        viewModelScope.launch {
+//            try {
+//                val book = RetrofitInstance.api.getBookTerms()
+//                _book.value = book.data.map {
+//                    it.toModel()
+//                }
+//            } catch (e: Exception) {
+//                // Handle error
+//                Log.e("TAG", "fetch ALL", e)
+//            }
+//        }
+//    }
 
-    fun addDelete(word: String) {
-        viewModelScope.launch {
-            try {
-                val job = async { RetrofitInstance.api.addDeleteTerm(word) }
-                job.await()
-                fetchAllBookTerms()
-            } catch (e: Exception) {
-                Log.e("TAG", "addDelete: ", e)
-            }
-        }
-    }
+//    fun addDelete(word: String) {
+//        viewModelScope.launch {
+//            try {
+//                val job = async { RetrofitInstance.api.addDeleteTerm(word) }
+//                job.await()
+//                fetchAllBookTerms()
+//            } catch (e: Exception) {
+//                Log.e("TAG", "addDelete: ", e)
+//            }
+//        }
+//    }
 
-    fun checkedThat(wordNm: String) = viewModelScope.launch {
-        _book.update {
-            it.map { item ->
-                if (item.termNm == wordNm) {
-                    item.copy(
-                        isChecked = item.isChecked.not()
-                    )
-                } else {
-                    item
-                }
-            }
-        }
-    }
+//    fun checkedThat(wordNm: String) = viewModelScope.launch {
+//        _book.update {
+//            it.map { item ->
+//                if (item.termNm == wordNm) {
+//                    item.copy(
+//                        isChecked = item.isChecked.not()
+//                    )
+//                } else {
+//                    item
+//                }
+//            }
+//        }
+//    }
 }

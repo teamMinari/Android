@@ -1,6 +1,7 @@
 package com.nohjason.minari.screens.quiz
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -46,29 +49,31 @@ fun QuizPlayScreen(
         .fillMaxSize(),
         contentAlignment = Alignment.Center
     ){
+        val scrollState = rememberScrollState()
 
 
         Column (
             modifier = Modifier
                 .fillMaxHeight()
-                .fillMaxWidth(0.85f),
+                .fillMaxWidth(0.85f)
+                .verticalScroll(scrollState),
         ){
 
             //문제-------------------------------
-            Text(
-                modifier = Modifier.padding(top = 77.dp),
-                color = Color(0xFF363CD5),
-                fontSize = 25.sp,
-                fontWeight = FontWeight.SemiBold,
-                text = "${playData.value.qtNum + 1}/10"
-            )
-            Text(
-                modifier = Modifier
-                    .padding(top = 10.dp),
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                text = qtContents
-            )
+//            Text(
+//                modifier = Modifier.padding(top = 77.dp),
+//                color = Color(0xFF363CD5),
+//                fontSize = 25.sp,
+//                fontWeight = FontWeight.SemiBold,
+//                text = "${playData.qtNum + 1}/10"
+//            )
+//            Text(
+//                modifier = Modifier
+//                    .padding(top = 10.dp),
+//                fontSize = 20.sp,
+//                fontWeight = FontWeight.Bold,
+//                text = qtContents
+//            )
 
 
             //버튼---------------------------------------------------------------------------------------------
@@ -128,16 +133,16 @@ fun QuizPlayScreen(
             ){
                 Icon(painter = painterResource(id = R.drawable.emoji_tip),
                     contentDescription = null, tint = Color.Unspecified)
-                Text(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    text = qtCmt
-                )
+//                Text(
+//                    fontWeight = FontWeight.Bold,
+//                    fontSize = 20.sp,
+//                    text = qtCmt
+//                )
             }
-            Text(
-                modifier = Modifier.padding(4.dp),
-                text = qtTip
-            )
+//            Text(
+//                modifier = Modifier.padding(4.dp),
+//                text = qtTip
+//            )
         }
     }
     

@@ -160,9 +160,9 @@ val dummyQtList = listOf(
     )
 )
 
-val dummyResponse = QuestionResponse(
-    status = 200,
-    message = "질문 난이도 별 조회 성공!",
-    data = dummyQtList
-)
+//val dummyResponse = QuestionResponse(
+//    status = 200,
+//    message = "질문 난이도 별 조회 성공!",
+//    data = dummyQtList
+//)
 
