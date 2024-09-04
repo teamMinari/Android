@@ -30,24 +30,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.gson.Gson
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.quiz.data.PlayData
 import com.nohjason.minari.screens.quiz.data.QuestionData
+import com.nohjason.minari.screens.quiz.data.QuizViewModel
 
 @Composable
 fun QuizPlayScreen(
-    qestion: PlayData
-){
-    val qtAnswer = qestion.qtList[qestion.qtNum].qtAnswer
-    val qtCmt = qestion.qtList[qestion.qtNum].qtCmt
-    val qtTip = qestion.qtList[qestion.qtNum].qtTip
-    val qtContents = qestion.qtList[qestion.qtNum].qtContents
-
-//    var qtNum by remember { mutableStateOf(qestion.qtNum) }
-//    var nowpoint by remember { mutableStateOf(qestion.point) }
-    val currentQuestion = qestion.qtList.getOrNull(qestion.qtNum)
-
+    viewModel: QuizViewModel = viewModel()){
+    val playData = viewModel.playData
 
     Box(modifier = Modifier
         .fillMaxSize(),
@@ -67,7 +60,7 @@ fun QuizPlayScreen(
                 color = Color(0xFF363CD5),
                 fontSize = 25.sp,
                 fontWeight = FontWeight.SemiBold,
-                text = "${qestion.qtNum + 1}/10"
+                text = "${playData.value.qtNum + 1}/10"
             )
             Text(
                 modifier = Modifier

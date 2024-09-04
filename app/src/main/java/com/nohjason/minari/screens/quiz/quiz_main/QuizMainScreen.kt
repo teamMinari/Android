@@ -15,6 +15,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,23 +25,25 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.google.gson.Gson
 import com.nohjason.minari.R
+import com.nohjason.minari.screens.quiz.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.data.PlayData
 import com.nohjason.minari.screens.quiz.data.QuestionData
 import com.nohjason.minari.screens.quiz.data.QuestionResponse
-import com.nohjason.minari.screens.quiz.dummyQtList
+import com.nohjason.minari.screens.quiz.data.QuizViewModel
 import com.nohjason.minari.ui.theme.MinariBlue
 
 @Composable
 fun QuizMainScreen(
     qtAll: QuestionResponse,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    viewModel: QuizViewModel = viewModel(),
 ){
+//    val playData by viewModel.playData.collectAsState()
     val scrollState = rememberScrollState()
 
     Column (
@@ -108,9 +113,12 @@ fun QuizMainScreen(
             lavel ="Lavel 1",
             coment = "제일 쉬운 난이도",
             onClick = {
-                val qtList = selectPlayData(qtAll = qtAll.data)
-                val playDataJson = Gson().toJson(qtList)
-                navHostController.navigate("quizplay/${playDataJson}")
+                val dataList = selectPlayData(qestionAll = qtAll)
+                viewModel.initializePlayData(
+                    data = (dataList)
+                )
+                //PlayData초기화
+                navHostController.navigate("quizplay")
                 //서버 레벨 별 값 요구
 
             },
@@ -141,9 +149,9 @@ fun QuizMainScreen(
     }
 }
 
-
-fun selectPlayData(qtAll: List<QuestionData>): PlayData {
-    val qtSelected = qtAll.shuffled().take(10)
+//데이터 초기화 값
+fun selectPlayData(qestionAll: QuestionResponse): PlayData {
+    val qtSelected = qestionAll.data.shuffled().take(10)
     return PlayData(
         userCurrent = 0,         // 현재 유저 진행 상황, 0으로 초기화
         point = 0,               // 초기 포인트, 0으로 초기화
@@ -151,18 +159,3 @@ fun selectPlayData(qtAll: List<QuestionData>): PlayData {
         qtList = qtSelected // 10개의 질문을 담은 리스트
     )
 }
-
-
-//    {
-//        "status": 200,
-//        "message": "질문 난이도 별 조회 성공!",
-//        "data": [
-//        {
-//            "qtContents": "string",
-//            "qtAnswer": true,
-//            "qtCmt": "string",
-//            "qtTip": "string",
-//            "qtDifficulty": "LV_1"
-//        }
-//        ]
-//    }

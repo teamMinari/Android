@@ -1,27 +1,13 @@
 package com.nohjason.minari.screens.quiz.data
-///questions/level/{level} - 문제 난이도 별 조회
-//{
-//    "status": 200,
-//    "message": "질문 난이도 별 조회 성공!",
-//    "data": [
-//    {
-//        "qtContents": "string",
-//        "qtAnswer": true,
-//        "qtCmt": "string",
-//        "qtTip": "string",
-//        "qtDifficulty": "LV_1"
-//    }
-//    ]
-//}
-
 data class QuestionResponse(
-    val status: Int,
-    val message: String,
+    val status: Int, //200
+    val message: String, //질문 난이도 별 조회 성공!"
     val data: List<QuestionData>
     //전체 어레이
 )
 
 data class QuestionData(
+    //리스폰스 데이터 구성
     val qtContents: String,
     val qtAnswer: Boolean,
     val qtCmt: String,
@@ -32,6 +18,7 @@ data class QuestionData(
 
 
 data class PlayData(
+    //UI의 모델 클래스
     val userCurrent: Int,
     val point: Int,
     val qtNum: Int,
