@@ -250,5 +250,3 @@ interface LoginPOST {
     suspend fun login(@Body request: LoginRequest): Response<UserResponse>
 }
 
-
-

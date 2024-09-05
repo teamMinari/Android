@@ -3,12 +3,18 @@ package com.nohjason.myapplication.network
 import com.nohjason.minari.network.response.AddDeleteTerm
 import com.nohjason.minari.network.response.BookResponse
 import com.nohjason.minari.screens.home.news.Test
+import com.nohjason.minari.screens.login.Data.LoginRequest
+import com.nohjason.minari.screens.login.Data.UserResponse
+import com.nohjason.minari.screens.quiz.data.QuestionResponse
 import com.nohjason.myapplication.network.response.Term
 import com.nohjason.myapplication.network.response.TermResponse
+import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -71,4 +77,12 @@ interface ApiService {
     suspend fun getBookTerms(
         @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA2MjA3MTYsImV4cCI6MTcyMDcwNzExNn0.HB5DqAsVW82Gke00pFnMH8SY0SbMjyJhuY0GKKxcbbA"
     ): BookResponse
+
+
+
+    @GET("/questions/level/{level}")
+    suspend fun getQuestion(
+//        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA2MjA3MTYsImV4cCI6MTcyMDcwNzExNn0.HB5DqAsVW82Gke00pFnMH8SY0SbMjyJhuY0GKKxcbbA",
+        @Path("level") level: String
+    ): QuestionResponse
 }

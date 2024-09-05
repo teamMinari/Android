@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.quiz.quiz_main
 
+import android.net.http.HttpException
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,18 +29,30 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nohjason.minari.R
+import com.nohjason.minari.screens.login.Data.LoginRequest
+import com.nohjason.minari.screens.login.Data.UserResponse
+import com.nohjason.minari.screens.login.UI.LoginPOST
 import com.nohjason.minari.screens.quiz.data.PlayData
 import com.nohjason.minari.screens.quiz.data.QuestionResponse
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 import com.nohjason.minari.ui.theme.MinariBlue
+import com.nohjason.myapplication.network.RetrofitInstance
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 @Composable
 fun QuizMainScreen(
-    qtAll: QuestionResponse,
     navHostController: NavHostController,
     quizViewModel: QuizViewModel = viewModel()
 ){
     val scrollState = rememberScrollState()
+    val coroutineScope = rememberCoroutineScope()//코루틴
     //val qtAll서버 끌고와서 넣기
 
     Column (
@@ -108,14 +122,13 @@ fun QuizMainScreen(
             lavel ="Lavel 1",
             coment = "제일 쉬운 난이도",
             onClick = {
-                val dataList = selectPlayData(qestionAll = qtAll)
-                quizViewModel.initializePlayData(
-                    data = (dataList)
-                )
-                //PlayData초기화
-                navHostController.navigate("quizplay")
-                //서버 레벨 별 값 요구
-
+                isTokenExpired("eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA2MjA3MTYsImV4cCI6MTcyMDcwNzExNn0.HB5DqAsVW82Gke00pFnMH8SY0SbMjyJhuY0GKKxcbbA")
+                coroutineScope.launch {
+                    val qtAll = getQuestion("LV_1")
+                    val dataList = selectPlayData(qestionAll = qtAll)
+                    quizViewModel.initializePlayData(data = dataList)
+                    navHostController.navigate("quizplay")
+                }
             },
         )
         QuizButton(
@@ -126,13 +139,13 @@ fun QuizMainScreen(
             lavel ="Lavel 2",
             coment = "공부 좀 했다면 이건 어떤가요?",
             onClick = {
-                val dataList = selectPlayData(qestionAll = qtAll)
-                quizViewModel.initializePlayData(
-                    data = (dataList)
-                )
-                //PlayData초기화
-                navHostController.navigate("quizplay")
-                //노말 서버 끌고오기
+//                val dataList = selectPlayData(qestionAll = qtAll)
+//                quizViewModel.initializePlayData(
+//                    data = (dataList)
+//                )
+//                //PlayData초기화
+//                navHostController.navigate("quizplay")
+//                //노말 서버 끌고오기
             },
         )
 
@@ -144,13 +157,13 @@ fun QuizMainScreen(
             lavel ="Lavel 3",
             coment = "이건 모를걸요!",
             onClick = {
-                val dataList = selectPlayData(qestionAll = qtAll)
-                quizViewModel.initializePlayData(
-                    data = (dataList)
-                )
-                //PlayData초기화
-                navHostController.navigate("quizplay")
-                //하드 서버 끌고오기
+//                val dataList = selectPlayData(qestionAll = qtAll)
+//                quizViewModel.initializePlayData(
+//                    data = (dataList)
+//                )
+//                //PlayData초기화
+//                navHostController.navigate("quizplay")
+//                //하드 서버 끌고오기
             },
         )
     }
@@ -165,4 +178,31 @@ fun selectPlayData(qestionAll: QuestionResponse): PlayData {
         qtNum = 0,               // 첫 번째 문제부터 시작, 0으로 초기화
         qtList = qtSelected // 10개의 질문을 담은 리스트
     )
+}
+
+fun isTokenExpired(expirationTime: Long): Boolean {
+    return System.currentTimeMillis() > expirationTime
+}
+
+suspend fun getQuestion(level: String): QuestionResponse {
+    // Retrofit 인스턴스를 가져옴
+    val apiService = RetrofitInstance.api
+
+    return withContext(Dispatchers.IO) {
+        try {
+            // GET 요청을 보내고 응답을 받아옴
+            val response = apiService.getQuestion(
+                level =  level// 요청할 레벨
+            )
+            response // 서버 응답 반환
+        } catch (e: HttpException) {
+            // HTTP 오류 처리
+            println("HTTP Error: ${e.message}")
+            throw e
+        } catch (e: Exception) {
+            // 기타 오류 처리
+            println("Error: ${e.message}")
+            throw e
+        }
+    }
 }

@@ -80,7 +80,7 @@ fun NavGraph(
         }
         composable(BottomBarScreen.Quiz.rout) {
             //퀴즈
-            QuizMainScreen(qtAll= dummyResponse, navHostController = navController, quizViewModel = quizViewModel)
+            QuizMainScreen(navHostController = navController, quizViewModel = quizViewModel)
         }
         composable(BottomBarScreen.Profile.rout) {
             ProfileScreen(navController = navController)

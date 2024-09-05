@@ -13,7 +13,7 @@ data class QuestionData(
     val qtAnswer: Boolean,
     val qtCmt: String,
     val qtTip: String,
-    val qtDifficulty: QuizLavel
+    val qtDifficulty: String
 )
 
 
@@ -40,3 +40,4 @@ data class UserData(
     val totalExp: Int,
     val level: Int
 )
+
