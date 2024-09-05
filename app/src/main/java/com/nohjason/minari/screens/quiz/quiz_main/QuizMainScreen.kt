@@ -38,8 +38,8 @@ fun QuizMainScreen(
     navHostController: NavHostController,
     quizViewModel: QuizViewModel = viewModel()
 ){
-//    val playData by viewModel.playData.collectAsState()
     val scrollState = rememberScrollState()
+    //val qtAll서버 끌고와서 넣기
 
     Column (
         Modifier
@@ -126,6 +126,12 @@ fun QuizMainScreen(
             lavel ="Lavel 2",
             coment = "공부 좀 했다면 이건 어떤가요?",
             onClick = {
+                val dataList = selectPlayData(qestionAll = qtAll)
+                quizViewModel.initializePlayData(
+                    data = (dataList)
+                )
+                //PlayData초기화
+                navHostController.navigate("quizplay")
                 //노말 서버 끌고오기
             },
         )
@@ -138,6 +144,12 @@ fun QuizMainScreen(
             lavel ="Lavel 3",
             coment = "이건 모를걸요!",
             onClick = {
+                val dataList = selectPlayData(qestionAll = qtAll)
+                quizViewModel.initializePlayData(
+                    data = (dataList)
+                )
+                //PlayData초기화
+                navHostController.navigate("quizplay")
                 //하드 서버 끌고오기
             },
         )

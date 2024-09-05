@@ -41,13 +41,11 @@ fun SeletO(
     val playData = quizViewModel.playData.value
 
     val qtNum = playData?.qtNum ?: 0
-    val point = playData?.point ?: 0
 
     val qtContents = playData?.qtList?.getOrNull(qtNum)?.qtContents ?: "No content available"
     val qtAnswer = playData?.qtList?.getOrNull(qtNum)?.qtAnswer ?: "No answer available"
     val qtCmt = playData?.qtList?.getOrNull(qtNum)?.qtCmt ?: "No comment available"
-    val qtSize = playData?.qtList?.size ?: 10
-    val correct = playData?.userCurrent
+    val qtSize = playData?.qtList?.size ?: 9
 
     Box(
         modifier = Modifier
@@ -136,9 +134,17 @@ fun SeletO(
                     contentDescription = null, tint = Color.Unspecified)
                 //함수값
                 if(qtAnswer == true){
-                    Text(text = "정답")
+                    Text(
+                        text = "정답",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp
+                    )
                 } else{
-                    Text(text = "오답")
+                    Text(
+                        text = "오답",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp
+                    )
                 }
             }
             Text(
@@ -157,11 +163,10 @@ fun SeletO(
                 containerColor = Color(0xFF363CD5)
             ),
             onClick = {
-                //qtNum이 9가 아닌지 확인 -> 화면 이동 전(qtNum+1) or End로 이동
-                if(qtNum > qtSize){
-                    navHostController.navigate("End{$point}{$correct}")
+                quizViewModel.nextQuestion()
+                if(qtNum+2 > qtSize){
+                    navHostController.navigate("End")
                 }else{
-                    quizViewModel.nextQuestion()
                     navHostController.navigate("quizplay")
                 }
             }

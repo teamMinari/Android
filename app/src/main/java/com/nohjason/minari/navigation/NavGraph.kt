@@ -1,5 +1,7 @@
 package com.nohjason.minari.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -78,7 +80,7 @@ fun NavGraph(
         }
         composable(BottomBarScreen.Quiz.rout) {
             //퀴즈
-            QuizMainScreen(qtAll = dummyResponse, navHostController = navController, quizViewModel = quizViewModel)
+            QuizMainScreen(qtAll= dummyResponse, navHostController = navController, quizViewModel = quizViewModel)
         }
         composable(BottomBarScreen.Profile.rout) {
             ProfileScreen(navController = navController)
@@ -109,20 +111,54 @@ fun NavGraph(
 
 
         //퀴즈
-        composable("quizplay") {
+        composable(
+            "quizplay",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
+                )
+            }
+        ) {
             // playData가 null이 아닌지 확인 후 전달
             QuizPlayScreen(navHostController = navController, quizViewModel = quizViewModel)
         }
-        composable("Select_O"){
-            SeletO(navHostController = navController)
+
+        composable(
+            route = "Select_O",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
+                )
+            }
+        ) {
+            SeletO(navHostController = navController, quizViewModel = quizViewModel)
         }
-        composable("Select_X"){
-            SeletX(navHostController = navController)
+
+        composable(
+            "Select_X",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
+                )
+            }
+        ){
+            SeletX(navHostController = navController, quizViewModel = quizViewModel)
         }
-        composable("End{point}{correct}") { backStackEntry ->
-                val point = backStackEntry.arguments?.getInt("point") ?: 0
-                val correct = backStackEntry.arguments?.getInt("correct") ?: 0
-            QuizEndScreen(point = point, correctAnswer = correct )
+
+        composable(
+            "End",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
+                )
+            }
+
+        ) { backStackEntry ->
+            QuizEndScreen(quizViewModel = quizViewModel)
         }
 
 

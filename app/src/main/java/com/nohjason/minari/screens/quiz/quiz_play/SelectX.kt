@@ -39,16 +39,15 @@ fun SeletX(
     quizViewModel: QuizViewModel = viewModel()
 ){
     val playData = quizViewModel.playData.value
-    var selectAnswer by remember { mutableStateOf(false) }
 
     val qtNum = playData?.qtNum ?: 0
-    val point = playData?.point ?: 0
 
     val qtContents = playData?.qtList?.getOrNull(qtNum)?.qtContents ?: "No content available"
     val qtAnswer = playData?.qtList?.getOrNull(qtNum)?.qtAnswer ?: "No answer available"
     val qtCmt = playData?.qtList?.getOrNull(qtNum)?.qtCmt ?: "No comment available"
-    val qtSize = playData?.qtList?.size ?: 10
-    val correct = playData?.userCurrent
+    val qtSize = playData?.qtList?.size ?: 9
+
+    println(quizViewModel.playData.value)
 
     Box(
         modifier = Modifier
@@ -134,10 +133,18 @@ fun SeletX(
             ){
                 Icon(painter = painterResource(id = R.drawable.emoji_tip),
                     contentDescription = null, tint = Color.Unspecified)
-                if(qtAnswer == false){
-                    Text(text = "정답")
+                if(qtAnswer == true){
+                    Text(
+                        text = "오답",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp
+                    )
                 } else{
-                    Text(text = "오답")
+                    Text(
+                        text = "정답",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp
+                    )
                 }
             }
             Text(
@@ -156,13 +163,12 @@ fun SeletX(
                 containerColor = Color(0xFF363CD5)
             ),
             onClick = {
-                if(qtNum > qtSize){
-                    navHostController.navigate("End{$point}{$correct}")
+                if(qtNum+2 > qtSize){
+                    navHostController.navigate("End")
                 }else{
                     quizViewModel.nextQuestion()
                     navHostController.navigate("quizplay")
                 }
-                //qtNum이 9가 아닌지 확인 -> 화면 이동 -> qtNum+1 or End로 이동
             }
         ) {
             Text(text = "다음")
