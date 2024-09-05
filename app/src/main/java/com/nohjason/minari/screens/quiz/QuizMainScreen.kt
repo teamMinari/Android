@@ -1,6 +1,5 @@
-package com.nohjason.minari.screens.quiz.quiz_main
+package com.nohjason.minari.screens.quiz
 
-import android.net.http.HttpException
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,9 +28,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.login.Data.LoginRequest
-import com.nohjason.minari.screens.login.Data.UserResponse
-import com.nohjason.minari.screens.login.UI.LoginPOST
 import com.nohjason.minari.screens.quiz.data.PlayData
 import com.nohjason.minari.screens.quiz.data.QuestionResponse
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
@@ -40,12 +36,6 @@ import com.nohjason.myapplication.network.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.POST
-import java.io.IOException
 
 @Composable
 fun QuizMainScreen(

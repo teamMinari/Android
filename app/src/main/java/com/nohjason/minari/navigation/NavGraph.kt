@@ -29,8 +29,7 @@ import com.nohjason.minari.screens.login.UI.SelfSingUpScreen
 import com.nohjason.minari.screens.profile.ProfileScreen
 import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
-import com.nohjason.minari.screens.quiz.dummyResponse
-import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
+import com.nohjason.minari.screens.quiz.QuizMainScreen
 import com.nohjason.minari.screens.term.Term
 import com.nohjason.minari.screens.term.Test
 import com.nohjason.myapplication.network.MainViewModel

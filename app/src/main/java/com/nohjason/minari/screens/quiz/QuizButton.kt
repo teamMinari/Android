@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.quiz.quiz_main
+package com.nohjason.minari.screens.quiz
 
 
 import androidx.compose.foundation.Image
