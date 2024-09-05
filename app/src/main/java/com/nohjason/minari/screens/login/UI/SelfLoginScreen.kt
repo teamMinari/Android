@@ -66,6 +66,7 @@ import com.nohjason.minari.screens.login.Data.UserResponse
 import com.nohjason.minari.screens.login.LoginTextField
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariPurple
+import com.nohjason.myapplication.network.RetrofitInstance
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -176,6 +177,7 @@ fun SelfLoginScreen(
                         result?.let {
                             if (result.success) {
                                 // 로그인 성공 시 처리
+                                println(result)
                                 TokenManager.saveTokens(
                                     context,
                                     result.data.toString(),

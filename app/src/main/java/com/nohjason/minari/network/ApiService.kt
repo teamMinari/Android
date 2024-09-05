@@ -82,7 +82,7 @@ interface ApiService {
 
     @GET("/questions/level/{level}")
     suspend fun getQuestion(
-//        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA2MjA3MTYsImV4cCI6MTcyMDcwNzExNn0.HB5DqAsVW82Gke00pFnMH8SY0SbMjyJhuY0GKKxcbbA",
-        @Path("level") level: String
+        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJ3bGFsczY2OTFAZ21haWwuY29tIiwiaWF0IjoxNzI1NTQ0NzQ0LCJleHAiOjE3MjU2MzExNDR9.JUN2tFCASAmVJ3RLVBEySg99j5LAvbWZqnIiEz2QsS8",
+        @Path("level") level: Int
     ): QuestionResponse
 }

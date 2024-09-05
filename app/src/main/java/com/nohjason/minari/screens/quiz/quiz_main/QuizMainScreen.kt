@@ -45,6 +45,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.POST
+import java.io.IOException
 
 @Composable
 fun QuizMainScreen(
@@ -119,11 +120,12 @@ fun QuizMainScreen(
             imgResId = R.drawable.img_easy,
             color1 = Color(0xFF6889FF),
             color2 = Color(0xFFFF64F5),
-            lavel ="Lavel 1",
+            lavel ="LV_1",
             coment = "제일 쉬운 난이도",
             onClick = {
                 coroutineScope.launch {
-                    val qtAll = getQuestion("LV_1")
+                    val qtAll = getQuestion(1)
+
                     val dataList = selectPlayData(qestionAll = qtAll)
                     quizViewModel.initializePlayData(data = dataList)
                     navHostController.navigate("quizplay")
@@ -135,7 +137,7 @@ fun QuizMainScreen(
             imgResId = R.drawable.img_nomal,
             color1 = Color(0xFF6889FF),
             color2 = Color(0xFF23FF9C),
-            lavel ="Lavel 2",
+            lavel ="LV_2",
             coment = "공부 좀 했다면 이건 어떤가요?",
             onClick = {
 //                val dataList = selectPlayData(qestionAll = qtAll)
@@ -153,7 +155,7 @@ fun QuizMainScreen(
             imgResId = R.drawable.img_hard,
             color1 = Color(0xFF6889FF),
             color2 = Color(0xFFFF3C52),
-            lavel ="Lavel 3",
+            lavel ="LV_3",
             coment = "이건 모를걸요!",
             onClick = {
 //                val dataList = selectPlayData(qestionAll = qtAll)
@@ -171,6 +173,7 @@ fun QuizMainScreen(
 //데이터 초기화 값
 fun selectPlayData(qestionAll: QuestionResponse): PlayData {
     val qtSelected = qestionAll.data.shuffled().take(10)
+    println(qtSelected)
     return PlayData(
         userCurrent = 0,         // 현재 유저 진행 상황, 0으로 초기화
         point = 0,               // 초기 포인트, 0으로 초기화
@@ -179,11 +182,8 @@ fun selectPlayData(qestionAll: QuestionResponse): PlayData {
     )
 }
 
-fun isTokenExpired(expirationTime: Long): Boolean {
-    return System.currentTimeMillis() > expirationTime
-}
 
-suspend fun getQuestion(level: String): QuestionResponse {
+suspend fun getQuestion(level: Int): QuestionResponse {
     // Retrofit 인스턴스를 가져옴
     val apiService = RetrofitInstance.api
 
@@ -194,14 +194,10 @@ suspend fun getQuestion(level: String): QuestionResponse {
                 level =  level// 요청할 레벨
             )
             response // 서버 응답 반환
-        } catch (e: HttpException) {
-            // HTTP 오류 처리
-            println("HTTP Error: ${e.message}")
-            throw e
         } catch (e: Exception) {
-            // 기타 오류 처리
+            // 기타 예외 처리
             println("Error: ${e.message}")
-            throw e
+            throw e // 필요에 따라 다시 던질 수 있음
         }
     }
 }
