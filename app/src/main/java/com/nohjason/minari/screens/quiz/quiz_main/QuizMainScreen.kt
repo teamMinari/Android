@@ -15,9 +15,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,9 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.quiz.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.data.PlayData
-import com.nohjason.minari.screens.quiz.data.QuestionData
 import com.nohjason.minari.screens.quiz.data.QuestionResponse
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 import com.nohjason.minari.ui.theme.MinariBlue
@@ -41,7 +36,7 @@ import com.nohjason.minari.ui.theme.MinariBlue
 fun QuizMainScreen(
     qtAll: QuestionResponse,
     navHostController: NavHostController,
-    viewModel: QuizViewModel = viewModel(),
+    quizViewModel: QuizViewModel = viewModel()
 ){
 //    val playData by viewModel.playData.collectAsState()
     val scrollState = rememberScrollState()
@@ -114,7 +109,7 @@ fun QuizMainScreen(
             coment = "제일 쉬운 난이도",
             onClick = {
                 val dataList = selectPlayData(qestionAll = qtAll)
-                viewModel.initializePlayData(
+                quizViewModel.initializePlayData(
                     data = (dataList)
                 )
                 //PlayData초기화

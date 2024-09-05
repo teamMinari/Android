@@ -52,8 +52,6 @@ android {
 }
 
 dependencies {
-    //ViewModel
-//    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
 
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

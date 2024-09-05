@@ -25,7 +25,7 @@ import com.nohjason.minari.screens.login.LoginScreen
 import com.nohjason.minari.screens.login.UI.SelfLoginScreen
 import com.nohjason.minari.screens.login.UI.SelfSingUpScreen
 import com.nohjason.minari.screens.profile.ProfileScreen
-import com.nohjason.minari.screens.quiz.QuizPlayScreen
+import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 import com.nohjason.minari.screens.quiz.dummyResponse
 import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
@@ -33,6 +33,9 @@ import com.nohjason.minari.screens.term.Term
 import com.nohjason.minari.screens.term.Test
 import com.nohjason.myapplication.network.MainViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.nohjason.minari.screens.quiz.quiz_end.QuizEndScreen
+import com.nohjason.minari.screens.quiz.quiz_play.SeletO
+import com.nohjason.minari.screens.quiz.quiz_play.SeletX
 
 @Composable
 fun NavGraph(
@@ -53,6 +56,9 @@ fun NavGraph(
         .requestEmail().build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
 
+    //퀴즈 뷰모델
+    val quizViewModel: QuizViewModel = viewModel()
+
 
 
     NavHost(
@@ -72,7 +78,7 @@ fun NavGraph(
         }
         composable(BottomBarScreen.Quiz.rout) {
             //퀴즈
-            QuizMainScreen(qtAll = dummyResponse, navHostController = navController)
+            QuizMainScreen(qtAll = dummyResponse, navHostController = navController, quizViewModel = quizViewModel)
         }
         composable(BottomBarScreen.Profile.rout) {
             ProfileScreen(navController = navController)
@@ -104,24 +110,20 @@ fun NavGraph(
 
         //퀴즈
         composable("quizplay") {
-            // ViewModel 인스턴스 가져오기
-//            val quizViewModel: QuizViewModel = viewModel()
-//            println(quizViewModel.playData)
-//
-//            // playData가 null이 아닌지 확인 후 전달
-//            quizViewModel.playData?.let { playData ->
-//                QuizPlayScreen(qestion = playData)
-//            }
+            // playData가 null이 아닌지 확인 후 전달
+            QuizPlayScreen(navHostController = navController, quizViewModel = quizViewModel)
         }
-
-//        composable(
-//            route = "quizplay/{playDataJson}",  // 경로 정의
-//            arguments = listOf(navArgument("playDataJson") { type = NavType.StringType })  // 인자 설정
-//        ) { backStackEntry ->
-//            val playDataJson = backStackEntry.arguments?.getString("playDataJson")  // 전달된 JSON 데이터를 추출
-//            val playData = Gson().fromJson(playDataJson, PlayData::class.java)  // JSON 데이터를 PlayData 객체로 변환
-//            QuizPlayScreen(question = playData)  // QuizPlayScreen에 변환된 데이터를 전달
-//        }
+        composable("Select_O"){
+            SeletO(navHostController = navController)
+        }
+        composable("Select_X"){
+            SeletX(navHostController = navController)
+        }
+        composable("End{point}{correct}") { backStackEntry ->
+                val point = backStackEntry.arguments?.getInt("point") ?: 0
+                val correct = backStackEntry.arguments?.getInt("correct") ?: 0
+            QuizEndScreen(point = point, correctAnswer = correct )
+        }
 
 
 

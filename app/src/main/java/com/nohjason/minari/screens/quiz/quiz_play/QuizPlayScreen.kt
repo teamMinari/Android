@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.quiz
+package com.nohjason.minari.screens.quiz.quiz_play
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,30 +23,33 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.gson.Gson
+import androidx.navigation.NavHostController
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.quiz.data.PlayData
-import com.nohjason.minari.screens.quiz.data.QuestionData
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 
 @Composable
 fun QuizPlayScreen(
-    viewModel: QuizViewModel = viewModel()){
-    val playData = viewModel.playData
+    navHostController: NavHostController,
+    quizViewModel: QuizViewModel = viewModel()
+){
+    val playData = quizViewModel.playData.value
 
-    Box(modifier = Modifier
-        .fillMaxSize(),
+    val qtNum = playData?.qtNum ?: 0
+
+    val qtContents = playData?.qtList?.getOrNull(qtNum)?.qtContents ?: "No content available"
+    val qtTip = playData?.qtList?.getOrNull(qtNum)?.qtTip ?: "No tip available"
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
         contentAlignment = Alignment.Center
     ){
-
-
         Column (
             modifier = Modifier
                 .fillMaxHeight()
@@ -60,7 +62,7 @@ fun QuizPlayScreen(
                 color = Color(0xFF363CD5),
                 fontSize = 25.sp,
                 fontWeight = FontWeight.SemiBold,
-                text = "${playData.value.qtNum + 1}/10"
+                text = "${qtNum + 1}/10"
             )
             Text(
                 modifier = Modifier
@@ -76,25 +78,25 @@ fun QuizPlayScreen(
                 modifier = Modifier.padding(top = 20.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ){
-                Button( //x버튼
+                Button(
+                    //x버튼
                     modifier = Modifier
                         .weight(1f)
                         .height(227.dp),
                     shape = RoundedCornerShape(10.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFFC7C7C)
+                        containerColor = Color(0xFFE4E4E4)
                     ),
                     onClick = {
-//                        val qtList =electPlayData(qtAll = qtAll.data)
-//                        val playDataJson = Gson().toJson(qtList)
-                        //Gson으로 데이터 묶어서 화면이동
+                        quizViewModel.submitAnswer(answer = false)
+                        navHostController.navigate("Select_X")
                     },
                 ) {
                     Image(
                         modifier = Modifier
                             .width(90.dp)
                             .height(98.dp),
-                        painter = painterResource(id = R.drawable.emoji_x_color),
+                        painter = painterResource(id = R.drawable.emoji_x),
                         contentDescription = null,
                     )
                 }
@@ -105,18 +107,18 @@ fun QuizPlayScreen(
                         .height(227.dp),
                     shape = RoundedCornerShape(10.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFB0CDF5)
+                        containerColor = Color(0xFFE4E4E4)
                     ),
                     onClick = {
-
-                        //Gson으로 데이터 묶어서 화면이동
+                        quizViewModel.submitAnswer(answer = true)
+                        navHostController.navigate("Select_O")
                     }
                 ) {
                     Image(
                         modifier = Modifier
                             .width(90.dp)
                             .height(98.dp),
-                        painter = painterResource(id = R.drawable.emoji_o_color),
+                        painter = painterResource(id = R.drawable.emoji_o),
                         contentDescription = null
                     )
                 }
@@ -131,7 +133,7 @@ fun QuizPlayScreen(
                 Text(
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
-                    text = qtCmt
+                    text = "Tip"
                 )
             }
             Text(
@@ -139,34 +141,6 @@ fun QuizPlayScreen(
                 text = qtTip
             )
         }
-    }
-    
-}
-
-fun handleAnswer(
-    userAnswer:Boolean,
-    currentAnswer: Boolean,
-    point: Int,
-    userCurrent: Int,
-    qtNum: Int,
-    qtList: List<QuestionData>
-) {
-    if (userAnswer == currentAnswer) {
-        //정답 처리 로직(포인트, 정답 수, num 추가)
-        return //PlayData(
-//            userCurrent = 0,
-//            point = 0,
-//            qtNum = 0,
-//            qtList = qtSelected
-//        )
-    } else {
-        // 오답 처리 로직(num 추가)
-        return//PlayData(
-//            userCurrent = 0,
-//            point = 0,
-//            qtNum = 0,
-//            qtList = qtSelected
-//        )
     }
 }
 
