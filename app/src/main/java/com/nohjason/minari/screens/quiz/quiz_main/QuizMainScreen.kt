@@ -122,7 +122,6 @@ fun QuizMainScreen(
             lavel ="Lavel 1",
             coment = "제일 쉬운 난이도",
             onClick = {
-                isTokenExpired("eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA2MjA3MTYsImV4cCI6MTcyMDcwNzExNn0.HB5DqAsVW82Gke00pFnMH8SY0SbMjyJhuY0GKKxcbbA")
                 coroutineScope.launch {
                     val qtAll = getQuestion("LV_1")
                     val dataList = selectPlayData(qestionAll = qtAll)
