@@ -130,13 +130,13 @@ fun QuizMainScreen(
             lavel ="LV_2",
             coment = "공부 좀 했다면 이건 어떤가요?",
             onClick = {
-//                val dataList = selectPlayData(qestionAll = qtAll)
-//                quizViewModel.initializePlayData(
-//                    data = (dataList)
-//                )
-//                //PlayData초기화
-//                navHostController.navigate("quizplay")
-//                //노말 서버 끌고오기
+                coroutineScope.launch {
+                    val qtAll = getQuestion(2)
+
+                    val dataList = selectPlayData(qestionAll = qtAll)
+                    quizViewModel.initializePlayData(data = dataList)
+                    navHostController.navigate("quizplay")
+                }
             },
         )
 
@@ -148,13 +148,13 @@ fun QuizMainScreen(
             lavel ="LV_3",
             coment = "이건 모를걸요!",
             onClick = {
-//                val dataList = selectPlayData(qestionAll = qtAll)
-//                quizViewModel.initializePlayData(
-//                    data = (dataList)
-//                )
-//                //PlayData초기화
-//                navHostController.navigate("quizplay")
-//                //하드 서버 끌고오기
+                coroutineScope.launch {
+                    val qtAll = getQuestion(3)
+
+                    val dataList = selectPlayData(qestionAll = qtAll)
+                    quizViewModel.initializePlayData(data = dataList)
+                    navHostController.navigate("quizplay")
+                }
             },
         )
     }

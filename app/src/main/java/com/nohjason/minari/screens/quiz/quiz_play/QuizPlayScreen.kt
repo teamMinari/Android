@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.quiz.quiz_play
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -30,6 +32,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nohjason.minari.R
+import com.nohjason.minari.navigation.bottombar.BottomBarScreen
+import com.nohjason.minari.screens.quiz.clickOnce
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 
 @Composable
@@ -37,12 +41,15 @@ fun QuizPlayScreen(
     navHostController: NavHostController,
     quizViewModel: QuizViewModel = viewModel()
 ){
+
     val playData = quizViewModel.playData.value
 
     val qtNum = playData?.qtNum ?: 0
 
     val qtContents = playData?.qtList?.getOrNull(qtNum)?.qtContents ?: "No content available"
     val qtTip = playData?.qtList?.getOrNull(qtNum)?.qtTip ?: "No tip available"
+
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier
@@ -82,14 +89,21 @@ fun QuizPlayScreen(
                     //x버튼
                     modifier = Modifier
                         .weight(1f)
-                        .height(227.dp),
+                        .height(227.dp)
+                        .clickOnce {
+                            try {
+                                quizViewModel.submitAnswer(answer = false)
+                                navHostController.navigate("Select_X")
+                            } catch (e: Exception){
+                                Toast.makeText(context, "오류가 생겼습니다! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                                navHostController.navigate(BottomBarScreen.Home.rout)
+                            }
+                        },
                     shape = RoundedCornerShape(10.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFE4E4E4)
                     ),
                     onClick = {
-                        quizViewModel.submitAnswer(answer = false)
-                        navHostController.navigate("Select_X")
                     },
                 ) {
                     Image(
@@ -110,8 +124,13 @@ fun QuizPlayScreen(
                         containerColor = Color(0xFFE4E4E4)
                     ),
                     onClick = {
-                        quizViewModel.submitAnswer(answer = true)
-                        navHostController.navigate("Select_O")
+                        try {
+                            quizViewModel.submitAnswer(answer = true)
+                            navHostController.navigate("Select_O")
+                        } catch (e: Exception){
+                            Toast.makeText(context, "오류가 생겼습니다! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                            navHostController.navigate(BottomBarScreen.Home.rout)
+                        }
                     }
                 ) {
                     Image(

@@ -61,7 +61,12 @@ fun QuizButton(
                         end = Offset(1000f, 1000f)
                     )
                 )
-                .clickable(onClick = onClick)
+                .clickable {
+                    onClick
+                }
+//                .clickOnce {
+//                    onClick
+//                }
         )
 
         //이미지

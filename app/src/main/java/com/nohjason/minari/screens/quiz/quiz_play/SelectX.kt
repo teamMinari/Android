@@ -1,6 +1,7 @@
 package com.nohjason.minari.screens.quiz.quiz_play
 
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nohjason.minari.R
+import com.nohjason.minari.navigation.bottombar.BottomBarScreen
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 
 @Composable
@@ -46,6 +49,8 @@ fun SeletX(
     val qtAnswer = playData?.qtList?.getOrNull(qtNum)?.qtAnswer ?: "No answer available"
     val qtCmt = playData?.qtList?.getOrNull(qtNum)?.qtCmt ?: "No comment available"
     val qtSize = playData?.qtList?.size ?: 9
+
+    val context = LocalContext.current
 
     println(quizViewModel.playData.value)
 

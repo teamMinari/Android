@@ -29,9 +29,16 @@ fun MainScreen(
 
     LaunchedEffect(key1 = navController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            showBottomBar = destination.route != BottomBarScreen.Login.rout
+            showBottomBar = when (destination.route) {
+                "quizplay" -> false
+                "Select_O" -> false
+                "Select_X" -> false
+                BottomBarScreen.Login.rout -> false
+                else -> true
+            }
         }
     }
+
 
     Scaffold(
         bottomBar = {

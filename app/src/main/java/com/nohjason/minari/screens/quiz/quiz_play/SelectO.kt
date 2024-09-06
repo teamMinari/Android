@@ -163,10 +163,10 @@ fun SeletO(
                 containerColor = Color(0xFF363CD5)
             ),
             onClick = {
-                quizViewModel.nextQuestion()
                 if(qtNum+2 > qtSize){
                     navHostController.navigate("End")
                 }else{
+                    quizViewModel.nextQuestion()
                     navHostController.navigate("quizplay")
                 }
             }
