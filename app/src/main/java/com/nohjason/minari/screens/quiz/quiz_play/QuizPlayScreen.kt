@@ -89,21 +89,19 @@ fun QuizPlayScreen(
                     //x버튼
                     modifier = Modifier
                         .weight(1f)
-                        .height(227.dp)
-                        .clickOnce {
-                            try {
-                                quizViewModel.submitAnswer(answer = false)
-                                navHostController.navigate("Select_X")
-                            } catch (e: Exception){
-                                Toast.makeText(context, "오류가 생겼습니다! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
-                                navHostController.navigate(BottomBarScreen.Home.rout)
-                            }
-                        },
+                        .height(227.dp),
                     shape = RoundedCornerShape(10.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFE4E4E4)
                     ),
                     onClick = {
+                        try {
+                            quizViewModel.submitAnswer(answer = false)
+                            navHostController.navigate("Select_X")
+                        } catch (e: Exception){
+                            Toast.makeText(context, "오류가 생겼습니다! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                            navHostController.navigate(BottomBarScreen.Home.rout)
+                        }
                     },
                 ) {
                     Image(
