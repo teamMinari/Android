@@ -20,7 +20,7 @@ data class QuestionData(
 
 data class PlayData(
     //UI의 모델 클래스
-    val userCurrent: Int,
+    val userCurrent: Int, //정답수
     val point: Int,
     val qtNum: Int,
     val qtList: List<QuestionData>

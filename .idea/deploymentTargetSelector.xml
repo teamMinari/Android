@@ -16,7 +16,7 @@
       <SelectionState runConfigName="PreViewDegin">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="PreviewImageFromUrl">
+      <SelectionState runConfigName="PreTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

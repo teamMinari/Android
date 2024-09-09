@@ -48,6 +48,8 @@ fun QuizPlayScreen(
 
     val qtContents = playData?.qtList?.getOrNull(qtNum)?.qtContents ?: "No content available"
     val qtTip = playData?.qtList?.getOrNull(qtNum)?.qtTip ?: "No tip available"
+    val qtAnswer = playData?.qtList?.getOrNull(qtNum)?.qtAnswer ?: false
+
 
     val context = LocalContext.current
 
@@ -96,7 +98,7 @@ fun QuizPlayScreen(
                     ),
                     onClick = {
                         try {
-                            quizViewModel.submitAnswer(answer = false)
+                            quizViewModel.submitAnswer(userAnswer = false, correctAnswer = qtAnswer)
                             navHostController.navigate("Select_X")
                         } catch (e: Exception){
                             Toast.makeText(context, "오류가 생겼습니다! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
@@ -123,7 +125,7 @@ fun QuizPlayScreen(
                     ),
                     onClick = {
                         try {
-                            quizViewModel.submitAnswer(answer = true)
+                            quizViewModel.submitAnswer(userAnswer = true, correctAnswer = qtAnswer)
                             navHostController.navigate("Select_O")
                         } catch (e: Exception){
                             Toast.makeText(context, "오류가 생겼습니다! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
