@@ -1,9 +1,17 @@
 package com.nohjason.minari.navigation
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -49,7 +57,6 @@ fun NavGraph(
 //    }, onAuthError = {
 //        user = null
 //    })
-//    val token = stringResource(R.string.default_web_client_id)
     val context = LocalContext.current
 //
 //    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(token)
@@ -62,7 +69,7 @@ fun NavGraph(
 
     NavHost(
         navController = navController,
-//        startDestination = Test.FirstScreen.rout
+//        startDestination = Test.FirstScreen.rout,
         startDestination = Screen.Home.rout
     ) {
 
@@ -74,7 +81,10 @@ fun NavGraph(
             )
         }
         composable(Screen.Home.rout) {
-            HomeScreen(navController = navController)
+            HomeScreen(
+                navController = navController,
+//                token = token
+            )
         }
         composable(Screen.Quiz.rout, ) {
             QuizScreen(navController = navController, user = dummyUser)
@@ -86,14 +96,29 @@ fun NavGraph(
             News(navController = navController)
         }
         // 튜토리얼
+
+        // 포도송이
         composable(Screen.Rout.rout) {
             Rout(navController = navController)
         }
-        composable(Test.Grape.rout) {
-            Grape(navController = navController)
+        // 포도알
+        composable(Test.Grapes.rout+"/{id}") { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id") ?: "0"
+            Grapes(
+                id = id.toInt(),
+                navController = navController,
+            )
         }
-        composable(Test.Grapes.rout) {
-            Grapes(navController = navController)
+
+        // 포도씨
+        composable(Test.Grape.rout+"/{id}/{title}") { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id") ?: "0"
+            val title = backStackEntry.arguments?.getString("title") ?: ""
+            Grape(
+                navController = navController,
+                gpseId = id.toInt(),
+                title = title,
+            )
         }
 
         composable(Screen.MyDictionary.rout) {

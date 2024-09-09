@@ -1,24 +1,40 @@
 package com.nohjason.minari.network.response.rout
 
+//data class GrapesAll(
+//    val message: String,
+//    val status: Int,
+//    val data: List<Data>
+//)
+//
+//data class Data(
+//    val gpsId: Int,
+//    val gpsName: String,
+//    val gpsContent: String,
+//    val gpsTime: Int,
+//    val gpsLike: Boolean,
+//    val gpTpList: List<String>,
+//)
+
 data class GrapesAll(
-    val message: String,
     val status: Int,
-    val data: List<Data>
+    val message: String,
+    val data: List<GpsData>
 )
 
-data class Data(
-    val gpTpList: List<String>,
-    val gpsContent: String,
+data class GpsData(
     val gpsId: Int,
-    val gpsLike: Boolean,
     val gpsName: String,
-    val gpsTime: Int
+    val gpsContent: String,
+    val gpsTime: Long,
+    val gpsLike: Boolean,
+    val gpTpList: List<String>
 )
+
 
 data class Grapes(
     val status: Int,
     val message: String,
-    val data: List<GrapesData>,
+    val data: GrapesData,
 )
 
 data class GrapesData (
@@ -28,6 +44,7 @@ data class GrapesData (
     val gpsLike: Boolean,
     val gpsImg: String,
     val gpCnt: Int,
+    val gpCntMax: Int,
     val gpTpList: List<String>,
     val gpList: List<GrapeData>,
 )
@@ -59,7 +76,7 @@ data class GrapeSeedLessData(
 data class GrapeSeed(
     val status: Int,
     val message: String,
-    val data: List<GrapeSeedData>,
+    val data: GrapeSeedData,
 )
 
 data class GrapeSeedData(

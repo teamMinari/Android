@@ -1,8 +1,6 @@
 package com.nohjason.minari.screens.rout
 
 import android.util.Log
-import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,9 +21,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,17 +41,25 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.Screen
+import com.nohjason.minari.preferences.getFromPreferences
+import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.screens.login.Test
 import com.nohjason.minari.ui.theme.MinariBlue
-import com.nohjason.minari.ui.theme.pretendard_bold
 import com.nohjason.minari.ui.theme.pretendard_extra_bold
 import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_semibold
 
 @Composable
 fun Rout(
-    navController: NavController
+    navController: NavController,
+    viewModel: GrapeViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
 ) {
+    val preferences = getPreferences()
+    val token = getFromPreferences(preferences, "token")
+    val route by viewModel.route.collectAsState()
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getAllGps(token = token)
+    }
     BackHandler(onBack = {
         navController.popBackStack(Screen.Home.rout, inclusive = false)
     })
@@ -84,27 +94,47 @@ fun Rout(
                 )
             }
         }
-        items(5) {
-            Gps(onClick = { navController.navigate(Test.Grapes.rout) })
+        if (route != null) {
+            items(route!!.data) { item ->
+                Gps(
+                    onClick = { navController.navigate(Test.Grapes.rout + "/${item.gpsId}") },
+                    name = item.gpsName,
+                    time = item.gpsTime,
+                    content = item.gpsContent,
+                    list = item.gpTpList
+                )
+            }
+        } else {
+            item {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+            }
         }
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Gps(onClick: () -> Unit) {
-    Card (
+fun Gps(
+    onClick: () -> Unit,
+    name: String,
+    time: Long,
+    content: String,
+    list: List<String>
+) {
+    Card(
         shape = RoundedCornerShape(16.dp),
         elevation = 4.dp,
         onClick = { onClick() }
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp)
         ) {
             Text(
-                text = "경제 시작하기",
+                text = name,
                 fontFamily = pretendard_semibold,
                 fontSize = 23.sp,
                 modifier = Modifier.padding(vertical = 10.dp)
@@ -117,9 +147,8 @@ fun Gps(onClick: () -> Unit) {
                     contentDescription = null
                 )
                 Spacer(modifier = Modifier.width(5.dp))
-                Text(text = "27분", fontFamily = pretendard_medium, fontSize = 12.sp)
+                Text(text = "${time}분", fontFamily = pretendard_medium, fontSize = 12.sp)
             }
-            val list = listOf("초급", "첫 시작", "고등학생", "경제 제도")
             LazyRow(
                 modifier = Modifier.padding(vertical = 5.dp),
                 horizontalArrangement = Arrangement.spacedBy(5.dp)
@@ -132,15 +161,16 @@ fun Gps(onClick: () -> Unit) {
                             .padding(horizontal = 10.dp, vertical = 2.dp),
                     ) {
                         Text(
-                            text = "$item",
+                            text = item,
                             fontFamily = pretendard_medium,
                             color = Color.White,
-                            modifier = Modifier.align(Alignment.Center))
+                            modifier = Modifier.align(Alignment.Center)
+                        )
                     }
                 }
             }
             Text(
-                text = "어쩌고 저쩌고 weoifj aeofij aeao ifjoa wefoiwjf woifjweoifjewf owiejfo weoifj wijfoa iwejfo aiwejfow aeij fwoaie fjoaiwj foiejf",
+                text = content,
                 modifier = Modifier.padding(vertical = 5.dp),
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
@@ -150,8 +180,8 @@ fun Gps(onClick: () -> Unit) {
     }
 }
 
-@Preview(showSystemUi = true)
-@Composable
-private fun Test() {
-    Rout(navController = rememberNavController())
-}
+//@Preview(showSystemUi = true)
+//@Composable
+//private fun Test() {
+//    Rout(navController = rememberNavController())
+//}

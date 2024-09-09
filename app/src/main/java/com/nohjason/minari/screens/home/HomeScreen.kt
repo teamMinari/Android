@@ -1,5 +1,8 @@
 package com.nohjason.minari.screens.home
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -30,6 +33,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
@@ -52,12 +58,17 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.nohjason.minari.R
+import com.nohjason.minari.preferences.getFromPreferences
+import com.nohjason.minari.preferences.getPreferences
+import com.nohjason.minari.screens.login.LoginViewModel
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariGradation
 import com.nohjason.minari.ui.theme.pretendard_medium
@@ -67,6 +78,8 @@ import com.nohjason.minari.ui.theme.pretendard_semibold
 @Composable
 fun HomeScreen(
     navController: NavController,
+    loginViewModel: LoginViewModel = viewModel(),
+//    token: String
 ) {
     var text by remember { mutableStateOf("") }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -95,7 +108,7 @@ fun HomeScreen(
                     MinariTextField(
                         modifier = Modifier
                             .clip(CircleShape)
-                            .background(Color.LightGray)
+                            .background(Color(0xFFF6F6F6))
                             .padding(6.dp),
                         value = text,
                         onValueChange = { text = it }
@@ -286,24 +299,57 @@ fun XpBar(
 @Composable
 private fun SwipeNews() {
     val pagerState = rememberPagerState()
+    val list: List<ShowNews> = listOf(
+        ShowNews(
+            "https://imgnews.pstatic.net/image/032/2024/09/09/0003320025_001_20240909212314102.jpg?type=w647",
+            "오후 9:00",
+            "차·포 뗀 법안에도 플랫폼 업계는 “과하다”…사후 규제엔 ‘반색’",
+            "https://n.news.naver.com/mnews/article/032/0003320025"
+        ),
+        ShowNews(
+            "https://imgnews.pstatic.net/image/009/2024/09/09/0005363178_001_20240909213611393.jpg?type=w647",
+            "오후 9:26",
+            "“전기료 이게 맞아?” 집집마다 난리…역대급 폭염의 뒤끝, 서늘하네",
+            "https://n.news.naver.com/mnews/article/009/0005363178"
+        )
+    )
     HorizontalPager(
-        count = 10, // 아이템 개수
+        count = list.size, // 아이템 개수
         state = pagerState,
         itemSpacing = 20.dp // 페이지 간의 간격을 설정
     ) { page ->
+        val news = list[page]
         // 페이지 내용
         Row {
-            Spacer(modifier = Modifier.width(25.dp))
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(20.dp))
-                    .weight(0.1f)
-                    .height(150.dp)
-                    .background(Color.LightGray),
-            ) {
-                Text(text = "$page", modifier = Modifier.align(Alignment.Center))
+//            Spacer(modifier = Modifier.width(25.dp))
+            Box(modifier = Modifier.background((Color(0x8A8A8A)))) {
+                AsyncImage(
+                    model = "https://imgnews.pstatic.net/image/009/2024/09/09/0005363178_001_20240909213611393.jpg?type=w647",
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(150.dp)
+                )
+                Box(modifier = Modifier
+                    .padding(10.dp)
+                    .width(200.dp)
+                    .align(Alignment.BottomCenter)) {
+                    Column(Modifier) {
+                        Text(text = news.time, color = Color.White)
+                        Text(text = news.title, color = Color.White)
+                    }
+                }
             }
-            Spacer(modifier = Modifier.width(25.dp))
+//            Box(
+//                modifier = Modifier
+//                    .clip(RoundedCornerShape(20.dp))
+//                    .weight(0.1f)
+//                    .height(150.dp)
+//                    .background(Color.LightGray),
+//            ) {
+//                Text(text = "$page", modifier = Modifier.align(Alignment.Center))
+//            }
+//            Spacer(modifier = Modifier.width(25.dp))
         }
     }
 }
@@ -366,6 +412,9 @@ private fun TodayWords() {
 
 @Composable
 private fun EconomyTerm(list: MutableList<String>) {
+    var state by rememberSaveable {
+        mutableStateOf(false)
+    }
     list.forEach {
         Box(
             modifier = Modifier
@@ -382,9 +431,10 @@ private fun EconomyTerm(list: MutableList<String>) {
                 )
                 Spacer(modifier = Modifier.weight(0.1f))
                 Icon(
-                    painter = painterResource(id = R.drawable.minari_hart),
+                    painter = painterResource(id = R.drawable.my_words),
                     contentDescription = null,
-                    tint = Color.Unspecified
+                    tint = if (state) Color.Unspecified else Color.Blue,
+                    modifier = Modifier.clickable { state = !state }
                 )
             }
         }
@@ -423,9 +473,16 @@ fun Modifier.drawColoredShadow(
     }
 }
 
+data class ShowNews(
+    val img: String,
+    val time: String,
+    val title: String,
+    val link: String
+)
 
-@Preview(showSystemUi = true)
-@Composable
-fun PreviewHome() {
-    HomeScreen(navController = rememberNavController())
-}
+
+//@Preview(showSystemUi = true)
+//@Composable
+//fun PreviewHome() {
+//    HomeScreen(navController = rememberNavController())
+//}

@@ -1,5 +1,7 @@
 package com.nohjason.minari.screens.login.screen.login
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -38,6 +40,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.Screen
+import com.nohjason.minari.preferences.getFromPreferences
+import com.nohjason.minari.preferences.getPreferences
+import com.nohjason.minari.preferences.saveToPreferences
+import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.login.LoginTextField
 import com.nohjason.minari.screens.login.LoginViewModel
 import com.nohjason.minari.screens.login.PreferencesManager
@@ -51,13 +57,6 @@ fun SelfLoginScreen(
     navController: NavController,
     loginViewModel: LoginViewModel
 ) {
-//    val poppinsFamily = FontFamily(
-//        Font(R.font.poppins_semibold, FontWeight.SemiBold),
-//        Font(R.font.poppins_medium, FontWeight.Medium),
-//        Font(R.font.poppins_regular),
-//        Font(R.font.poppins_bold, FontWeight.Bold),
-//    )
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -121,27 +120,6 @@ fun SelfLoginScreen(
         }
 
         val context = LocalContext.current
-        val preferencesManager = remember { PreferencesManager(context) }
-        val loginResponse by loginViewModel.loginResponse.collectAsState()
-
-        LaunchedEffect(loginResponse) {
-            loginResponse?.let {
-                Log.d("TAG", "SelfLoginScreen: $it")
-                if (it.success) {
-                    val token = it.data[0]
-                    preferencesManager.saveData("accessToken", token.accessToken)
-                    Log.d("TAG", "SelfLoginScreen: ${preferencesManager.getData("accessToken", "")}")
-                    navController.navigate(Screen.Home.rout) {
-                        popUpTo(navController.graph.startDestinationId) {
-                            inclusive = true
-                        }
-                    }
-                } else {
-                    Toast.makeText(context, "아이디 또는 비밀번호를 확인해보세요", Toast.LENGTH_SHORT).show()
-                    Log.d("TAG", "Login Failed: ${it.message}")
-                }
-            }
-        }
 
         var check by rememberSaveable { mutableStateOf(false) }
         Row(
@@ -158,12 +136,23 @@ fun SelfLoginScreen(
 
         Spacer(modifier = Modifier.weight(0.1f))
 
+        val preferences = getPreferences()
+        val loginResponse by loginViewModel.loginRequest.collectAsState()
+        LaunchedEffect(loginResponse) {
+            if (loginResponse != null ) {
+                saveToPreferences(preferences, "token", loginResponse!!.data.accessToken)
+                navController.navigate(Screen.Home.rout)
+                Log.d("TAG", "SelfLoginScreen: ${loginResponse!!.data.accessToken}")
+            }
+        }
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(CircleShape)
                 .background(MinariBlue)
-                .clickable { loginViewModel.login(id = id, password = password) }
+                .clickable {
+                    loginViewModel.login(id = id, password = password)
+                }
         ) {
             Text(
                 text = "로그인",
@@ -172,7 +161,6 @@ fun SelfLoginScreen(
                 modifier = Modifier
                     .padding(13.dp)
                     .align(Alignment.Center)
-
             )
         }
 

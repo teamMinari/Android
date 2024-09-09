@@ -5,14 +5,13 @@ data class LoginRequest(
     val password: String
 )
 
-data class Token(
-    val accessToken: String,
-    val refreshToken: String
+data class LoginResponse(
+    val status: Int,
+    val message: String,
+    val data: TokenData
 )
 
-data class LoginResponse(
-    val success: Boolean,
-    val status: String,
-    val message: String,
-    val data: List<Token>
+data class TokenData(
+    val accessToken: String,
+    val refreshToken: String
 )
