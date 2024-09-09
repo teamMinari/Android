@@ -1,5 +1,6 @@
 package com.nohjason.minari.navigation
 
+import ProfileMAinScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -71,9 +72,9 @@ fun NavGraph(
             //퀴즈
 //            QuizMainScreen(qtAll = dummyResponse, navHostController = navController)
         }
-//        composable(BottomBarScreen.Profile.rout) {
-//            ProfileScreen(navController = navController)
-//        }
+        composable(BottomBarScreen.Profile.rout) {
+            ProfileMAinScreen()
+        }
         composable(BottomBarScreen.Term.rout) {
             Term(
                 navController = navController,

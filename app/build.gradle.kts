@@ -52,10 +52,6 @@ android {
 }
 
 dependencies {
-    //Chart
-//    implementation("com.github.tehras:charts:$latest_release")
-    val latestRelease = "1.0.0"
-    implementation("com.github.tehras:charts:$latestRelease")
 
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
