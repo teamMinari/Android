@@ -31,6 +31,11 @@ class QuizViewModel : ViewModel() {
             playData.value = data.copy(point = newPoints)
         }
     }
+    fun updateCurrent(newCurrent: Int) {
+        playData.value?.let { data ->
+            playData.value = data.copy(userCurrent = newCurrent)
+        }
+    }
 
     // 정답 제출 함수
     fun submitAnswer(userAnswer: Boolean, correctAnswer:Boolean) {
@@ -41,6 +46,7 @@ class QuizViewModel : ViewModel() {
             if (userAnswer == correctAnswer) {
                 // 정답일 경우 점수를 1점 추가
                 updatePoints(data.point + 1)
+                updateCurrent(data.userCurrent +1)
             }
         }
     }
