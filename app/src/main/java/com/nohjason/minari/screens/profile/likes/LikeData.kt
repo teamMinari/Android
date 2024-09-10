@@ -1,12 +1,37 @@
 package com.nohjason.minari.screens.profile.likes
 
-class LikeData {
+class LikeD {
 }
 
-data class ApiResponse(
+
+data class TermApiResponse(
     val status: Int,
     val message: String,
     val data: List<Term>
+)
+
+data class GPSItemApiResponse(
+    val status: Int,
+    val message: String,
+    val data: List<GPSItem>
+)
+
+data class GpsApiResponse(
+    val status: Int,
+    val message: String,
+    val data: List<Gps>
+)
+
+data class GpApiResponse(
+    val status: Int,
+    val message: String,
+    val data: List<Gp>
+)
+
+
+
+data class LikeList(
+    val name: List<String>
 )
 
 // Term 데이터 클래스

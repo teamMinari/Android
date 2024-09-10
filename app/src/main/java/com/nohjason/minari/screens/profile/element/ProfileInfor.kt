@@ -83,10 +83,6 @@ fun ProfileInfor(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-
-
-
         // 저장된 프로필 이미지가 있으면 표시
         if (!"".equals(sp.getString("profileImage", "")) && !imageTy) {
             val encoded = sp.getString("profileImage", "")
@@ -221,8 +217,6 @@ fun ProfileInfor(
 
 
 
-
-
             Box(
                 contentAlignment = Alignment.Center, // 동그라미 안에 숫자를 중앙에 위치
                 modifier = Modifier
@@ -250,6 +244,7 @@ fun ProfileInfor(
                 )
             }
         }
+
 
         Spacer(modifier = Modifier.height(15.dp))
         Row (
