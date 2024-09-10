@@ -73,7 +73,7 @@ fun NavGraph(
 //            QuizMainScreen(qtAll = dummyResponse, navHostController = navController)
         }
         composable(BottomBarScreen.Profile.rout) {
-            ProfileMAinScreen()
+//            ProfileMAinScreen()
         }
         composable(BottomBarScreen.Term.rout) {
             Term(

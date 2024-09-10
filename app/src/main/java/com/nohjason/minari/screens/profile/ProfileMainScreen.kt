@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nohjason.minari.R
+import com.nohjason.minari.screens.profile.ProfileData
 import com.nohjason.minari.screens.profile.element.ProfileInfor
 import com.nohjason.minari.screens.profile.element.RewardBar
 import com.nohjason.minari.screens.profile.likes.Dummy
@@ -28,7 +29,9 @@ import com.nohjason.minari.screens.profile.likes.Dummy.dummyLikeList
 import com.nohjason.minari.screens.profile.likes.LikeList
 
 @Composable
-fun ProfileMAinScreen(){
+fun ProfileMAinScreen(
+    profileData: ProfileData
+){
     val scrollState = rememberScrollState()
 
     Column(
@@ -41,14 +44,20 @@ fun ProfileMAinScreen(){
         IconButton(onClick = { /*TODO*/ }) {
             Icon(
                 modifier = Modifier
-                    .size(24.dp)
-                    .padding( top = 35.dp),
+                    .padding(start = 325.dp, top = 35.dp),
                 painter = painterResource(id = R.drawable.ic_log_out),
                 contentDescription = null,
                 tint = Color.Unspecified
             )
         }
-        ProfileInfor()
+        ProfileInfor(
+            id = profileData.id,
+            email = profileData.email,
+            exp = profileData.exp,
+            totalExp = profileData.totalExp,
+            level = profileData.level,
+            title = profileData.title
+        )
         Row (
             modifier = Modifier.padding(top = 22.dp)
         ){
@@ -66,7 +75,9 @@ fun ProfileMAinScreen(){
             )
         }
         Spacer(modifier = Modifier.height(10.dp))
-        RewardBar(progress = 0.7f, rewardIcon = "", xp = 70)
+        val persent = profileData.totalExp/profileData.exp
+        //persent를 progress에 넣어야함
+        RewardBar(progress = 0.5f, level = "", xp = profileData.exp)
         LikeList(
             likeList = dummyLikeList
         )
@@ -78,5 +89,18 @@ fun ProfileMAinScreen(){
 @Preview
 @Composable
 fun PreProfile(){
-    ProfileMAinScreen()
+    ProfileMAinScreen(
+        profileData = ProfileData(
+            idx = 155,
+            id = "wlals6691",
+            email = "rhdiddl6691@gmail.com",
+            vocaBook = "???",
+            point = 50,
+            exp = 50,
+            authority = "",
+            title = "소비대",
+            level = 5,
+            totalExp = 100
+        )
+    )
 }

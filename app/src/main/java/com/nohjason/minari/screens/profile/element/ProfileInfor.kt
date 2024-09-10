@@ -52,7 +52,12 @@ import com.nohjason.minari.R
 
 @Composable
 fun ProfileInfor(
-
+    id: String,
+    email: String,
+    exp: Int,
+    totalExp: Int,
+    level: Int,
+    title: String
 ) {
     // 이미지 Uri 상태값을 기억
     var imageUri: Uri? by remember {
@@ -113,7 +118,8 @@ fun ProfileInfor(
                     .width(155.dp)
                     .height(155.dp)
             ) {
-                val percentage = 75 // 원하는 퍼센트를 지정
+                //퍼센트
+                val percentage = (exp/totalExp)*100 // 원하는 퍼센트를 지정
                 val sweepAngle = 360 * (percentage / 100f)
 
                 drawArc(
@@ -237,7 +243,7 @@ fun ProfileInfor(
                 }
                 // 숫자 표시
                 Text(
-                    text = "12"+"Lv",
+                    text = "${level}Lv",
                     fontSize = 10.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White,// 숫자 색상
@@ -251,7 +257,11 @@ fun ProfileInfor(
         Row (
             verticalAlignment = Alignment.CenterVertically
         ){
-            Text(text = "wlals6691")
+            Text(
+                text = id,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 20.sp
+            )
             Spacer(modifier = Modifier.width(5.dp))
             Divider(
                 color = Color(0xFFB7B7B7),
@@ -260,10 +270,18 @@ fun ProfileInfor(
                     .height(18.dp),
             )
             Spacer(modifier = Modifier.width(5.dp))
-            Text(text = "소비대왕")
+            Text(
+                text = title,
+                fontWeight = FontWeight.Bold,
+                fontSize = 13.sp
+            )
         }
         Spacer(modifier = Modifier.height(3.dp))
-        Text(text = "rhdiddl6691@gmail.com")
+        Text(
+            text = email,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp
+        )
         Spacer(modifier = Modifier.height(8.dp))
         Row{
             Text(
@@ -278,10 +296,4 @@ fun ProfileInfor(
         }
     }
 
-}
-
-@Preview
-@Composable
-fun PreProfile(){
-    ProfileInfor()
 }
