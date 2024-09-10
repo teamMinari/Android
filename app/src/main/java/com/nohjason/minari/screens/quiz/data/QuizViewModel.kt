@@ -42,9 +42,6 @@ class QuizViewModel : ViewModel() {
                 // 정답일 경우 점수를 1점 추가
                 updatePoints(data.point + 1)
             }
-
-            // 다음 문제로 이동
-            nextQuestion()
         }
     }
 }

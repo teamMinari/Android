@@ -28,6 +28,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nohjason.minari.R
+import com.nohjason.minari.screens.quiz.data.Dummy.easyQuestionResponse
+import com.nohjason.minari.screens.quiz.data.Dummy.hardQuestionResponse
+import com.nohjason.minari.screens.quiz.data.Dummy.nomalQuestionResponse
 import com.nohjason.minari.screens.quiz.data.PlayData
 import com.nohjason.minari.screens.quiz.data.QuestionResponse
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
@@ -113,13 +116,17 @@ fun QuizMainScreen(
             lavel ="LV_1",
             coment = "제일 쉬운 난이도",
             onClick = {
-                coroutineScope.launch {
-                    val qtAll = getQuestion(1)
+                val dataList = selectPlayData(qestionAll = easyQuestionResponse)
+                quizViewModel.initializePlayData(data = dataList)
+                navHostController.navigate("quizplay")
 
-                    val dataList = selectPlayData(qestionAll = qtAll)
-                    quizViewModel.initializePlayData(data = dataList)
-                    navHostController.navigate("quizplay")
-                }
+//                coroutineScope.launch {
+//                    val qtAll = getQuestion(1)
+//
+//                    val dataList = selectPlayData(qestionAll = qtAll)
+//                    quizViewModel.initializePlayData(data = dataList)
+//                    navHostController.navigate("quizplay")
+//                }
             },
         )
         QuizButton(
@@ -130,13 +137,16 @@ fun QuizMainScreen(
             lavel ="LV_2",
             coment = "공부 좀 했다면 이건 어떤가요?",
             onClick = {
-                coroutineScope.launch {
-                    val qtAll = getQuestion(2)
-
-                    val dataList = selectPlayData(qestionAll = qtAll)
-                    quizViewModel.initializePlayData(data = dataList)
-                    navHostController.navigate("quizplay")
-                }
+                val dataList = selectPlayData(qestionAll = nomalQuestionResponse)
+                quizViewModel.initializePlayData(data = dataList)
+                navHostController.navigate("quizplay")
+//                coroutineScope.launch {
+//                    val qtAll = getQuestion(2)
+//
+//                    val dataList = selectPlayData(qestionAll = qtAll)
+//                    quizViewModel.initializePlayData(data = dataList)
+//                    navHostController.navigate("quizplay")
+//                }
             },
         )
 
@@ -148,13 +158,17 @@ fun QuizMainScreen(
             lavel ="LV_3",
             coment = "이건 모를걸요!",
             onClick = {
-                coroutineScope.launch {
-                    val qtAll = getQuestion(3)
+                val dataList = selectPlayData(qestionAll = hardQuestionResponse)
+                quizViewModel.initializePlayData(data = dataList)
+                navHostController.navigate("quizplay")
 
-                    val dataList = selectPlayData(qestionAll = qtAll)
-                    quizViewModel.initializePlayData(data = dataList)
-                    navHostController.navigate("quizplay")
-                }
+//                coroutineScope.launch {
+//                    val qtAll = getQuestion(3)
+//
+//                    val dataList = selectPlayData(qestionAll = qtAll)
+//                    quizViewModel.initializePlayData(data = dataList)
+//                    navHostController.navigate("quizplay")
+//                }
             },
         )
     }
