@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,6 +20,7 @@ import androidx.compose.material.Text
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,41 +43,54 @@ fun Like(
     onClick: () -> Unit,
     library: String
 ){
-    var sheetVisible by remember { mutableStateOf(false) }
-//    val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = false,
+    )
 
     Column (
-            horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(
+            Text(
+                text = library,
+                maxLines = 1, // 텍스트가 한 줄로 제한됨
+                overflow = TextOverflow.Ellipsis, // 텍스트가 넘칠 때 ...으로 처리
+                fontWeight = FontWeight.Medium,
                 modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = library,
-                    maxLines = 1, // 텍스트가 한 줄로 제한됨
-                    overflow = TextOverflow.Ellipsis, // 텍스트가 넘칠 때 ...으로 처리
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier
-                        .weight(0.4f)
-                        .clickable{ onClick }// 텍스트가 가능한 모든 여유 공간을 차지하게 함
-                )
-                IconButton(
-                    onClick = {
-                        sheetVisible = true
-//                        bottomSheetState.show()
-                    }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_more),
-                        contentDescription = null,
-                        tint = Color.Unspecified
-                    )
+                    .weight(0.4f)
+                    .clickable{ onClick }// 텍스트가 가능한 모든 여유 공간을 차지하게 함
+            )
+            IconButton(
+                onClick = {
+                    showBottomSheet = true
                 }
-
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_more),
+                    contentDescription = null,
+                    tint = Color.Unspecified
+                )
             }
         }
+        if (showBottomSheet) {
+            ModalBottomSheet(
+                modifier = Modifier.fillMaxHeight(),
+                sheetState = sheetState,
+                onDismissRequest = { showBottomSheet = false }
+            ) {
+                Text(
+                    "Swipe up to open sheet. Swipe down to dismiss.",
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
+    }
+
 }
 
 
