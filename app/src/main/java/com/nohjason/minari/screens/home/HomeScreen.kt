@@ -1,7 +1,9 @@
 package com.nohjason.minari.screens.home
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -297,7 +299,8 @@ fun XpBar(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-private fun SwipeNews() {
+fun SwipeNews() {
+    val context = LocalContext.current
     val pagerState = rememberPagerState()
     val list: List<ShowNews> = listOf(
         ShowNews(
@@ -321,35 +324,32 @@ private fun SwipeNews() {
         val news = list[page]
         // 페이지 내용
         Row {
-//            Spacer(modifier = Modifier.width(25.dp))
-            Box(modifier = Modifier.background((Color(0x8A8A8A)))) {
+            Box(
+                modifier = Modifier.clickable {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(news.link))
+                    context.startActivity(intent)
+                }
+            ) {
                 AsyncImage(
-                    model = "https://imgnews.pstatic.net/image/009/2024/09/09/0005363178_001_20240909213611393.jpg?type=w647",
+                    model = news.img,
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(150.dp)
                 )
                 Box(modifier = Modifier
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(Color(0xBB8A8A8A))
                     .padding(10.dp)
                     .width(200.dp)
-                    .align(Alignment.BottomCenter)) {
-                    Column(Modifier) {
+                    .align(Alignment.Center)
+                ) {
+                    Column {
                         Text(text = news.time, color = Color.White)
                         Text(text = news.title, color = Color.White)
                     }
                 }
             }
-//            Box(
-//                modifier = Modifier
-//                    .clip(RoundedCornerShape(20.dp))
-//                    .weight(0.1f)
-//                    .height(150.dp)
-//                    .background(Color.LightGray),
-//            ) {
-//                Text(text = "$page", modifier = Modifier.align(Alignment.Center))
-//            }
-//            Spacer(modifier = Modifier.width(25.dp))
         }
     }
 }

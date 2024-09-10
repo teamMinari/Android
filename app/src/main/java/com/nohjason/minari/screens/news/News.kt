@@ -30,6 +30,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.nohjason.minari.navigation.bottombar.Screen
+import com.nohjason.minari.screens.home.SwipeNews
 
 @Composable
 fun News(navController: NavController) {
@@ -44,24 +45,6 @@ fun News(navController: NavController) {
         item {
             SwipeNews()
         }
-
-//        item {
-//            LazyRow(
-//                horizontalArrangement = Arrangement.spacedBy(10.dp)
-//            ) {
-//                items(tag) { item ->
-//                    Box(
-//                        modifier = Modifier
-//                            .clip(CircleShape)
-//                            .background(Color.Gray)
-//                            .padding(vertical = 3.dp, horizontal = 10.dp)
-//                    ) {
-//                        Text(text = item, modifier = Modifier.align(Alignment.Center))
-//                    }
-//                }
-//            }
-//        }
-
         items(10) { item ->
             Row(
                 modifier = Modifier.padding(vertical = 10.dp),
@@ -79,29 +62,7 @@ fun News(navController: NavController) {
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
-@Composable
-private fun SwipeNews() {
-    val pagerState = rememberPagerState()
-    HorizontalPager(
-        count = 10, // 아이템 개수
-        state = pagerState,
-        itemSpacing = 20.dp // 페이지 간의 간격을 설정
-    ) { page ->
-        // 페이지 내용
-        Row {
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(20.dp))
-                    .fillMaxWidth()
-                    .height(150.dp)
-                    .background(Color.LightGray),
-            ) {
-                Text(text = "$page", modifier = Modifier.align(Alignment.Center))
-            }
-        }
-    }
-}
+
 
 @Preview(showSystemUi = true)
 @Composable
