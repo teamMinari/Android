@@ -240,7 +240,8 @@ fun ProfileInfor(
                     text = "12"+"Lv",
                     fontSize = 10.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Color.White// 숫자 색상
+                    color = Color.White,// 숫자 색상
+                    modifier = Modifier.align(Alignment.Center)
                 )
             }
         }

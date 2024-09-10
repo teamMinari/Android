@@ -19,12 +19,14 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nohjason.minari.R
@@ -57,16 +59,28 @@ fun LikeList(
                     tint = Color.Unspecified
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "저장 목록")
+                Text(
+                    text = "저장 목록",
+                    fontWeight = FontWeight.SemiBold
+                )
             }
 
-            LazyColumn(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
             ) {
-                items(nameList) { data ->
-                    Like(onClick = { /*TODO*/ }, library = data)
+                nameList.forEachIndexed { index, data ->
+                    Like(onClick = { /* TODO */ }, library = data)
+
+                    if (index < nameList.size - 1) {
+                        Divider(
+                            color = Color(0xFFECEFFB),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(1.dp)
+                        )
+                    }
                 }
             }
 
@@ -76,8 +90,7 @@ fun LikeList(
                 modifier = Modifier
                     .width(300.dp)
                     .height(30.dp)
-                    .clip(shape = RoundedCornerShape(15.dp))
-                    .padding(bottom = 14.dp), // 버튼에 clip 적용
+                    .clip(shape = RoundedCornerShape(15.dp)),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF585EEA)),
                 onClick = { /*TODO*/ }
             ) {
@@ -88,6 +101,7 @@ fun LikeList(
                     modifier = Modifier.size(16.dp) // 아이콘 크기 조정
                 )
             }
+            Spacer(modifier = Modifier.height(14.dp))
         }
     }
 }
