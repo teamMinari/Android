@@ -13,13 +13,18 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.profile.LikeList
@@ -29,13 +34,29 @@ import com.nohjason.minari.screens.profile.element.RewardBar
 import com.nohjason.minari.screens.profile.likes.Dummy.likeDummy
 import com.nohjason.minari.screens.profile.likes.Like
 import com.nohjason.minari.screens.profile.likes.LikeList
+import com.nohjason.myapplication.network.MainViewModel
 
 @Composable
 fun ProfileMAinScreen(
-    profileData: ProfileResponse,
+    profileData: ProfileResponse?,
     navController: NavHostController
     
 ){
+
+    if (profileData == null) {
+        // profileData가 null인 경우 처리
+        Text("No profile data available")
+        return
+    }
+
+    // 사용자 ID를 전달하여 프로필 데이터를 가져옵니다.
+    val viewModel: MainViewModel = viewModel()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchProfileData(userId = "example_user_id")
+    }
+
+
     val scrollState = rememberScrollState()
 
     Column(

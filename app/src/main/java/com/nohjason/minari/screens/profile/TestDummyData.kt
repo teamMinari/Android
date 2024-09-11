@@ -1,20 +1,20 @@
 package com.nohjason.minari.screens.profile
 
 // ProfileData 더미 데이터
-object DummyProfileData {
-    val profileData = ProfileData(
-        idx = 1,
-        id = "user123",
-        email = "user123@example.com",
-        vocaBook = "My Vocabulary Book",
-        point = 1000,
-        exp = 500,
-        authority = "User",
-        title = "Economist",
-        level = 2,
-        totalExp = 1200
-    )
-}
+//object DummyProfileData {
+//    val profileData = ProfileData(
+//        idx = 1,
+//        id = "user123",
+//        email = "user123@example.com",
+//        vocaBook = "My Vocabulary Book",
+//        point = 1000,
+//        exp = 500,
+//        authority = "User",
+//        title = "Economist",
+//        level = 2,
+//        totalExp = 1200
+//    )
+//}
 
 // TermStatusResponse와 관련된 더미 데이터
 object DummyTermStatusResponse {

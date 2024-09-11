@@ -46,12 +46,12 @@ fun Term(
     navController: NavController,
     viewModel: MainViewModel
 ) {
-    val routin by viewModel.routines.collectAsState()
+//    val routin by viewModel.routines.collectAsState()
     var text by remember { mutableStateOf("") }
 //    val category = remember { mutableStateOf("전체") }
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.fetchAllTerms()
+//        viewModel.fetchAllTerms()
     }
 
     Column {
@@ -107,21 +107,21 @@ fun Term(
                         .clip(RoundedCornerShape(10.dp, 10.dp, 0.dp, 0.dp))
                         .background(Color.White),
                 ) {
-                    itemsIndexed(items = routin) { index, item ->
-                        val starCount = item.termDifficulty[3].toString().toInt()
-
-                        TermCard(
-                            title = item.termNm,
-                            value = item.termExplain,
-                            starCount = starCount,
-                            navController = navController,
-                            viewModel = viewModel,
-                        )
-
-                        if (index != routin.size - 1) { // 마지막 항목이 아닌 경우에만 Divider 추가
-                            MinariLine(horizontalPadding = 10.dp)
-                        }
-                    }
+//                    itemsIndexed(items = routin) { index, item ->
+//                        val starCount = item.termDifficulty[3].toString().toInt()
+//
+//                        TermCard(
+//                            title = item.termNm,
+//                            value = item.termExplain,
+//                            starCount = starCount,
+//                            navController = navController,
+//                            viewModel = viewModel,
+//                        )
+//
+//                        if (index != routin.size - 1) { // 마지막 항목이 아닌 경우에만 Divider 추가
+//                            MinariLine(horizontalPadding = 10.dp)
+//                        }
+//                    }
                 }
             }
         }

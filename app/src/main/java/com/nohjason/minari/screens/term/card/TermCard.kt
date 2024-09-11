@@ -63,7 +63,7 @@ fun TermCard(
     val context = LocalContext.current
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.fetchAllTerms()
+//        viewModel.fetchAllTerms()
     }
 
     Box(

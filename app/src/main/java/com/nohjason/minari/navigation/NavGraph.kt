@@ -2,6 +2,7 @@ package com.nohjason.minari.navigation
 
 import ProfileMAinScreen
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,9 +36,7 @@ import com.nohjason.minari.screens.profile.DirecScreen
 import com.nohjason.minari.screens.profile.DummyGpStatusResponse.gpStatusResponse
 import com.nohjason.minari.screens.profile.DummyGpsStatusResponse.gpsStatusResponse
 import com.nohjason.minari.screens.profile.DummyGpseStatusResponse.gpseStatusResponse
-import com.nohjason.minari.screens.profile.DummyProfileData.profileData
 import com.nohjason.minari.screens.profile.DummyTermStatusResponse.termStatusResponse
-import com.nohjason.minari.screens.profile.ProfileData
 
 @Composable
 fun NavGraph(
@@ -57,6 +56,8 @@ fun NavGraph(
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(token)
         .requestEmail().build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
+
+    val profileData by viewModel.profileData.collectAsState()
 
 
 

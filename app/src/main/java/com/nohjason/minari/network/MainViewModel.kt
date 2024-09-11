@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nohjason.minari.network.response.BookResponse
+import com.nohjason.minari.screens.profile.ProfileResponse
 import com.nohjason.myapplication.network.RetrofitInstance.api
 import com.nohjason.myapplication.network.response.Term
 import com.nohjason.myapplication.network.response.TermResponse
@@ -18,20 +19,16 @@ import kotlinx.coroutines.withContext
 
 class MainViewModel : ViewModel() {
 
-    private val _routine = MutableStateFlow<List<TermResponse>>(emptyList())
-    val routines = _routine.asStateFlow()
+    private val _profileData = MutableStateFlow<ProfileResponse?>(null)
+    val profileData: StateFlow<ProfileResponse?> = _profileData
 
-    fun fetchAllTerms() {
+    fun fetchProfileData(userId: String) {
         viewModelScope.launch {
             try {
-                val response = withContext(Dispatchers.IO) { RetrofitInstance.api.getTerms() }
-//                _routine.value = response.map {
-//                    it.toModel()
-//                }
-                _routine.value = response
+                val response = withContext(Dispatchers.IO) { RetrofitInstance.api.getProfile() }
+                _profileData.value = response
             } catch (e: Exception) {
-                // Handle error
-                Log.e("TAG", "fetch ALL", e)
+                Log.e("MainViewModel", "fetchProfileData: ", e)
             }
         }
     }
