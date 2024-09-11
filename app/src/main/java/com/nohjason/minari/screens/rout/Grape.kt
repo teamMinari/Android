@@ -36,10 +36,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.mohamedrejeb.richeditor.model.rememberRichTextState
+import com.mohamedrejeb.richeditor.ui.material3.RichText
 import com.nohjason.minari.R
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.screens.quiz.QuizeViewModel
+import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariWhite
 import com.nohjason.minari.ui.theme.pretendard_bold
 import com.nohjason.minari.ui.theme.pretendard_medium
@@ -56,7 +59,6 @@ fun Grape(
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
     val gpse by grapeViewModel.gpse.collectAsState()
-    val likesGpse by grapeViewModel.likes.collectAsState()
     LaunchedEffect(key1 = Unit) {
         grapeViewModel.getGpse(
             token = token,
@@ -94,7 +96,7 @@ fun Grape(
                     .fillMaxSize()
                     .background(MinariWhite)
                     .padding(innerPadding)
-                    .padding(horizontal = 20.dp)
+                    .padding(horizontal = 10.dp)
             ) {
                 item {
                     Column(
@@ -137,13 +139,14 @@ fun Grape(
                             Text(text = "${gpse!!.data.gpseTime}분")
                             Spacer(modifier = Modifier.weight(0.1f))
                             Icon(
-                                painter = painterResource(id = R.drawable.my_words),
+                                painter = painterResource(id = R.drawable.book_mark),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(20.dp)
                                     .clickable {
-//                                        grapeViewModel.alikes(token, "GRAPESEED", gpseId)
-                                    }
+                                        grapeViewModel.likes(token, "GRAPESEED", gpseId)
+                                    },
+                                tint = if (gpse!!.data.gpseLike) MinariBlue else Color.Gray
                             )
                         }
                     }
@@ -153,17 +156,22 @@ fun Grape(
                         modifier = Modifier
                             .background(Color.White)
                             .fillMaxWidth()
-                            .padding(horizontal = 25.dp, vertical = 10.dp)
+                            .padding(20.dp)
                     ) {
 //                        Text(
 //                            text = "청소년 경제를 알아야하는 이유를 알아봅시다.",
 //                            fontSize = 15.sp,
 //                            fontFamily = pretendard_semibold
 //                        )
-                        Text(
-                            text = gpse!!.data.gpseContent,
-                            fontSize = 13.sp,
-                            fontFamily = pretendard_medium
+//                        Text(
+//                            text = gpse!!.data.gpseContent,
+//                            fontSize = 13.sp,
+//                            fontFamily = pretendard_medium
+//                        )
+                        val richTextState = rememberRichTextState()
+                        val markdown = gpse!!.data.gpseContent
+                        RichText(
+                            state = richTextState.setMarkdown(markdown),
                         )
                     }
                 }

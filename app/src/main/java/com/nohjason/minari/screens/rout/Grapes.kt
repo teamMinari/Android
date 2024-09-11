@@ -38,9 +38,12 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.nohjason.minari.R
 import com.nohjason.minari.preferences.getFromPreferences
@@ -56,13 +59,13 @@ import com.nohjason.minari.ui.theme.pretendard_semibold
 @Composable
 fun Grapes(
     navController: NavController,
-    viewModel: GrapeViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    viewModel: GrapeViewModel = viewModel(),
     id: Int,
 ) {
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
     val gps by viewModel.gpsDetail.collectAsState()
-    LaunchedEffect(key1 = Unit) {
+    LaunchedEffect(key1 = Unit ) {
         viewModel.getGps(
             token = token,
             gpsId = id
@@ -108,11 +111,6 @@ fun Grapes(
                             .background(Color.White)
                             .padding(horizontal = 30.dp, vertical = 15.dp)
                     ) {
-//                        Image(
-//                            painter = painterResource(id = R.drawable.first_grape),
-//                            contentDescription = null,
-//                            modifier = Modifier.size(100.dp)
-//                        )
                         AsyncImage(
                             model = "https://intelligent-passenger-537.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F01de7400-998d-4948-aa79-591ed35a24f0%2Fde288815-7c10-40b7-86c6-adba37bca831%2F9ea1cb2e-d402-4462-b2a7-dadc452ed360.png?table=block&id=9c2e8e76-1ff5-4b42-aafc-c52b93305967&spaceId=01de7400-998d-4948-aa79-591ed35a24f0&width=2000&userId=&cache=v2",
                             contentDescription = null,
@@ -126,15 +124,6 @@ fun Grapes(
                                 fontFamily = pretendard_bold,
                                 fontSize = 23.sp,
                                 modifier = Modifier.padding(vertical = 5.dp)
-                            )
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Icon(
-                                painter = painterResource(id = R.drawable.my_words),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(20.dp)
-                                    .clickable { },
-                                tint = Color.Gray,
                             )
                         }
                         Text(
@@ -194,7 +183,8 @@ fun Grapes(
                         gpLike = item.gpLike,
                         gpseCnt = item.gpseCnt,
                         gpseCntMax = item.gpseCntMax,
-                        token = token
+                        token = token,
+                        likesClick = { viewModel.likes(token, "GRAPE", item.gpId) }
                     )
                 }
             }
@@ -220,6 +210,7 @@ fun Gpse(
     gpseCntMax: Int,
     viewModel: GrapeViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     token: String,
+    likesClick: () -> Unit
 ) {
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -285,13 +276,13 @@ fun Gpse(
                     contentDescription = null
                 )
                 Icon(
-                    painter = painterResource(id = R.drawable.my_words),
+                    painter = painterResource(id = R.drawable.book_mark),
                     contentDescription = null,
-                    tint = Color.Gray,
+                    tint = if (gpLike) MinariBlue else Color.Gray,
                     modifier = Modifier
                         .padding(top = 10.dp)
                         .size(20.dp)
-                        .clickable { }
+                        .clickable { likesClick() }
                 )
             }
 
@@ -342,8 +333,8 @@ fun Gpse(
     }
 }
 
-//@Preview(showSystemUi = true)
-//@Composable
-//private fun Test() {
-//    Grapes(rememberNavController(), viewModel = viewModel(), id = 0)
-//}
+@Preview(showSystemUi = true)
+@Composable
+private fun Test() {
+    Grapes(rememberNavController(), viewModel = viewModel(), id = 0)
+}

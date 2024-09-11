@@ -11,6 +11,8 @@ import com.nohjason.minari.screens.login.response.LoginRequest
 import com.nohjason.minari.screens.login.response.LoginResponse
 import com.nohjason.minari.screens.login.response.RegisterRequest
 import com.nohjason.minari.screens.login.response.RegisterResponse
+import com.nohjason.minari.screens.rout.response.GetAllNews
+import com.nohjason.minari.screens.rout.response.LikesGps
 import com.nohjason.minari.screens.rout.response.LikesResponse
 import com.nohjason.myapplication.network.response.Term
 import com.nohjason.myapplication.network.response.TermResponse
@@ -99,12 +101,24 @@ interface ApiService {
         @Query("id") id: Int,
     ): Response<LikesResponse>
 
+    // 포도송이 좋아요 확인하기
+    @GET("/likes/gps")
+    suspend fun likesGps(
+        @Header("Authorization") token: String,
+    ): Response<LikesGps>
+
     // 포도씨 좋아요 확인하기
-    @PATCH("/likes")
-    suspend fun likesGpse(
+//    @GET("/likes")
+//    suspend fun likesGpse(
+//        @Header("Authorization") token: String,
+//        @Query("category") category: String,
+//        @Query("id") id: Int,
+//    ): Response<LikesResponse>
+
+    // 뉴스 가져오기
+    @GET("/news")
+    suspend fun getAllNews(
         @Header("Authorization") token: String,
         @Query("category") category: String,
-        @Query("id") id: Int,
-    ): Response<LikesResponse>
-
+    ): Response<GetAllNews>
 }

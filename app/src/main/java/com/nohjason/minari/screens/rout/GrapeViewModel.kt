@@ -7,6 +7,7 @@ import com.nohjason.minari.network.response.rout.Grape
 import com.nohjason.minari.network.response.rout.GrapeSeed
 import com.nohjason.minari.network.response.rout.Grapes
 import com.nohjason.minari.network.response.rout.GrapesAll
+import com.nohjason.minari.screens.rout.response.LikesGps
 import com.nohjason.minari.screens.rout.response.LikesResponse
 import com.nohjason.myapplication.network.RetrofitInstance.api
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +30,7 @@ class GrapeViewModel: ViewModel() {
                 }
                 if (response.isSuccessful) {
                     _route.value = response.body()
-                    Log.d("TAG", "getAllGps: 전체 포도알 서버 통신 성공")
+                    Log.d("TAG", "getAllGps: 전체 포도송이 서버 통신 성공")
                 } else {
                     // 서버 응답 에러 처리
                     Log.e("TAG", "getAllGps: 서버 응답 에러 - 코드: ${response.code()}")
@@ -145,7 +146,10 @@ class GrapeViewModel: ViewModel() {
                 }
                 if (response.isSuccessful) {
                     _likes.value = response.body()
-                    Log.d("TAG", "likesGpse: 포도씨 좋아요 서버 통신 성공")
+                    Log.d("TAG", "likesGpse: 좋아요 서버 통신 성공")
+                    getAllGps(token = token)
+                    getGps(token, id)
+                    getGpse(token, id)
                 } else {
                     // 서버 응답 에러 처리
                     Log.e("TAG", "likesGpse: 서버 응답 에러 - 코드: ${response.code()}")
@@ -162,6 +166,34 @@ class GrapeViewModel: ViewModel() {
             }
         }
     }
+//    private val _getLikesGps = MutableStateFlow<LikesGps?>(null)
+//    val getLikesGps: StateFlow<LikesGps?> = _getLikesGps
+//
+//    fun getLikesGps(token: String) {
+//        viewModelScope.launch {
+//            try {
+//                val response = withContext(Dispatchers.IO) {
+//                    api.likesGps(token)
+//                }
+//                if (response.isSuccessful) {
+//                    _getLikesGps.value = response.body()
+//                    Log.d("TAG", "likesGpse: 포도씨 좋아요 서버 통신 성공")
+//                } else {
+//                    // 서버 응답 에러 처리
+//                    Log.e("TAG", "likesGpse: 서버 응답 에러 - 코드: ${response.code()}")
+//                }
+//            } catch (e: IOException) {
+//                // 네트워크 오류 처리
+//                Log.e("TAG", "likesGpse: 네트워크 오류", e)
+//            } catch (e: HttpException) {
+//                // HTTP 오류 처리
+//                Log.e("TAG", "likesGpse: HTTP 오류 - 코드: ${e.code()}", e)
+//            } catch (e: Exception) {
+//                // 기타 예외 처리
+//                Log.e("TAG", "likesGpse: 알 수 없는 오류", e)
+//            }
+//        }
+//    }
 
 //    private val _likesGpse = MutableStateFlow<LikesResponse?>(null)
 //    val likesGpse: StateFlow<LikesResponse?> = _likesGpse

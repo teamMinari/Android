@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -38,6 +39,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -72,7 +74,9 @@ import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.screens.login.LoginViewModel
 import com.nohjason.minari.screens.ui.text.MinariTextField
+import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGradation
+import com.nohjason.minari.ui.theme.MinariWhite
 import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_semibold
 
@@ -81,7 +85,6 @@ import com.nohjason.minari.ui.theme.pretendard_semibold
 fun HomeScreen(
     navController: NavController,
     loginViewModel: LoginViewModel = viewModel(),
-//    token: String
 ) {
     var text by remember { mutableStateOf("") }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -122,6 +125,11 @@ fun HomeScreen(
             )
         }
     ) { innerPadding ->
+        var itemCount by remember { mutableStateOf(5) }
+        val allItems = remember { List(20) { index -> "Item ${index + 1}" } }
+        val items = allItems.take(itemCount)
+
+        val selectedItems = remember { mutableStateListOf<Int>() }
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -206,11 +214,89 @@ fun HomeScreen(
                 SwipeNews()
             }
             item {
-                Column(
-                    modifier = Modifier.padding(25.dp),
-                    verticalArrangement = Arrangement.spacedBy(20.dp)
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp))
+                        .padding(horizontal = 20.dp)
+                        .fillMaxWidth()
+                        .background(Color.White)
                 ) {
-                    TodayWords()
+                    Column(
+                        modifier = Modifier.padding(20.dp)
+                    ) {
+                        Row {
+                            Icon(
+                                painter = painterResource(id = R.drawable.mdi_cards),
+                                contentDescription = null,
+                                tint = Color.Unspecified
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Text(
+                                text = "오늘의 경제 단어",
+                                fontFamily = pretendard_semibold,
+                                fontSize = 17.sp
+                            )
+                        }
+                    }
+                }
+            }
+            items(items.size) { index ->
+                val isSelected = selectedItems.contains(index)
+                Box(
+                    modifier = Modifier
+                        .clip(
+                            if (index == items.size - 1) RoundedCornerShape(20.dp) else RoundedCornerShape(
+                                0.dp
+                            )
+                        )
+                        .fillMaxWidth()
+                        .background(Color.White)
+                        .padding(vertical = 5.dp, horizontal = 40.dp)
+                ) {
+                    Column {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = items[index], color = Color.Black)
+                            Spacer(modifier = Modifier.width(10.dp))
+                            for (i in 1..2) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.star),
+                                    contentDescription = null,
+                                    tint = Color.Unspecified
+                                )
+                            }
+                            Spacer(modifier = Modifier.weight(0.1f))
+                            Icon(
+                                painter = painterResource(id = R.drawable.my_words),
+                                contentDescription = null,
+                                Modifier
+                                    .size(16.dp)
+                                    .clickable {
+                                        if (isSelected) {
+                                            selectedItems.remove(index)
+                                        } else {
+                                            selectedItems.add(index)
+                                        }
+                                    },
+                                tint = if (isSelected) MinariBlue else Color(0xFFCDCDCD)
+                            )
+                        }
+                        if (index == items.size - 1) {
+                            Spacer(modifier = Modifier.height(20.dp))
+                        }
+                    }
+                }
+            }
+            item {
+                Box(modifier = Modifier.fillMaxSize().background(MinariWhite)) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clickable {
+                                itemCount = (itemCount + 3).coerceAtMost(allItems.size)
+                            },
+                    ) {
+                        Text(text = "Load More", Modifier.align(Alignment.Center))
+                    }
                 }
             }
         }
@@ -337,12 +423,13 @@ fun SwipeNews() {
                         .fillMaxWidth()
                         .height(150.dp)
                 )
-                Box(modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(Color(0xBB8A8A8A))
-                    .padding(10.dp)
-                    .width(200.dp)
-                    .align(Alignment.Center)
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(Color(0xBB8A8A8A))
+                        .padding(10.dp)
+                        .width(200.dp)
+                        .align(Alignment.Center)
                 ) {
                     Column {
                         Text(text = news.time, color = Color.White)
@@ -356,86 +443,136 @@ fun SwipeNews() {
 
 @Composable
 private fun TodayWords() {
-    var array by remember {
-        mutableStateOf(
-            mutableListOf(
-                "가산금리",
-                "추가경정예산",
-                "금리",
-                "추정손실"
-            )
-        )
-    }
-    Box(
-        modifier = Modifier
-            .clip(RoundedCornerShape(20.dp))
-            .fillMaxWidth()
-            .background(Color.White)
-    ) {
-        Column(
-            modifier = Modifier.padding(20.dp)
+    var itemCount by remember { mutableStateOf(5) }
+    val allItems = remember { List(20) { index -> "Item ${index + 1}" } }
+    val items = allItems.take(itemCount)
+
+    val selectedItems = remember { mutableStateListOf<Int>() }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f)
+                .padding(bottom = 56.dp) // 버튼 높이만큼 패딩 추가
         ) {
-            Row {
-                Icon(
-                    painter = painterResource(id = R.drawable.mdi_cards),
-                    contentDescription = null,
-                    tint = Color.Unspecified
-                )
-                Text(
-                    text = "오늘의 경제 단어",
-                    fontFamily = pretendard_semibold,
-                    fontSize = 17.sp
-                )
-            }
-            EconomyTerm(list = array)
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        array = array
-                            .toMutableList()
-                            .apply {
-                                repeat(3) {
-                                    add("test${size + 1}")
-                                }
+            items(items.size) { index ->
+                val isSelected = selectedItems.contains(index)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .background(if (isSelected) Color.Blue else Color.White)
+                        .clickable {
+                            if (isSelected) {
+                                selectedItems.remove(index)
+                            } else {
+                                selectedItems.add(index)
                             }
-                    }
-            ) {
-                Text(
-                    text = "더보기+",
-                    modifier = Modifier.align(Alignment.Center)
-                )
+                        }
+                        .padding(16.dp)
+                ) {
+                    Text(text = items[index], color = if (isSelected) Color.White else Color.Black)
+                }
+            }
+            item {
+                Button(
+                    onClick = {
+                        itemCount = (itemCount + 3).coerceAtMost(allItems.size)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp)
+                        .padding(16.dp)
+//                .align(Alignment.BottomCenter)
+                ) {
+                    Text("Load More")
+                }
             }
         }
     }
+//    var array by remember {
+//        mutableStateOf(
+//            mutableListOf(
+//                "가산금리",
+//                "추가경정예산",
+//                "금리",
+//                "추정손실"
+//            )
+//        )
+//    }
+
 }
 
 @Composable
-private fun EconomyTerm(list: MutableList<String>) {
-    var state by rememberSaveable {
-        mutableStateOf(false)
-    }
-    list.forEach {
-        Box(
+private fun EconomyTerm() {
+//    var color by rememberSaveable { mutableStateOf(Color.White) }
+//    list.forEach {
+//        Box(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//        ) {
+//            Row(
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Text(
+//                    text = it,
+//                    modifier = Modifier.padding(vertical = 10.dp),
+//                    fontFamily = pretendard_medium,
+//                    fontSize = 16.sp
+//                )
+//                Spacer(modifier = Modifier.weight(0.1f))
+//                Icon(
+//                    painter = painterResource(id = R.drawable.my_words),
+//                    contentDescription = null,
+//                    tint = color,
+//                    modifier = Modifier.clickable { if (color == Color.White) Color.Blue else Color.White }
+//                )
+//            }
+//        }
+//    }
+    var itemCount by remember { mutableStateOf(5) }
+    val allItems = remember { List(20) { index -> "Item ${index + 1}" } }
+    val items = allItems.take(itemCount)
+
+    val selectedItems = remember { mutableStateListOf<Int>() }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
             modifier = Modifier
-                .fillMaxWidth()
+                .weight(1f)
+                .padding(bottom = 56.dp) // 버튼 높이만큼 패딩 추가
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = it,
-                    modifier = Modifier.padding(vertical = 10.dp),
-                    fontFamily = pretendard_medium,
-                    fontSize = 16.sp
-                )
-                Spacer(modifier = Modifier.weight(0.1f))
-                Icon(
-                    painter = painterResource(id = R.drawable.my_words),
-                    contentDescription = null,
-                    tint = if (state) Color.Unspecified else Color.Blue,
-                    modifier = Modifier.clickable { state = !state }
-                )
+            items(items.size) { index ->
+                val isSelected = selectedItems.contains(index)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .background(if (isSelected) Color.Blue else Color.White)
+                        .clickable {
+                            if (isSelected) {
+                                selectedItems.remove(index)
+                            } else {
+                                selectedItems.add(index)
+                            }
+                        }
+                        .padding(16.dp)
+                ) {
+                    Text(text = items[index], color = if (isSelected) Color.White else Color.Black)
+                }
+            }
+            item {
+                Button(
+                    onClick = {
+                        itemCount = (itemCount + 3).coerceAtMost(allItems.size)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp)
+                        .padding(16.dp)
+                ) {
+                    Text("Load More")
+                }
             }
         }
     }
@@ -480,9 +617,88 @@ data class ShowNews(
     val link: String
 )
 
+@Preview
+@Composable
+private fun Test() {
+    var itemCount by remember { mutableStateOf(5) }
+    val allItems = remember { List(20) { index -> "Item ${index + 1}" } }
+    val items = allItems.take(itemCount)
 
-//@Preview(showSystemUi = true)
-//@Composable
-//fun PreviewHome() {
-//    HomeScreen(navController = rememberNavController())
-//}
+    val selectedItems = remember { mutableStateListOf<Int>() }
+    LazyColumn {
+        item {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp))
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .padding(horizontal = 20.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp)
+                ) {
+                    Row {
+                        Icon(
+                            painter = painterResource(id = R.drawable.mdi_cards),
+                            contentDescription = null,
+                            tint = Color.Unspecified
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = "오늘의 경제 단어",
+                            fontFamily = pretendard_semibold,
+                            fontSize = 17.sp
+                        )
+                    }
+                }
+            }
+        }
+        items(items.size) { index ->
+            val isSelected = selectedItems.contains(index)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .padding(vertical = 5.dp, horizontal = 40.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(text = items[index], color = if (isSelected) Color.White else Color.Black)
+                    Spacer(modifier = Modifier.width(10.dp))
+                    for (i in 1..2) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.star),
+                            contentDescription = null,
+                            tint = Color.Unspecified
+                        )
+                    }
+                    Spacer(modifier = Modifier.weight(0.1f))
+                    Icon(
+                        painter = painterResource(id = R.drawable.my_words),
+                        contentDescription = null,
+                        Modifier
+                            .size(16.dp)
+                            .clickable {
+                                if (isSelected) {
+                                    selectedItems.remove(index)
+                                } else {
+                                    selectedItems.add(index)
+                                }
+                            },
+                        tint = if (isSelected) MinariBlue else Color(0xFFCDCDCD)
+                    )
+                }
+            }
+        }
+        item {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable {
+                        itemCount = (itemCount + 3).coerceAtMost(allItems.size)
+                    },
+            ) {
+                Text(text = "Load More", Modifier.align(Alignment.Center))
+            }
+        }
+    }
+}

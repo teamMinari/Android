@@ -52,10 +52,12 @@ android {
 }
 
 dependencies {
+    // Markdown
+    implementation("com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc06")
+
     // Coil
     implementation ("io.coil-kt:coil:2.6.0")
     implementation ("io.coil-kt:coil-compose:2.6.0")
-
 
     // Pager
     implementation ("com.google.accompanist:accompanist-pager:0.28.0")

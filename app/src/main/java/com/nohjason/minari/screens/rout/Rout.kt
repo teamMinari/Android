@@ -3,6 +3,7 @@ package com.nohjason.minari.screens.rout
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,6 +52,7 @@ import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.pretendard_extra_bold
 import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_semibold
+import kotlin.math.log
 
 @Composable
 fun Rout(
@@ -98,6 +103,8 @@ fun Rout(
             items(route!!.data) { item ->
                 Gps(
                     onClick = { navController.navigate(Test.Grapes.rout + "/${item.gpsId}") },
+                    iconClick = { viewModel.likes(token, "GRAPES", item.gpsId) },
+                    like = item.gpsLike,
                     name = item.gpsName,
                     time = item.gpsTime,
                     content = item.gpsContent,
@@ -118,11 +125,14 @@ fun Rout(
 @Composable
 fun Gps(
     onClick: () -> Unit,
+    iconClick: () -> Unit,
+    like: Boolean,
     name: String,
     time: Long,
     content: String,
     list: List<String>
 ) {
+    Log.d("TAG", "Rout: ${like}")
     Card(
         shape = RoundedCornerShape(16.dp),
         elevation = 4.dp,
@@ -133,12 +143,23 @@ fun Gps(
                 .fillMaxWidth()
                 .padding(20.dp)
         ) {
-            Text(
-                text = name,
-                fontFamily = pretendard_semibold,
-                fontSize = 23.sp,
-                modifier = Modifier.padding(vertical = 10.dp)
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = name,
+                    fontFamily = pretendard_semibold,
+                    fontSize = 23.sp,
+                    modifier = Modifier.padding(vertical = 10.dp)
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Icon(
+                    painter = painterResource(id = R.drawable.book_mark),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clickable { iconClick() },
+                    tint = if (like) MinariBlue else Color.Gray
+                )
+            }
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -180,8 +201,8 @@ fun Gps(
     }
 }
 
-//@Preview(showSystemUi = true)
-//@Composable
-//private fun Test() {
-//    Rout(navController = rememberNavController())
-//}
+@Preview(showSystemUi = true)
+@Composable
+private fun Test() {
+    Rout(navController = rememberNavController())
+}
