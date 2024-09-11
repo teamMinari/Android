@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,17 +30,21 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.nohjason.minari.R
+import com.nohjason.minari.navigation.bottombar.BottomBarScreen
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 import com.nohjason.minari.ui.theme.MinariBlue
 
 @Composable
 fun QuizEndScreen(
-    quizViewModel: QuizViewModel
+    quizViewModel: QuizViewModel,
+    navController: NavController
 ){
-    val playData = quizViewModel.playData.value
+    val playDataState = quizViewModel.playData.collectAsState()
+    val playData = playDataState.value
     val point = playData?.point ?: 0
-    val current = playData?.userCurrent?:0
+    val current = playData?.userCurrent ?: 0
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -48,7 +53,7 @@ fun QuizEndScreen(
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ){
 
-        TitleBar()
+        TitleBar(onClick = { navController.navigate(BottomBarScreen.Quiz.rout) })
         Box(modifier = Modifier.padding(top = 50.dp)) {
             Image(
                 modifier = Modifier

@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
@@ -44,11 +43,11 @@ fun NavGraph(
     viewModel: MainViewModel
 ) {
     val auth = Firebase.auth
-    var user by remember { mutableStateOf(auth.currentUser) }
+//    var user by remember { mutableStateOf(auth.currentUser) }
     val launcher = rememberFirebaseAuthLauncher(onAuthComplete = { result ->
-        user = result.user
+//        user = result.user
     }, onAuthError = {
-        user = null
+//        user = null
     })
     val token = stringResource(R.string.default_web_client_id)
     val context = LocalContext.current
@@ -157,7 +156,7 @@ fun NavGraph(
             }
 
         ) { backStackEntry ->
-            QuizEndScreen(quizViewModel = quizViewModel)
+            QuizEndScreen(quizViewModel = quizViewModel, navController = navController)
         }
 
 
