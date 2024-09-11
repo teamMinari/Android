@@ -31,6 +31,12 @@ import com.nohjason.minari.screens.term.Term
 import com.nohjason.minari.screens.term.Test
 import com.nohjason.myapplication.network.MainViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.nohjason.minari.screens.profile.DirecScreen
+import com.nohjason.minari.screens.profile.DummyGpStatusResponse.gpStatusResponse
+import com.nohjason.minari.screens.profile.DummyGpsStatusResponse.gpsStatusResponse
+import com.nohjason.minari.screens.profile.DummyGpseStatusResponse.gpseStatusResponse
+import com.nohjason.minari.screens.profile.DummyProfileData.profileData
+import com.nohjason.minari.screens.profile.DummyTermStatusResponse.termStatusResponse
 import com.nohjason.minari.screens.profile.ProfileData
 
 @Composable
@@ -75,32 +81,24 @@ fun NavGraph(
         }
         composable(BottomBarScreen.Profile.rout) {
             ProfileMAinScreen(
-                profileData = ProfileData(
-                    idx = 155,
-                    id = "wlals6691",
-                    email = "rhdiddl6691@gmail.com",
-                    vocaBook = "???",
-                    point = 50,
-                    exp = 50,
-                    authority = "",
-                    title = "소비대",
-                    level = 5,
-                    totalExp = 100
-                )
+                profileData = profileData,
+                navController = navController
             )
         }
+
+        composable("myDirectory") {
+            DirecScreen(term = termStatusResponse, gpse = gpseStatusResponse, gps = gpsStatusResponse, gp = gpStatusResponse)
+        }
+
+
         composable(BottomBarScreen.Term.rout) {
             Term(
                 navController = navController,
                 viewModel = viewModel
             )
         }
-//        composable("myDictionary") {
-//            MyDictionaryScreen(
-//                navController = navController,
-//                viewModel = viewModel
-//            )
-//        }
+
+
         composable("test/{text}") { backStackEntry ->
             val text = backStackEntry.arguments?.getString("text") ?: ""
             Test(text, navController = navController)

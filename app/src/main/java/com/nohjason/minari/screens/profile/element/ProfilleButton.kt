@@ -1,5 +1,6 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -63,6 +64,7 @@ fun ProfileButton(
             text = newtext,
             fontWeight = FontWeight.SemiBold
         )
+        Spacer(modifier = Modifier.height(30.dp))
     }
 
 }

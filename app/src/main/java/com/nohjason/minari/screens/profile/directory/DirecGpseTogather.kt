@@ -25,6 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.nohjason.minari.R
+import com.nohjason.minari.screens.profile.Gp
+import com.nohjason.minari.screens.profile.Gps
+import com.nohjason.minari.screens.profile.Gpse
 
 @Composable
 fun DirecGpse(
@@ -72,13 +75,13 @@ fun DirecGps(
                 .padding(start = 5.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AsyncImage(
-                modifier = Modifier
-                    .wrapContentSize(),
-                model = data.gpsImg,
-                contentDescription = null
-            )
-            androidx.compose.material3.Text(
+//            AsyncImage(
+//                modifier = Modifier
+//                    .wrapContentSize(),
+//                model = data.gpsImg,
+//                contentDescription = null
+//            )
+            Text(
                 text = data.gpsContent,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -86,7 +89,7 @@ fun DirecGps(
                 fontWeight = FontWeight.SemiBold
             )
             Spacer(modifier = Modifier.weight(1f))
-            androidx.compose.material.Icon(
+            Icon(
                 painter = painterResource(id = R.drawable.minari_book_mark),
                 contentDescription = null,
                 tint = Color.Unspecified,
@@ -101,7 +104,6 @@ fun DirecGps(
         ) {
             TpList.forEachIndexed { index, data ->
                 Tp(text = data)
-                // Add Spacer only if it's not the last item
                 if (index < TpList.size - 1) {
                     Spacer(modifier = Modifier.width(3.dp))
                 }
@@ -119,7 +121,7 @@ fun Tp(text: String){
             .clip(shape = RoundedCornerShape(30.dp))
             .background(color = Color(0xFF363CD5))
     ){
-        androidx.compose.material3.Text(
+        Text(
             text = text,
             color = Color.White,
             fontSize = 10.sp,
@@ -145,12 +147,12 @@ fun DirecGp(
         .width(260.dp),
         verticalAlignment = Alignment.CenterVertically
     ){
-        AsyncImage(
-            modifier = Modifier
-                .wrapContentSize(),
-            model = data.gpImg,
-            contentDescription = null
-        )
+//        AsyncImage(
+//            modifier = Modifier
+//                .wrapContentSize(),
+//            model = data.gpImg,
+//            contentDescription = null
+//        )
 
         Text(
             text = data.gpName,

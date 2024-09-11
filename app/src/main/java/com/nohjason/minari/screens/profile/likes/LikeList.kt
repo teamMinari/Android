@@ -1,10 +1,12 @@
 package com.nohjason.minari.screens.profile.likes
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,7 +22,13 @@ import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,14 +37,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.profile.likes.Dummy.dummyLikeList
+import com.nohjason.minari.screens.profile.LikeList
+import com.nohjason.minari.screens.profile.directory.DirecTerm
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LikeList(
-    likeList: LikeList
+    likeList: LikeList,
+    navHostController: NavHostController
 ) {
     val nameList = likeList.name
+    var showBottomSheet by remember { mutableStateOf(false) }
+    var inputText by remember { mutableStateOf("") }
+
     Box(
         modifier = Modifier
             .width(340.dp)
@@ -45,33 +61,38 @@ fun LikeList(
             .clip(shape = RoundedCornerShape(20.dp)) // Box에 clip 적용
     ) {
         Column(
-            modifier = Modifier.background(color = Color.White),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier
+                .clip(shape = RoundedCornerShape(20.dp))
+                .background(color = Color.White)
+                .padding(horizontal = 24.dp),
+//            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp) // 상단 패딩 추가
-            ) {
+            Row (
+                modifier = Modifier.padding(top = 14.dp)
+            ){
                 Icon(
                     painter = painterResource(id = R.drawable.ic_list),
                     contentDescription = null,
-                    tint = Color.Unspecified
+                    tint = Color.Unspecified,
+                    modifier = Modifier
                 )
-                Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "저장 목록",
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 15.sp,
+                    modifier = Modifier.padding(start = 10.dp)
                 )
             }
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    .wrapContentHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 nameList.forEachIndexed { index, data ->
-                    Like(onClick = { /* TODO */ }, library = data)
+                    Like(onClick = {
+                        navHostController.navigate("myDirectory")
+                    }, library = data)
 
                     if (index < nameList.size - 1) {
                         Divider(
@@ -84,6 +105,8 @@ fun LikeList(
                 }
             }
 
+
+
             Spacer(modifier = Modifier.height(16.dp)) // Spacer 추가하여 버튼과 리스트 사이에 공간 추가
 
             Button(
@@ -92,7 +115,7 @@ fun LikeList(
                     .height(30.dp)
                     .clip(shape = RoundedCornerShape(15.dp)),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF585EEA)),
-                onClick = { /*TODO*/ }
+                onClick = { showBottomSheet = true }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_plus),
@@ -104,11 +127,53 @@ fun LikeList(
             Spacer(modifier = Modifier.height(14.dp))
         }
     }
+
+
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showBottomSheet = false }, // 바텀 시트 외부 클릭 시 닫힘
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp) // 바텀 시트 내부 패딩 설정
+        ) {
+            // Box를 바텀 시트로 이동
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(top = 10.dp)
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "새로운 목록 추가",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 15.sp
+                    )
+
+                    LikeEditTextFild(
+                        value = inputText, // 입력된 텍스트를 상태로 전달
+                        onValueChange = { newText -> inputText = newText } // 값이 변경되면 상태 업데이트
+                    )
+
+                    Button(onClick = { showBottomSheet = false }) { // 확인 버튼 클릭 시 바텀 시트 닫힘
+                        Text(
+                            text = "확인",
+                            color = Color(0xFF0C21C1),
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
 
 
-@Preview
-@Composable
-fun PreLikeList() {
-    LikeList(likeList = dummyLikeList)
-}
+//@Preview
+//@Composable
+//fun PreLikeList() {
+//    LikeList(likeList = Dummy.dummyLikeList)
+//}

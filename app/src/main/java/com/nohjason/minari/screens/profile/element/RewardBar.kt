@@ -31,7 +31,6 @@ import com.nohjason.minari.R
 @Composable
 fun RewardBar(
     progress: Float, // 0f to 1f
-    level: String,
     xp: Int
 ) {
     Box(

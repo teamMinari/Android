@@ -20,17 +20,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.profile.ProfileData
+import com.nohjason.minari.screens.profile.LikeList
+import com.nohjason.minari.screens.profile.ProfileResponse
 import com.nohjason.minari.screens.profile.element.ProfileInfor
 import com.nohjason.minari.screens.profile.element.RewardBar
-import com.nohjason.minari.screens.profile.likes.Dummy
-import com.nohjason.minari.screens.profile.likes.Dummy.dummyLikeList
+import com.nohjason.minari.screens.profile.likes.Dummy.likeDummy
+import com.nohjason.minari.screens.profile.likes.Like
 import com.nohjason.minari.screens.profile.likes.LikeList
 
 @Composable
 fun ProfileMAinScreen(
-    profileData: ProfileData
+    profileData: ProfileResponse,
+    navController: NavHostController
+    
 ){
     val scrollState = rememberScrollState()
 
@@ -64,43 +68,24 @@ fun ProfileMAinScreen(
             ProfileButton(
                 text = "칭호",
                 onClick = {
-
+                    //칭호화면 이동
                 }
             )
             Spacer(modifier = Modifier.width(5.dp))
             ProfileButton(
                 text = "관심" ,
                 onClick = {
+                    //로그인-설문조사 화면으로 이동
                 }
             )
         }
         Spacer(modifier = Modifier.height(10.dp))
-        val persent = profileData.totalExp/profileData.exp
-        //persent를 progress에 넣어야함
-        RewardBar(progress = 0.5f, level = "", xp = profileData.exp)
-        LikeList(
-            likeList = dummyLikeList
-        )
+
+        val percentage = (profileData.exp/profileData.totalExp.toFloat())
+        RewardBar(progress = percentage, xp = profileData.exp)
+        LikeList(likeList = likeDummy, navHostController = navController)
+        Spacer(modifier = Modifier.height(25.dp))
 
 
     }
-}
-
-@Preview
-@Composable
-fun PreProfile(){
-    ProfileMAinScreen(
-        profileData = ProfileData(
-            idx = 155,
-            id = "wlals6691",
-            email = "rhdiddl6691@gmail.com",
-            vocaBook = "???",
-            point = 50,
-            exp = 50,
-            authority = "",
-            title = "소비대",
-            level = 5,
-            totalExp = 100
-        )
-    )
 }
