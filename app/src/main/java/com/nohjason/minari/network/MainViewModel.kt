@@ -26,9 +26,10 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) { RetrofitInstance.api.getProfile() }
+                Log.d("MainViewModel", "fetchProfileData success: $response")
                 _profileData.value = response
             } catch (e: Exception) {
-                Log.e("MainViewModel", "fetchProfileData: ", e)
+                Log.e("MainViewModel", "fetchProfileData failed with error: ${e.message}", e)
             }
         }
     }
