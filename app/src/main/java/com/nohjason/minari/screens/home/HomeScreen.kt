@@ -1,8 +1,6 @@
 package com.nohjason.minari.screens.home
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
@@ -36,8 +34,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -48,7 +44,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
@@ -60,11 +55,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -77,7 +70,6 @@ import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGradation
 import com.nohjason.minari.ui.theme.MinariWhite
-import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_semibold
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -85,11 +77,14 @@ import com.nohjason.minari.ui.theme.pretendard_semibold
 fun HomeScreen(
     navController: NavController,
     loginViewModel: LoginViewModel = viewModel(),
+    termViewModel: TermViewModel = viewModel(),
 ) {
     var text by remember { mutableStateOf("") }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val context = LocalContext.current
     var backPressedTime by rememberSaveable { mutableStateOf(0L) }
+    val preferences = getPreferences()
+    val token = getFromPreferences(preferences, "token")
 
     BackHandler(onBack = {
         val currentTime = System.currentTimeMillis()
@@ -116,10 +111,12 @@ fun HomeScreen(
                             .background(Color(0xFFF6F6F6))
                             .padding(6.dp),
                         value = text,
-                        onValueChange = { text = it }
-                    ) {
-
-                    }
+                        onValueChange = { text = it },
+                        onClick = {
+                            termViewModel.getTerm(token, text)
+                            navController.navigate("test/${text}")
+                        }
+                    )
                 },
                 scrollBehavior = scrollBehavior,
             )
@@ -287,7 +284,9 @@ fun HomeScreen(
                 }
             }
             item {
-                Box(modifier = Modifier.fillMaxSize().background(MinariWhite)) {
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .background(MinariWhite)) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -658,7 +657,6 @@ private fun Test() {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White)
                     .padding(vertical = 5.dp, horizontal = 40.dp)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {

@@ -1,7 +1,7 @@
 package com.nohjason.minari.network.response
 
 data class Quize(
-    val `data`: Data,
+    val getTermData: GetTermData,
     val message: String,
     val status: Int
 )

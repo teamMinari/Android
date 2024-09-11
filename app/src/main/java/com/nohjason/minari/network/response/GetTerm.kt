@@ -1,0 +1,13 @@
+package com.nohjason.minari.network.response
+
+data class GetTerm(
+    val status: Int,
+    val message: String,
+    val data: GetTermData,
+)
+
+data class GetTermData(
+    val termDifficulty: String,
+    val termExplain: String,
+    val termNm: String
+)

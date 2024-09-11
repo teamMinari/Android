@@ -45,7 +45,6 @@ import com.nohjason.minari.screens.quiz.QuizeViewModel
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariWhite
 import com.nohjason.minari.ui.theme.pretendard_bold
-import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_semibold
 
 @Composable
@@ -204,11 +203,11 @@ fun Grape(
                                         fontFamily = pretendard_bold,
                                         fontSize = 20.sp
                                     )
-                                    Text(
-                                        text = quize!!.data.qtContents,
-                                        fontFamily = pretendard_semibold,
-                                        fontSize = 13.sp
-                                    )
+//                                    Text(
+//                                        text = quize!!.getTermData.qtContents,
+//                                        fontFamily = pretendard_semibold,
+//                                        fontSize = 13.sp
+//                                    )
                                     Spacer(modifier = Modifier.height(10.dp))
                                     Row {
                                         Box(

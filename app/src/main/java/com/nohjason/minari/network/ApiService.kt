@@ -2,6 +2,7 @@ package com.nohjason.minari.network
 
 import com.nohjason.minari.network.response.AddDeleteTerm
 import com.nohjason.minari.network.response.BookResponse
+import com.nohjason.minari.network.response.GetTerm
 import com.nohjason.minari.network.response.Quize
 import com.nohjason.minari.network.response.rout.Grape
 import com.nohjason.minari.network.response.rout.GrapeSeed
@@ -121,4 +122,11 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Query("category") category: String,
     ): Response<GetAllNews>
+
+    // 단이 용어 가져오기
+    @GET("/terms/name/{termNm}")
+    suspend fun getTerm(
+        @Header("Authorization") token: String,
+        @Path("termNm") termNm: String
+    ): Response<GetTerm>
 }

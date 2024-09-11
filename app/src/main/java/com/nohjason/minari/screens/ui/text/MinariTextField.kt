@@ -52,7 +52,7 @@ fun MinariTextField(
                     modifier = Modifier
                         .clip(CircleShape)
                         .size(20.dp)
-                        .clickable { onClick },
+                        .clickable { onClick() },
                     tint = MinariBlue,
                 )
             }
