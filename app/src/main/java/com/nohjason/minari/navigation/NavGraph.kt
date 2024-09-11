@@ -36,6 +36,7 @@ import com.nohjason.minari.screens.profile.DirecScreen
 import com.nohjason.minari.screens.profile.DummyGpStatusResponse.gpStatusResponse
 import com.nohjason.minari.screens.profile.DummyGpsStatusResponse.gpsStatusResponse
 import com.nohjason.minari.screens.profile.DummyGpseStatusResponse.gpseStatusResponse
+import com.nohjason.minari.screens.profile.DummyProfileData
 import com.nohjason.minari.screens.profile.DummyTermStatusResponse.termStatusResponse
 
 @Composable
@@ -81,8 +82,12 @@ fun NavGraph(
 //            QuizMainScreen(qtAll = dummyResponse, navHostController = navController)
         }
         composable(BottomBarScreen.Profile.rout) {
+//            ProfileMAinScreen(
+//                profileData = profileData,
+//                navController = navController
+//            )
             ProfileMAinScreen(
-                profileData = profileData,
+                profileData = DummyProfileData.profileData,
                 navController = navController
             )
         }
