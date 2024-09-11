@@ -16,71 +16,39 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import com.nohjason.minari.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Like(
     onClick: () -> Unit,
     library: String
 ) {
-    var showBottomSheet by remember { mutableStateOf(false) }
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = false,
-    )
+    var showPopup by remember { mutableStateOf(false) }
 
-    if (showBottomSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { showBottomSheet = false },
-            sheetState = sheetState,
-            modifier = Modifier
-                .clip(RoundedCornerShape(20.dp))
-                .background(Color.White)
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(16.dp)
+    if (showPopup) {
+        Popup(
+            onDismissRequest = { showPopup = false },
+            properties = PopupProperties(focusable = true)
         ) {
-            Column {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { /* Handle delete action */ }
-                        .padding(vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_delete),
-                        contentDescription = null,
-                        tint = Color.Unspecified
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "삭제하기")
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .background(Color.White)
+                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
+            ) {
+                Column {
+                    Text(text = "삭제하기", modifier = Modifier.clickable { /* 삭제 처리 */ })
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = "수정하기", modifier = Modifier.clickable { /* 수정 처리 */ })
                 }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { /* Handle edit action */ }
-                        .padding(vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_edit),
-                        contentDescription = null,
-                        tint = Color.Unspecified
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "수정하기")
-                }
-            }
-        }
-        LaunchedEffect(showBottomSheet) {
-            if (showBottomSheet) {
-                sheetState.show()
-            } else {
-                sheetState.hide()
             }
         }
     }
+
 
     Row(
         modifier = Modifier
@@ -94,11 +62,11 @@ fun Like(
             fontWeight = FontWeight.Medium,
             modifier = Modifier
                 .weight(0.4f)
-                .clickable { onClick } // 텍스트가 가능한 모든 여유 공간을 차지하게 함
+                .clickable { onClick() } // 텍스트가 가능한 모든 여유 공간을 차지하게 함
         )
         IconButton(
             onClick = {
-                showBottomSheet = true
+                 showPopup = true
             }
         ) {
             Icon(

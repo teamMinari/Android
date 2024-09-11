@@ -31,6 +31,7 @@ import com.nohjason.minari.screens.term.Term
 import com.nohjason.minari.screens.term.Test
 import com.nohjason.myapplication.network.MainViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.nohjason.minari.screens.profile.ProfileData
 
 @Composable
 fun NavGraph(
@@ -73,7 +74,20 @@ fun NavGraph(
 //            QuizMainScreen(qtAll = dummyResponse, navHostController = navController)
         }
         composable(BottomBarScreen.Profile.rout) {
-//            ProfileMAinScreen()
+            ProfileMAinScreen(
+                profileData = ProfileData(
+                    idx = 155,
+                    id = "wlals6691",
+                    email = "rhdiddl6691@gmail.com",
+                    vocaBook = "???",
+                    point = 50,
+                    exp = 50,
+                    authority = "",
+                    title = "소비대",
+                    level = 5,
+                    totalExp = 100
+                )
+            )
         }
         composable(BottomBarScreen.Term.rout) {
             Term(
