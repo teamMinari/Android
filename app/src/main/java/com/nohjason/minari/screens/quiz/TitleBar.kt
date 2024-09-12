@@ -60,7 +60,8 @@ fun TitleBar(
                     contentDescription = null,
                     modifier = Modifier
                         .padding(start = 25.dp)
-                        .size(24.dp)
+                        .size(24.dp),
+                    tint = Color.Unspecified
                 )
             }
             if (title != null){
