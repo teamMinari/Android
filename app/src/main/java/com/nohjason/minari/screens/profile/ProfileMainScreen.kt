@@ -1,3 +1,4 @@
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
@@ -24,37 +25,46 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.profile.LikeList
 import com.nohjason.minari.screens.profile.ProfileResponse
+import com.nohjason.minari.screens.profile.ProfileViewModel
 import com.nohjason.minari.screens.profile.element.ProfileInfor
 import com.nohjason.minari.screens.profile.element.RewardBar
 import com.nohjason.minari.screens.profile.likes.Dummy.likeDummy
 import com.nohjason.minari.screens.profile.likes.Like
 import com.nohjason.minari.screens.profile.likes.LikeList
 import com.nohjason.myapplication.network.MainViewModel
+import com.nohjason.myapplication.network.RetrofitInstance
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun ProfileMAinScreen(
-    profileData: ProfileResponse?,
     navController: NavHostController
     
 ){
+    val profileviewModel: ProfileViewModel = viewModel()
+    val profileOrginData by profileviewModel.profileData.collectAsState()
+    val profileData = profileOrginData ?: ProfileResponse(
+        idx = 0,
+        id = "",
+        email = "",
+        vocaBook = "",
+        point = 0,
+        exp = 0,
+        authority = "",
+        title = "",
+        level = 0,
+        totalExp = 0
+    )
 
-    if (profileData == null) {
-        // profileData가 null인 경우 처리
-        Text("No profile data available")
-        return
-    }
-
-    // 사용자 ID를 전달하여 프로필 데이터를 가져옵니다.
-    val viewModel: MainViewModel = viewModel()
-
-    LaunchedEffect(Unit) {
-        viewModel.fetchProfileData(userId = "example_user_id")
-    }
 
 
     val scrollState = rememberScrollState()
@@ -108,4 +118,5 @@ fun ProfileMAinScreen(
 
 
     }
+
 }

@@ -22,21 +22,6 @@ import java.net.SocketTimeoutException
 
 class MainViewModel : ViewModel() {
 
-    private val _profileData = MutableStateFlow<ProfileResponse?>(null)
-    val profileData: StateFlow<ProfileResponse?> = _profileData
-
-    fun fetchProfileData(userId: String) {
-        viewModelScope.launch {
-            try {
-                val response = withContext(Dispatchers.IO) { RetrofitInstance.api.getProfile() }
-                Log.d("MainViewModel", "fetchProfileData success: $response")
-                _profileData.value = response
-            } catch (e: Exception) {
-                Log.e("MainViewModel", "General exception occurred: ${e.message}", e)
-            }
-        }
-    }
-
     private val _term = MutableStateFlow<Term?>(null)
     val term: StateFlow<Term?> = _term
 

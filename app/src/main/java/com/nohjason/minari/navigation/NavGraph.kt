@@ -81,9 +81,7 @@ fun NavGraph(
             //
         }
         composable(BottomBarScreen.Profile.rout) {
-            val profileData by viewModel.profileData.collectAsState()
             ProfileMAinScreen(
-                profileData = profileData,
                 navController = navController
             )
         }
