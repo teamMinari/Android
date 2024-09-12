@@ -3,6 +3,10 @@ package com.nohjason.myapplication.network
 import com.nohjason.minari.network.response.AddDeleteTerm
 import com.nohjason.minari.network.response.BookResponse
 import com.nohjason.minari.screens.home.news.Test
+import com.nohjason.minari.screens.profile.DireGpsResponse
+import com.nohjason.minari.screens.profile.DirecGpResponse
+import com.nohjason.minari.screens.profile.DirecGpseResponse
+import com.nohjason.minari.screens.profile.DirecTermResponse
 import com.nohjason.minari.screens.profile.ProfileResponse
 import com.nohjason.myapplication.network.response.Term
 import com.nohjason.myapplication.network.response.TermResponse
@@ -77,4 +81,24 @@ interface ApiService {
     suspend fun getProfile(
         @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYwNTk0MTUsImV4cCI6MTcyNjE0NTgxNX0.uJ62qskBw3CkJ7IhST9K1iawRDY6QYFWbQXVVGn_izw"
     ): ProfileResponse
+
+    @GET("/likes/term")
+    suspend fun getTerm(
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYwNTk0MTUsImV4cCI6MTcyNjE0NTgxNX0.uJ62qskBw3CkJ7IhST9K1iawRDY6QYFWbQXVVGn_izw"
+    ): DirecTermResponse
+
+    @GET("/likes/gpse")
+    suspend fun getGpse(
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYwNTk0MTUsImV4cCI6MTcyNjE0NTgxNX0.uJ62qskBw3CkJ7IhST9K1iawRDY6QYFWbQXVVGn_izw"
+    ): DirecGpseResponse
+
+    @GET("/likes/gps")
+    suspend fun getGps(
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYwNTk0MTUsImV4cCI6MTcyNjE0NTgxNX0.uJ62qskBw3CkJ7IhST9K1iawRDY6QYFWbQXVVGn_izw"
+    ): DireGpsResponse
+
+    @GET("/likes/gp")
+    suspend fun getGpe(
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYwNTk0MTUsImV4cCI6MTcyNjE0NTgxNX0.uJ62qskBw3CkJ7IhST9K1iawRDY6QYFWbQXVVGn_izw"
+    ): DirecGpResponse
 }

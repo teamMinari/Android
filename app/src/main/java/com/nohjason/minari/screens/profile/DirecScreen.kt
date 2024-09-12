@@ -15,13 +15,14 @@ import androidx.compose.ui.unit.dp
 import com.nohjason.minari.screens.profile.directory.TermList
 import com.nohjason.minari.screens.profile.directory.TutorialList
 import com.nohjason.minari.screens.quiz.quiz_end.TitleBar
+import com.nohjason.myapplication.network.response.TermResponse
 
 @Composable
 fun DirecScreen(
-    term: TermStatusResponse?,
-    gpse: GpseStatusResponse?,
-    gps: GpsStatusResponse?,
-    gp: GpStatusResponse?,
+    term: DirecTermResponse?,
+    gpse: DirecGpseResponse?,
+    gps: DireGpsResponse?,
+    gp: DirecGpResponse?,
 //    title: String (후에는 서버에서 값을 받아와야한다.)
 ){
     val scrollState = rememberScrollState()

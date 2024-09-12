@@ -15,6 +15,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +36,7 @@ import com.nohjason.minari.screens.profile.Gpse
 fun DirecGpse(
     data: Gpse
 ){
+    val isBookmarked = remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
             .width(260.dp) // Row가 부모의 가로 전체를 차지하도록 설정
@@ -49,10 +52,17 @@ fun DirecGpse(
                 .weight(1f)
         )
         Icon(
-            painter = painterResource(id = R.drawable.minari_book_mark),
+            painter = painterResource(
+                id = if (isBookmarked.value) R.drawable.ic_book_mark_deactivate
+                else R.drawable.minari_book_mark
+            ),
             contentDescription = null,
             tint = Color.Unspecified,
-            modifier = Modifier.clickable {  }
+            modifier = Modifier
+                .clickable {
+                    isBookmarked.value = !isBookmarked.value
+                    //서버에 아이디 전송
+                }
         )
     }
 }
@@ -68,6 +78,7 @@ fun DirecGpse(
 fun DirecGps(
     data: Gps
 ){
+    val isBookmarked = remember { mutableStateOf(false) }
     val TpList = data.gpsTpList
     Row (
         modifier = Modifier.width(260.dp),
@@ -97,10 +108,17 @@ fun DirecGps(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Icon(
-                    painter = painterResource(id = R.drawable.minari_book_mark),
+                    painter = painterResource(
+                        id = if (isBookmarked.value) R.drawable.ic_book_mark_deactivate
+                        else R.drawable.minari_book_mark
+                    ),
                     contentDescription = null,
                     tint = Color.Unspecified,
-                    modifier = Modifier.clickable { }
+                    modifier = Modifier
+                        .clickable {
+                            isBookmarked.value = !isBookmarked.value
+                            //서버에 아이디 전송
+                        }
                 )
             }
 
@@ -153,6 +171,7 @@ fun Tp(text: String){
 fun DirecGp(
     data: Gp
 ){
+    val isBookmarked = remember { mutableStateOf(false) }
     Row(modifier = Modifier
         .width(260.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -174,10 +193,17 @@ fun DirecGp(
         )
         Spacer(modifier = Modifier.weight(1f))
         Icon(
-            painter = painterResource(id = R.drawable.minari_book_mark),
+            painter = painterResource(
+                id = if (isBookmarked.value) R.drawable.ic_book_mark_deactivate
+                else R.drawable.minari_book_mark
+            ),
             contentDescription = null,
             tint = Color.Unspecified,
-            modifier = Modifier.clickable {  }
+            modifier = Modifier
+                .clickable {
+                    isBookmarked.value = !isBookmarked.value
+                    //서버에 아이디 전송
+                }
         )
     }
 }

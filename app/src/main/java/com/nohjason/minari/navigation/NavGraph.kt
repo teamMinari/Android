@@ -62,6 +62,8 @@ fun NavGraph(
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(token)
         .requestEmail().build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
+
+
     val profileViewModel: ProfileViewModel = viewModel()
 
 
@@ -90,7 +92,6 @@ fun NavGraph(
             }
             val data by profileViewModel.profileData.collectAsState()
             ProfileMAinScreen(profileData = data, navController = navController)
-
         }
 
         composable("myDirectory") {
