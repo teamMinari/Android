@@ -52,22 +52,6 @@ fun TutorialList(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (gpseItem != null || gpsItem != null || gpItem != null) {
-                // gpseItem
-                gpseItem?.let {
-                    it.forEachIndexed { index, data ->
-                        DirecGpse(data = data)
-                        if (index < it.size - 1 || gpsItem != null || gpItem != null) {
-                            Spacer(modifier = Modifier.height(15.dp))
-                            Divider(
-                                color = Color(0xFFECEFFB), modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(1.dp)
-                            )
-                            Spacer(modifier = Modifier.height(15.dp))
-                        }
-                    }
-                }
-
                 // gpsItem
                 gpsItem?.let {
                     it.forEachIndexed { index, data ->
@@ -96,6 +80,22 @@ fun TutorialList(
                             )
                         }
                         Spacer(modifier = Modifier.height(15.dp))
+                    }
+                }
+
+                // gpseItem
+                gpseItem?.let {
+                    it.forEachIndexed { index, data ->
+                        DirecGpse(data = data)
+                        if (index < it.size - 1 || gpsItem != null || gpItem != null) {
+                            Spacer(modifier = Modifier.height(15.dp))
+                            Divider(
+                                color = Color(0xFFECEFFB), modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(1.dp)
+                            )
+                            Spacer(modifier = Modifier.height(15.dp))
+                        }
                     }
                 }
             }

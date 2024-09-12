@@ -75,14 +75,14 @@ object DummyGpsStatusResponse {
             Gps(
                 gpsId = 1,
                 gpsContent = "Gps Content Example 1",
-                gpsImg = "http://example.com/image1.png",
+                gpsImg = "https://i.ibb.co/kJPp4Cv/image-34.png",
                 gpsLike = true,
                 gpsTpList = listOf("BEGINNER", "INTERMEDIATE")
             ),
             Gps(
                 gpsId = 2,
                 gpsContent = "Gps Content Example 2",
-                gpsImg = "http://example.com/image2.png",
+                gpsImg = "https://i.ibb.co/kJPp4Cv/image-34.png",
                 gpsLike = false,
                 gpsTpList = listOf("ADVANCED")
             )
@@ -99,13 +99,13 @@ object DummyGpStatusResponse {
             Gp(
                 gpId = 1,
                 gpName = "Gp Example 1",
-                gpImg = "http://example.com/gp1.png",
+                gpImg = "https://i.ibb.co/kJPp4Cv/image-34.png",
                 gpLike = true
             ),
             Gp(
                 gpId = 2,
                 gpName = "Gp Example 2",
-                gpImg = "http://example.com/gp2.png",
+                gpImg = "https://i.ibb.co/kJPp4Cv/image-34.png",
                 gpLike = false
             )
         )

@@ -78,7 +78,6 @@ fun ProfileMAinScreen(
         ProfileInfor(
             id = profileData.id,
             email = profileData.email,
-            exp = profileData.exp,
             totalExp = profileData.totalExp,
             level = profileData.level,
             title = profileData.title
@@ -102,8 +101,8 @@ fun ProfileMAinScreen(
         }
         Spacer(modifier = Modifier.height(10.dp))
 
-        val percentage = (profileData.exp/profileData.totalExp.toFloat())
-        RewardBar(progress = percentage, xp = profileData.exp)
+        val percentage = (50/100f)//exp구현 시 변경해야함
+        RewardBar(progress = percentage, xp = profileData.exp, level = profileData.level)
         LikeList(likeList = likeDummy, navHostController = navController)
         Spacer(modifier = Modifier.height(25.dp))
 

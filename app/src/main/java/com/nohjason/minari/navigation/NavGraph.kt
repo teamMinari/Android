@@ -42,7 +42,7 @@ import com.nohjason.minari.screens.profile.DummyTermStatusResponse.termStatusRes
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    viewModel: MainViewModel
+//    viewModel: MainViewModel
 ) {
     val auth = Firebase.auth
     var user by remember { mutableStateOf(auth.currentUser) }
@@ -57,8 +57,8 @@ fun NavGraph(
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(token)
         .requestEmail().build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
+    val viewModel: MainViewModel = viewModel()
 
-    val profileData by viewModel.profileData.collectAsState()
 
 
 
@@ -78,16 +78,12 @@ fun NavGraph(
             HomeScreen(navController = navController)
         }
         composable(BottomBarScreen.Quiz.rout) {
-            //퀴즈
-//            QuizMainScreen(qtAll = dummyResponse, navHostController = navController)
+            //
         }
         composable(BottomBarScreen.Profile.rout) {
-//            ProfileMAinScreen(
-//                profileData = profileData,
-//                navController = navController
-//            )
+            val profileData by viewModel.profileData.collectAsState()
             ProfileMAinScreen(
-                profileData = DummyProfileData.profileData,
+                profileData = profileData,
                 navController = navController
             )
         }
@@ -97,12 +93,12 @@ fun NavGraph(
         }
 
 
-        composable(BottomBarScreen.Term.rout) {
-            Term(
-                navController = navController,
-                viewModel = viewModel
-            )
-        }
+//        composable(BottomBarScreen.Term.rout) {
+//            Term(
+//                navController = navController,
+//                viewModel = viewModel
+//            )
+//        }
 
 
         composable("test/{text}") { backStackEntry ->

@@ -53,7 +53,6 @@ import com.nohjason.minari.R
 fun ProfileInfor(
     id: String,
     email: String,
-    exp: Int,
     totalExp: Int,
     level: Int,
     title: String
@@ -87,8 +86,6 @@ fun ProfileInfor(
     ) {
         // 저장된 프로필 이미지가 있으면 표시
         if (!"".equals(sp.getString("profileImage", "")) && !imageTy) {
-            val encoded = sp.getString("profileImage", "")
-            val imageAsBytes: ByteArray = Base64.decode(encoded?.toByteArray(), Base64.DEFAULT)
         }
         Box(
             modifier = Modifier
@@ -102,7 +99,8 @@ fun ProfileInfor(
                     .width(155.dp)
                     .height(155.dp)
             ) {
-                val percentage = (exp / totalExp.toFloat()) * 100
+                //exp구현 시 변경해야함
+                val percentage = (50 / 100f) * 100
                 val sweepAngle = 360 * (percentage / 100f)
 
                 drawArc(

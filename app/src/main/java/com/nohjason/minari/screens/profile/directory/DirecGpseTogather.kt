@@ -2,6 +2,7 @@ package com.nohjason.minari.screens.profile.directory
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -68,48 +69,57 @@ fun DirecGps(
     data: Gps
 ){
     val TpList = data.gpsTpList
-    Column {
-        Row(
+    Row (
+        modifier = Modifier.width(260.dp),
+        horizontalArrangement = Arrangement.Center
+    ){
+        AsyncImage(
             modifier = Modifier
-                .width(260.dp)
-                .padding(start = 5.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-//            AsyncImage(
-//                modifier = Modifier
-//                    .wrapContentSize(),
-//                model = data.gpsImg,
-//                contentDescription = null
-//            )
-            Text(
-                text = data.gpsContent,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.SemiBold
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Icon(
-                painter = painterResource(id = R.drawable.minari_book_mark),
-                contentDescription = null,
-                tint = Color.Unspecified,
-                modifier = Modifier.clickable { }
-            )
-        }
+                .wrapContentSize(),
+            model = data.gpsImg,
+            contentDescription = null
+        )
+        Column (
+            modifier = Modifier.padding(start = 5.dp)
+        ){
+            Row(
+                modifier = Modifier
+                    .width(260.dp)
+                    .padding(start = 5.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = data.gpsContent,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Icon(
+                    painter = painterResource(id = R.drawable.minari_book_mark),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                    modifier = Modifier.clickable { }
+                )
+            }
 
-        Row(
-            modifier = Modifier
-                .width(260.dp)
-                .padding(start = 5.dp)
-        ) {
-            TpList.forEachIndexed { index, data ->
-                Tp(text = data)
-                if (index < TpList.size - 1) {
-                    Spacer(modifier = Modifier.width(3.dp))
+            Row(
+                modifier = Modifier
+                    .width(260.dp)
+                    .padding(start = 5.dp)
+            ) {
+                TpList.forEachIndexed { index, data ->
+                    Tp(text = data)
+                    if (index < TpList.size - 1) {
+                        Spacer(modifier = Modifier.width(3.dp))
+                    }
                 }
             }
         }
+
     }
+
 
 }
 
@@ -147,12 +157,13 @@ fun DirecGp(
         .width(260.dp),
         verticalAlignment = Alignment.CenterVertically
     ){
-//        AsyncImage(
-//            modifier = Modifier
-//                .wrapContentSize(),
-//            model = data.gpImg,
-//            contentDescription = null
-//        )
+        AsyncImage(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(end = 10.dp),
+            model = data.gpImg,
+            contentDescription = null
+        )
 
         Text(
             text = data.gpName,

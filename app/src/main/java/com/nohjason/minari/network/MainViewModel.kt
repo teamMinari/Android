@@ -16,6 +16,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
+import java.io.IOException
+import java.net.SocketTimeoutException
 
 class MainViewModel : ViewModel() {
 
@@ -29,7 +32,7 @@ class MainViewModel : ViewModel() {
                 Log.d("MainViewModel", "fetchProfileData success: $response")
                 _profileData.value = response
             } catch (e: Exception) {
-                Log.e("MainViewModel", "fetchProfileData failed with error: ${e.message}", e)
+                Log.e("MainViewModel", "General exception occurred: ${e.message}", e)
             }
         }
     }
