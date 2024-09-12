@@ -37,7 +37,7 @@ fun RewardBar(
     level:Int
 ) {
     val webLink = WebLink()
-    val getWebLink = webLink.getUrlForLevel(level)
+    val getWebLink = webLink.getTitleAndUrlForLevel(level)
 
 
     Box(
@@ -116,7 +116,7 @@ fun RewardBar(
                 ) {
 
                     AsyncImage(
-                        model = getWebLink,
+                        model = getWebLink.url,
                         contentDescription =null,
                         modifier = Modifier
                             .width(40.dp)

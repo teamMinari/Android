@@ -1,5 +1,7 @@
 package com.nohjason.minari.screens.profile
 
+import com.nohjason.minari.screens.profile.directory.DirecGp
+
 // ProfileData 더미 데이터
 object DummyProfileData {
     val profileData = ProfileResponse(
@@ -18,7 +20,7 @@ object DummyProfileData {
 
 // TermStatusResponse와 관련된 더미 데이터
 object DummyTermStatusResponse {
-    val termStatusResponse = TermStatusResponse(
+    val termStatusResponse = DirecTermResponse(
         status = 0,
         message = "Success",
         data = listOf(
@@ -46,7 +48,7 @@ object DummyTermStatusResponse {
 
 // GpseStatusResponse 더미 데이터
 object DummyGpseStatusResponse {
-    val gpseStatusResponse = GpseStatusResponse(
+    val gpseStatusResponse = DirecGpseResponse(
         status = 0,
         message = "Success",
         data = listOf(
@@ -68,7 +70,7 @@ object DummyGpseStatusResponse {
 
 // GpsStatusResponse 더미 데이터
 object DummyGpsStatusResponse {
-    val gpsStatusResponse = GpsStatusResponse(
+    val gpsStatusResponse = DireGpsResponse(
         status = 0,
         message = "Success",
         data = listOf(
@@ -92,7 +94,7 @@ object DummyGpsStatusResponse {
 
 // GpStatusResponse 더미 데이터
 object DummyGpStatusResponse {
-    val gpStatusResponse = GpStatusResponse(
+    val gpStatusResponse = DirecGpResponse(
         status = 0,
         message = "Success",
         data = listOf(

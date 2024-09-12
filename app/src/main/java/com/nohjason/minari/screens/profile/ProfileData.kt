@@ -13,6 +13,11 @@ data class ProfileResponse(
     val totalExp: Int
 )
 
+data class TitleAndUrl(
+    val title: String,
+    val url: String
+)
+
 data class LikeList(
     val name: List<String>
 )
