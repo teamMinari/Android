@@ -46,7 +46,7 @@ fun MainScreen(
         Column(modifier = Modifier.padding(innerPadding)) {
             NavGraph(
                 navController = navController,
-//                viewModel = viewModel
+                viewModel = viewModel
             )
         }
     }

@@ -55,7 +55,7 @@ fun ProfileInfor(
     email: String,
     totalExp: Int,
     level: Int,
-    title: String
+    title: String?
 ) {
     // 이미지 Uri 상태값을 기억
     var imageUri: Uri? by remember {
@@ -238,12 +238,14 @@ fun ProfileInfor(
                     .width(1.dp)
                     .height(18.dp),
             )
-            Spacer(modifier = Modifier.width(5.dp))
-            Text(
-                text = title,
-                fontWeight = FontWeight.Bold,
-                fontSize = 13.sp
-            )
+            if(title != null){
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 13.sp
+                )
+            }
         }
         Spacer(modifier = Modifier.height(3.dp))
         Text(

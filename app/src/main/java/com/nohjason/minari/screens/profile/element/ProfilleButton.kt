@@ -64,7 +64,7 @@ fun ProfileButton(
             text = newtext,
             fontWeight = FontWeight.SemiBold
         )
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(14.dp))
     }
 
 }

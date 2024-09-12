@@ -41,7 +41,6 @@ import com.nohjason.minari.screens.profile.DummyGpseStatusResponse.gpseStatusRes
 import com.nohjason.minari.screens.profile.DummyProfileData
 import com.nohjason.minari.screens.profile.DummyTermStatusResponse.termStatusResponse
 import com.nohjason.minari.screens.profile.ProfileViewModel
-import getProfileData
 import kotlinx.coroutines.launch
 
 
@@ -63,7 +62,7 @@ fun NavGraph(
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(token)
         .requestEmail().build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
-//    val viewModel: MainViewModel = viewModel()
+    val profileViewModel: ProfileViewModel = viewModel()
 
 
 
@@ -87,13 +86,10 @@ fun NavGraph(
         }
         composable(BottomBarScreen.Profile.rout) {
             LaunchedEffect(Unit) {
-                val data = getProfileData()
-                viewModel.initializeProfileData(data = data)
+                profileViewModel.getProfile()
             }
-
-            // viewModel에서 profileData를 상태로 얻어오는 방법
-            val profileData by viewModel.profileData.collectAsState()
-            print(profileData)
+            val data by profileViewModel.profileData.collectAsState()
+            ProfileMAinScreen(profileData = data, navController = navController)
 
         }
 

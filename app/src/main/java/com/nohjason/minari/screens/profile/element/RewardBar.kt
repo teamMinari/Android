@@ -117,7 +117,10 @@ fun RewardBar(
 
                     AsyncImage(
                         model = getWebLink,
-                        contentDescription =null
+                        contentDescription =null,
+                        modifier = Modifier
+                            .width(40.dp)
+                            .height(40.dp)
                     )
                 }
             }
@@ -126,12 +129,12 @@ fun RewardBar(
 }
 
 
-//@Preview(showBackground = true)
-//@Composable
-//fun RewardBarPreview() {
-//    RewardBar(
-//        progress = 0.7f, // 70% 채워진 프로그레스 바
-//        rewardIcon = "ㅇㅇㅇ", // 보상 아이콘 리소스 (실제 프로젝트에서 리소스 경로 맞춰주세요)
-//        xp = 35 // 35 XP
-//    )
-//}
+@Preview(showBackground = true)
+@Composable
+fun RewardBarPreview() {
+    RewardBar(
+        progress = 0.5f, // 0f to 1f
+        xp= 100,
+        level = 1
+    )
+}

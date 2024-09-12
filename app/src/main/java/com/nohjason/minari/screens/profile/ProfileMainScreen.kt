@@ -49,7 +49,7 @@ import kotlinx.coroutines.withContext
 fun ProfileMAinScreen(
     profileData: ProfileResponse?,
     navController: NavHostController
-){
+) {
 
     if (profileData == null) {
         Text(text = "No profile data available")
@@ -81,9 +81,9 @@ fun ProfileMAinScreen(
             level = profileData.level,
             title = profileData.title
         )
-        Row (
+        Row(
             modifier = Modifier.padding(top = 22.dp)
-        ){
+        ) {
             ProfileButton(
                 text = "칭호",
                 onClick = {
@@ -92,7 +92,7 @@ fun ProfileMAinScreen(
             )
             Spacer(modifier = Modifier.width(5.dp))
             ProfileButton(
-                text = "관심" ,
+                text = "관심",
                 onClick = {
                     //로그인-설문조사 화면으로 이동
                 }
@@ -100,30 +100,11 @@ fun ProfileMAinScreen(
         }
         Spacer(modifier = Modifier.height(10.dp))
 
-        val percentage = (50/100f)//exp구현 시 변경해야함
+        val percentage = (50 / 100f)//exp구현 시 변경해야함
         RewardBar(progress = percentage, xp = profileData.exp, level = profileData.level)
         LikeList(likeList = likeDummy, navHostController = navController)
         Spacer(modifier = Modifier.height(25.dp))
 
 
-    }
-
-}
-
-suspend fun getProfileData(): ProfileResponse {
-    // Retrofit 인스턴스를 가져옴
-    val apiService = RetrofitInstance.api
-
-    return withContext(Dispatchers.IO) {
-        try {
-            // GET 요청을 보내고 응답을 받아옴
-            val response = apiService.getProfile()
-            println(response)
-            response // 서버 응답 반환
-        } catch (e: Exception) {
-            // 기타 예외 처리
-            println("Error: ${e.message}")
-            throw e // 필요에 따라 다시 던질 수 있음
-        }
     }
 }
