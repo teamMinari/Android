@@ -46,12 +46,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -70,6 +73,9 @@ import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGradation
 import com.nohjason.minari.ui.theme.MinariWhite
+import com.nohjason.minari.ui.theme.pretendard_bold
+import com.nohjason.minari.ui.theme.pretendard_medium
+import com.nohjason.minari.ui.theme.pretendard_regular
 import com.nohjason.minari.ui.theme.pretendard_semibold
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -130,8 +136,8 @@ fun HomeScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
                 .background(Color(0xFFF5F6FA))
+                .padding(innerPadding)
         ) {
             item {
                 Column {
@@ -211,16 +217,16 @@ fun HomeScreen(
                 SwipeNews()
             }
             item {
+                Spacer(modifier = Modifier.height(10.dp))
                 Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp))
                         .padding(horizontal = 20.dp)
+                        .clip(RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp))
                         .fillMaxWidth()
                         .background(Color.White)
+                        .padding(20.dp)
                 ) {
-                    Column(
-                        modifier = Modifier.padding(20.dp)
-                    ) {
+                    Column {
                         Row {
                             Icon(
                                 painter = painterResource(id = R.drawable.mdi_cards),
@@ -231,70 +237,44 @@ fun HomeScreen(
                             Text(
                                 text = "오늘의 경제 단어",
                                 fontFamily = pretendard_semibold,
-                                fontSize = 17.sp
+                                fontSize = 19.sp
                             )
                         }
                     }
                 }
             }
-            items(items.size) { index ->
-                val isSelected = selectedItems.contains(index)
+            items(5) { item ->
                 Box(
                     modifier = Modifier
-                        .clip(
-                            if (index == items.size - 1) RoundedCornerShape(20.dp) else RoundedCornerShape(
-                                0.dp
-                            )
-                        )
-                        .fillMaxWidth()
+                        .fillParentMaxWidth()
                         .background(Color.White)
-                        .padding(vertical = 5.dp, horizontal = 40.dp)
+                        .padding(horizontal = 20.dp)
                 ) {
-                    Column {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(text = items[index], color = Color.Black)
-                            Spacer(modifier = Modifier.width(10.dp))
-                            for (i in 1..2) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.star),
-                                    contentDescription = null,
-                                    tint = Color.Unspecified
-                                )
-                            }
-                            Spacer(modifier = Modifier.weight(0.1f))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp)
+                    ) {
+                        Text(
+                            text = "가산금리",
+                            fontSize = 17.sp,
+                            fontFamily = pretendard_medium
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        for (i in 1..2) {
                             Icon(
-                                painter = painterResource(id = R.drawable.my_words),
+                                painter = painterResource(id = R.drawable.star),
                                 contentDescription = null,
-                                Modifier
-                                    .size(16.dp)
-                                    .clickable {
-                                        if (isSelected) {
-                                            selectedItems.remove(index)
-                                        } else {
-                                            selectedItems.add(index)
-                                        }
-                                    },
-                                tint = if (isSelected) MinariBlue else Color(0xFFCDCDCD)
+                                modifier = Modifier
+                                    .size(13.dp),
+                                tint = Color.Unspecified
                             )
                         }
-                        if (index == items.size - 1) {
-                            Spacer(modifier = Modifier.height(20.dp))
-                        }
-                    }
-                }
-            }
-            item {
-                Box(modifier = Modifier
-                    .fillMaxSize()
-                    .background(MinariWhite)) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable {
-                                itemCount = (itemCount + 3).coerceAtMost(allItems.size)
-                            },
-                    ) {
-                        Text(text = "Load More", Modifier.align(Alignment.Center))
+                        Spacer(modifier = Modifier.weight(0.1f))
+                        Icon(
+                            painter = painterResource(id = R.drawable.book_mark),
+                            contentDescription = null,
+                            tint = Color.Unspecified
+                        )
                     }
                 }
             }
@@ -408,40 +388,131 @@ fun SwipeNews() {
     ) { page ->
         val news = list[page]
         // 페이지 내용
-        Row {
-            Box(
-                modifier = Modifier.clickable {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(news.link))
-                    context.startActivity(intent)
-                }
+        Box (
+            modifier = Modifier
+                .height(200.dp)
+                .padding(horizontal = 20.dp)
+        ){
+            AsyncImage(
+                model = news.img,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(news.link))
+                        context.startActivity(intent)
+                    },
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+                    .align(Alignment.BottomCenter)
             ) {
-                AsyncImage(
-                    model = news.img,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp)
-                )
                 Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(Color(0xBB8A8A8A))
-                        .padding(10.dp)
-                        .width(200.dp)
-                        .align(Alignment.Center)
+                        .clip(CircleShape)
+                        .border(1.dp, Color.White, CircleShape)
+                        .padding(horizontal = 5.dp)
                 ) {
-                    Column {
-                        Text(text = news.time, color = Color.White)
-                        Text(text = news.title, color = Color.White)
-                    }
+                    Text(
+                        text = "🔥HOT",
+                        fontSize = 13.sp,
+                        fontFamily = pretendard_semibold,
+                        color = Color.White
+                    )
                 }
+                Spacer(modifier = Modifier.weight(0.1f))
+                Text(
+                    text = news.time,
+                    color = Color.White,
+                    fontSize = 10.sp,
+                    fontFamily = pretendard_regular
+                )
+                Text(
+                    text = news.title,
+                    color = Color.White,
+                    fontSize = 15.sp,
+                    fontFamily = pretendard_bold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
         }
     }
 }
 
+@Preview(showSystemUi = true)
 @Composable
-private fun TodayWords() {
+fun TodayTerms() {
+    LazyColumn {
+    }
+}
+
+//@Preview
+//@Composable
+//private fun Test() {
+//    var itemCount by remember { mutableStateOf(5) }
+//    val allItems = remember { List(20) { index -> "Item ${index + 1}" } }
+//    val items = allItems.take(itemCount)
+//    val selectedItems = remember { mutableStateListOf<Int>() }
+//
+//    LazyColumn {
+//        item {
+
+//        }
+//        items(items.size) { index ->
+//            val isSelected = selectedItems.contains(index)
+//            Box(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(vertical = 5.dp, horizontal = 40.dp)
+//            ) {
+//                Row(verticalAlignment = Alignment.CenterVertically) {
+//                    Text(text = items[index], color = if (isSelected) Color.White else Color.Black)
+//                    Spacer(modifier = Modifier.width(10.dp))
+//                    for (i in 1..2) {
+//                        Icon(
+//                            painter = painterResource(id = R.drawable.star),
+//                            contentDescription = null,
+//                            tint = Color.Unspecified
+//                        )
+//                    }
+//                    Spacer(modifier = Modifier.weight(0.1f))
+//                    Icon(
+//                        painter = painterResource(id = R.drawable.my_words),
+//                        contentDescription = null,
+//                        Modifier
+//                            .size(16.dp)
+//                            .clickable {
+//                                if (isSelected) {
+//                                    selectedItems.remove(index)
+//                                } else {
+//                                    selectedItems.add(index)
+//                                }
+//                            },
+//                        tint = if (isSelected) MinariBlue else Color(0xFFCDCDCD)
+//                    )
+//                }
+//            }
+//        }
+//        item {
+//            Box(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .clickable {
+//                        itemCount = (itemCount + 3).coerceAtMost(allItems.size)
+//                    },
+//            ) {
+//                Text(text = "Load More", Modifier.align(Alignment.Center))
+//            }
+//        }
+//    }
+//}
+
+@Composable
+private fun QWER() {
     var itemCount by remember { mutableStateOf(5) }
     val allItems = remember { List(20) { index -> "Item ${index + 1}" } }
     val items = allItems.take(itemCount)
@@ -489,17 +560,6 @@ private fun TodayWords() {
             }
         }
     }
-//    var array by remember {
-//        mutableStateOf(
-//            mutableListOf(
-//                "가산금리",
-//                "추가경정예산",
-//                "금리",
-//                "추정손실"
-//            )
-//        )
-//    }
-
 }
 
 @Composable
@@ -615,88 +675,3 @@ data class ShowNews(
     val title: String,
     val link: String
 )
-
-@Preview
-@Composable
-private fun Test() {
-    var itemCount by remember { mutableStateOf(5) }
-    val allItems = remember { List(20) { index -> "Item ${index + 1}" } }
-    val items = allItems.take(itemCount)
-
-    val selectedItems = remember { mutableStateListOf<Int>() }
-    LazyColumn {
-        item {
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp))
-                    .fillMaxWidth()
-                    .background(Color.White)
-                    .padding(horizontal = 20.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp)
-                ) {
-                    Row {
-                        Icon(
-                            painter = painterResource(id = R.drawable.mdi_cards),
-                            contentDescription = null,
-                            tint = Color.Unspecified
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(
-                            text = "오늘의 경제 단어",
-                            fontFamily = pretendard_semibold,
-                            fontSize = 17.sp
-                        )
-                    }
-                }
-            }
-        }
-        items(items.size) { index ->
-            val isSelected = selectedItems.contains(index)
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 5.dp, horizontal = 40.dp)
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = items[index], color = if (isSelected) Color.White else Color.Black)
-                    Spacer(modifier = Modifier.width(10.dp))
-                    for (i in 1..2) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.star),
-                            contentDescription = null,
-                            tint = Color.Unspecified
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(0.1f))
-                    Icon(
-                        painter = painterResource(id = R.drawable.my_words),
-                        contentDescription = null,
-                        Modifier
-                            .size(16.dp)
-                            .clickable {
-                                if (isSelected) {
-                                    selectedItems.remove(index)
-                                } else {
-                                    selectedItems.add(index)
-                                }
-                            },
-                        tint = if (isSelected) MinariBlue else Color(0xFFCDCDCD)
-                    )
-                }
-            }
-        }
-        item {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clickable {
-                        itemCount = (itemCount + 3).coerceAtMost(allItems.size)
-                    },
-            ) {
-                Text(text = "Load More", Modifier.align(Alignment.Center))
-            }
-        }
-    }
-}

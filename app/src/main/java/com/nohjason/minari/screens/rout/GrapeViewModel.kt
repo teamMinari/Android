@@ -3,6 +3,7 @@ package com.nohjason.minari.screens.rout
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nohjason.minari.network.response.GetAllLikesTerm
 import com.nohjason.minari.network.response.rout.Grape
 import com.nohjason.minari.network.response.rout.GrapeSeed
 import com.nohjason.minari.network.response.rout.Grapes
@@ -169,6 +170,35 @@ class GrapeViewModel: ViewModel() {
             } catch (e: Exception) {
                 // 기타 예외 처리
                 Log.e("TAG", "likesGpse: 알 수 없는 오류", e)
+            }
+        }
+    }
+
+    private val _getAllLikesTerm = MutableStateFlow<GetAllLikesTerm?>(null)
+    val getAllLikesTerm: StateFlow<GetAllLikesTerm?> = _getAllLikesTerm
+
+    fun getAllLikesTerm(token: String) {
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    api.getAllLikesTerm(token)
+                }
+                if (response.isSuccessful) {
+                    _getAllLikesTerm.value = response.body()
+                    Log.d("TAG", "getAllLikesTerm: 좋아요 서버 통신 성공")
+                } else {
+                    // 서버 응답 에러 처리
+                    Log.e("TAG", "getAllLikesTerm: 서버 응답 에러 - 코드: ${response.code()}")
+                }
+            } catch (e: IOException) {
+                // 네트워크 오류 처리
+                Log.e("TAG", "getAllLikesTerm: 네트워크 오류", e)
+            } catch (e: HttpException) {
+                // HTTP 오류 처리
+                Log.e("TAG", "getAllLikesTerm: HTTP 오류 - 코드: ${e.code()}", e)
+            } catch (e: Exception) {
+                // 기타 예외 처리
+                Log.e("TAG", "getAllLikesTerm: 알 수 없는 오류", e)
             }
         }
     }

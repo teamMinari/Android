@@ -6,6 +6,12 @@ data class GetTerm(
     val data: GetTermData,
 )
 
+data class GetAllLikesTerm(
+    val status: Int,
+    val message: String,
+    val data: List<GetTermData>,
+)
+
 data class GetTermData(
     val termDifficulty: String,
     val termExplain: String,

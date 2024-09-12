@@ -76,10 +76,11 @@ fun Test(
     var text by remember { mutableStateOf("") }
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
+    val getAllLikesTerm by grapeViewModel.getAllLikesTerm.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
-        Log.d("TAG", "Test: $title")
         viewModel.getTerm(token, title)
+        grapeViewModel.getAllLikesTerm(token)
     }
 
     Scaffold(
@@ -134,13 +135,22 @@ fun Test(
                                 }
                             }
                             Spacer(modifier = Modifier.weight(0.1f))
+                            var likes = false
+                            if  (getAllLikesTerm != null) {
+                                for (i in getAllLikesTerm!!.data) {
+                                    if (i.termId == item.termId) {
+                                        Log.d("TAG", "Test: 좋아요 있음")
+                                        likes = true
+                                    }
+                                }
+                            }
                             Icon(
                                 painter = painterResource(R.drawable.book_mark),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(20.dp)
                                     .clickable { grapeViewModel.likes(token, "TERM", item.termId) },
-                                tint = Color.Unspecified
+                                tint = if (likes) Color.Unspecified else Color.Gray
                             )
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {

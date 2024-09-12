@@ -2,6 +2,7 @@ package com.nohjason.minari.network
 
 import com.nohjason.minari.network.response.AddDeleteTerm
 import com.nohjason.minari.network.response.BookResponse
+import com.nohjason.minari.network.response.GetAllLikesTerm
 import com.nohjason.minari.network.response.GetTerm
 import com.nohjason.minari.network.response.Quize
 import com.nohjason.minari.network.response.rout.Grape
@@ -13,7 +14,6 @@ import com.nohjason.minari.screens.login.response.LoginResponse
 import com.nohjason.minari.screens.login.response.RegisterRequest
 import com.nohjason.minari.screens.login.response.RegisterResponse
 import com.nohjason.minari.screens.rout.response.GetAllNews
-import com.nohjason.minari.screens.rout.response.LikesGps
 import com.nohjason.minari.screens.rout.response.LikesResponse
 import com.nohjason.myapplication.network.response.Term
 import com.nohjason.myapplication.network.response.TermResponse
@@ -129,4 +129,10 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("termNm") termNm: String
     ): Response<GetTerm>
+
+    // 용어 좋아요 전체 가져오기
+    @GET("/likes/term")
+    suspend fun getAllLikesTerm(
+        @Header("Authorization") token: String,
+    ): Response<GetAllLikesTerm>
 }
