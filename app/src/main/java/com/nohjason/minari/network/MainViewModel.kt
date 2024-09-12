@@ -22,6 +22,7 @@ import java.net.SocketTimeoutException
 
 class MainViewModel : ViewModel() {
 
+
     private val _term = MutableStateFlow<Term?>(null)
     val term: StateFlow<Term?> = _term
 
@@ -31,10 +32,11 @@ class MainViewModel : ViewModel() {
                 val term = api.getOneTerm(termNm = termNm)
                 _term.value = term
             } catch (e: Exception) {
-                // 오류 처리
+                Log.e("FetchTermError", "Error fetching term: ${e.message}", e)
             }
         }
     }
+
 
 //    private val _book = MutableStateFlow<List<DictionaryModel>>(emptyList())
 //    val books = _book.asStateFlow()

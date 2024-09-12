@@ -2,6 +2,7 @@ package com.nohjason.minari.navigation
 
 import ProfileMAinScreen
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -38,11 +40,15 @@ import com.nohjason.minari.screens.profile.DummyGpsStatusResponse.gpsStatusRespo
 import com.nohjason.minari.screens.profile.DummyGpseStatusResponse.gpseStatusResponse
 import com.nohjason.minari.screens.profile.DummyProfileData
 import com.nohjason.minari.screens.profile.DummyTermStatusResponse.termStatusResponse
+import com.nohjason.minari.screens.profile.ProfileViewModel
+import getProfileData
+import kotlinx.coroutines.launch
+
 
 @Composable
 fun NavGraph(
     navController: NavHostController,
-//    viewModel: MainViewModel
+    viewModel: MainViewModel
 ) {
     val auth = Firebase.auth
     var user by remember { mutableStateOf(auth.currentUser) }
@@ -57,8 +63,7 @@ fun NavGraph(
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(token)
         .requestEmail().build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
-    val viewModel: MainViewModel = viewModel()
-
+//    val viewModel: MainViewModel = viewModel()
 
 
 
@@ -81,9 +86,15 @@ fun NavGraph(
             //
         }
         composable(BottomBarScreen.Profile.rout) {
-            ProfileMAinScreen(
-                navController = navController
-            )
+            LaunchedEffect(Unit) {
+                val data = getProfileData()
+                viewModel.initializeProfileData(data = data)
+            }
+
+            // viewModel에서 profileData를 상태로 얻어오는 방법
+            val profileData by viewModel.profileData.collectAsState()
+            print(profileData)
+
         }
 
         composable("myDirectory") {

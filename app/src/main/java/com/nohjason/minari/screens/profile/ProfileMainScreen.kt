@@ -47,9 +47,14 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun ProfileMAinScreen(
-    profileData: ProfileResponse,
+    profileData: ProfileResponse?,
     navController: NavHostController
 ){
+
+    if (profileData == null) {
+        Text(text = "No profile data available")
+        return
+    }
 
     val scrollState = rememberScrollState()
 
