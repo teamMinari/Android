@@ -47,25 +47,9 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun ProfileMAinScreen(
+    profileData: ProfileResponse,
     navController: NavHostController
-    
 ){
-    val profileviewModel: ProfileViewModel = viewModel()
-    val profileOrginData by profileviewModel.profileData.collectAsState()
-    val profileData = profileOrginData ?: ProfileResponse(
-        idx = 0,
-        id = "",
-        email = "",
-        vocaBook = "",
-        point = 0,
-        exp = 0,
-        authority = "",
-        title = "",
-        level = 0,
-        totalExp = 0
-    )
-
-
 
     val scrollState = rememberScrollState()
 
@@ -119,4 +103,22 @@ fun ProfileMAinScreen(
 
     }
 
+}
+
+suspend fun getProfileData(): ProfileResponse {
+    // Retrofit 인스턴스를 가져옴
+    val apiService = RetrofitInstance.api
+
+    return withContext(Dispatchers.IO) {
+        try {
+            // GET 요청을 보내고 응답을 받아옴
+            val response = apiService.getProfile()
+            println(response)
+            response // 서버 응답 반환
+        } catch (e: Exception) {
+            // 기타 예외 처리
+            println("Error: ${e.message}")
+            throw e // 필요에 따라 다시 던질 수 있음
+        }
+    }
 }
