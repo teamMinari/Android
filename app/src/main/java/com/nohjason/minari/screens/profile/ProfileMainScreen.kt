@@ -105,6 +105,5 @@ fun ProfileMAinScreen(
         LikeList(likeList = likeDummy, navHostController = navController)
         Spacer(modifier = Modifier.height(25.dp))
 
-
     }
 }

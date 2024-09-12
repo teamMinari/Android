@@ -1,28 +1,20 @@
 package com.nohjason.minari.navigation
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.util.Log
+import ProfileMAinScreen
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import ProfileMAinScreen
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 //import com.nohjason.minari.R
-import com.nohjason.minari.navigation.bottombar.Screen
-import com.nohjason.minari.screens.QizeScreen.Commentary_CorrectO
-import com.nohjason.minari.screens.QizeScreen.Commentary_CorrectX
-import com.nohjason.minari.screens.QizeScreen.QuizScreen_play
-import com.nohjason.minari.screens.profile.my_dictionary.MyDictionaryScreen
+import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.inproduct.InProduction
 import com.nohjason.minari.screens.login.screen.LoginScreen
@@ -32,79 +24,85 @@ import com.nohjason.minari.screens.login.screen.login.SelfLoginScreen
 import com.nohjason.minari.screens.login.screen.signup.Questionnaire
 import com.nohjason.minari.screens.login.screen.signup.SelfSignUpLastScreen
 import com.nohjason.minari.screens.login.screen.signup.SelfSignUpScreen
-import com.nohjason.minari.screens.profile.ProfileScreen
-import com.nohjason.minari.screens.quiz.QuizEndScreen
-import com.nohjason.minari.screens.quiz.QuizScreen
-import com.nohjason.minari.screens.quiz.data.QuestionData
-import com.nohjason.minari.screens.quiz.data.Temporary_pointData
 import com.nohjason.minari.screens.term.Test
-import com.nohjason.minari.network.MainViewModel
 import com.nohjason.minari.screens.news.News
+import com.nohjason.minari.screens.profile.DirecScreen
+import com.nohjason.minari.screens.profile.DummyGpStatusResponse.gpStatusResponse
+import com.nohjason.minari.screens.profile.DummyGpsStatusResponse.gpsStatusResponse
+import com.nohjason.minari.screens.profile.DummyGpseStatusResponse.gpseStatusResponse
+import com.nohjason.minari.screens.profile.DummyTermStatusResponse.termStatusResponse
+import com.nohjason.minari.screens.profile.ProfileViewModel
 import com.nohjason.minari.screens.profile.name_style.Style
 import com.nohjason.minari.screens.rout.Grape
 import com.nohjason.minari.screens.rout.Grapes
 import com.nohjason.minari.screens.rout.Rout
 
+@SuppressLint("ComposableDestinationInComposeScope")
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    viewModel: MainViewModel,
-    loginViewModel: LoginViewModel
+//    viewModel: MainViewModel,
+    loginViewModel: LoginViewModel,
+    profileViewModel: ProfileViewModel = viewModel()
 ) {
-    val auth = Firebase.auth
-    var user by remember { mutableStateOf(auth.currentUser) }
-    val launcher = rememberFirebaseAuthLauncher(onAuthComplete = { result ->
-        user = result.user
-    }, onAuthError = {
-        user = null
-    })
-    val token = stringResource(R.string.default_web_client_id)
-    val context = LocalContext.current
-//
-//    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(token)
-//        .requestEmail().build()
-//    val googleSignInClient = GoogleSignIn.getClient(context, gso)
-//
-    val question = QuestionData.getQuestion()
-    val dummyUser = Temporary_pointData.getPoint()
-
-
     NavHost(
         navController = navController,
         startDestination = Test.FirstScreen.rout,
-//        startDestination = Screen.Home.rout
     ) {
 
         composable(Test.FirstScreen.rout) {
             LoginScreen(
                 navController = navController,
-//                launcher = launcher,
-//                googleSignInClient = googleSignInClient
             )
         }
-        composable(Screen.Home.rout) {
-            HomeScreen(
-                navController = navController,
-//                token = token
-            )
-        }
-        composable(Screen.Quiz.rout, ) {
-            QuizScreen(navController = navController, user = dummyUser)
-        }
-        composable(Screen.Profile.rout) {
-            ProfileScreen(navController = navController)
-        }
-        composable(Screen.News.rout) {
-            News(navController = navController)
-        }
-        // 튜토리얼
 
-        // 포도송이
-        composable(Screen.Rout.rout) {
+        composable(
+            route = Test.LastSignup.rout,
+        ) {
+            SelfSignUpLastScreen(
+                navController = navController
+            )
+        }
+
+        composable(Test.Login.rout) {
+            SelfLoginScreen(navController = navController, loginViewModel = loginViewModel)
+        }
+
+        // 튜토리얼
+        composable(BottomScreen.Rout.rout) {
             Rout(navController = navController)
         }
+
+        // 뉴스
+        composable(BottomScreen.News.rout) {
+            News(navController = navController)
+        }
+
+        // 홈
+        composable(BottomScreen.Home.rout) {
+            HomeScreen(
+                navController = navController,
+            )
+        }
+
+        // 프로필
+        composable(BottomScreen.Profile.rout) {
+            LaunchedEffect(Unit) {
+                profileViewModel.getProfile()
+            }
+            val data by profileViewModel.profileData.collectAsState()
+            ProfileMAinScreen(
+                profileData = data,
+                navController = navController
+            )
+        }
+
+        composable("myDirectory") {
+            DirecScreen(term = termStatusResponse, gpse = gpseStatusResponse, gps = gpsStatusResponse, gp = gpStatusResponse)
+        }
+
         // 포도알
-        composable(Test.Grapes.rout+"/{id}") { backStackEntry ->
+        composable(Test.Grapes.rout + "/{id}") { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id") ?: "0"
             Grapes(
                 id = id.toInt(),
@@ -113,7 +111,7 @@ fun NavGraph(
         }
 
         // 포도씨
-        composable(Test.Grape.rout+"/{id}/{title}") { backStackEntry ->
+        composable(Test.Grape.rout + "/{id}/{title}") { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id") ?: "0"
             val title = backStackEntry.arguments?.getString("title") ?: ""
             Grape(
@@ -123,13 +121,6 @@ fun NavGraph(
             )
         }
 
-        composable(Screen.MyDictionary.rout) {
-            MyDictionaryScreen(
-                context = context,
-                navController = navController,
-                viewModel = viewModel
-            )
-        }
         composable("test/{text}") { backStackEntry ->
             val text = backStackEntry.arguments?.getString("text") ?: ""
             Test(text, navController = navController)
@@ -160,10 +151,7 @@ fun NavGraph(
 //                QuizPlayScreen(qestion = playData)
 //            }
         }
-        composable("quizComentoryRoute") { backStackEntry ->
-            QuizEndScreen(navController = navController, user = dummyUser)
-        }
-        
+
         // 로그인
         composable(
             route = Test.Signup.rout,
@@ -179,7 +167,7 @@ fun NavGraph(
                     animationSpec = tween(700)
                 )
             }
-        ){
+        ) {
             SelfSignUpScreen(
                 navController = navController
             )
@@ -192,73 +180,13 @@ fun NavGraph(
 //            val playData = Gson().fromJson(playDataJson, PlayData::class.java)  // JSON 데이터를 PlayData 객체로 변환
 //            QuizPlayScreen(question = playData)  // QuizPlayScreen에 변환된 데이터를 전달
 //        }
-
-
-
-//        로그인
-        composable("Singup"){
-            SelfSingUpScreen(navController = navController)
-        }
-
-        composable(
-            route = Test.Question.rout,
-            enterTransition = {
-                slideInHorizontally(
-                    initialOffsetX = { fullWidth -> fullWidth },
-                    animationSpec = tween(700)
-                )
-            },
-            exitTransition = {
-                slideOutHorizontally(
-                    targetOffsetX = { fullWidth -> -fullWidth },
-                    animationSpec = tween(700)
+            composable(
+                route = Test.Question.rout,
+            ) {
+                Questionnaire(
+                    navController = navController
                 )
             }
-        ){
-            Questionnaire(
-                navController = navController
-            )
-        }
-
-        composable(
-            route = Test.LastSignup.rout,
-            enterTransition = {
-                slideInHorizontally(
-                    initialOffsetX = { fullWidth -> fullWidth },
-                    animationSpec = tween(700)
-                )
-            },
-            exitTransition = {
-                slideOutHorizontally(
-                    targetOffsetX = { fullWidth -> -fullWidth },
-                    animationSpec = tween(700)
-                )
-            }
-        ){
-            SelfSignUpLastScreen(
-                navController = navController
-            )
-        }
-
-        composable(
-            route = Test.Login.rout,
-            enterTransition = {
-                slideInHorizontally(
-                    initialOffsetX = { fullWidth -> fullWidth },
-                    animationSpec = tween(700)
-                )
-            },
-            exitTransition = {
-                slideOutHorizontally(
-                    targetOffsetX = { fullWidth -> -fullWidth },
-                    animationSpec = tween(700)
-                )
-            }
-        ){
-            SelfLoginScreen(
-                navController = navController,
-                loginViewModel = loginViewModel
-            )
         }
     }
 }

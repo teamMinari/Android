@@ -13,12 +13,10 @@ import com.nohjason.minari.navigation.bottombar.BottomBar
 import com.nohjason.minari.navigation.NavGraph
 import com.nohjason.minari.screens.login.LoginViewModel
 import com.nohjason.minari.screens.login.Test
-import com.nohjason.minari.network.MainViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel,
     loginViewModel: LoginViewModel
 ) {
     val navController = rememberNavController()
@@ -45,7 +43,7 @@ fun MainScreen(
         Column(modifier = Modifier.padding(innerPadding)) {
             NavGraph(
                 navController = navController,
-                viewModel = viewModel,
+//                viewModel = viewModel,
                 loginViewModel = loginViewModel
             )
         }

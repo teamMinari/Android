@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
-import com.nohjason.minari.navigation.bottombar.Screen
+import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.screens.login.Test
 import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.ui.theme.MinariBlue
@@ -40,8 +40,6 @@ import com.nohjason.minari.ui.theme.rixfont
 @Composable
 fun LoginScreen(
     navController: NavHostController,
-//    launcher: ManagedActivityResultLauncher<Intent, ActivityResult>,
-//    googleSignInClient: GoogleSignInClient
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -83,7 +81,7 @@ fun LoginScreen(
                 .padding(horizontal = 35.dp)
                 .clip(CircleShape)
                 .background(MinariBlue)
-                .clickable { navController.navigate(Test.Login.rout) },
+                .clickable { navController.navigate(Test.Login.rout) }
         ) {
             Text(
                 text = "로그인",
@@ -92,7 +90,6 @@ fun LoginScreen(
                 modifier = Modifier
                     .padding(13.dp)
                     .align(Alignment.Center)
-
             )
         }
 
@@ -119,7 +116,7 @@ fun LoginScreen(
         }
 
         IconButton(onClick = {
-            navController.navigate(Screen.Home.rout) {
+            navController.navigate(BottomScreen.Home.rout) {
                 popUpTo(navController.graph.id) {
                     inclusive = true
                 }

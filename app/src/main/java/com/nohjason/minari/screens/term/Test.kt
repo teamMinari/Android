@@ -57,7 +57,6 @@ import com.nohjason.minari.screens.ui.news.NewsCard
 import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariWhite
-import com.nohjason.minari.screens.home.TermViewModel
 import com.nohjason.minari.screens.rout.GrapeViewModel
 import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_regular
@@ -68,18 +67,17 @@ import com.nohjason.minari.ui.theme.pretendard_regular
 fun Test(
     title: String,
     navController: NavController,
-    viewModel: TermViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+//    viewModel: TermViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     grapeViewModel: GrapeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 //    viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
 ) {
-    val getTerm by viewModel.getTerm.collectAsState()
+    val getTerm by grapeViewModel.getTerm.collectAsState()
     var text by remember { mutableStateOf("") }
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
-    val getAllLikesTerm by grapeViewModel.getAllLikesTerm.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.getTerm(token, title)
+        grapeViewModel.getTerm(token, title)
         grapeViewModel.getAllLikesTerm(token)
     }
 
@@ -135,22 +133,15 @@ fun Test(
                                 }
                             }
                             Spacer(modifier = Modifier.weight(0.1f))
-                            var likes = false
-                            if  (getAllLikesTerm != null) {
-                                for (i in getAllLikesTerm!!.data) {
-                                    if (i.termId == item.termId) {
-                                        Log.d("TAG", "Test: 좋아요 있음")
-                                        likes = true
-                                    }
-                                }
-                            }
                             Icon(
                                 painter = painterResource(R.drawable.book_mark),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(20.dp)
-                                    .clickable { grapeViewModel.likes(token, "TERM", item.termId) },
-                                tint = if (likes) Color.Unspecified else Color.Gray
+                                    .clickable {
+                                        grapeViewModel.likes(token, "TERM", item.termId, item.termNm)
+                                    },
+                                tint = if (getTerm!!.data.termLike) Color.Unspecified else Color.Gray
                             )
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {

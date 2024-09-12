@@ -1,9 +1,6 @@
 package com.nohjason.minari.screens.login.screen.login
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -39,14 +36,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
-import com.nohjason.minari.navigation.bottombar.Screen
-import com.nohjason.minari.preferences.getFromPreferences
+import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.preferences.saveToPreferences
-import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.login.LoginTextField
 import com.nohjason.minari.screens.login.LoginViewModel
-import com.nohjason.minari.screens.login.PreferencesManager
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.poppins_regular
 import com.nohjason.minari.ui.theme.poppins_semibold
@@ -141,7 +135,7 @@ fun SelfLoginScreen(
         LaunchedEffect(loginResponse) {
             if (loginResponse != null ) {
                 saveToPreferences(preferences, "token", loginResponse!!.data.accessToken)
-                navController.navigate(Screen.Home.rout)
+                navController.navigate(BottomScreen.Home.rout)
                 Log.d("TAG", "SelfLoginScreen: ${loginResponse!!.data.accessToken}")
             }
         }

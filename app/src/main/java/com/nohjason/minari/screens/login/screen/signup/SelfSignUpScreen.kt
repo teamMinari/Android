@@ -31,7 +31,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
-import com.nohjason.minari.navigation.bottombar.Screen
 import com.nohjason.minari.screens.login.LoginTextField
 import com.nohjason.minari.screens.login.LoginViewModel
 import com.nohjason.minari.screens.login.Test

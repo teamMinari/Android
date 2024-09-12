@@ -56,7 +56,7 @@ fun Style(
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
-                            painter = painterResource(id = R.drawable.befor_arrow),
+                            painter = painterResource(id = R.drawable.ic_back),
                             contentDescription = null,
                             tint = Color.Unspecified,
                             modifier = Modifier.size(20.dp)

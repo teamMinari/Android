@@ -3,12 +3,14 @@ package com.nohjason.minari.screens.rout
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nohjason.minari.network.response.GetAllLikesTerm
+import com.nohjason.minari.network.response.GetTerm
+import com.nohjason.minari.network.response.TermLikes
 import com.nohjason.minari.network.response.rout.Grape
 import com.nohjason.minari.network.response.rout.GrapeSeed
 import com.nohjason.minari.network.response.rout.Grapes
 import com.nohjason.minari.network.response.rout.GrapesAll
-import com.nohjason.minari.screens.rout.response.LikesGps
 import com.nohjason.minari.screens.rout.response.LikesResponse
 import com.nohjason.myapplication.network.RetrofitInstance.api
 import kotlinx.coroutines.Dispatchers
@@ -139,7 +141,7 @@ class GrapeViewModel: ViewModel() {
     private val _likes = MutableStateFlow<LikesResponse?>(null)
     val likes: StateFlow<LikesResponse?> = _likes
 
-    fun likes(token: String, category: String, id: Int) {
+    fun likes(token: String, category: String, id: Int, termNm: String = "") {
         viewModelScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) {
@@ -149,7 +151,8 @@ class GrapeViewModel: ViewModel() {
                     _likes.value = response.body()
                     Log.d("TAG", "likesGpse: 좋아요 서버 통신 성공")
                     if (category == "TERM") {
-
+                        // ?
+                        getTerm(token, termNm)
                     } else if (category == "GRAPES") {
                         getAllGps(token = token)
                     } else if (category == "GRAPE") {
@@ -170,6 +173,35 @@ class GrapeViewModel: ViewModel() {
             } catch (e: Exception) {
                 // 기타 예외 처리
                 Log.e("TAG", "likesGpse: 알 수 없는 오류", e)
+            }
+        }
+    }
+
+    private val _getTerm = MutableStateFlow<GetTerm?>(null) // 초기값은 null로 설정
+    val getTerm: StateFlow<GetTerm?> = _getTerm
+
+    fun getTerm(token: String, termNm: String) {
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    api.getTerm(token, termNm)
+                }
+                if (response.isSuccessful) {
+                    _getTerm.value = response.body()
+                    Log.d("TAG", "getTerm: 단일 용어 조회 서버 통신 성공")
+                } else {
+                    // 서버 응답 에러 처리
+                    Log.e("TAG", "getTerm: 서버 응답 에러 - 코드: ${response.code()}")
+                }
+            } catch (e: IOException) {
+                // 네트워크 오류 처리
+                Log.e("TAG", "getTerm: 네트워크 오류", e)
+            } catch (e: HttpException) {
+                // HTTP 오류 처리
+                Log.e("TAG", "getTerm: HTTP 오류 - 코드: ${e.code()}", e)
+            } catch (e: Exception) {
+                // 기타 예외 처리
+                Log.e("TAG", "getTerm: 알 수 없는 오류", e)
             }
         }
     }

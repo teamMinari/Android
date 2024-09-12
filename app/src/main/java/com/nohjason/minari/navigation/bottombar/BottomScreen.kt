@@ -9,42 +9,36 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import com.nohjason.minari.R
 
-sealed class Screen(
+sealed class BottomScreen(
     val rout: String,
     val title: String,
     val icon: @Composable () -> ImageVector
 ) {
-    data object Home : Screen(
+    data object Home : BottomScreen(
         rout = "home",
         title = "Home",
         icon = { Icons.Default.Home }
     )
 
-    data object Profile : Screen(
+    data object Profile : BottomScreen(
         rout = "profile",
         title = "Profile",
         icon = { Icons.Default.Person }
     )
 
-    data object News : Screen(
+    data object News : BottomScreen(
         rout = "news",
         title = "News",
         icon = { ImageVector.vectorResource(id = R.drawable.news) }
     )
 
-    data object MyDictionary : Screen(
-        rout = "dictionary",
-        title = "Dictionary",
-        icon = { Icons.Default.Lock }
-    )
-
-    data object Quiz : Screen(
+    data object Quiz : BottomScreen(
         rout = "quiz",
         title = "Quiz",
         icon = { ImageVector.vectorResource(id = R.drawable.quiz) }
     )
 
-    data object Rout : Screen(
+    data object Rout : BottomScreen(
         rout = "rout",
         title = "Rout",
         icon = { ImageVector.vectorResource(id = R.drawable.rout) }

@@ -85,7 +85,7 @@ fun Grapes(
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
-                            painter = painterResource(id = R.drawable.befor_arrow),
+                            painter = painterResource(id = R.drawable.ic_back),
                             contentDescription = null,
                             tint = Color.Unspecified,
                             modifier = Modifier.size(20.dp)
@@ -320,7 +320,7 @@ fun Gpse(
                     .padding(top = 5.dp)
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.befor_arrow),
+                    painter = painterResource(id = R.drawable.ic_back),
                     contentDescription = null,
                     modifier = Modifier
                         .rotate(if (isExpanded) 90f else -90f)

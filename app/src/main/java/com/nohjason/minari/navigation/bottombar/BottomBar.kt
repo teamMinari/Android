@@ -20,20 +20,20 @@ fun BottomBar(
     navController: NavHostController,
     navBackStackEntry: NavBackStackEntry?
 ) {
-    val screens = listOf(
-        Screen.Rout,
-        Screen.News,
-        Screen.Home,
-        Screen.Quiz,
-        Screen.Profile,
+    val bottomScreens = listOf(
+        BottomScreen.Rout,
+        BottomScreen.News,
+        BottomScreen.Home,
+//        BottomScreen.Quiz,
+        BottomScreen.Profile,
     )
 
     val currentDestination = navBackStackEntry?.destination
 
     BottomNavigation {
-        screens.forEach { screen ->
+        bottomScreens.forEach { screen ->
             AddItem(
-                screen = screen,
+                bottomScreen = screen,
                 currentDestination = currentDestination,
                 navController = navController
             )
@@ -44,25 +44,25 @@ fun BottomBar(
 
 @Composable
 fun RowScope.AddItem(
-    screen: Screen,
+    bottomScreen: BottomScreen,
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {
     BottomNavigationItem(
         label = {
-            Text(text = screen.title)
+            Text(text = bottomScreen.title)
         },
         icon = {
             Icon(
-                imageVector = screen.icon(),
+                imageVector = bottomScreen.icon(),
                 contentDescription = null
             )
         },
         selected = currentDestination?.hierarchy?.any {
-            it.route == screen.rout
+            it.route == bottomScreen.rout
         } == true,
         onClick = {
-            navController.navigate(screen.rout)
+            navController.navigate(bottomScreen.rout)
         },
         selectedContentColor = MinariBlue,
         unselectedContentColor = Color.LightGray,

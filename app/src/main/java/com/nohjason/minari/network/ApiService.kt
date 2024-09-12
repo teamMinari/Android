@@ -5,6 +5,7 @@ import com.nohjason.minari.network.response.BookResponse
 import com.nohjason.minari.network.response.GetAllLikesTerm
 import com.nohjason.minari.network.response.GetTerm
 import com.nohjason.minari.network.response.Quize
+import com.nohjason.minari.network.response.TermLikes
 import com.nohjason.minari.network.response.rout.Grape
 import com.nohjason.minari.network.response.rout.GrapeSeed
 import com.nohjason.minari.network.response.rout.Grapes
@@ -142,4 +143,10 @@ interface ApiService {
     suspend fun getProfile(
         @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYwNTk0MTUsImV4cCI6MTcyNjE0NTgxNX0.uJ62qskBw3CkJ7IhST9K1iawRDY6QYFWbQXVVGn_izw"
     ): ProfileResponse
+
+//    @GET("/terms/{termId}")
+//    suspend fun getTermLikes(
+//        @Header("Authorization") token: String,
+//        @Path("termId") termId: Int
+//    ): Response<TermLikes>
 }

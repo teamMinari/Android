@@ -12,10 +12,8 @@ import androidx.compose.ui.Modifier
 import com.nohjason.minari.screens.login.LoginViewModel
 //import com.nohjason.minari.screens.profile.my_dictionary.db.MainViewModel
 import com.nohjason.minari.ui.theme.MinariTheme
-import com.nohjason.minari.network.MainViewModel
 
 class MainActivity : ComponentActivity() {
-    private val viewModel: MainViewModel by viewModels()
     private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,17 +25,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ScreenSetup(viewModel, loginViewModel)
+                    MainScreen(loginViewModel = loginViewModel)
+//                    ScreenSetup(viewModel, loginViewModel)
                 }
             }
         }
     }
-}
-
-@Composable
-fun ScreenSetup(viewModel: MainViewModel, loginViewModel: LoginViewModel) {
-    MainScreen(
-        viewModel = viewModel,
-        loginViewModel
-    )
 }

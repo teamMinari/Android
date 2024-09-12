@@ -33,23 +33,18 @@ import androidx.navigation.NavController
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.login.PreferencesManager
 import com.nohjason.minari.screens.ui.text.MinariText
-import com.nohjason.minari.network.MainViewModel
 
 @Composable
 fun TermCard(
     title: String,
     value: String,
     starCount: Int,
-    viewModel: MainViewModel,
     navController: NavController,
 ) {
 //    val bookTerms by viewModel.books.collectAsState()
 //    val foundTerm = bookTerms?.data?.find { it.termNm == title }
     val context = LocalContext.current
 
-    LaunchedEffect(key1 = Unit) {
-//        viewModel.fetchAllTerms()
-    }
     val preferencesManager = remember { PreferencesManager(context) }
     val accessToken = preferencesManager.getData("accessToken", "")
 

@@ -13,6 +13,7 @@ data class GetAllLikesTerm(
 )
 
 data class GetTermData(
+    val termLike: Boolean,
     val termDifficulty: String,
     val termExplain: String,
     val termNm: String,
