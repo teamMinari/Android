@@ -103,10 +103,10 @@ interface ApiService {
     ): Response<LikesResponse>
 
     // 포도송이 좋아요 확인하기
-    @GET("/likes/gps")
-    suspend fun likesGps(
-        @Header("Authorization") token: String,
-    ): Response<LikesGps>
+//    @GET("/likes/gps")
+//    suspend fun likesGps(
+//        @Header("Authorization") token: String,
+//    ): Response<LikesGps>
 
     // 포도씨 좋아요 확인하기
 //    @GET("/likes")
@@ -123,7 +123,7 @@ interface ApiService {
         @Query("category") category: String,
     ): Response<GetAllNews>
 
-    // 단이 용어 가져오기
+    // 단어 용어 가져오기
     @GET("/terms/name/{termNm}")
     suspend fun getTerm(
         @Header("Authorization") token: String,

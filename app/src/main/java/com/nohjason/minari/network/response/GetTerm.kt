@@ -9,5 +9,6 @@ data class GetTerm(
 data class GetTermData(
     val termDifficulty: String,
     val termExplain: String,
-    val termNm: String
+    val termNm: String,
+    val termId: Int
 )

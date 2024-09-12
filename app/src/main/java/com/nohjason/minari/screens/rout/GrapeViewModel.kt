@@ -147,9 +147,15 @@ class GrapeViewModel: ViewModel() {
                 if (response.isSuccessful) {
                     _likes.value = response.body()
                     Log.d("TAG", "likesGpse: 좋아요 서버 통신 성공")
-                    getAllGps(token = token)
-                    getGps(token, id)
-                    getGpse(token, id)
+                    if (category == "TERM") {
+
+                    } else if (category == "GRAPES") {
+                        getAllGps(token = token)
+                    } else if (category == "GRAPE") {
+                        getGps(token, id)
+                    } else if (category == "GRAPESEED") {
+                        getGpse(token, id)
+                    }
                 } else {
                     // 서버 응답 에러 처리
                     Log.e("TAG", "likesGpse: 서버 응답 에러 - 코드: ${response.code()}")

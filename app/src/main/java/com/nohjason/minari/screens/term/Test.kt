@@ -138,8 +138,8 @@ fun Test(
                                 painter = painterResource(R.drawable.book_mark),
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .size(20.dp),
-//                                    .clickable { grapeViewModel.likes(token, "GRAPES", ) },
+                                    .size(20.dp)
+                                    .clickable { grapeViewModel.likes(token, "TERM", item.termId) },
                                 tint = Color.Unspecified
                             )
                         }
