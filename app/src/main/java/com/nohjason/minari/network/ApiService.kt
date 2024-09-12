@@ -79,7 +79,7 @@ interface ApiService {
 
     @GET("/member/profile")
     suspend fun getProfile(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYwNTk0MTUsImV4cCI6MTcyNjE0NTgxNX0.uJ62qskBw3CkJ7IhST9K1iawRDY6QYFWbQXVVGn_izw"
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYxNDcyNDcsImV4cCI6MTcyNjIzMzY0N30.h2BUtVKRVApYDkj8xBnXErFI1I3QtQXLvlhP1BauLyY"
     ): ProfileResponse
 
     @GET("/likes/term")

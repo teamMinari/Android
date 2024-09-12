@@ -231,14 +231,14 @@ fun ProfileInfor(
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 20.sp
             )
-            Spacer(modifier = Modifier.width(5.dp))
-            Divider(
-                color = Color(0xFFB7B7B7),
-                modifier = Modifier
-                    .width(1.dp)
-                    .height(18.dp),
-            )
             if(title != null){
+                Spacer(modifier = Modifier.width(5.dp))
+                Divider(
+                    color = Color(0xFFB7B7B7),
+                    modifier = Modifier
+                        .width(1.dp)
+                        .height(18.dp),
+                )
                 Spacer(modifier = Modifier.width(5.dp))
                 Text(
                     text = title,

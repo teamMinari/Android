@@ -1,6 +1,6 @@
 package com.nohjason.minari.navigation
 
-import ProfileMAinScreen
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -40,7 +40,9 @@ import com.nohjason.minari.screens.profile.DummyGpsStatusResponse.gpsStatusRespo
 import com.nohjason.minari.screens.profile.DummyGpseStatusResponse.gpseStatusResponse
 import com.nohjason.minari.screens.profile.DummyProfileData
 import com.nohjason.minari.screens.profile.DummyTermStatusResponse.termStatusResponse
+import com.nohjason.minari.screens.profile.ProfileMAinScreen
 import com.nohjason.minari.screens.profile.ProfileViewModel
+import com.nohjason.minari.screens.profile.alias.AliasScreen
 import kotlinx.coroutines.launch
 
 
@@ -65,6 +67,8 @@ fun NavGraph(
 
 
     val profileViewModel: ProfileViewModel = viewModel()
+//    val data by profileViewModel.profileData.collectAsState()
+    val data = profileViewModel.profileData.collectAsState().value
 
 
 
@@ -87,15 +91,25 @@ fun NavGraph(
             //
         }
         composable(BottomBarScreen.Profile.rout) {
+            println(data)
             LaunchedEffect(Unit) {
                 profileViewModel.getProfile()
             }
-            val data by profileViewModel.profileData.collectAsState()
-            ProfileMAinScreen(profileData = data, navController = navController)
+            ProfileMAinScreen(profileData = data, navHostController = navController)
         }
 
         composable("myDirectory") {
             DirecScreen(term = termStatusResponse, gpse = gpseStatusResponse, gps = gpsStatusResponse, gp = gpStatusResponse)
+        }
+
+        composable("myAlias") {
+            println(data)
+            if(data == null){
+                HomeScreen(navController = navController)
+                Toast.makeText(context, "데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }else{
+                AliasScreen(level = data.level, exp = data.exp)
+            }
         }
 
 

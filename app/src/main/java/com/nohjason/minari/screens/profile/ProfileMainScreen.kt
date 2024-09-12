@@ -1,3 +1,5 @@
+package com.nohjason.minari.screens.profile
+
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.scrollable
@@ -29,9 +31,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nohjason.minari.R
+import com.nohjason.minari.navigation.bottombar.BottomBarScreen
 import com.nohjason.minari.screens.profile.LikeList
 import com.nohjason.minari.screens.profile.ProfileResponse
 import com.nohjason.minari.screens.profile.ProfileViewModel
+import com.nohjason.minari.screens.profile.element.ProfileButton
 import com.nohjason.minari.screens.profile.element.ProfileInfor
 import com.nohjason.minari.screens.profile.element.RewardBar
 import com.nohjason.minari.screens.profile.likes.Dummy.likeDummy
@@ -48,7 +52,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun ProfileMAinScreen(
     profileData: ProfileResponse?,
-    navController: NavHostController
+    navHostController: NavHostController
 ) {
 
     if (profileData == null) {
@@ -87,7 +91,7 @@ fun ProfileMAinScreen(
             ProfileButton(
                 text = "칭호",
                 onClick = {
-                    //칭호화면 이동
+                    navHostController.navigate("myAlias")
                 }
             )
             Spacer(modifier = Modifier.width(5.dp))
@@ -102,7 +106,7 @@ fun ProfileMAinScreen(
 
         val percentage = (50 / 100f)//exp구현 시 변경해야함
         RewardBar(progress = percentage, xp = profileData.exp, level = profileData.level)
-        LikeList(likeList = likeDummy, navHostController = navController)
+        LikeList(likeList = likeDummy, navHostController = navHostController)
         Spacer(modifier = Modifier.height(25.dp))
 
 
