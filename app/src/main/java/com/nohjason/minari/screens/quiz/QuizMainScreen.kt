@@ -136,18 +136,18 @@ fun QuizMainScreen(
             lavel ="LV_2",
             coment = "공부 좀 했다면 이건 어떤가요?",
             onClick = {
-//                val dataList = selectPlayData(qestionAll = nomalQuestionResponse)
-//                quizViewModel.initializePlayData(data = dataList)
-//                navHostController.navigate("quizplay")
+                val dataList = selectPlayData(qestionAll = nomalQuestionResponse)
+                quizViewModel.initializePlayData(data = dataList)
+                navHostController.navigate("quizplay")
 
 
-                coroutineScope.launch {
-                    val qtAll = quizViewModel.getQuestion(1)
-
-                    val dataList = selectPlayData(qestionAll = qtAll)
-                    quizViewModel.initializePlayData(data = dataList)
-                    navHostController.navigate("quizplay")
-                }
+//                coroutineScope.launch {
+//                    val qtAll = quizViewModel.getQuestion(1)
+//
+//                    val dataList = selectPlayData(qestionAll = qtAll)
+//                    quizViewModel.initializePlayData(data = dataList)
+//                    navHostController.navigate("quizplay")
+//                }
             },
         )
 
