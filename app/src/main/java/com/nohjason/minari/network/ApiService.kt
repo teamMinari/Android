@@ -63,7 +63,6 @@ interface ApiService {
         @Body registerResponse: RegisterRequest
     ): RegisterResponse
 
-
     // 포도송이 전체 조회
     @GET("/gps")
     suspend fun getAllGps(
@@ -105,20 +104,6 @@ interface ApiService {
         @Query("id") id: Int,
     ): Response<LikesResponse>
 
-    // 포도송이 좋아요 확인하기
-//    @GET("/likes/gps")
-//    suspend fun likesGps(
-//        @Header("Authorization") token: String,
-//    ): Response<LikesGps>
-
-    // 포도씨 좋아요 확인하기
-//    @GET("/likes")
-//    suspend fun likesGpse(
-//        @Header("Authorization") token: String,
-//        @Query("category") category: String,
-//        @Query("id") id: Int,
-//    ): Response<LikesResponse>
-
     // 뉴스 가져오기
     @GET("/news")
     suspend fun getAllNews(
@@ -141,12 +126,6 @@ interface ApiService {
 
     @GET("/member/profile")
     suspend fun getProfile(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYwNTk0MTUsImV4cCI6MTcyNjE0NTgxNX0.uJ62qskBw3CkJ7IhST9K1iawRDY6QYFWbQXVVGn_izw"
-    ): ProfileResponse
-
-//    @GET("/terms/{termId}")
-//    suspend fun getTermLikes(
-//        @Header("Authorization") token: String,
-//        @Path("termId") termId: Int
-//    ): Response<TermLikes>
+        @Header("Authorization") token: String
+    ): Response<ProfileResponse>
 }

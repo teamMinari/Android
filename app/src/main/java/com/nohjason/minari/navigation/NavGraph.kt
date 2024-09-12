@@ -41,7 +41,6 @@ import com.nohjason.minari.screens.rout.Rout
 @Composable
 fun NavGraph(
     navController: NavHostController,
-//    viewModel: MainViewModel,
     loginViewModel: LoginViewModel,
     profileViewModel: ProfileViewModel = viewModel()
 ) {
@@ -87,12 +86,8 @@ fun NavGraph(
 
         // 프로필
         composable(BottomScreen.Profile.rout) {
-            LaunchedEffect(Unit) {
-                profileViewModel.getProfile()
-            }
-            val data by profileViewModel.profileData.collectAsState()
             ProfileMAinScreen(
-                profileData = data,
+//                profileData = data,
                 navController = navController
             )
         }

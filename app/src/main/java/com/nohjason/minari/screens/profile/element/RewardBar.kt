@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -32,6 +33,7 @@ import com.nohjason.minari.screens.profile.WebLink
 
 @Composable
 fun RewardBar(
+    horizontalPaddin: Dp = 20.dp,
     progress: Float, // 0f to 1f
     xp: Int,
     level:Int
@@ -42,7 +44,9 @@ fun RewardBar(
 
     Box(
         modifier = Modifier
-            .width(340.dp)
+//            .width(340.dp)
+            .padding(horizontal = horizontalPaddin)
+            .fillMaxWidth()
             .wrapContentHeight()
             .clip(RoundedCornerShape(20.dp))
             .background(color = Color.White)

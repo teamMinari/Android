@@ -33,6 +33,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -67,6 +69,8 @@ import com.nohjason.minari.R
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.screens.login.LoginViewModel
+import com.nohjason.minari.screens.profile.ProfileViewModel
+import com.nohjason.minari.screens.profile.element.RewardBar
 import com.nohjason.minari.screens.rout.GrapeViewModel
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariGradation
@@ -79,15 +83,20 @@ import com.nohjason.minari.ui.theme.pretendard_semibold
 @Composable
 fun HomeScreen(
     navController: NavController,
-    loginViewModel: LoginViewModel = viewModel(),
     viewModel: GrapeViewModel = viewModel(),
+    profileViewModel: ProfileViewModel = viewModel()
 ) {
     var text by remember { mutableStateOf("") }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val context = LocalContext.current
     var backPressedTime by rememberSaveable { mutableStateOf(0L) }
+    val data by profileViewModel.profileData.collectAsState()
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
+
+    LaunchedEffect(Unit) {
+        profileViewModel.getProfile(token)
+    }
 
     BackHandler(onBack = {
         val currentTime = System.currentTimeMillis()
@@ -134,7 +143,8 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color(0xFFF5F6FA))
-                .padding(innerPadding)
+                .padding(innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
                 Column {
@@ -199,16 +209,16 @@ fun HomeScreen(
                 }
             }
             item {
-                Column(
-                    modifier = Modifier.padding(25.dp),
-                    verticalArrangement = Arrangement.spacedBy(20.dp)
-                ) {
-                    XpBar(
-                        currentXp = 100,
-                        maxXp = 400,
-                        modifier = Modifier.padding(10.dp)
+                Spacer(modifier = Modifier.height(10.dp))
+                if (data != null) {
+                    val percentage = (50 / 100f)//exp구현 시 변경해야함
+                    RewardBar(
+                        progress = percentage,
+                        xp = data!!.exp,
+                        level = data!!.level
                     )
                 }
+                Spacer(modifier = Modifier.height(10.dp))
             }
             item {
                 SwipeNews()
@@ -385,11 +395,20 @@ fun SwipeNews() {
     ) { page ->
         val news = list[page]
         // 페이지 내용
-        Box (
+        Box(
             modifier = Modifier
                 .height(200.dp)
                 .padding(horizontal = 20.dp)
-        ){
+                .drawColoredShadow(
+                    color = Color.Black,
+                    alpha = 0.3f,
+                    borderRadius = 10.dp,
+                    shadowRadius = 8.dp,
+                    offsetX = 5.dp,
+                    offsetY = 5.dp
+                )
+                .clip(RoundedCornerShape(10.dp))
+        ) {
             AsyncImage(
                 model = news.img,
                 contentDescription = null,
@@ -435,200 +454,6 @@ fun SwipeNews() {
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
-            }
-        }
-    }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-fun TodayTerms() {
-    LazyColumn {
-    }
-}
-
-//@Preview
-//@Composable
-//private fun Test() {
-//    var itemCount by remember { mutableStateOf(5) }
-//    val allItems = remember { List(20) { index -> "Item ${index + 1}" } }
-//    val items = allItems.take(itemCount)
-//    val selectedItems = remember { mutableStateListOf<Int>() }
-//
-//    LazyColumn {
-//        item {
-
-//        }
-//        items(items.size) { index ->
-//            val isSelected = selectedItems.contains(index)
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(vertical = 5.dp, horizontal = 40.dp)
-//            ) {
-//                Row(verticalAlignment = Alignment.CenterVertically) {
-//                    Text(text = items[index], color = if (isSelected) Color.White else Color.Black)
-//                    Spacer(modifier = Modifier.width(10.dp))
-//                    for (i in 1..2) {
-//                        Icon(
-//                            painter = painterResource(id = R.drawable.star),
-//                            contentDescription = null,
-//                            tint = Color.Unspecified
-//                        )
-//                    }
-//                    Spacer(modifier = Modifier.weight(0.1f))
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.my_words),
-//                        contentDescription = null,
-//                        Modifier
-//                            .size(16.dp)
-//                            .clickable {
-//                                if (isSelected) {
-//                                    selectedItems.remove(index)
-//                                } else {
-//                                    selectedItems.add(index)
-//                                }
-//                            },
-//                        tint = if (isSelected) MinariBlue else Color(0xFFCDCDCD)
-//                    )
-//                }
-//            }
-//        }
-//        item {
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .clickable {
-//                        itemCount = (itemCount + 3).coerceAtMost(allItems.size)
-//                    },
-//            ) {
-//                Text(text = "Load More", Modifier.align(Alignment.Center))
-//            }
-//        }
-//    }
-//}
-
-@Composable
-private fun QWER() {
-    var itemCount by remember { mutableStateOf(5) }
-    val allItems = remember { List(20) { index -> "Item ${index + 1}" } }
-    val items = allItems.take(itemCount)
-
-    val selectedItems = remember { mutableStateListOf<Int>() }
-
-    Column(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(
-            modifier = Modifier
-                .weight(1f)
-                .padding(bottom = 56.dp) // 버튼 높이만큼 패딩 추가
-        ) {
-            items(items.size) { index ->
-                val isSelected = selectedItems.contains(index)
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                        .background(if (isSelected) Color.Blue else Color.White)
-                        .clickable {
-                            if (isSelected) {
-                                selectedItems.remove(index)
-                            } else {
-                                selectedItems.add(index)
-                            }
-                        }
-                        .padding(16.dp)
-                ) {
-                    Text(text = items[index], color = if (isSelected) Color.White else Color.Black)
-                }
-            }
-            item {
-                Button(
-                    onClick = {
-                        itemCount = (itemCount + 3).coerceAtMost(allItems.size)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp)
-                        .padding(16.dp)
-//                .align(Alignment.BottomCenter)
-                ) {
-                    Text("Load More")
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun EconomyTerm() {
-//    var color by rememberSaveable { mutableStateOf(Color.White) }
-//    list.forEach {
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//        ) {
-//            Row(
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                Text(
-//                    text = it,
-//                    modifier = Modifier.padding(vertical = 10.dp),
-//                    fontFamily = pretendard_medium,
-//                    fontSize = 16.sp
-//                )
-//                Spacer(modifier = Modifier.weight(0.1f))
-//                Icon(
-//                    painter = painterResource(id = R.drawable.my_words),
-//                    contentDescription = null,
-//                    tint = color,
-//                    modifier = Modifier.clickable { if (color == Color.White) Color.Blue else Color.White }
-//                )
-//            }
-//        }
-//    }
-    var itemCount by remember { mutableStateOf(5) }
-    val allItems = remember { List(20) { index -> "Item ${index + 1}" } }
-    val items = allItems.take(itemCount)
-
-    val selectedItems = remember { mutableStateListOf<Int>() }
-
-    Column(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(
-            modifier = Modifier
-                .weight(1f)
-                .padding(bottom = 56.dp) // 버튼 높이만큼 패딩 추가
-        ) {
-            items(items.size) { index ->
-                val isSelected = selectedItems.contains(index)
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                        .background(if (isSelected) Color.Blue else Color.White)
-                        .clickable {
-                            if (isSelected) {
-                                selectedItems.remove(index)
-                            } else {
-                                selectedItems.add(index)
-                            }
-                        }
-                        .padding(16.dp)
-                ) {
-                    Text(text = items[index], color = if (isSelected) Color.White else Color.Black)
-                }
-            }
-            item {
-                Button(
-                    onClick = {
-                        itemCount = (itemCount + 3).coerceAtMost(allItems.size)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp)
-                        .padding(16.dp)
-                ) {
-                    Text("Load More")
-                }
             }
         }
     }
