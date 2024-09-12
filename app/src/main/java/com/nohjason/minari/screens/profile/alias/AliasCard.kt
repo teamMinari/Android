@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.LinearProgressIndicator
@@ -28,27 +30,32 @@ import com.nohjason.minari.screens.profile.WebLink
 
 @Composable
 fun AliasCard(
-    progress: Float,
     level: Int,
     exp: Int,
     myLevel: Int
 ){
     val webLink = WebLink()
     val getWebLink = webLink.getTitleAndUrlForLevel(level)
+    val progress = (exp / 100.toFloat()).coerceIn(0f, 1f)
 //    AsyncImage(model = getWebLink.url, contentDescription = null)
     Box(
         modifier = Modifier
             .background(Color.White)
+            .width(280.dp)
+            .height(65.dp),
     ){
         Row (
-            modifier = Modifier.padding(),
-            horizontalArrangement = Arrangement.Center
+            modifier = Modifier.padding(start = 32.dp),
         ){
-            Icon(painter = painterResource(id = R.drawable.default_profile), contentDescription = null)
-            Column {
-                Row (
-                    horizontalArrangement = Arrangement.Center
-                ){
+            AsyncImage(
+                modifier = Modifier
+                    .size(65.dp),
+                model = getWebLink.url,
+                contentDescription = null)
+            Column (
+                modifier = Modifier.padding(start = 12.dp)
+            ){
+                Row {
                     Text(
                         text = "${level}Lv",
                         color = Color(0xFF363CD5),
@@ -71,7 +78,7 @@ fun AliasCard(
                 } else{
                     Box(
                         modifier = Modifier
-                            .weight(1f)
+                            .width(160.dp)
                             .height(20.dp) // 이 높이와 일치하게 프로그레스 바의 높이를 설정
                             .clip(RoundedCornerShape(10.dp))
                             .background(Color(0xFFE0E7FF)), // 배경색 설정
@@ -79,16 +86,16 @@ fun AliasCard(
                     ) {
                         LinearProgressIndicator(
                             progress = progress,
-                            color = Color(0xFF585EEA), // 프로그레스 바 색상
-                            backgroundColor = Color(0xFFE0E7FF), // 프로그레스 배경색
+                            color = Color(0xFF5DC067), // 프로그레스 바 색상
+                            backgroundColor = Color(0xFFDADAFD), // 프로그레스 배경색
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(20.dp)
                         )
 
-                        androidx.compose.material3.Text(
+                        Text(
                             text = "${exp}xp",
-                            color = Color.White,
+                            color = Color(0xFF407C46),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(horizontal = 8.dp)
@@ -105,9 +112,8 @@ fun AliasCard(
 @Composable
 fun PreAliasCard() {
     AliasCard(
-        progress = 0.7f,  // 70%의 진행도를 예시로 설정
         level = 3,        // 레벨 3을 예시로 설정
-        exp = 700,        // 경험치 700을 예시로 설정
-        myLevel = 2       // 사용자의 현재 레벨을 2로 설정
+        exp = 50,        // 경험치 700을 예시로 설정
+        myLevel = 5      // 사용자의 현재 레벨을 2로 설정
     )
 }
