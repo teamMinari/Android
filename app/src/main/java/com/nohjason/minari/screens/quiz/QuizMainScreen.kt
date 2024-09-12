@@ -47,7 +47,6 @@ fun QuizMainScreen(
 ){
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()//코루틴
-    //val qtAll서버 끌고와서 넣기
 
     Column (
         Modifier
@@ -116,17 +115,17 @@ fun QuizMainScreen(
             lavel ="LV_1",
             coment = "제일 쉬운 난이도",
             onClick = {
-                val dataList = selectPlayData(qestionAll = easyQuestionResponse)
-                quizViewModel.initializePlayData(data = dataList)
-                navHostController.navigate("quizplay")
+//                val dataList = selectPlayData(qestionAll = easyQuestionResponse)
+//                quizViewModel.initializePlayData(data = dataList)
+//                navHostController.navigate("quizplay")
 
-//                coroutineScope.launch {
-//                    val qtAll = getQuestion(1)
-//
-//                    val dataList = selectPlayData(qestionAll = qtAll)
-//                    quizViewModel.initializePlayData(data = dataList)
-//                    navHostController.navigate("quizplay")
-//                }
+                coroutineScope.launch {
+                    val qtAll = quizViewModel.getQuestion(1)
+
+                    val dataList = selectPlayData(qestionAll = qtAll)
+                    quizViewModel.initializePlayData(data = dataList)
+                    navHostController.navigate("quizplay")
+                }
             },
         )
         QuizButton(
@@ -137,16 +136,18 @@ fun QuizMainScreen(
             lavel ="LV_2",
             coment = "공부 좀 했다면 이건 어떤가요?",
             onClick = {
-                val dataList = selectPlayData(qestionAll = nomalQuestionResponse)
-                quizViewModel.initializePlayData(data = dataList)
-                navHostController.navigate("quizplay")
-//                coroutineScope.launch {
-//                    val qtAll = getQuestion(2)
-//
-//                    val dataList = selectPlayData(qestionAll = qtAll)
-//                    quizViewModel.initializePlayData(data = dataList)
-//                    navHostController.navigate("quizplay")
-//                }
+//                val dataList = selectPlayData(qestionAll = nomalQuestionResponse)
+//                quizViewModel.initializePlayData(data = dataList)
+//                navHostController.navigate("quizplay")
+
+
+                coroutineScope.launch {
+                    val qtAll = quizViewModel.getQuestion(1)
+
+                    val dataList = selectPlayData(qestionAll = qtAll)
+                    quizViewModel.initializePlayData(data = dataList)
+                    navHostController.navigate("quizplay")
+                }
             },
         )
 
@@ -158,17 +159,18 @@ fun QuizMainScreen(
             lavel ="LV_3",
             coment = "이건 모를걸요!",
             onClick = {
-                val dataList = selectPlayData(qestionAll = hardQuestionResponse)
-                quizViewModel.initializePlayData(data = dataList)
-                navHostController.navigate("quizplay")
+//                val dataList = selectPlayData(qestionAll = hardQuestionResponse)
+//                quizViewModel.initializePlayData(data = dataList)
+//                navHostController.navigate("quizplay")
 
-//                coroutineScope.launch {
-//                    val qtAll = getQuestion(3)
-//
-//                    val dataList = selectPlayData(qestionAll = qtAll)
-//                    quizViewModel.initializePlayData(data = dataList)
-//                    navHostController.navigate("quizplay")
-//                }
+
+                coroutineScope.launch {
+                    val qtAll = quizViewModel.getQuestion(1)
+
+                    val dataList = selectPlayData(qestionAll = qtAll)
+                    quizViewModel.initializePlayData(data = dataList)
+                    navHostController.navigate("quizplay")
+                }
             },
         )
     }
@@ -186,41 +188,3 @@ fun selectPlayData(qestionAll: QuestionResponse): PlayData {
     )
 }
 
-
-suspend fun getQuestion(level: Int): QuestionResponse {
-    // Retrofit 인스턴스를 가져옴
-    val apiService = RetrofitInstance.api
-
-    return withContext(Dispatchers.IO) {
-        try {
-            // GET 요청을 보내고 응답을 받아옴
-            val response = apiService.getQuestion(
-                level =  level// 요청할 레벨
-            )
-            response // 서버 응답 반환
-        } catch (e: Exception) {
-            // 기타 예외 처리
-            println("Error: ${e.message}")
-            throw e // 필요에 따라 다시 던질 수 있음
-        }
-    }
-}
-
-suspend fun postPoint(level: Int): QuestionResponse {
-    // Retrofit 인스턴스를 가져옴
-    val apiService = RetrofitInstance.api
-
-    return withContext(Dispatchers.IO) {
-        try {
-            // GET 요청을 보내고 응답을 받아옴
-            val response = apiService.getQuestion(
-                level =  level// 요청할 레벨
-            )
-            response // 서버 응답 반환
-        } catch (e: Exception) {
-            // 기타 예외 처리
-            println("Error: ${e.message}")
-            throw e // 필요에 따라 다시 던질 수 있음
-        }
-    }
-}

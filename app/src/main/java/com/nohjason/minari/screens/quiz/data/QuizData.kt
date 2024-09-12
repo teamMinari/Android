@@ -16,7 +16,10 @@ data class QuestionData(
     val qtDifficulty: String
 )
 
-
+data class PointResponse(
+    val status: Int,
+    val message: String
+)
 
 data class PlayData(
     //UI의 모델 클래스
