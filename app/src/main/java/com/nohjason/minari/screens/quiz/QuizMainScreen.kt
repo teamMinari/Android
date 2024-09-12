@@ -205,3 +205,22 @@ suspend fun getQuestion(level: Int): QuestionResponse {
         }
     }
 }
+
+suspend fun postPoint(level: Int): QuestionResponse {
+    // Retrofit 인스턴스를 가져옴
+    val apiService = RetrofitInstance.api
+
+    return withContext(Dispatchers.IO) {
+        try {
+            // GET 요청을 보내고 응답을 받아옴
+            val response = apiService.getQuestion(
+                level =  level// 요청할 레벨
+            )
+            response // 서버 응답 반환
+        } catch (e: Exception) {
+            // 기타 예외 처리
+            println("Error: ${e.message}")
+            throw e // 필요에 따라 다시 던질 수 있음
+        }
+    }
+}

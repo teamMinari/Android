@@ -85,4 +85,10 @@ interface ApiService {
         @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJ3bGFsczY2OTFAZ21haWwuY29tIiwiaWF0IjoxNzI1ODc4Njc4LCJleHAiOjE3MjU5NjUwNzh9.hrkRYVIUQlJJtDplwnE-8oj8nVNEvrsPHqvTWPSAGEY",
         @Path("level") level: Int
     ): QuestionResponse
+
+    @GET("/member/{memberId}/givePoint")
+    suspend fun postPoint(
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA2MjA3MTYsImV4cCI6MTcyMDcwNzExNn0.HB5DqAsVW82Gke00pFnMH8SY0SbMjyJhuY0GKKxcbbA",
+        @Path("memberId") memberId: String
+    ): List<TermResponse>
 }
