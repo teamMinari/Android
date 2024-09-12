@@ -15,6 +15,8 @@ import com.nohjason.minari.screens.login.response.RegisterRequest
 import com.nohjason.minari.screens.login.response.RegisterResponse
 import com.nohjason.minari.screens.rout.response.GetAllNews
 import com.nohjason.minari.screens.rout.response.LikesResponse
+import com.nohjason.minari.screens.home.news.Test
+import com.nohjason.minari.screens.profile.ProfileResponse
 import com.nohjason.myapplication.network.response.Term
 import com.nohjason.myapplication.network.response.TermResponse
 import retrofit2.Response
@@ -135,4 +137,9 @@ interface ApiService {
     suspend fun getAllLikesTerm(
         @Header("Authorization") token: String,
     ): Response<GetAllLikesTerm>
+
+    @GET("/member/profile")
+    suspend fun getProfile(
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYwNTk0MTUsImV4cCI6MTcyNjE0NTgxNX0.uJ62qskBw3CkJ7IhST9K1iawRDY6QYFWbQXVVGn_izw"
+    ): ProfileResponse
 }

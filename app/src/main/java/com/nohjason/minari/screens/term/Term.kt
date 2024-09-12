@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.nohjason.minari.screens.login.PreferencesManager
 import com.nohjason.minari.screens.term.button.GetDummyTermButton
+import com.nohjason.minari.screens.term.button.TermButton
 import com.nohjason.minari.screens.term.card.TermCard
 import com.nohjason.minari.screens.ui.line.MinariLine
 import com.nohjason.minari.screens.ui.text.MinariTextField
@@ -46,7 +47,7 @@ fun Term(
     navController: NavController,
     viewModel: MainViewModel,
 ) {
-    val routin by viewModel.routines.collectAsState()
+//    val routin by viewModel.routines.collectAsState()
     var text by remember { mutableStateOf("") }
     val preferencesManager = remember { PreferencesManager(context) }
     val accessToken = preferencesManager.getData("accessToken", "")
@@ -54,6 +55,7 @@ fun Term(
 
     LaunchedEffect(key1 = Unit) {
         viewModel.fetchAllTerms(token = accessToken)
+//        viewModel.fetchAllTerms()
     }
 
     Column {
@@ -109,21 +111,21 @@ fun Term(
                         .clip(RoundedCornerShape(10.dp, 10.dp, 0.dp, 0.dp))
                         .background(Color.White),
                 ) {
-                    itemsIndexed(items = routin) { index, item ->
-                        val starCount = item.termDifficulty[3].toString().toInt()
-
-                        TermCard(
-                            title = item.termNm,
-                            value = item.termExplain,
-                            starCount = starCount,
-                            navController = navController,
-                            viewModel = viewModel,
-                        )
-
-                        if (index != routin.size - 1) { // 마지막 항목이 아닌 경우에만 Divider 추가
-                            MinariLine(horizontalPadding = 10.dp)
-                        }
-                    }
+//                    itemsIndexed(items = routin) { index, item ->
+//                        val starCount = item.termDifficulty[3].toString().toInt()
+//
+//                        TermCard(
+//                            title = item.termNm,
+//                            value = item.termExplain,
+//                            starCount = starCount,
+//                            navController = navController,
+//                            viewModel = viewModel,
+//                        )
+//
+//                        if (index != routin.size - 1) { // 마지막 항목이 아닌 경우에만 Divider 추가
+//                            MinariLine(horizontalPadding = 10.dp)
+//                        }
+//                    }
                 }
             }
         }

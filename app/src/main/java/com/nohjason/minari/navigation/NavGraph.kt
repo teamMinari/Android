@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import ProfileMAinScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -50,13 +51,14 @@ fun NavGraph(
     viewModel: MainViewModel,
     loginViewModel: LoginViewModel
 ) {
-//    val auth = Firebase.auth
-//    var user by remember { mutableStateOf(auth.currentUser) }
-//    val launcher = rememberFirebaseAuthLauncher(onAuthComplete = { result ->
-//        user = result.user
-//    }, onAuthError = {
-//        user = null
-//    })
+    val auth = Firebase.auth
+    var user by remember { mutableStateOf(auth.currentUser) }
+    val launcher = rememberFirebaseAuthLauncher(onAuthComplete = { result ->
+        user = result.user
+    }, onAuthError = {
+        user = null
+    })
+    val token = stringResource(R.string.default_web_client_id)
     val context = LocalContext.current
 //
 //    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(token)
@@ -148,19 +150,15 @@ fun NavGraph(
 
 
         //퀴즈
-        composable("quizStartRoute") {
-            QuizScreen(navController = navController, user = dummyUser)
-        }
-        composable("quizQuestionRoute") {
-            QuizScreen_play(que = question, navController = navController, user = dummyUser, )
-        }
-        composable("quizQuestionORoute") { backStackEntry ->
-            Commentary_CorrectO(que = question, navController = navController, user = dummyUser)
-            // 퀴즈 O질문 결과 화면
-        }
-        composable("quizQuestionXRoute") { backStackEntry ->
-            Commentary_CorrectX(que = question, navController = navController, user = dummyUser)
-            // 퀴즈 X질문 결과 화면
+        composable("quizplay") {
+            // ViewModel 인스턴스 가져오기
+//            val quizViewModel: QuizViewModel = viewModel()
+//            println(quizViewModel.playData)
+//
+//            // playData가 null이 아닌지 확인 후 전달
+//            quizViewModel.playData?.let { playData ->
+//                QuizPlayScreen(qestion = playData)
+//            }
         }
         composable("quizComentoryRoute") { backStackEntry ->
             QuizEndScreen(navController = navController, user = dummyUser)
@@ -185,6 +183,21 @@ fun NavGraph(
             SelfSignUpScreen(
                 navController = navController
             )
+
+//        composable(
+//            route = "quizplay/{playDataJson}",  // 경로 정의
+//            arguments = listOf(navArgument("playDataJson") { type = NavType.StringType })  // 인자 설정
+//        ) { backStackEntry ->
+//            val playDataJson = backStackEntry.arguments?.getString("playDataJson")  // 전달된 JSON 데이터를 추출
+//            val playData = Gson().fromJson(playDataJson, PlayData::class.java)  // JSON 데이터를 PlayData 객체로 변환
+//            QuizPlayScreen(question = playData)  // QuizPlayScreen에 변환된 데이터를 전달
+//        }
+
+
+
+//        로그인
+        composable("Singup"){
+            SelfSingUpScreen(navController = navController)
         }
 
         composable(

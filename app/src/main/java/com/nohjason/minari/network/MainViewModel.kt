@@ -1,8 +1,10 @@
-package com.nohjason.minari.network
+package com.nohjason.myapplication.network
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nohjason.minari.network.response.BookResponse
+import com.nohjason.minari.screens.profile.ProfileResponse
 import com.nohjason.minari.screens.profile.my_dictionary.model.DictionaryModel
 import com.nohjason.minari.screens.profile.my_dictionary.model.toModel
 import com.nohjason.myapplication.network.RetrofitInstance.api
@@ -16,26 +18,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
+import java.io.IOException
+import java.net.SocketTimeoutException
 
-class MainViewModel() : ViewModel() {
+class MainViewModel : ViewModel() {
 
-    private val _routine = MutableStateFlow<List<TermResponse>>(emptyList())
-    val routines = _routine.asStateFlow()
-
-    fun fetchAllTerms(token: String) {
-        viewModelScope.launch {
-            try {
-                val response = withContext(Dispatchers.IO) { api.getTerms(token = token) }
-//                _routine.value = response.map {
-//                    it.toModel()
-//                }
-                _routine.value = response
-            } catch (e: Exception) {
-                // Handle error
-                Log.e("TAG", "fetch ALL", e)
-            }
-        }
-    }
 
     private val _term = MutableStateFlow<Term?>(null)
     val term: StateFlow<Term?> = _term
@@ -46,51 +34,52 @@ class MainViewModel() : ViewModel() {
                 val term = api.getOneTerm(termNm = termNm, token = token)
                 _term.value = term
             } catch (e: Exception) {
-                // 오류 처리
+                Log.e("FetchTermError", "Error fetching term: ${e.message}", e)
             }
         }
     }
 
-    private val _book = MutableStateFlow<List<DictionaryModel>>(emptyList())
-    val books = _book.asStateFlow()
 
-    fun fetchAllBookTerms(token: String) {
-        viewModelScope.launch {
-            try {
-                val book = api.getBookTerms(token)
-                _book.value = book.data.map {
-                    it.toModel()
-                }
-            } catch (e: Exception) {
-                // Handle error
-                Log.e("TAG", "fetch ALL", e)
-            }
-        }
-    }
+//    private val _book = MutableStateFlow<List<DictionaryModel>>(emptyList())
+//    val books = _book.asStateFlow()
 
-    fun addDelete(word: String, token: String) {
-        viewModelScope.launch {
-            try {
-                val job = async { api.addDeleteTerm(word, token) }
-                job.await()
-                fetchAllBookTerms(token)
-            } catch (e: Exception) {
-                Log.e("TAG", "addDelete: ", e)
-            }
-        }
-    }
+//    fun fetchAllBookTerms() {
+//        viewModelScope.launch {
+//            try {
+//                val book = RetrofitInstance.api.getBookTerms()
+//                _book.value = book.data.map {
+//                    it.toModel()
+//                }
+//            } catch (e: Exception) {
+//                // Handle error
+//                Log.e("TAG", "fetch ALL", e)
+//            }
+//        }
+//    }
 
-    fun checkedThat(wordNm: String) = viewModelScope.launch {
-        _book.update {
-            it.map { item ->
-                if (item.termNm == wordNm) {
-                    item.copy(
-                        isChecked = item.isChecked.not()
-                    )
-                } else {
-                    item
-                }
-            }
-        }
-    }
+//    fun addDelete(word: String) {
+//        viewModelScope.launch {
+//            try {
+//                val job = async { RetrofitInstance.api.addDeleteTerm(word) }
+//                job.await()
+//                fetchAllBookTerms()
+//            } catch (e: Exception) {
+//                Log.e("TAG", "addDelete: ", e)
+//            }
+//        }
+//    }
+
+//    fun checkedThat(wordNm: String) = viewModelScope.launch {
+//        _book.update {
+//            it.map { item ->
+//                if (item.termNm == wordNm) {
+//                    item.copy(
+//                        isChecked = item.isChecked.not()
+//                    )
+//                } else {
+//                    item
+//                }
+//            }
+//        }
+//    }
 }
