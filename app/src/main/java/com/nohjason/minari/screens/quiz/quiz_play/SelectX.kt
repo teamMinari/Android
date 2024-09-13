@@ -1,6 +1,7 @@
 package com.nohjason.minari.screens.quiz.quiz_play
 
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -33,9 +34,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nohjason.minari.R
-import com.nohjason.minari.navigation.bottombar.BottomBarScreen
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun SeletX(
     navHostController: NavHostController,

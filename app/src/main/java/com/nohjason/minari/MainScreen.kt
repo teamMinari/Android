@@ -15,6 +15,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.navigation.bottombar.BottomBar
 import com.nohjason.minari.navigation.NavGraph
+import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.screens.login.LoginViewModel
 import com.nohjason.minari.screens.login.Test
 
@@ -33,7 +34,7 @@ fun MainScreen(
                 "quizplay" -> false
                 "Select_O" -> false
                 "Select_X" -> false
-                BottomBarScreen.Login.rout -> false
+                Test.Login.rout -> false
                 else -> true
             }
         }

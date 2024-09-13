@@ -31,7 +31,7 @@ fun NewsCategoryButton(
             .size(75.dp)
             .background(Color.White)
             .clip(RoundedCornerShape(10.dp))
-            .clickable { onClick },
+            .clickable(onClick = onClick),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

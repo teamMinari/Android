@@ -20,16 +20,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+//import com.google.android.gms.auth.api.signin.GoogleSignIn
+//import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+//import com.google.firebase.auth.ktx.auth
+//import com.google.firebase.ktx.Firebase
 import com.nohjason.minari.R
 //import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.inproduct.InProduction
-import com.nohjason.minari.screens.login.UI.SelfLoginScreen
+//import com.nohjason.minari.screens.login.UI.SelfLoginScreen
 import com.nohjason.minari.screens.login.screen.LoginScreen
 import com.nohjason.minari.screens.login.LoginViewModel
 import com.nohjason.minari.screens.login.Test
@@ -51,9 +51,11 @@ import com.nohjason.minari.screens.rout.Grapes
 import com.nohjason.minari.screens.rout.Rout
 import com.nohjason.myapplication.network.MainViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.nohjason.minari.TestScreen
 import com.nohjason.minari.screens.quiz.QuizeViewModel
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 import com.nohjason.minari.screens.quiz.quiz_end.QuizEndScreen
+import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
 import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.quiz_play.SeletO
 import com.nohjason.minari.screens.quiz.quiz_play.SeletX
@@ -106,6 +108,10 @@ fun NavGraph(
             )
         }
 
+        composable(BottomScreen.Quiz.rout) {
+            QuizMainScreen(navHostController = navController)
+        }
+
         // 프로필
         composable(BottomScreen.Profile.rout) {
             ProfileMAinScreen(
@@ -115,7 +121,12 @@ fun NavGraph(
         }
 
         composable("myDirectory") {
-            DirecScreen(term = termStatusResponse, gpse = gpseStatusResponse, gps = gpsStatusResponse, gp = gpStatusResponse)
+            DirecScreen(
+                term = termStatusResponse,
+                gpse = gpseStatusResponse,
+                gps = gpsStatusResponse,
+                gp = gpStatusResponse
+            )
         }
 
         // 포도알
@@ -190,7 +201,7 @@ fun NavGraph(
                     animationSpec = tween(500)
                 )
             }
-        ){
+        ) {
             SeletX(navHostController = navController, quizViewModel = quizViewModel)
         }
 
@@ -222,6 +233,11 @@ fun NavGraph(
 //            val playData = Gson().fromJson(playDataJson, PlayData::class.java)  // JSON 데이터를 PlayData 객체로 변환
 //            QuizPlayScreen(question = playData)  // QuizPlayScreen에 변환된 데이터를 전달
 //        }
+
+//            composable(BottomScreen.Quiz.rout) {
+//                TestScreen()
+//            }
+
             composable(
                 route = Test.Question.rout,
             ) {

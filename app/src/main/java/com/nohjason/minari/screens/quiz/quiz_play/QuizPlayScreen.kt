@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.quiz.quiz_play
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,20 +34,19 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nohjason.minari.R
-import com.nohjason.minari.navigation.bottombar.BottomBarScreen
+import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.screens.quiz.clickOnce
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun QuizPlayScreen(
     navHostController: NavHostController,
     quizViewModel: QuizViewModel = viewModel()
-){
+) {
 
-    val playData = quizViewModel.playData.value
-
+    val playData by quizViewModel.playData.collectAsState()
     val qtNum = playData?.qtNum ?: 0
-
     val qtContents = playData?.qtList?.getOrNull(qtNum)?.qtContents ?: "No content available"
     val qtTip = playData?.qtList?.getOrNull(qtNum)?.qtTip ?: "No tip available"
     val qtAnswer = playData?.qtList?.getOrNull(qtNum)?.qtAnswer ?: false
@@ -58,12 +59,12 @@ fun QuizPlayScreen(
             .fillMaxWidth()
             .fillMaxHeight(),
         contentAlignment = Alignment.Center
-    ){
-        Column (
+    ) {
+        Column(
             modifier = Modifier
                 .fillMaxHeight()
                 .fillMaxWidth(0.85f),
-        ){
+        ) {
 
             //문제-------------------------------
             Text(
@@ -83,10 +84,10 @@ fun QuizPlayScreen(
 
 
             //버튼---------------------------------------------------------------------------------------------
-            Row (
+            Row(
                 modifier = Modifier.padding(top = 20.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ){
+            ) {
                 Button(
                     //x버튼
                     modifier = Modifier
@@ -100,9 +101,10 @@ fun QuizPlayScreen(
                         try {
                             quizViewModel.submitAnswer(userAnswer = false, correctAnswer = qtAnswer)
                             navHostController.navigate("Select_X")
-                        } catch (e: Exception){
-                            Toast.makeText(context, "오류가 생겼습니다! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
-                            navHostController.navigate(BottomBarScreen.Home.rout)
+                        } catch (e: Exception) {
+                            Toast.makeText(context, "오류가 생겼습니다! 다시 시도해주세요.", Toast.LENGTH_SHORT)
+                                .show()
+                            navHostController.navigate(BottomScreen.Home.rout)
                         }
                     },
                 ) {
@@ -127,9 +129,10 @@ fun QuizPlayScreen(
                         try {
                             quizViewModel.submitAnswer(userAnswer = true, correctAnswer = qtAnswer)
                             navHostController.navigate("Select_O")
-                        } catch (e: Exception){
-                            Toast.makeText(context, "오류가 생겼습니다! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
-                            navHostController.navigate(BottomBarScreen.Home.rout)
+                        } catch (e: Exception) {
+                            Toast.makeText(context, "오류가 생겼습니다! 다시 시도해주세요.", Toast.LENGTH_SHORT)
+                                .show()
+                            navHostController.navigate(BottomScreen.Home.rout)
                         }
                     }
                 ) {
@@ -144,11 +147,13 @@ fun QuizPlayScreen(
             }
 
             //해설-------------------------------
-            Row (
+            Row(
                 modifier = Modifier.padding(top = 20.dp)
-            ){
-                Icon(painter = painterResource(id = R.drawable.emoji_tip),
-                    contentDescription = null, tint = Color.Unspecified)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.emoji_tip),
+                    contentDescription = null, tint = Color.Unspecified
+                )
                 Text(
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
@@ -162,11 +167,3 @@ fun QuizPlayScreen(
         }
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun PreQuizPlay(){
-//    QuizPlayScreen(
-//        qtArray = dummyQuestionDataList
-//    )
-//}

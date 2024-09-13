@@ -113,8 +113,6 @@ fun SelfLoginScreen(
 
         }
 
-        val context = LocalContext.current
-
         var check by rememberSaveable { mutableStateOf(false) }
         Row(
             verticalAlignment = Alignment.CenterVertically

@@ -1,5 +1,6 @@
 package com.nohjason.minari.navigation.bottombar
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.BottomNavigation
@@ -14,6 +15,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import com.nohjason.minari.ui.theme.MinariBlue
+import kotlin.math.round
 
 @Composable
 fun BottomBar(
@@ -24,7 +26,7 @@ fun BottomBar(
         BottomScreen.Rout,
         BottomScreen.News,
         BottomScreen.Home,
-//        BottomScreen.Quiz,
+        BottomScreen.Quiz,
         BottomScreen.Profile,
     )
 
@@ -62,6 +64,7 @@ fun RowScope.AddItem(
             it.route == bottomScreen.rout
         } == true,
         onClick = {
+            Log.d("TAG", "AddItem: ${bottomScreen.rout}")
             navController.navigate(bottomScreen.rout)
         },
         selectedContentColor = MinariBlue,

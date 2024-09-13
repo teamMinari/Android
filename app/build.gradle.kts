@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    id("com.google.gms.google-services")
-    id("kotlin-kapt")
+//    id("com.google.gms.google-services")
+//    id("kotlin-kapt")
 }
 
 android {
@@ -57,7 +57,7 @@ dependencies {
 
     // Coil
 //    implementation ("io.coil-kt:coil:2.6.0")
-//    implementation ("io.coil-kt:coil-compose:2.6.0")
+    implementation ("io.coil-kt:coil-compose:2.6.0")
 
     // Pager
     implementation ("com.google.accompanist:accompanist-pager:0.28.0")
@@ -76,20 +76,20 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
 
     // Room
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-    implementation(libs.androidx.runtime.livedata)
-    annotationProcessor("androidx.room:room-compiler:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
+//    implementation("androidx.room:room-runtime:2.6.1")
+//    implementation("androidx.room:room-ktx:2.6.1")
+//    implementation(libs.androidx.runtime.livedata)
+//    annotationProcessor("androidx.room:room-compiler:2.6.1")
+//    kapt ("androidx.room:room-compiler:2.5.0")
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.android.gms:play-services-auth:21.0.0")
-
-    implementation("androidx.compose.material:material:1.6.5")
-
-    implementation("io.coil-kt:coil-compose:2.6.0")
+//    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
+//    implementation("com.google.firebase:firebase-analytics")
+//    implementation("com.google.android.gms:play-services-auth:21.0.0")
+//
+//    implementation("androidx.compose.material:material:1.6.5")
+//
+//    implementation("io.coil-kt:coil-compose:2.6.0")
 
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.7")

@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.nohjason.minari.R
-import com.nohjason.minari.navigation.bottombar.BottomBarScreen
+import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 import com.nohjason.minari.ui.theme.MinariBlue
 
@@ -53,7 +53,7 @@ fun QuizEndScreen(
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ){
 
-        TitleBar(onClick = { navController.navigate(BottomBarScreen.Quiz.rout) })
+        TitleBar(onClick = { navController.navigate(BottomScreen.Quiz.rout) })
         Box(modifier = Modifier.padding(top = 50.dp)) {
             Image(
                 modifier = Modifier
