@@ -31,7 +31,7 @@ class ProfileViewModel : ViewModel() {
             try {
                 // GET 요청을 보내고 응답을 받아옴
                 val response = apiService.getProfile()
-                println(response)
+//                println(response)
                 initializeProfileData(response)
                 response // 서버 응답 반환
             } catch (e: Exception) {

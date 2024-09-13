@@ -29,7 +29,7 @@ class DirecViewModel  : ViewModel() {
             try {
                 // GET 요청을 보내고 응답을 받아옴
                 val response = apiService.getDiercTerm()
-                println(response)
+                println("용어"+response)
                 response // 서버 응답 반환
             } catch (e: Exception) {
                 // 기타 예외 처리
@@ -55,7 +55,7 @@ class DirecViewModel  : ViewModel() {
             try {
                 // GET 요청을 보내고 응답을 받아옴
                 val response = apiService.getGpse()
-                println(response)
+                println("Gpse임"+response)
                 response // 서버 응답 반환
             } catch (e: Exception) {
                 // 기타 예외 처리
@@ -81,6 +81,7 @@ class DirecViewModel  : ViewModel() {
             try {
                 // GET 요청을 보내고 응답을 받아옴
                 val response = apiService.getGps()
+                println("Gps임"+response)
                 response // 서버 응답 반환
             } catch (e: Exception) {
                 // 기타 예외 처리
@@ -105,7 +106,7 @@ class DirecViewModel  : ViewModel() {
             try {
                 // GET 요청을 보내고 응답을 받아옴
                 val response = apiService.getGp()
-                println(response)
+                println("Gp임"+response)
                 response // 서버 응답 반환
             } catch (e: Exception) {
                 // 기타 예외 처리

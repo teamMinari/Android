@@ -99,7 +99,7 @@ fun NavGraph(
             //
         }
         composable(BottomBarScreen.Profile.rout) {
-            println(data)
+//            println(data)
             LaunchedEffect(Unit) {
                 profileViewModel.getProfile()
             }

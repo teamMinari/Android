@@ -79,26 +79,26 @@ interface ApiService {
 
     @GET("/member/profile")
     suspend fun getProfile(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYxNDcyNDcsImV4cCI6MTcyNjIzMzY0N30.h2BUtVKRVApYDkj8xBnXErFI1I3QtQXLvlhP1BauLyY"
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYxOTUxOTEsImV4cCI6MTcyNjI4MTU5MX0.sx13Li5n1lugQxUZjmQRJCZhZrsCRojIUqqIYuAss5A"
     ): ProfileResponse
 
     @GET("/likes/term")
     suspend fun getDiercTerm(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYwNTk0MTUsImV4cCI6MTcyNjE0NTgxNX0.uJ62qskBw3CkJ7IhST9K1iawRDY6QYFWbQXVVGn_izw"
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYxOTUxOTEsImV4cCI6MTcyNjI4MTU5MX0.sx13Li5n1lugQxUZjmQRJCZhZrsCRojIUqqIYuAss5A"
     ): DirecTermResponse
 
     @GET("/likes/gpse")
     suspend fun getGpse(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYwNTk0MTUsImV4cCI6MTcyNjE0NTgxNX0.uJ62qskBw3CkJ7IhST9K1iawRDY6QYFWbQXVVGn_izw"
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYxOTUxOTEsImV4cCI6MTcyNjI4MTU5MX0.sx13Li5n1lugQxUZjmQRJCZhZrsCRojIUqqIYuAss5A"
     ): DirecGpseResponse
 
     @GET("/likes/gps")
     suspend fun getGps(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYwNTk0MTUsImV4cCI6MTcyNjE0NTgxNX0.uJ62qskBw3CkJ7IhST9K1iawRDY6QYFWbQXVVGn_izw"
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYxOTUxOTEsImV4cCI6MTcyNjI4MTU5MX0.sx13Li5n1lugQxUZjmQRJCZhZrsCRojIUqqIYuAss5A"
     ): DirecGpsResponse
 
     @GET("/likes/gp")
     suspend fun getGp(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYwNTk0MTUsImV4cCI6MTcyNjE0NTgxNX0.uJ62qskBw3CkJ7IhST9K1iawRDY6QYFWbQXVVGn_izw"
+        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYxOTUxOTEsImV4cCI6MTcyNjI4MTU5MX0.sx13Li5n1lugQxUZjmQRJCZhZrsCRojIUqqIYuAss5A"
     ): DirecGpResponse
 }
