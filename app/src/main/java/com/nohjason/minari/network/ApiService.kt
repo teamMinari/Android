@@ -3,8 +3,8 @@ package com.nohjason.myapplication.network
 import com.nohjason.minari.network.response.AddDeleteTerm
 import com.nohjason.minari.network.response.BookResponse
 import com.nohjason.minari.screens.home.news.Test
-import com.nohjason.minari.screens.profile.DireGpsResponse
 import com.nohjason.minari.screens.profile.DirecGpResponse
+import com.nohjason.minari.screens.profile.DirecGpsResponse
 import com.nohjason.minari.screens.profile.DirecGpseResponse
 import com.nohjason.minari.screens.profile.DirecTermResponse
 import com.nohjason.minari.screens.profile.ProfileResponse
@@ -83,7 +83,7 @@ interface ApiService {
     ): ProfileResponse
 
     @GET("/likes/term")
-    suspend fun getTerm(
+    suspend fun getDiercTerm(
         @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYwNTk0MTUsImV4cCI6MTcyNjE0NTgxNX0.uJ62qskBw3CkJ7IhST9K1iawRDY6QYFWbQXVVGn_izw"
     ): DirecTermResponse
 
@@ -95,10 +95,10 @@ interface ApiService {
     @GET("/likes/gps")
     suspend fun getGps(
         @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYwNTk0MTUsImV4cCI6MTcyNjE0NTgxNX0.uJ62qskBw3CkJ7IhST9K1iawRDY6QYFWbQXVVGn_izw"
-    ): DireGpsResponse
+    ): DirecGpsResponse
 
     @GET("/likes/gp")
-    suspend fun getGpe(
+    suspend fun getGp(
         @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYwNTk0MTUsImV4cCI6MTcyNjE0NTgxNX0.uJ62qskBw3CkJ7IhST9K1iawRDY6QYFWbQXVVGn_izw"
     ): DirecGpResponse
 }

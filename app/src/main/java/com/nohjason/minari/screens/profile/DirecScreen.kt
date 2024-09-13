@@ -21,7 +21,7 @@ import com.nohjason.myapplication.network.response.TermResponse
 fun DirecScreen(
     term: DirecTermResponse?,
     gpse: DirecGpseResponse?,
-    gps: DireGpsResponse?,
+    gps: DirecGpsResponse?,
     gp: DirecGpResponse?,
 //    title: String (후에는 서버에서 값을 받아와야한다.)
 ){

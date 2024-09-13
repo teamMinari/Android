@@ -43,6 +43,7 @@ import com.nohjason.minari.screens.profile.DummyTermStatusResponse.termStatusRes
 import com.nohjason.minari.screens.profile.ProfileMAinScreen
 import com.nohjason.minari.screens.profile.ProfileViewModel
 import com.nohjason.minari.screens.profile.alias.AliasScreen
+import com.nohjason.minari.screens.profile.directory.DirecViewModel
 import kotlinx.coroutines.launch
 
 
@@ -67,6 +68,13 @@ fun NavGraph(
 
 
     val profileViewModel: ProfileViewModel = viewModel()
+    val direcViewModel: DirecViewModel = viewModel()
+    LaunchedEffect(Unit) {
+        direcViewModel.getGpse()
+        direcViewModel.getGps()
+        direcViewModel.getGp()
+        direcViewModel.getDorecTerm()
+    }
 //    val data by profileViewModel.profileData.collectAsState()
     val data = profileViewModel.profileData.collectAsState().value
 
@@ -99,7 +107,11 @@ fun NavGraph(
         }
 
         composable("myDirectory") {
-            DirecScreen(term = termStatusResponse, gpse = gpseStatusResponse, gps = gpsStatusResponse, gp = gpStatusResponse)
+            val termResponse = direcViewModel.termData.collectAsState().value
+            val gpseResponse = direcViewModel.gpseData.collectAsState().value
+            val gpsResponse = direcViewModel.gpsData.collectAsState().value
+            val gpResponse = direcViewModel.gpData.collectAsState().value
+            DirecScreen(term = termResponse, gpse = gpseResponse, gps = gpsResponse, gp = gpResponse)
         }
 
         composable("myAlias") {

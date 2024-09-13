@@ -70,7 +70,7 @@ object DummyGpseStatusResponse {
 
 // GpsStatusResponse 더미 데이터
 object DummyGpsStatusResponse {
-    val gpsStatusResponse = DireGpsResponse(
+    val gpsStatusResponse = DirecGpsResponse(
         status = 0,
         message = "Success",
         data = listOf(

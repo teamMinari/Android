@@ -58,57 +58,56 @@ fun ProfileMAinScreen(
     if (profileData == null) {
         Text(text = "No profile data available")
         return
-    }
+    }else{
+        val scrollState = rememberScrollState()
 
-    val scrollState = rememberScrollState()
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color(0xFFF5F6FA))
-            .verticalScroll(scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(
-                modifier = Modifier
-                    .padding(start = 325.dp, top = 35.dp),
-                painter = painterResource(id = R.drawable.ic_log_out),
-                contentDescription = null,
-                tint = Color.Unspecified
-            )
-        }
-        ProfileInfor(
-            id = profileData.id,
-            email = profileData.email,
-            totalExp = profileData.totalExp,
-            level = profileData.level,
-            title = profileData.title
-        )
-        Row(
-            modifier = Modifier.padding(top = 22.dp)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color(0xFFF5F6FA))
+                .verticalScroll(scrollState),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ProfileButton(
-                text = "칭호",
-                onClick = {
-                    navHostController.navigate("myAlias")
-                }
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    modifier = Modifier
+                        .padding(start = 325.dp, top = 35.dp),
+                    painter = painterResource(id = R.drawable.ic_log_out),
+                    contentDescription = null,
+                    tint = Color.Unspecified
+                )
+            }
+            ProfileInfor(
+                id = profileData.id,
+                email = profileData.email,
+                totalExp = profileData.totalExp,
+                level = profileData.level,
+                title = profileData.title
             )
-            Spacer(modifier = Modifier.width(5.dp))
-            ProfileButton(
-                text = "관심",
-                onClick = {
-                    //로그인-설문조사 화면으로 이동
-                }
-            )
-        }
-        Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                modifier = Modifier.padding(top = 22.dp)
+            ) {
+                ProfileButton(
+                    text = "칭호",
+                    onClick = {
+                        navHostController.navigate("myAlias")
+                    }
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                ProfileButton(
+                    text = "관심",
+                    onClick = {
+                        //로그인-설문조사 화면으로 이동
+                    }
+                )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
 
-        val percentage = (50 / 100f)//exp구현 시 변경해야함
-        RewardBar(progress = percentage, xp = profileData.exp, level = profileData.level)
-        LikeList(likeList = likeDummy, navHostController = navHostController)
-        Spacer(modifier = Modifier.height(25.dp))
-
+            val percentage = (50 / 100f)//exp구현 시 변경해야함
+            RewardBar(progress = percentage, xp = profileData.exp, level = profileData.level)
+            LikeList(likeList = likeDummy, navHostController = navHostController)
+            Spacer(modifier = Modifier.height(25.dp))
+    }
 
     }
 }

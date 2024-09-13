@@ -56,7 +56,7 @@ data class Gpse(
     val gpseLike: Boolean
 )
 
-data class DireGpsResponse(
+data class DirecGpsResponse(
     val status: Int,
     val message: String,
     val data: List<Gps>
