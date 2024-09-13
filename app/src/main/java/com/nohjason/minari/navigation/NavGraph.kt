@@ -5,18 +5,31 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.nohjason.minari.R
 //import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.inproduct.InProduction
+import com.nohjason.minari.screens.login.UI.SelfLoginScreen
 import com.nohjason.minari.screens.login.screen.LoginScreen
 import com.nohjason.minari.screens.login.LoginViewModel
 import com.nohjason.minari.screens.login.Test
@@ -36,13 +49,22 @@ import com.nohjason.minari.screens.profile.name_style.Style
 import com.nohjason.minari.screens.rout.Grape
 import com.nohjason.minari.screens.rout.Grapes
 import com.nohjason.minari.screens.rout.Rout
+import com.nohjason.myapplication.network.MainViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.nohjason.minari.screens.quiz.QuizeViewModel
+import com.nohjason.minari.screens.quiz.data.QuizViewModel
+import com.nohjason.minari.screens.quiz.quiz_end.QuizEndScreen
+import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
+import com.nohjason.minari.screens.quiz.quiz_play.SeletO
+import com.nohjason.minari.screens.quiz.quiz_play.SeletX
 
 @SuppressLint("ComposableDestinationInComposeScope")
 @Composable
 fun NavGraph(
     navController: NavHostController,
     loginViewModel: LoginViewModel,
-    profileViewModel: ProfileViewModel = viewModel()
+    profileViewModel: ProfileViewModel = viewModel(),
+    quizViewModel: QuizViewModel = viewModel()
 ) {
     NavHost(
         navController = navController,
@@ -115,7 +137,6 @@ fun NavGraph(
                 title = title,
             )
         }
-
         composable("test/{text}") { backStackEntry ->
             val text = backStackEntry.arguments?.getString("text") ?: ""
             Test(text, navController = navController)
@@ -136,15 +157,41 @@ fun NavGraph(
 
 
         //퀴즈
-        composable("quizplay") {
-            // ViewModel 인스턴스 가져오기
-//            val quizViewModel: QuizViewModel = viewModel()
-//            println(quizViewModel.playData)
-//
-//            // playData가 null이 아닌지 확인 후 전달
-//            quizViewModel.playData?.let { playData ->
-//                QuizPlayScreen(qestion = playData)
-//            }
+        composable(
+            "quizplay",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
+                )
+            }
+        ) {
+            // playData가 null이 아닌지 확인 후 전달
+            QuizPlayScreen(navHostController = navController, quizViewModel = quizViewModel)
+        }
+
+        composable(
+            route = "Select_O",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
+                )
+            }
+        ) {
+            SeletO(navHostController = navController, quizViewModel = quizViewModel)
+        }
+
+        composable(
+            "Select_X",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
+                )
+            }
+        ){
+            SeletX(navHostController = navController, quizViewModel = quizViewModel)
         }
 
         // 로그인

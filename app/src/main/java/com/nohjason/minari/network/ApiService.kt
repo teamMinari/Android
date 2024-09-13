@@ -18,6 +18,10 @@ import com.nohjason.minari.screens.rout.response.GetAllNews
 import com.nohjason.minari.screens.rout.response.LikesResponse
 import com.nohjason.minari.screens.home.news.Test
 import com.nohjason.minari.screens.profile.ProfileResponse
+//import com.nohjason.minari.screens.login.Data.LoginRequest
+//import com.nohjason.minari.screens.login.Data.UserResponse
+//import com.nohjason.minari.screens.quiz.data.PointResponse
+import com.nohjason.minari.screens.quiz.data.QuestionResponse
 import com.nohjason.myapplication.network.response.Term
 import com.nohjason.myapplication.network.response.TermResponse
 import retrofit2.Response
@@ -128,4 +132,18 @@ interface ApiService {
     suspend fun getProfile(
         @Header("Authorization") token: String
     ): Response<ProfileResponse>
+
+
+
+    @GET("/questions/level/{level}")
+    suspend fun getQuestion(
+        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYxMzY2MzgsImV4cCI6MTcyNjIyMzAzOH0.kUqZInuvOuSvxmL_kRXSBoJ725F5URKufOy0L7QRWBM",
+        @Path("level") level: Int
+    ): QuestionResponse
+
+//    @GET("/member/{memberId}/givePoint")
+//    suspend fun postPoint(
+//        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA2MjA3MTYsImV4cCI6MTcyMDcwNzExNn0.HB5DqAsVW82Gke00pFnMH8SY0SbMjyJhuY0GKKxcbbA",
+//        @Path("memberId") memberId: String
+//    ): PointResponse
 }

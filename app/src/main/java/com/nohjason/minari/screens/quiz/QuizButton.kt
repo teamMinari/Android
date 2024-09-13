@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.quiz.quiz_main
+package com.nohjason.minari.screens.quiz
 
 
 import androidx.compose.foundation.Image
@@ -61,7 +61,9 @@ fun QuizButton(
                         end = Offset(1000f, 1000f)
                     )
                 )
-                .clickable(onClick = onClick)
+                .clickOnce {
+                    onClick()
+                }
         )
 
         //이미지

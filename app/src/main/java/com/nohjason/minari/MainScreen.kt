@@ -5,7 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -21,6 +25,20 @@ fun MainScreen(
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
+    var showBottomBar by remember { mutableStateOf(true) }
+
+    LaunchedEffect(key1 = navController) {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            showBottomBar = when (destination.route) {
+                "quizplay" -> false
+                "Select_O" -> false
+                "Select_X" -> false
+                BottomBarScreen.Login.rout -> false
+                else -> true
+            }
+        }
+    }
+
     val currentDestination = navBackStackEntry?.destination
 
     Scaffold(
