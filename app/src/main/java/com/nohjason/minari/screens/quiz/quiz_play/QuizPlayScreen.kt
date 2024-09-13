@@ -17,6 +17,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,7 +43,8 @@ fun QuizPlayScreen(
     quizViewModel: QuizViewModel = viewModel()
 ){
 
-    val playData = quizViewModel.playData.value
+//    val playData = quizViewModel.playData.value
+    val playData by quizViewModel.playData.collectAsState()
 
     val qtNum = playData?.qtNum ?: 0
 

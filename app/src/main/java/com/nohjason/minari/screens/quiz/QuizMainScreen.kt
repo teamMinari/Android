@@ -115,17 +115,17 @@ fun QuizMainScreen(
             lavel ="LV_1",
             coment = "제일 쉬운 난이도",
             onClick = {
-//                val dataList = selectPlayData(qestionAll = easyQuestionResponse)
-//                quizViewModel.initializePlayData(data = dataList)
-//                navHostController.navigate("quizplay")
+                val dataList = selectPlayData(qestionAll = easyQuestionResponse)
+                quizViewModel.initializePlayData(data = dataList)
+                navHostController.navigate("quizplay")
 
-                coroutineScope.launch {
-                    val qtAll = quizViewModel.getQuestion(1)
-
-                    val dataList = selectPlayData(qestionAll = qtAll)
-                    quizViewModel.initializePlayData(data = dataList)
-                    navHostController.navigate("quizplay")
-                }
+//                coroutineScope.launch {
+//                    val qtAll = quizViewModel.getQuestion(1)
+//
+//                    val dataList = selectPlayData(qestionAll = qtAll)
+//                    quizViewModel.initializePlayData(data = dataList)
+//                    navHostController.navigate("quizplay")
+//                }
             },
         )
         QuizButton(
