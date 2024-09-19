@@ -1,9 +1,8 @@
 package com.nohjason.minari.navigation
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
@@ -26,16 +25,14 @@ import com.nohjason.minari.screens.login.LoginScreen
 import com.nohjason.minari.screens.login.UI.SelfLoginScreen
 import com.nohjason.minari.screens.login.UI.SelfSingUpScreen
 import com.nohjason.minari.screens.profile.ProfileScreen
-import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
+import com.nohjason.minari.screens.quiz.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
-import com.nohjason.minari.screens.quiz.QuizMainScreen
+import com.nohjason.minari.screens.quiz.dummyResponse
+import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
 import com.nohjason.minari.screens.term.Term
 import com.nohjason.minari.screens.term.Test
 import com.nohjason.myapplication.network.MainViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.nohjason.minari.screens.quiz.quiz_end.QuizEndScreen
-import com.nohjason.minari.screens.quiz.quiz_play.SeletO
-import com.nohjason.minari.screens.quiz.quiz_play.SeletX
 
 @Composable
 fun NavGraph(
@@ -43,11 +40,11 @@ fun NavGraph(
     viewModel: MainViewModel
 ) {
     val auth = Firebase.auth
-//    var user by remember { mutableStateOf(auth.currentUser) }
+    var user by remember { mutableStateOf(auth.currentUser) }
     val launcher = rememberFirebaseAuthLauncher(onAuthComplete = { result ->
-//        user = result.user
+        user = result.user
     }, onAuthError = {
-//        user = null
+        user = null
     })
     val token = stringResource(R.string.default_web_client_id)
     val context = LocalContext.current
@@ -55,9 +52,6 @@ fun NavGraph(
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(token)
         .requestEmail().build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
-
-    //퀴즈 뷰모델
-    val quizViewModel: QuizViewModel = viewModel()
 
 
 
@@ -78,22 +72,32 @@ fun NavGraph(
         }
         composable(BottomBarScreen.Quiz.rout) {
             //퀴즈
-            QuizMainScreen(navHostController = navController, quizViewModel = quizViewModel)
+            QuizMainScreen(qtAll = dummyResponse, navHostController = navController)
         }
         composable(BottomBarScreen.Profile.rout) {
-            ProfileScreen(navController = navController)
+//            println(data)
+            LaunchedEffect(Unit) {
+                profileViewModel.getProfile()
+            }
+            ProfileMAinScreen(profileData = data, navHostController = navController)
         }
-        composable(BottomBarScreen.Term.rout) {
-            Term(
-                navController = navController,
-                viewModel = viewModel
-            )
+
+        composable("myDirectory") {
+            val termResponse = direcViewModel.termData.collectAsState().value
+            val gpseResponse = direcViewModel.gpseData.collectAsState().value
+            val gpsResponse = direcViewModel.gpsData.collectAsState().value
+            val gpResponse = direcViewModel.gpData.collectAsState().value
+            DirecScreen(term = termResponse, gpse = gpseResponse, gps = gpsResponse, gp = gpResponse)
         }
-        composable("myDictionary") {
-            MyDictionaryScreen(
-                navController = navController,
-                viewModel = viewModel
-            )
+
+        composable("myAlias") {
+            println(data)
+            if(data == null){
+                HomeScreen(navController = navController)
+                Toast.makeText(context, "데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }else{
+                AliasScreen(level = data.level, exp = data.exp)
+            }
         }
         composable("test/{text}") { backStackEntry ->
             val text = backStackEntry.arguments?.getString("text") ?: ""

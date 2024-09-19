@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.profile.Menu
 
 sealed class CategoryNewsButton(
     val title: String,

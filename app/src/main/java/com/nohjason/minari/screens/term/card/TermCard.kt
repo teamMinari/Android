@@ -58,12 +58,12 @@ fun TermCard(
     viewModel: MainViewModel,
     navController: NavController,
 ) {
-    val bookTerms by viewModel.books.collectAsState()
+//    val bookTerms by viewModel.books.collectAsState()
 //    val foundTerm = bookTerms?.data?.find { it.termNm == title }
     val context = LocalContext.current
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.fetchAllTerms()
+//        viewModel.fetchAllTerms()
     }
 
     Box(
@@ -104,7 +104,7 @@ fun TermCard(
                         .border(1.dp, Color.Black, shape = CircleShape) // CircleShape을 명시적으로 설정
                         .padding(vertical = 3.dp, horizontal = 10.dp)
                         .clickable {
-                            viewModel.addDelete(title)
+//                            viewModel.addDelete(title)
 //                            if (foundTerm == null) {
 //                                Toast.makeText(context, "용어가 단어장에 추가 되었습니다", Toast.LENGTH_SHORT).show()
 //                            } else {

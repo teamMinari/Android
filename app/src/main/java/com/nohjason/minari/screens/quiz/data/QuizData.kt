@@ -13,7 +13,7 @@ data class QuestionData(
     val qtAnswer: Boolean,
     val qtCmt: String,
     val qtTip: String,
-    val qtDifficulty: String
+    val qtDifficulty: QuizLavel
 )
 
 data class PointResponse(

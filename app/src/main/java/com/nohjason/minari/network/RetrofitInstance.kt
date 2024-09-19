@@ -1,7 +1,9 @@
 package com.nohjason.myapplication.network
 
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 object RetrofitInstance {
     private const val BASE_URL = "http://cheongfordo.p-e.kr:8080/"  // 서버의 베이스 URL로 변경
@@ -13,4 +15,5 @@ object RetrofitInstance {
             .build()
             .create(ApiService::class.java)
     }
+
 }
