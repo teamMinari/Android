@@ -33,7 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.login.LoginTextField
 import com.nohjason.minari.screens.login.LoginViewModel
-import com.nohjason.minari.screens.login.Test
+import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.poppins_regular
 import com.nohjason.minari.ui.theme.poppins_semibold
@@ -146,7 +146,7 @@ fun SelfSignUpScreen(
                 Log.d("TAG", "SelfLoginScreen: $it")
                 if (it.success) {
                     Log.d("TAG", "SelfSingUpScreen: success")
-                    navController.navigate(Test.Question.rout)
+                    navController.navigate(Screens.Question.rout)
                 } else {
                     Log.d("TAG", "SelfSingUpScreen: failed")
                     Toast.makeText(context, "아이디가 이미 존재합니다", Toast.LENGTH_SHORT).show()

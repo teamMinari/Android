@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.nohjason.minari.screens.login.Test
+import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.pretendard_bold
 
@@ -75,7 +75,7 @@ fun Questionnaire(
                 .clip(CircleShape)
                 .background(MinariBlue)
                 .clickable {
-                    navController.navigate(Test.LastSignup.rout) {
+                    navController.navigate(Screens.LastSignup.rout) {
 
                     }
                 }

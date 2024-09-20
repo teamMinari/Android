@@ -30,7 +30,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomScreen
-import com.nohjason.minari.screens.login.Test
+import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.ui.text.MinariText
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.pretendard_bold
@@ -81,7 +81,7 @@ fun LoginScreen(
                 .padding(horizontal = 35.dp)
                 .clip(CircleShape)
                 .background(MinariBlue)
-                .clickable { navController.navigate(Test.Login.rout) }
+                .clickable { navController.navigate(Screens.Login.rout) }
         ) {
             Text(
                 text = "로그인",
@@ -101,7 +101,7 @@ fun LoginScreen(
                 .padding(horizontal = 35.dp)
                 .clip(CircleShape)
                 .background(Color.White)
-                .clickable { navController.navigate(Test.Signup.rout) }
+                .clickable { navController.navigate(Screens.Signup.rout) }
                 .border(1.dp, MinariBlue, shape = CircleShape),
         ) {
             Text(

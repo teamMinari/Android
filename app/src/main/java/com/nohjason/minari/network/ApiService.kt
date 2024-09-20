@@ -5,7 +5,6 @@ import com.nohjason.minari.network.response.BookResponse
 import com.nohjason.minari.network.response.GetAllLikesTerm
 import com.nohjason.minari.network.response.GetTerm
 import com.nohjason.minari.network.response.Quize
-import com.nohjason.minari.network.response.TermLikes
 import com.nohjason.minari.network.response.rout.Grape
 import com.nohjason.minari.network.response.rout.GrapeSeed
 import com.nohjason.minari.network.response.rout.Grapes
@@ -16,11 +15,7 @@ import com.nohjason.minari.screens.login.response.RegisterRequest
 import com.nohjason.minari.screens.login.response.RegisterResponse
 import com.nohjason.minari.screens.rout.response.GetAllNews
 import com.nohjason.minari.screens.rout.response.LikesResponse
-import com.nohjason.minari.screens.home.news.Test
 import com.nohjason.minari.screens.profile.ProfileResponse
-//import com.nohjason.minari.screens.login.Data.LoginRequest
-//import com.nohjason.minari.screens.login.Data.UserResponse
-//import com.nohjason.minari.screens.quiz.data.PointResponse
 import com.nohjason.minari.screens.quiz.data.QuestionResponse
 import com.nohjason.myapplication.network.response.Term
 import com.nohjason.myapplication.network.response.TermResponse

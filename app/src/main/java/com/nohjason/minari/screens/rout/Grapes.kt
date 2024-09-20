@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.rout
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -46,9 +46,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.nohjason.minari.R
+import com.nohjason.minari.network.response.rout.GrapeData
+import com.nohjason.minari.network.response.rout.GrapeSeedLessData
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
-import com.nohjason.minari.screens.login.Test
+import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariWhite
 import com.nohjason.minari.ui.theme.pretendard_bold
@@ -65,7 +67,7 @@ fun Grapes(
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
     val gps by viewModel.gpsDetail.collectAsState()
-    LaunchedEffect(key1 = Unit ) {
+    LaunchedEffect(key1 = Unit) {
         viewModel.getGps(
             token = token,
             gpsId = id
@@ -112,7 +114,7 @@ fun Grapes(
                             .padding(horizontal = 30.dp, vertical = 15.dp)
                     ) {
                         AsyncImage(
-                            model = "https://intelligent-passenger-537.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F01de7400-998d-4948-aa79-591ed35a24f0%2Fde288815-7c10-40b7-86c6-adba37bca831%2F9ea1cb2e-d402-4462-b2a7-dadc452ed360.png?table=block&id=9c2e8e76-1ff5-4b42-aafc-c52b93305967&spaceId=01de7400-998d-4948-aa79-591ed35a24f0&width=2000&userId=&cache=v2",
+                            model = gps!!.data.gpsImg,
                             contentDescription = null,
                             modifier = Modifier.size(100.dp)
                         )
@@ -208,7 +210,7 @@ fun Gpse(
     gpLike: Boolean,
     gpseCnt: Int,
     gpseCntMax: Int,
-    viewModel: GrapeViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    viewModel: GrapeViewModel = viewModel(),
     token: String,
     likesClick: () -> Unit
 ) {
@@ -245,11 +247,6 @@ fun Gpse(
                 }
             }
             Row {
-//                Image(
-//                    painter = painterResource(id = R.drawable.ellipes),
-//                    contentDescription = null,
-//                    modifier = Modifier.size(45.dp)
-//                )
                 Column(
                     modifier = Modifier
                         .padding(horizontal = 10.dp)
@@ -264,7 +261,6 @@ fun Gpse(
                         overflow = TextOverflow.Ellipsis,
                     )
                     Text(
-//                        text = "20분-포도알-0/3포도씨",
                         text = "${gpTm}분 - 포도알 - $gpseCnt/${gpseCntMax}포도씨",
                         fontFamily = pretendard_regular,
                         fontSize = 12.sp,
@@ -299,7 +295,9 @@ fun Gpse(
                 if (grape != null) {
                     grape!!.data.forEach {
                         Row(
-                            modifier = Modifier.clickable { navController.navigate(Test.Grape.rout + "/${it.gpseId}/$title") }
+                            modifier = Modifier.clickable {
+                            navController.navigate(Screens.Grape.rout + "/${it.gpseId}/$title")
+                            }
                         ) {
                             Text(
                                 text = it.gpseNm,
@@ -331,10 +329,4 @@ fun Gpse(
             }
         }
     }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-private fun Test() {
-    Grapes(rememberNavController(), viewModel = viewModel(), id = 0)
 }

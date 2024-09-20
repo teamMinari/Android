@@ -15,9 +15,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.navigation.bottombar.BottomBar
 import com.nohjason.minari.navigation.NavGraph
-import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.screens.login.LoginViewModel
-import com.nohjason.minari.screens.login.Test
+import com.nohjason.minari.screens.login.Screens
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -34,7 +33,7 @@ fun MainScreen(
                 "quizplay" -> false
                 "Select_O" -> false
                 "Select_X" -> false
-                Test.Login.rout -> false
+                Screens.Login.rout -> false
                 else -> true
             }
         }
@@ -45,11 +44,11 @@ fun MainScreen(
     Scaffold(
         bottomBar = {
             if (currentDestination?.route !in listOf(
-                    Test.FirstScreen.rout,
-                    Test.Login.rout,
-                    Test.Signup.rout,
-                    Test.Question.rout,
-                    Test.LastSignup.rout,
+                    Screens.FirstScreen.rout,
+                    Screens.Login.rout,
+                    Screens.Signup.rout,
+                    Screens.Question.rout,
+                    Screens.LastSignup.rout,
                 )
             ) {
                 BottomBar(

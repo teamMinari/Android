@@ -5,6 +5,7 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,6 +25,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,6 +50,8 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
@@ -70,10 +74,12 @@ import com.nohjason.minari.R
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.screens.login.LoginViewModel
+import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.profile.ProfileViewModel
 import com.nohjason.minari.screens.profile.element.RewardBar
 import com.nohjason.minari.screens.rout.GrapeViewModel
 import com.nohjason.minari.screens.ui.text.MinariTextField
+import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGradation
 import com.nohjason.minari.ui.theme.pretendard_bold
 import com.nohjason.minari.ui.theme.pretendard_medium
@@ -127,7 +133,7 @@ fun HomeScreen(
                         onValueChange = { text = it },
                         onClick = {
                             viewModel.getTerm(token, text)
-                            navController.navigate("test/${text}")
+                            navController.navigate(Screens.Term.rout + "/${text}")
                         }
                     )
                 },
@@ -158,20 +164,19 @@ fun HomeScreen(
                         Row(
                             modifier = Modifier
                                 .align(Alignment.Center),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
                         ) {
                             Image(
                                 modifier = Modifier.size(140.dp),
                                 painter = painterResource(R.drawable.image_27),
                                 contentDescription = null,
                             )
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(
-                                    text = "경제의 시작"
-                                )
-                            }
+                            CircularProgressIndicator(
+                                percentage = 0.75f,
+                                title = "경제의 시작",
+                                status = "학습중"
+                            )
                         }
                     }
                     Box(
@@ -290,86 +295,6 @@ fun HomeScreen(
     }
 }
 
-@Composable
-fun XpBar(
-    currentXp: Int,
-    maxXp: Int,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(15.dp))
-            .background(Color.White)
-            .padding(10.dp)
-    ) {
-        Column {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.present),
-                    contentDescription = null,
-                    tint = Color.Unspecified
-                )
-                Spacer(modifier = Modifier.width(5.dp))
-                Text("보상", fontFamily = pretendard_semibold, fontSize = 15.sp)
-            }
-            Row(
-                modifier = modifier
-                    .height(40.dp)
-                    .fillMaxWidth()
-                    .clip(CircleShape)
-                    .border(1.dp, Color(0xFFECEFFB), shape = RoundedCornerShape(20.dp)),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                val safeCurrentScore = currentXp.coerceAtMost(maxXp)
-
-                // 백분율 계산 (0.0f ~ 1.0f 사이의 값)
-                val percentage = if (maxXp > 0) safeCurrentScore.toFloat() / maxXp.toFloat() else 0f
-
-                // 나머지 비율 계산
-                val remainingPercentage = 1f - percentage
-                Box(
-                    modifier = Modifier
-                        .weight(percentage)
-                        .width(50.dp)
-                        .fillMaxHeight()
-                        .clip(CircleShape)
-                        .background(Color(0xFF4169E1)),  // Royal Blue
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "${percentage * 100}%",
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Spacer(modifier = Modifier.weight(remainingPercentage))
-
-//                Spacer(modifier = Modifier.weight()
-                Box(
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .size(32.dp)
-                        .clip(CircleShape)
-                        .border(2.dp, Color(0xFF4169E1), CircleShape)
-                        .background(Color.White),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.grape),
-                        contentDescription = "test",
-                        modifier = Modifier.size(20.dp),
-                        tint = Color.Unspecified
-                    )
-
-                }
-            }
-        }
-    }
-}
-
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun SwipeNews() {
@@ -460,6 +385,71 @@ fun SwipeNews() {
     }
 }
 
+@Composable
+fun CircularProgressIndicator(
+    percentage: Float,
+    title: String,
+    status: String
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+//        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = title,
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Box(modifier = Modifier
+                    .clip(CircleShape)
+                    .background(MinariBlue)
+                ) {
+                    Text(
+                        text = status,
+                        color = Color.White,
+                        fontSize = 10.sp,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                    )
+                }
+            }
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(100.dp)
+                    .padding(16.dp)
+            ) {
+                Canvas(modifier = Modifier.size(100.dp)) {
+                    drawArc(
+                        color = Color.LightGray,
+                        startAngle = -90f,
+                        sweepAngle = 360f,
+                        useCenter = false,
+                        style = Stroke(width = 15f, cap = StrokeCap.Round)
+                    )
+                    drawArc(
+                        color = Color.Blue,
+                        startAngle = -90f,
+                        sweepAngle = 360f * percentage,
+                        useCenter = false,
+                        style = Stroke(width = 15f, cap = StrokeCap.Round)
+                    )
+                }
+                Text(
+                    text = "${(percentage * 100).toInt()}%",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MinariBlue
+                )
+            }
+        }
+    }
+}
+
 fun Modifier.drawColoredShadow(
     color: Color,
     alpha: Float = 0.2f,
@@ -498,3 +488,4 @@ data class ShowNews(
     val title: String,
     val link: String
 )
+

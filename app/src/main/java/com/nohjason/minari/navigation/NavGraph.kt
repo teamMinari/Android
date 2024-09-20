@@ -6,16 +6,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -24,37 +15,24 @@ import androidx.navigation.compose.composable
 //import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 //import com.google.firebase.auth.ktx.auth
 //import com.google.firebase.ktx.Firebase
-import com.nohjason.minari.R
 //import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.screens.home.HomeScreen
-import com.nohjason.minari.screens.inproduct.InProduction
-//import com.nohjason.minari.screens.login.UI.SelfLoginScreen
 import com.nohjason.minari.screens.login.screen.LoginScreen
 import com.nohjason.minari.screens.login.LoginViewModel
-import com.nohjason.minari.screens.login.Test
+import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.login.screen.login.SelfLoginScreen
 import com.nohjason.minari.screens.login.screen.signup.Questionnaire
 import com.nohjason.minari.screens.login.screen.signup.SelfSignUpLastScreen
 import com.nohjason.minari.screens.login.screen.signup.SelfSignUpScreen
-import com.nohjason.minari.screens.term.Test
+import com.nohjason.minari.screens.term.TermScreen
 import com.nohjason.minari.screens.news.News
-import com.nohjason.minari.screens.profile.DirecScreen
-import com.nohjason.minari.screens.profile.DummyGpStatusResponse.gpStatusResponse
-import com.nohjason.minari.screens.profile.DummyGpsStatusResponse.gpsStatusResponse
-import com.nohjason.minari.screens.profile.DummyGpseStatusResponse.gpseStatusResponse
-import com.nohjason.minari.screens.profile.DummyTermStatusResponse.termStatusResponse
 import com.nohjason.minari.screens.profile.ProfileViewModel
 import com.nohjason.minari.screens.profile.name_style.Style
 import com.nohjason.minari.screens.rout.Grape
 import com.nohjason.minari.screens.rout.Grapes
 import com.nohjason.minari.screens.rout.Rout
-import com.nohjason.myapplication.network.MainViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.nohjason.minari.TestScreen
-import com.nohjason.minari.screens.quiz.QuizeViewModel
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
-import com.nohjason.minari.screens.quiz.quiz_end.QuizEndScreen
 import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
 import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.quiz_play.SeletO
@@ -70,24 +48,24 @@ fun NavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Test.FirstScreen.rout,
+        startDestination = Screens.FirstScreen.rout,
     ) {
 
-        composable(Test.FirstScreen.rout) {
+        composable(Screens.FirstScreen.rout) {
             LoginScreen(
                 navController = navController,
             )
         }
 
         composable(
-            route = Test.LastSignup.rout,
+            route = Screens.LastSignup.rout,
         ) {
             SelfSignUpLastScreen(
                 navController = navController
             )
         }
 
-        composable(Test.Login.rout) {
+        composable(Screens.Login.rout) {
             SelfLoginScreen(navController = navController, loginViewModel = loginViewModel)
         }
 
@@ -108,6 +86,7 @@ fun NavGraph(
             )
         }
 
+        // 퀴즈
         composable(BottomScreen.Quiz.rout) {
             QuizMainScreen(navHostController = navController)
         }
@@ -115,22 +94,12 @@ fun NavGraph(
         // 프로필
         composable(BottomScreen.Profile.rout) {
             ProfileMAinScreen(
-//                profileData = data,
                 navController = navController
             )
         }
 
-        composable("myDirectory") {
-            DirecScreen(
-                term = termStatusResponse,
-                gpse = gpseStatusResponse,
-                gps = gpsStatusResponse,
-                gp = gpStatusResponse
-            )
-        }
-
         // 포도알
-        composable(Test.Grapes.rout + "/{id}") { backStackEntry ->
+        composable(Screens.Grapes.rout + "/{id}") { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id") ?: "0"
             Grapes(
                 id = id.toInt(),
@@ -139,7 +108,7 @@ fun NavGraph(
         }
 
         // 포도씨
-        composable(Test.Grape.rout + "/{id}/{title}") { backStackEntry ->
+        composable(Screens.Grape.rout + "/{id}/{title}") { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id") ?: "0"
             val title = backStackEntry.arguments?.getString("title") ?: ""
             Grape(
@@ -148,19 +117,15 @@ fun NavGraph(
                 title = title,
             )
         }
-        composable("test/{text}") { backStackEntry ->
-            val text = backStackEntry.arguments?.getString("text") ?: ""
-            Test(text, navController = navController)
-        }
 
-        composable("InProduction/{title}/{value}") { backStackEntry ->
-            val title = backStackEntry.arguments?.getString("title") ?: ""
-            val value = backStackEntry.arguments?.getString("value") ?: ""
-            InProduction(title = title, value = value)
+        // 용어
+        composable(Screens.Term.rout + "/{text}") { backStackEntry ->
+            val text = backStackEntry.arguments?.getString("text") ?: ""
+            TermScreen(text, navController = navController)
         }
 
         // 칭호
-        composable(Test.Style.rout) {
+        composable(Screens.Style.rout) {
             Style(
                 navController = navController,
             )
@@ -207,7 +172,7 @@ fun NavGraph(
 
         // 로그인
         composable(
-            route = Test.Signup.rout,
+            route = Screens.Signup.rout,
             enterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { fullWidth -> fullWidth },
@@ -224,8 +189,16 @@ fun NavGraph(
             SelfSignUpScreen(
                 navController = navController
             )
+        }
+        composable(
+            route = Screens.Question.rout,
+        ) {
+            Questionnaire(
+                navController = navController
+            )
+        }
 
-//        composable(
+        //        composable(
 //            route = "quizplay/{playDataJson}",  // 경로 정의
 //            arguments = listOf(navArgument("playDataJson") { type = NavType.StringType })  // 인자 설정
 //        ) { backStackEntry ->
@@ -237,14 +210,5 @@ fun NavGraph(
 //            composable(BottomScreen.Quiz.rout) {
 //                TestScreen()
 //            }
-
-            composable(
-                route = Test.Question.rout,
-            ) {
-                Questionnaire(
-                    navController = navController
-                )
-            }
-        }
     }
 }

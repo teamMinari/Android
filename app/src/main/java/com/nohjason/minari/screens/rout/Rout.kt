@@ -42,9 +42,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomScreen
+import com.nohjason.minari.network.response.rout.GpsData
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
-import com.nohjason.minari.screens.login.Test
+import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.pretendard_extra_bold
 import com.nohjason.minari.ui.theme.pretendard_medium
@@ -95,10 +96,29 @@ fun Rout(
                 )
             }
         }
+//        val list: List<GpsData> = createDummyGpsData()
+//        items(list) { item ->
+//            Gps(
+//                onClick = { navController.navigate(Test.Grapes.rout+"/0") },
+//                iconClick = { /*TODO*/ },
+//                like = item.gpsLike,
+//                name = item.gpsName,
+//                time = item.gpsTime,
+//                content = item.gpsContent,
+//                list = item.gpTpList
+//            )
+//        }
         if (route != null) {
+            if (route!!.data.size == 0) {
+                item {
+                    Box(modifier = Modifier.fillParentMaxWidth()) {
+                        Text(text = "아직 없음", modifier = Modifier.align(Alignment.Center))
+                    }
+                }
+            }
             items(route!!.data) { item ->
                 Gps(
-                    onClick = { navController.navigate(Test.Grapes.rout + "/${item.gpsId}") },
+                    onClick = { navController.navigate(Screens.Grapes.rout + "/${item.gpsId}") },
                     iconClick = { viewModel.likes(token, "GRAPES", item.gpsId) },
                     like = item.gpsLike,
                     name = item.gpsName,
@@ -109,12 +129,25 @@ fun Rout(
             }
         } else {
             item {
-                Box(modifier = Modifier.fillMaxSize()) {
+                Box(modifier = Modifier.fillParentMaxWidth()) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
         }
     }
+}
+
+fun createDummyGpsData(): List<GpsData> {
+    return listOf(
+        GpsData(
+            gpsId = 1,
+            gpsName = "돈이 움직이는 세상",
+            gpsContent = "",
+            gpsTime = 10,
+            gpsLike = false,
+            gpTpList = listOf("BEGINNER")
+        )
+    )
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -128,7 +161,6 @@ fun Gps(
     content: String,
     list: List<String>
 ) {
-    Log.d("TAG", "Rout: ${like}")
     Card(
         shape = RoundedCornerShape(16.dp),
         elevation = 4.dp,

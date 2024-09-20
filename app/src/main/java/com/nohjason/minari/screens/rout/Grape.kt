@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
@@ -23,6 +24,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,9 +35,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import com.mohamedrejeb.richeditor.ui.material3.RichText
 import com.nohjason.minari.R
@@ -113,7 +120,8 @@ fun Grape(
                                     .background(Color(0xFF5DC067))
                             ) {
                                 Text(
-                                    text = "${gpse!!.data.gpseExp}xp",
+//                                    text = "${gpse!!.data.gpseExp}xp",
+                                    text = "20xp",
                                     fontSize = 10.sp,
                                     fontFamily = pretendard_bold,
                                     color = Color.White,
@@ -130,12 +138,14 @@ fun Grape(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = gpse!!.data.gpseName,
+//                                text = gpse!!.data.gpseName,
+                                text = "소개",
                                 fontFamily = pretendard_bold,
                                 fontSize = 23.sp
                             )
                             Spacer(modifier = Modifier.width(10.dp))
-                            Text(text = "${gpse!!.data.gpseTime}분")
+//                            Text(text = "${gpse!!.data.gpseTime}분")
+                            Text(text = "2분")
                             Spacer(modifier = Modifier.weight(0.1f))
                             Icon(
                                 painter = painterResource(id = R.drawable.book_mark),
@@ -143,9 +153,10 @@ fun Grape(
                                 modifier = Modifier
                                     .size(20.dp)
                                     .clickable {
-                                        grapeViewModel.likes(token, "GRAPESEED", gpseId)
+//                                        grapeViewModel.likes(token, "GRAPESEED", gpseId)
                                     },
-                                tint = if (gpse!!.data.gpseLike) MinariBlue else Color.Gray
+                                tint = Color.Gray
+//                                tint = if (gpse!!.data.gpseLike) MinariBlue else Color.Gray
                             )
                         }
                     }
@@ -155,32 +166,38 @@ fun Grape(
                         modifier = Modifier
                             .background(Color.White)
                             .fillMaxWidth()
-                            .padding(20.dp)
+                            .padding(25.dp)
                     ) {
-//                        Text(
-//                            text = "청소년 경제를 알아야하는 이유를 알아봅시다.",
-//                            fontSize = 15.sp,
-//                            fontFamily = pretendard_semibold
+//                        val richTextState = rememberRichTextState()
+//                        val markdown = "경제란 무엇일까요?\n" +
+//                                "\n" +
+//                                "경제란 인간의 공동생활을 위한 물적 기초가 되는 재화와 용역을 생산 · 분배 · 소비하는 활동과 그것을 통하여 형성되는 사회관계의 총체를 가리키는 용어입니다. [[1]](https://encykorea.aks.ac.kr/Article/E0002781)\n" +
+//                                "\n" +
+//                                "이렇게 많은 제도들을 활용하여 돈을 저축하기만 하는것이 아니라\n" +
+//                                "\n" +
+//                                "현명하게 불릴 수 있는 능력이 있어야 합니다.\n" +
+//                                "\n" +
+//                                "이번 포도송이 에서는 경제에 대한 기본지식도 배우지만, 뱡금 같은 예시처럼 스스로 자산을 운용할 수 있는 기초지식을 중점으로 다룹니다."
+//
+//                        RichText(
+//                            state = richTextState.setMarkdown(markdown),
 //                        )
-//                        Text(
-//                            text = gpse!!.data.gpseContent,
-//                            fontSize = 13.sp,
-//                            fontFamily = pretendard_medium
-//                        )
-                        val richTextState = rememberRichTextState()
-                        val markdown = gpse!!.data.gpseContent
-                        RichText(
-                            state = richTextState.setMarkdown(markdown),
+                        val text = "[[경제]](https://encykorea.aks.ac.kr/Article/E0002781)란 무엇일까요?\n\n경제란 인간의 공동생활을 위한 물적 기초가 되는 재화와 용역을 생산 · 분배 · 소비하는 활동과 그것을 통하여 형성되는 사회관계의 총체를 가리키는 용어입니다.\n\n이렇게 많은 제도들을 활용하여 돈을 저축하기만 하는것이 아니라 \n\n[[현명]](https://encykorea.aks.ac.kr/Article/E0002781)하게 불릴 수 있는 능력이 있어야 합니다.\n\n이번 포도송이 에서는 경제에 대한 기본지식도 배우지만, 뱡금 같은 예시처럼 스스로 자산을 운용할 수 있는 기초지식을 중점으로 다룹니다."
+                        ClickableReferenceText(
+                            text = text,
+                            onClick = { clickedText ->
+                                Log.d("ClickableReferenceText", "Clicked: $clickedText")
+                            }
                         )
                     }
                 }
                 item {
                     val quize by quizeViewModel.quize.collectAsState()
                     LaunchedEffect(key1 = Unit) {
-                        quizeViewModel.getQuize(
-                            token = token,
-                            quizeId = gpse!!.data.gpseQtId
-                        )
+//                        quizeViewModel.getQuize(
+//                            token = token,
+//                            quizeId = gpse!!.data.gpseQtId
+//                        )
                         Log.d("TAG", "quize: ${quize}")
                     }
                     if (quize != null) {
@@ -265,8 +282,66 @@ fun Grape(
     }
 }
 
-//@Preview
-//@Composable
-//private fun Test() {
-//    Grape(navController = rememberNavController(), gpseId = 0, title = "test")
-//}
+@Composable
+fun ClickableReferenceText(
+    text: String,
+    modifier: Modifier = Modifier,
+    linkColor: Color = MaterialTheme.colorScheme.primary,
+    onClick: (String) -> Unit = {}
+) {
+    val TAG = "TAG"
+
+    // 정규 표현식: [[링크 텍스트]](URL) 패턴 정의
+    val pattern = "\\[\\[(.*?)]]\\(https?://[^)]+\\)".toRegex()
+
+    // 링크 텍스트를 추출하고 나머지 텍스트를 변환
+    val extractedTexts = mutableListOf<String>()
+    val resultText = pattern.replace(text) { matchResult ->
+        val linkText = matchResult.groups[1]?.value.orEmpty()
+        extractedTexts.add(linkText)
+        linkText // [[링크 텍스트]]를 링크 텍스트로 변환
+    }
+
+    // 텍스트 나누기 및 AnnotatedString 생성
+    val annotatedText = buildAnnotatedString {
+        var currentIndex = 0
+
+        extractedTexts.forEach { keyword ->
+            val keywordIndex = resultText.indexOf(keyword, currentIndex)
+            if (keywordIndex >= 0) {
+                // 키워드 이전의 텍스트 추가
+                append(resultText.substring(currentIndex, keywordIndex))
+                // 키워드에 스타일 추가 및 클릭 이벤트 처리
+                pushStringAnnotation(tag = "ClickText", annotation = keyword)
+                withStyle(style = SpanStyle(color = linkColor)) {
+                    append(keyword)
+                }
+                pop()
+                currentIndex = keywordIndex + keyword.length
+            }
+        }
+
+        // 남은 텍스트 추가
+        if (currentIndex < resultText.length) {
+            append(resultText.substring(currentIndex))
+        }
+    }
+
+    // ClickableText 사용하여 텍스트와 클릭 이벤트 처리
+    ClickableText(
+        text = annotatedText,
+        modifier = modifier,
+        onClick = { offset ->
+            annotatedText.getStringAnnotations(tag = "ClickText", start = offset, end = offset)
+                .firstOrNull()?.let { annotation ->
+                    onClick(annotation.item) // 클릭된 텍스트에 대해 onClick 처리
+                }
+        }
+    )
+}
+
+@Preview
+@Composable
+private fun Test() {
+    Grape(navController = rememberNavController(), gpseId = 0, title = "test")
+}
