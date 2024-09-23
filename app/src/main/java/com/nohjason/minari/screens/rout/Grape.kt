@@ -120,7 +120,6 @@ fun Grape(
                                     .background(Color(0xFF5DC067))
                             ) {
                                 Text(
-//                                    text = "${gpse!!.data.gpseExp}xp",
                                     text = "20xp",
                                     fontSize = 10.sp,
                                     fontFamily = pretendard_bold,
@@ -138,13 +137,11 @@ fun Grape(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-//                                text = gpse!!.data.gpseName,
                                 text = "소개",
                                 fontFamily = pretendard_bold,
                                 fontSize = 23.sp
                             )
                             Spacer(modifier = Modifier.width(10.dp))
-//                            Text(text = "${gpse!!.data.gpseTime}분")
                             Text(text = "2분")
                             Spacer(modifier = Modifier.weight(0.1f))
                             Icon(
@@ -153,10 +150,9 @@ fun Grape(
                                 modifier = Modifier
                                     .size(20.dp)
                                     .clickable {
-//                                        grapeViewModel.likes(token, "GRAPESEED", gpseId)
+                                        grapeViewModel.likes(token, "GRAPESEED", gpseId)
                                     },
-                                tint = Color.Gray
-//                                tint = if (gpse!!.data.gpseLike) MinariBlue else Color.Gray
+                                tint = if (gpse!!.data.gpseLike) MinariBlue else Color.Gray,
                             )
                         }
                     }
