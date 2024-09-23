@@ -8,12 +8,14 @@ import com.nohjason.minari.screens.profile.DirecGpsResponse
 import com.nohjason.minari.screens.profile.DirecGpseResponse
 import com.nohjason.minari.screens.profile.DirecTermResponse
 import com.nohjason.minari.screens.profile.ProfileResponse
+import com.nohjason.minari.screens.quiz.data.QuestionResponse
 import com.nohjason.myapplication.network.response.Term
 import com.nohjason.myapplication.network.response.TermResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -55,50 +57,56 @@ interface ApiService {
 //    ): Response<Void>
 //
 
+    @GET("/questions/level/{level}")
+    suspend fun getQuestion(
+        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
+        @Path("level") level: Int
+    ): QuestionResponse
+
     @GET("/terms/all")
     suspend fun getTerms(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA2MjA3MTYsImV4cCI6MTcyMDcwNzExNn0.HB5DqAsVW82Gke00pFnMH8SY0SbMjyJhuY0GKKxcbbA",
+        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
     ): List<TermResponse>
 
     @GET("/terms")
     suspend fun getOneTerm(
         @Query("termNm") termNm: String,
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA2MjA3MTYsImV4cCI6MTcyMDcwNzExNn0.HB5DqAsVW82Gke00pFnMH8SY0SbMjyJhuY0GKKxcbbA",
+        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
     ): Term
 
     @PATCH("/likes/toggle")
     suspend fun addDeleteTerm(
+        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
         @Query("word") word: String,
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA2MjA3MTYsImV4cCI6MTcyMDcwNzExNn0.HB5DqAsVW82Gke00pFnMH8SY0SbMjyJhuY0GKKxcbbA",
     ): AddDeleteTerm
 
     @GET("/likes/my")
     suspend fun getBookTerms(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA2MjA3MTYsImV4cCI6MTcyMDcwNzExNn0.HB5DqAsVW82Gke00pFnMH8SY0SbMjyJhuY0GKKxcbbA"
+        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
     ): BookResponse
 
     @GET("/member/profile")
     suspend fun getProfile(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYxOTUxOTEsImV4cCI6MTcyNjI4MTU5MX0.sx13Li5n1lugQxUZjmQRJCZhZrsCRojIUqqIYuAss5A"
+        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
     ): ProfileResponse
 
     @GET("/likes/term")
     suspend fun getDiercTerm(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYxOTUxOTEsImV4cCI6MTcyNjI4MTU5MX0.sx13Li5n1lugQxUZjmQRJCZhZrsCRojIUqqIYuAss5A"
+        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
     ): DirecTermResponse
 
     @GET("/likes/gpse")
     suspend fun getGpse(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYxOTUxOTEsImV4cCI6MTcyNjI4MTU5MX0.sx13Li5n1lugQxUZjmQRJCZhZrsCRojIUqqIYuAss5A"
+        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
     ): DirecGpseResponse
 
     @GET("/likes/gps")
     suspend fun getGps(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYxOTUxOTEsImV4cCI6MTcyNjI4MTU5MX0.sx13Li5n1lugQxUZjmQRJCZhZrsCRojIUqqIYuAss5A"
+        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
     ): DirecGpsResponse
 
     @GET("/likes/gp")
     suspend fun getGp(
-        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYxOTUxOTEsImV4cCI6MTcyNjI4MTU5MX0.sx13Li5n1lugQxUZjmQRJCZhZrsCRojIUqqIYuAss5A"
+        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
     ): DirecGpResponse
 }

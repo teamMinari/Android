@@ -1,6 +1,8 @@
 package com.nohjason.minari.navigation
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -27,23 +29,21 @@ import com.nohjason.minari.screens.inproduct.InProduction
 import com.nohjason.minari.screens.login.LoginScreen
 import com.nohjason.minari.screens.login.UI.SelfLoginScreen
 import com.nohjason.minari.screens.login.UI.SelfSingUpScreen
-import com.nohjason.minari.screens.quiz.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
-import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
 import com.nohjason.minari.screens.term.Term
 import com.nohjason.minari.screens.term.Test
 import com.nohjason.myapplication.network.MainViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nohjason.minari.screens.profile.DirecScreen
-import com.nohjason.minari.screens.profile.DummyGpStatusResponse.gpStatusResponse
-import com.nohjason.minari.screens.profile.DummyGpsStatusResponse.gpsStatusResponse
-import com.nohjason.minari.screens.profile.DummyGpseStatusResponse.gpseStatusResponse
-import com.nohjason.minari.screens.profile.DummyProfileData
-import com.nohjason.minari.screens.profile.DummyTermStatusResponse.termStatusResponse
 import com.nohjason.minari.screens.profile.ProfileMAinScreen
 import com.nohjason.minari.screens.profile.ProfileViewModel
 import com.nohjason.minari.screens.profile.alias.AliasScreen
 import com.nohjason.minari.screens.profile.directory.DirecViewModel
+import com.nohjason.minari.screens.quiz.QuizMainScreen
+import com.nohjason.minari.screens.quiz.quiz_end.QuizEndScreen
+import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
+import com.nohjason.minari.screens.quiz.quiz_play.SeletO
+import com.nohjason.minari.screens.quiz.quiz_play.SeletX
 import kotlinx.coroutines.launch
 
 
@@ -68,6 +68,7 @@ fun NavGraph(
 
 
     val profileViewModel: ProfileViewModel = viewModel()
+    val quizViewModel: QuizViewModel = viewModel()
     val direcViewModel: DirecViewModel = viewModel()
     LaunchedEffect(Unit) {
         direcViewModel.getGpse()
@@ -77,6 +78,7 @@ fun NavGraph(
     }
 //    val data by profileViewModel.profileData.collectAsState()
     val data = profileViewModel.profileData.collectAsState().value
+
 
 
 
@@ -96,7 +98,7 @@ fun NavGraph(
             HomeScreen(navController = navController)
         }
         composable(BottomBarScreen.Quiz.rout) {
-            //
+            QuizMainScreen(navHostController = navController)
         }
         composable(BottomBarScreen.Profile.rout) {
 //            println(data)
@@ -147,25 +149,55 @@ fun NavGraph(
 
 
         //퀴즈
-        composable("quizplay") {
-            // ViewModel 인스턴스 가져오기
-//            val quizViewModel: QuizViewModel = viewModel()
-//            println(quizViewModel.playData)
-//
-//            // playData가 null이 아닌지 확인 후 전달
-//            quizViewModel.playData?.let { playData ->
-//                QuizPlayScreen(qestion = playData)
-//            }
+        composable(
+            "quizplay",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
+                )
+            }
+        ) {
+            // playData가 null이 아닌지 확인 후 전달
+            QuizPlayScreen(navHostController = navController, quizViewModel = quizViewModel)
         }
 
-//        composable(
-//            route = "quizplay/{playDataJson}",  // 경로 정의
-//            arguments = listOf(navArgument("playDataJson") { type = NavType.StringType })  // 인자 설정
-//        ) { backStackEntry ->
-//            val playDataJson = backStackEntry.arguments?.getString("playDataJson")  // 전달된 JSON 데이터를 추출
-//            val playData = Gson().fromJson(playDataJson, PlayData::class.java)  // JSON 데이터를 PlayData 객체로 변환
-//            QuizPlayScreen(question = playData)  // QuizPlayScreen에 변환된 데이터를 전달
-//        }
+        composable(
+            route = "Select_O",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
+                )
+            }
+        ) {
+            SeletO(navHostController = navController, quizViewModel = quizViewModel)
+        }
+
+        composable(
+            "Select_X",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
+                )
+            }
+        ){
+            SeletX(navHostController = navController, quizViewModel = quizViewModel)
+        }
+
+        composable(
+            "End",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
+                )
+            }
+
+        ) { backStackEntry ->
+            QuizEndScreen(quizViewModel = quizViewModel, navController = navController)
+        }
 
 
 

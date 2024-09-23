@@ -2,6 +2,7 @@ package com.nohjason.minari.screens.quiz.quiz_end
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,7 +26,8 @@ import com.nohjason.minari.R
 @Composable
 fun TitleBar(
     title: String? = null,
-    imgResId: Int? = null
+    imgResId: Int? = null,
+    onClick: (() -> Unit)? = null
 ){
     Row (
         modifier = Modifier
@@ -49,7 +51,8 @@ fun TitleBar(
             Icon(
                 modifier = Modifier
                     .width(12.dp)
-                    .height(18.dp),
+                    .height(18.dp)
+                    .clickable { onClick },
                 painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = null,
                 tint = Color.Unspecified
@@ -60,8 +63,7 @@ fun TitleBar(
                     contentDescription = null,
                     modifier = Modifier
                         .padding(start = 25.dp)
-                        .size(24.dp),
-                    tint = Color.Unspecified
+                        .size(24.dp)
                 )
             }
             if (title != null){
