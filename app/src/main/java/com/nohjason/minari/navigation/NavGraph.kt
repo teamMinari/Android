@@ -98,7 +98,7 @@ fun NavGraph(
             HomeScreen(navController = navController)
         }
         composable(BottomBarScreen.Quiz.rout) {
-            QuizMainScreen(navHostController = navController)
+            QuizMainScreen(navHostController = navController, quizViewModel = quizViewModel)
         }
         composable(BottomBarScreen.Profile.rout) {
 //            println(data)

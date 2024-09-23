@@ -46,7 +46,6 @@ fun QuizMainScreen(
     quizViewModel: QuizViewModel = viewModel()
 ){
     val scrollState = rememberScrollState()
-    val coroutineScope = rememberCoroutineScope()//코루틴
 
     Column (
         Modifier
@@ -119,7 +118,6 @@ fun QuizMainScreen(
                 val dataList = selectPlayData(qestionAll = easyQuestionResponse)
                 quizViewModel.initializePlayData(data = dataList)
                 navHostController.navigate("quizplay")
-                println("메인화면에서 값 불러오기: "+ dataList)
 
                 //서버코드
 //                coroutineScope.launch {

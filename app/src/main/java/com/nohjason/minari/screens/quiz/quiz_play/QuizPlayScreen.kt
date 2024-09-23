@@ -43,7 +43,7 @@ fun QuizPlayScreen(
 ){
 
     val playData by quizViewModel.playData.collectAsState()
-    println("플레이화면 데이터확인 "+ playData)
+//    println("플레이화면 데이터확인 "+ playData)
 
     val qtNum = playData?.qtNum ?: 0
 

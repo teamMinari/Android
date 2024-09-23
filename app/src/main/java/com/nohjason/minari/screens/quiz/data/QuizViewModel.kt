@@ -20,7 +20,7 @@ class QuizViewModel : ViewModel() {
                 val response = apiService.getQuestion(
                     level =  level// 요청할 레벨
                 )
-                println("서버가 활성화됨"+response)
+//                println("서버가 활성화됨"+response)
                 response // 서버 응답 반환
             } catch (e: Exception) {
                 // 기타 예외 처리
