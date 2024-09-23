@@ -43,10 +43,13 @@ import com.nohjason.minari.screens.quiz.data.QuizViewModel
 fun QuizPlayScreen(
     navHostController: NavHostController,
     quizViewModel: QuizViewModel = viewModel()
-) {
+){
 
     val playData by quizViewModel.playData.collectAsState()
+//    println("플레이화면 데이터확인 "+ playData)
+
     val qtNum = playData?.qtNum ?: 0
+
     val qtContents = playData?.qtList?.getOrNull(qtNum)?.qtContents ?: "No content available"
     val qtTip = playData?.qtList?.getOrNull(qtNum)?.qtTip ?: "No tip available"
     val qtAnswer = playData?.qtList?.getOrNull(qtNum)?.qtAnswer ?: false
@@ -59,12 +62,12 @@ fun QuizPlayScreen(
             .fillMaxWidth()
             .fillMaxHeight(),
         contentAlignment = Alignment.Center
-    ) {
-        Column(
+    ){
+        Column (
             modifier = Modifier
                 .fillMaxHeight()
                 .fillMaxWidth(0.85f),
-        ) {
+        ){
 
             //문제-------------------------------
             Text(
@@ -84,10 +87,10 @@ fun QuizPlayScreen(
 
 
             //버튼---------------------------------------------------------------------------------------------
-            Row(
+            Row (
                 modifier = Modifier.padding(top = 20.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
+            ){
                 Button(
                     //x버튼
                     modifier = Modifier
@@ -101,9 +104,8 @@ fun QuizPlayScreen(
                         try {
                             quizViewModel.submitAnswer(userAnswer = false, correctAnswer = qtAnswer)
                             navHostController.navigate("Select_X")
-                        } catch (e: Exception) {
-                            Toast.makeText(context, "오류가 생겼습니다! 다시 시도해주세요.", Toast.LENGTH_SHORT)
-                                .show()
+                        } catch (e: Exception){
+                            Toast.makeText(context, "오류가 생겼습니다! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
                             navHostController.navigate(BottomScreen.Home.rout)
                         }
                     },
@@ -129,9 +131,8 @@ fun QuizPlayScreen(
                         try {
                             quizViewModel.submitAnswer(userAnswer = true, correctAnswer = qtAnswer)
                             navHostController.navigate("Select_O")
-                        } catch (e: Exception) {
-                            Toast.makeText(context, "오류가 생겼습니다! 다시 시도해주세요.", Toast.LENGTH_SHORT)
-                                .show()
+                        } catch (e: Exception){
+                            Toast.makeText(context, "오류가 생겼습니다! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
                             navHostController.navigate(BottomScreen.Home.rout)
                         }
                     }
@@ -147,13 +148,11 @@ fun QuizPlayScreen(
             }
 
             //해설-------------------------------
-            Row(
+            Row (
                 modifier = Modifier.padding(top = 20.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.emoji_tip),
-                    contentDescription = null, tint = Color.Unspecified
-                )
+            ){
+                Icon(painter = painterResource(id = R.drawable.emoji_tip),
+                    contentDescription = null, tint = Color.Unspecified)
                 Text(
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
@@ -167,3 +166,11 @@ fun QuizPlayScreen(
         }
     }
 }
+
+//@Preview(showBackground = true)
+//@Composable
+//fun PreQuizPlay(){
+//    QuizPlayScreen(
+//        qtArray = dummyQuestionDataList
+//    )
+//}

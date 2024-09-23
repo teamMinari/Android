@@ -47,4 +47,9 @@ sealed class Screens(
         rout = "term",
         title = "Term",
     )
+
+    data object QuizEndScreen : Screens(
+        rout = "quizend",
+        title = "QuizEnd",
+    )
 }

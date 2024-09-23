@@ -5,18 +5,20 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-//import com.google.android.gms.auth.api.signin.GoogleSignIn
-//import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-//import com.google.firebase.auth.ktx.auth
-//import com.google.firebase.ktx.Firebase
-//import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomScreen
+import com.nohjason.minari.preferences.getFromPreferences
+import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.login.screen.LoginScreen
 import com.nohjason.minari.screens.login.LoginViewModel
@@ -33,10 +35,14 @@ import com.nohjason.minari.screens.rout.Grape
 import com.nohjason.minari.screens.rout.Grapes
 import com.nohjason.minari.screens.rout.Rout
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
-import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
+import com.nohjason.minari.screens.profile.DirecScreen
+import com.nohjason.minari.screens.profile.alias.AliasScreen
+import com.nohjason.minari.screens.profile.directory.DirecViewModel
+import com.nohjason.minari.screens.quiz.quiz_end.QuizEndScreen
 import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.quiz_play.SeletO
 import com.nohjason.minari.screens.quiz.quiz_play.SeletX
+import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
 
 @SuppressLint("ComposableDestinationInComposeScope")
 @Composable
@@ -46,6 +52,24 @@ fun NavGraph(
     profileViewModel: ProfileViewModel = viewModel(),
     quizViewModel: QuizViewModel = viewModel()
 ) {
+    val preferences = getPreferences()
+    val token = getFromPreferences(preferences, "token")
+    val profileViewModel: ProfileViewModel = viewModel()
+    val quizViewModel: QuizViewModel = viewModel()
+    val direcViewModel: DirecViewModel = viewModel()
+    LaunchedEffect(Unit) {
+        direcViewModel.getGpse()
+        direcViewModel.getGps()
+        direcViewModel.getGp()
+        direcViewModel.getDorecTerm()
+    }
+    val context = LocalContext.current
+//    val data by profileViewModel.profileData.collectAsState()
+    val data = profileViewModel.profileData.collectAsState().value
+
+
+
+
     NavHost(
         navController = navController,
         startDestination = Screens.FirstScreen.rout,
@@ -79,6 +103,29 @@ fun NavGraph(
             News(navController = navController)
         }
 
+        composable("myDirectory") {
+            val termResponse = direcViewModel.termData.collectAsState().value
+            val gpseResponse = direcViewModel.gpseData.collectAsState().value
+            val gpsResponse = direcViewModel.gpsData.collectAsState().value
+            val gpResponse = direcViewModel.gpData.collectAsState().value
+            DirecScreen(
+                term = termResponse,
+                gpse = gpseResponse,
+                gps = gpsResponse,
+                gp = gpResponse
+            )
+        }
+
+        composable("myAlias") {
+            println(data)
+            if (data == null) {
+                HomeScreen(navController = navController)
+                Toast.makeText(context, "데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
+            } else {
+                AliasScreen(level = data.level, exp = data.exp)
+            }
+        }
+
         // 홈
         composable(BottomScreen.Home.rout) {
             HomeScreen(
@@ -88,14 +135,15 @@ fun NavGraph(
 
         // 퀴즈
         composable(BottomScreen.Quiz.rout) {
-            QuizMainScreen(navHostController = navController)
+            QuizMainScreen(navHostController = navController, quizViewModel = quizViewModel)
         }
 
         // 프로필
         composable(BottomScreen.Profile.rout) {
-            ProfileMAinScreen(
-                navController = navController
-            )
+            LaunchedEffect(Unit) {
+                profileViewModel.getProfile(token)
+            }
+            ProfileMAinScreen(navHostController = navController, profileData = data)
         }
 
         // 포도알
@@ -133,19 +181,6 @@ fun NavGraph(
 
 
         //퀴즈
-        composable(
-            "quizplay",
-            enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(500)
-                )
-            }
-        ) {
-            // playData가 null이 아닌지 확인 후 전달
-            QuizPlayScreen(navHostController = navController, quizViewModel = quizViewModel)
-        }
-
         composable(
             route = "Select_O",
             enterTransition = {
@@ -190,6 +225,20 @@ fun NavGraph(
                 navController = navController
             )
         }
+
+        composable(
+            "quizplay",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
+                )
+            }
+        ) {
+            // playData가 null이 아닌지 확인 후 전달
+            QuizPlayScreen(navHostController = navController, quizViewModel = quizViewModel)
+        }
+
         composable(
             route = Screens.Question.rout,
         ) {
@@ -198,17 +247,16 @@ fun NavGraph(
             )
         }
 
-        //        composable(
-//            route = "quizplay/{playDataJson}",  // 경로 정의
-//            arguments = listOf(navArgument("playDataJson") { type = NavType.StringType })  // 인자 설정
-//        ) { backStackEntry ->
-//            val playDataJson = backStackEntry.arguments?.getString("playDataJson")  // 전달된 JSON 데이터를 추출
-//            val playData = Gson().fromJson(playDataJson, PlayData::class.java)  // JSON 데이터를 PlayData 객체로 변환
-//            QuizPlayScreen(question = playData)  // QuizPlayScreen에 변환된 데이터를 전달
-//        }
-
-//            composable(BottomScreen.Quiz.rout) {
-//                TestScreen()
-//            }
+        composable(
+            Screens.QuizEndScreen.rout,
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
+                )
+            }
+        ) {
+            QuizEndScreen(quizViewModel = quizViewModel, navController = navController)
+        }
     }
 }

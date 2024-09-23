@@ -13,15 +13,18 @@ data class ProfileResponse(
     val totalExp: Int
 )
 
+data class TitleAndUrl(
+    val title: String,
+    val url: String
+)
+
 data class LikeList(
     val name: List<String>
 )
 
+// 새로운 형식으로 변경된 데이터 클래스들
 
-
-
-
-data class TermStatusResponse(
+data class DirecTermResponse(
     val status: Int,
     val message: String,
     val data: List<Term>
@@ -40,14 +43,11 @@ enum class TermDifficulty {
     LV_3
 }
 
-
-
-data class GpseStatusResponse(
+data class DirecGpseResponse(
     val status: Int,
     val message: String,
     val data: List<Gpse>
 )
-
 
 data class Gpse(
     val gpseId: Int,
@@ -56,7 +56,7 @@ data class Gpse(
     val gpseLike: Boolean
 )
 
-data class GpsStatusResponse(
+data class DirecGpsResponse(
     val status: Int,
     val message: String,
     val data: List<Gps>
@@ -70,10 +70,7 @@ data class Gps(
     val gpsTpList: List<String> // 문자열 리스트
 )
 
-
-
-
-data class GpStatusResponse(
+data class DirecGpResponse(
     val status: Int,
     val message: String,
     val data: List<Gp>

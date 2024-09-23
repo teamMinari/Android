@@ -25,7 +25,11 @@ import androidx.navigation.NavHostController
 import com.nohjason.minari.R
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
+import com.nohjason.minari.navigation.bottombar.BottomScreen
+import com.nohjason.minari.screens.profile.LikeList
+import com.nohjason.minari.screens.profile.ProfileResponse
 import com.nohjason.minari.screens.profile.ProfileViewModel
+import com.nohjason.minari.screens.profile.element.ProfileButton
 import com.nohjason.minari.screens.profile.element.ProfileInfor
 import com.nohjason.minari.screens.profile.element.RewardBar
 import com.nohjason.minari.screens.profile.likes.Dummy.likeDummy
@@ -33,8 +37,9 @@ import com.nohjason.minari.screens.profile.likes.LikeList
 
 @Composable
 fun ProfileMAinScreen(
-    navController: NavHostController,
-    profileViewModel: ProfileViewModel = viewModel()
+    profileViewModel: ProfileViewModel = viewModel(),
+    profileData: ProfileResponse?,
+    navHostController: NavHostController
 ) {
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
@@ -45,6 +50,7 @@ fun ProfileMAinScreen(
 
     if (data == null) {
         Text(text = "No profile data available")
+        return
     } else {
         val scrollState = rememberScrollState()
 
@@ -65,11 +71,11 @@ fun ProfileMAinScreen(
                 )
             }
             ProfileInfor(
-                id = data!!.id,
-                email = data!!.email,
-                totalExp = data!!.totalExp,
-                level = data!!.level,
-                title = data!!.title
+                id = profileData!!.id,
+                email = profileData.email,
+                totalExp = profileData.totalExp,
+                level = profileData.level,
+                title = profileData.title
             )
             Row(
                 modifier = Modifier.padding(top = 22.dp)
@@ -77,7 +83,7 @@ fun ProfileMAinScreen(
                 ProfileButton(
                     text = "칭호",
                     onClick = {
-                        //칭호화면 이동
+                        navHostController.navigate("myAlias")
                     }
                 )
                 Spacer(modifier = Modifier.width(5.dp))
@@ -91,9 +97,14 @@ fun ProfileMAinScreen(
             Spacer(modifier = Modifier.height(10.dp))
 
             val percentage = (50 / 100f)//exp구현 시 변경해야함
-            RewardBar(progress = percentage, xp = data!!.exp, level = data!!.level, horizontalPaddin = 30.dp)
-            LikeList(likeList = likeDummy, navHostController = navController)
+            RewardBar(
+                progress = percentage,
+                xp = profileData.exp,
+                level = profileData.level
+            )
+            LikeList(likeList = likeDummy, navHostController = navHostController)
             Spacer(modifier = Modifier.height(25.dp))
         }
+
     }
 }

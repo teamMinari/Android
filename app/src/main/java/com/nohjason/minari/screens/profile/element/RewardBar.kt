@@ -33,19 +33,19 @@ import com.nohjason.minari.screens.profile.WebLink
 
 @Composable
 fun RewardBar(
-    horizontalPaddin: Dp = 20.dp,
+//    horizontalPaddin: Dp = 20.dp,
     progress: Float, // 0f to 1f
     xp: Int,
     level:Int
 ) {
     val webLink = WebLink()
-    val getWebLink = webLink.getUrlForLevel(level)
+    val getWebLink = webLink.getTitleAndUrlForLevel(level)
 
 
     Box(
         modifier = Modifier
 //            .width(340.dp)
-            .padding(horizontal = horizontalPaddin)
+            .padding(horizontal = 25.dp)
             .fillMaxWidth()
             .wrapContentHeight()
             .clip(RoundedCornerShape(20.dp))
@@ -120,7 +120,7 @@ fun RewardBar(
                 ) {
 
                     AsyncImage(
-                        model = getWebLink,
+                        model = getWebLink.url,
                         contentDescription =null,
                         modifier = Modifier
                             .width(40.dp)

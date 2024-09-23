@@ -13,6 +13,10 @@ import com.nohjason.minari.screens.login.response.LoginRequest
 import com.nohjason.minari.screens.login.response.LoginResponse
 import com.nohjason.minari.screens.login.response.RegisterRequest
 import com.nohjason.minari.screens.login.response.RegisterResponse
+import com.nohjason.minari.screens.profile.DirecGpResponse
+import com.nohjason.minari.screens.profile.DirecGpsResponse
+import com.nohjason.minari.screens.profile.DirecGpseResponse
+import com.nohjason.minari.screens.profile.DirecTermResponse
 import com.nohjason.minari.screens.rout.response.GetAllNews
 import com.nohjason.minari.screens.rout.response.LikesResponse
 import com.nohjason.minari.screens.profile.ProfileResponse
@@ -42,6 +46,7 @@ interface ApiService {
 
     @PATCH("/likes/toggle")
     suspend fun addDeleteTerm(
+        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
         @Query("word") word: String,
         @Header("Authorization") token: String
     ): AddDeleteTerm
@@ -136,9 +141,23 @@ interface ApiService {
         @Path("level") level: Int
     ): QuestionResponse
 
-//    @GET("/member/{memberId}/givePoint")
-//    suspend fun postPoint(
-//        @Header("Authorization") token: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX0FETUlOIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MjA2MjA3MTYsImV4cCI6MTcyMDcwNzExNn0.HB5DqAsVW82Gke00pFnMH8SY0SbMjyJhuY0GKKxcbbA",
-//        @Path("memberId") memberId: String
-//    ): PointResponse
+    @GET("/likes/term")
+    suspend fun getDiercTerm(
+        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
+    ): DirecTermResponse
+
+    @GET("/likes/gpse")
+    suspend fun getGpse(
+        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
+    ): DirecGpseResponse
+
+    @GET("/likes/gps")
+    suspend fun getGps(
+        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
+    ): DirecGpsResponse
+
+    @GET("/likes/gp")
+    suspend fun getGp(
+        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
+    ): DirecGpResponse
 }

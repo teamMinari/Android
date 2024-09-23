@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
 
-
 class QuizViewModel : ViewModel() {
+
     suspend fun getQuestion(level: Int): QuestionResponse {
         // Retrofit 인스턴스를 가져옴
         val apiService = RetrofitInstance.api
@@ -20,7 +20,7 @@ class QuizViewModel : ViewModel() {
                 val response = apiService.getQuestion(
                     level =  level// 요청할 레벨
                 )
-                println(response)
+//                println("서버가 활성화됨"+response)
                 response // 서버 응답 반환
             } catch (e: Exception) {
                 // 기타 예외 처리
@@ -50,9 +50,10 @@ class QuizViewModel : ViewModel() {
     }
 
 
-    // PlayData를 관리하기 위한 상태(데이터 저장같은 느낌..?)
+    // PlayData를 관리하기 위한 상태
     private val _playData = MutableStateFlow<PlayData?>(null)
     val playData: StateFlow<PlayData?> = _playData
+
 
     // PlayData 초기화 함수
     fun initializePlayData(data: PlayData) {
@@ -65,10 +66,6 @@ class QuizViewModel : ViewModel() {
             val newQtNum = data.qtNum + 1
             if (newQtNum < data.qtList.size) {
                 _playData.value = data.copy(qtNum = newQtNum)
-            } else {
-                // 모든 문제를 다 푼 경우
-                // 서버 연결 후 포인트 전달
-                // 예를 들어: playData.value = data.copy(qtNum = data.qtList.size) // 리스트의 끝을 표시
             }
         }
     }
@@ -98,3 +95,5 @@ class QuizViewModel : ViewModel() {
         }
     }
 }
+
+

@@ -1,6 +1,7 @@
 package com.nohjason.minari.screens.quiz.quiz_play
 
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,13 +32,16 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nohjason.minari.R
+import com.nohjason.minari.navigation.bottombar.BottomScreen
+import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun SeletO(
     navHostController: NavHostController,
     quizViewModel: QuizViewModel = viewModel()
-){
+) {
     val playData = quizViewModel.playData.value
 
     val qtNum = playData?.qtNum ?: 0
@@ -52,12 +56,12 @@ fun SeletO(
             .fillMaxWidth()
             .fillMaxHeight(),
         contentAlignment = Alignment.Center
-    ){
-        Column (
+    ) {
+        Column(
             modifier = Modifier
                 .fillMaxHeight()
                 .fillMaxWidth(0.85f),
-        ){
+        ) {
 
             //문제-------------------------------
             Text(
@@ -77,10 +81,10 @@ fun SeletO(
 
 
             //버튼---------------------------------------------------------------------------------------------
-            Row (
+            Row(
                 modifier = Modifier.padding(top = 20.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ){
+            ) {
                 Button(
                     //x버튼
                     modifier = Modifier
@@ -127,19 +131,21 @@ fun SeletO(
             }
 
             //해설-------------------------------
-            Row (
+            Row(
                 modifier = Modifier.padding(top = 20.dp)
-            ){
-                Icon(painter = painterResource(id = R.drawable.emoji_tip),
-                    contentDescription = null, tint = Color.Unspecified)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.emoji_tip),
+                    contentDescription = null, tint = Color.Unspecified
+                )
                 //함수값
-                if(qtAnswer == true){
+                if (qtAnswer == true) {
                     Text(
                         text = "정답",
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp
                     )
-                } else{
+                } else {
                     Text(
                         text = "오답",
                         fontWeight = FontWeight.Bold,
@@ -163,9 +169,9 @@ fun SeletO(
                 containerColor = Color(0xFF363CD5)
             ),
             onClick = {
-                if(qtNum+2 > qtSize){
-                    navHostController.navigate("End")
-                }else{
+                if (qtNum + 2 > qtSize) {
+                    navHostController.navigate(Screens.QuizEndScreen.rout)
+                } else {
                     quizViewModel.nextQuestion()
                     navHostController.navigate("quizplay")
                 }

@@ -38,20 +38,20 @@ fun TutorialList(
             .fillMaxWidth()
             .background(Color.White)
     ){
-        Text(
-            text = "튜토리얼",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 23.dp, top = 15.dp, start = 20.dp)
-        )
+        if (gpseItem != null || gpsItem != null || gpItem != null) {
+            Text(
+                text = "튜토리얼",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 23.dp, top = 15.dp, start = 20.dp)
+            )
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (gpseItem != null || gpsItem != null || gpItem != null) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 // gpsItem
                 gpsItem?.let {
                     it.forEachIndexed { index, data ->

@@ -49,7 +49,6 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun QuizMainScreen(
-//    qtAll: QuestionResponse,
     navHostController: NavHostController,
     quizViewModel: QuizViewModel = viewModel()
 ) {
@@ -58,6 +57,7 @@ fun QuizMainScreen(
 
     Column(
         Modifier
+            .fillMaxSize()
             .background(color = Color(0xFFF5F6FA))
             .verticalScroll(scrollState)
             .fillMaxSize()
@@ -65,50 +65,53 @@ fun QuizMainScreen(
         verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        Row(
-            modifier = Modifier.fillMaxWidth()
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
         ) {
-            Spacer(modifier = Modifier.weight(0.1f))
+            //트로피
             IconButton(
                 onClick = { /*TODO*/ },
+                modifier = Modifier.padding(start = 300.dp, top = 5.dp)
             ) {
                 Icon(
                     modifier = Modifier
                         .width(40.dp)
-                        .height(40.dp)
-                        .padding(2.dp),
+                        .height(40.dp),
                     painter = painterResource(id = R.drawable.ic_noun),
                     contentDescription = null,
                     tint = Color.Unspecified
                 )
             }
-        }
-        Column {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .width(25.dp)
-                        .height(25.dp),
-                    painter = painterResource(id = R.drawable.quiz),
-                    contentDescription = null,
-                    tint = Color.Unspecified
-                )
+
+            //퀴즈
+            Column (
+                modifier = Modifier
+                    .padding(top = 40.dp, start = 28.dp)
+            ){
+                Row (verticalAlignment = Alignment.CenterVertically){
+                    Icon(
+                        modifier = Modifier
+                            .width(25.dp)
+                            .height(25.dp),
+                        painter = painterResource(id = R.drawable.quiz),
+                        contentDescription = null,
+                        tint = Color.Unspecified
+                    )
+                    Text(
+                        text = "Quiz",
+                        fontWeight = FontWeight.ExtraBold,
+                        color = MinariBlue,
+                        fontSize = 30.sp
+                    )
+                }
                 Text(
-                    text = "Quiz",
-                    fontWeight = FontWeight.ExtraBold,
-                    color = MinariBlue,
-                    fontSize = 30.sp
+                    text = "총 3개의 난이도",
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 13.sp
                 )
-                Spacer(modifier = Modifier.weight(0.1f))
             }
-            Text(
-                text = "총 3개의 난이도",
-                fontWeight = FontWeight.Medium,
-                fontSize = 13.sp
-            )
+
         }
         Spacer(modifier = Modifier.height(30.dp))
         QuizButton(
@@ -116,13 +119,15 @@ fun QuizMainScreen(
             imgResId = R.drawable.img_easy,
             color1 = Color(0xFF6889FF),
             color2 = Color(0xFFFF64F5),
-            lavel = "LV_1",
+            lavel ="LV_1",
             coment = "제일 쉬운 난이도",
             onClick = {
+                //더미코드
                 val dataList = selectPlayData(qestionAll = easyQuestionResponse)
                 quizViewModel.initializePlayData(data = dataList)
                 navHostController.navigate("quizplay")
-//
+
+                //서버코드
 //                coroutineScope.launch {
 //                    val qtAll = quizViewModel.getQuestion(1)
 //
@@ -138,14 +143,15 @@ fun QuizMainScreen(
             imgResId = R.drawable.img_nomal,
             color1 = Color(0xFF6889FF),
             color2 = Color(0xFF23FF9C),
-            lavel = "LV_2",
+            lavel ="LV_2",
             coment = "공부 좀 했다면 이건 어떤가요?",
             onClick = {
+                //더미코드
                 val dataList = selectPlayData(qestionAll = nomalQuestionResponse)
                 quizViewModel.initializePlayData(data = dataList)
                 navHostController.navigate("quizplay")
 
-
+//                //서버코드
 //                coroutineScope.launch {
 //                    val qtAll = quizViewModel.getQuestion(1)
 //
@@ -155,20 +161,23 @@ fun QuizMainScreen(
 //                }
             },
         )
+
         Spacer(modifier = Modifier.height(30.dp))
         QuizButton(
             icResId = ImageVector.vectorResource(id = R.drawable.ic_hard),
             imgResId = R.drawable.img_hard,
             color1 = Color(0xFF6889FF),
             color2 = Color(0xFFFF3C52),
-            lavel = "LV_3",
+            lavel ="LV_3",
             coment = "이건 모를걸요!",
             onClick = {
+//                더미코드
                 val dataList = selectPlayData(qestionAll = hardQuestionResponse)
                 quizViewModel.initializePlayData(data = dataList)
                 navHostController.navigate("quizplay")
-//
-//
+
+
+//                //서버코드
 //                coroutineScope.launch {
 //                    val qtAll = quizViewModel.getQuestion(1)
 //
@@ -191,10 +200,4 @@ fun selectPlayData(qestionAll: QuestionResponse): PlayData {
         qtNum = 0,               // 첫 번째 문제부터 시작, 0으로 초기화
         qtList = qtSelected // 10개의 질문을 담은 리스트
     )
-}
-
-@Preview(showSystemUi = true)
-@Composable
-private fun Test() {
-    QuizMainScreen(rememberNavController())
 }
