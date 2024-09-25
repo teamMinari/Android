@@ -1,15 +1,12 @@
 package com.nohjason.minari.screens.profile.directory
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
@@ -20,18 +17,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nohjason.minari.screens.profile.Gp
-import com.nohjason.minari.screens.profile.Gps
-import com.nohjason.minari.screens.profile.Gpse
-import com.nohjason.minari.screens.profile.Term
-import com.nohjason.minari.screens.profile.TermDifficulty
-import com.nohjason.minari.screens.profile.likes.Like
+import com.nohjason.minari.screens.profile.directory.direc_cards.DirecGp
+import com.nohjason.minari.screens.profile.directory.direc_cards.DirecGps
+import com.nohjason.minari.screens.profile.directory.direc_cards.DirecGpse
+import com.nohjason.minari.screens.profile.directory.direc_cards.DirecTerm
 
 @Composable
 fun TutorialList(
-    gpseItem: List<Gpse>?,
-    gpsItem: List<Gps>?,
-    gpItem: List<Gp>?
+    gpseItem: List<DirecGpse>?,
+    gpsItem: List<DirecGps>?,
+    gpItem: List<DirecGp>?
 ){
     Column (
         modifier = Modifier
@@ -107,7 +102,7 @@ fun TutorialList(
 
 @Composable
 fun  TermList(
-    termItem:List<Term>?
+    termItem:List<DirecTerm>?
 ){
     if (termItem != null){
         Column (
@@ -151,13 +146,13 @@ fun  TermList(
 @Composable
 fun PreDirec(){
     val sampleGpse = listOf(
-        Gpse(
+        DirecGpse(
             gpseId = 1,
             gpseName = "10대 - 경제 관련 서비스",
             gpseTime = 2,
             gpseLike = true
         ),
-        Gpse(
+        DirecGpse(
             gpseId = 2,
             gpseName = "20대 - 경제 관련 서비스",
             gpseTime = 3,
@@ -166,14 +161,14 @@ fun PreDirec(){
     )
 
     val sampleGps = listOf(
-        Gps(
+        DirecGps(
             gpsId = 1,
             gpsContent = "경제 시작하기",
             gpsImg = "https://i.ibb.co/Jc8BB5N/Group-1648-1.png",
             gpsLike = true,
             gpsTpList = listOf("초급", "중급", "고급")
         ),
-        Gps(
+        DirecGps(
             gpsId = 2,
             gpsContent = "경제 이론",
             gpsImg = "https://i.ibb.co/Jc8BB5N/Group-1648-1.png",
@@ -183,13 +178,13 @@ fun PreDirec(){
     )
 
     val sampleGp = listOf(
-        Gp(
+        DirecGp(
             gpId = 1,
             gpName = "경제 프로젝트 1",
             gpImg = "https://i.ibb.co/Jc8BB5N/Group-1648-1.png",
             gpLike = true
         ),
-        Gp(
+        DirecGp(
             gpId = 2,
             gpName = "경제 프로젝트 2",
             gpImg = "https://i.ibb.co/Jc8BB5N/Group-1648-1.png",

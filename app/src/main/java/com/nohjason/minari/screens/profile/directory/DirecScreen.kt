@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.profile
+package com.nohjason.minari.screens.profile.directory
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -12,10 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.nohjason.minari.screens.profile.directory.TermList
-import com.nohjason.minari.screens.profile.directory.TutorialList
-import com.nohjason.minari.screens.quiz.quiz_end.TitleBar
-import com.nohjason.myapplication.network.response.TermResponse
+import com.nohjason.minari.screens.ui.titlebar.TitleBar
 
 @Composable
 fun DirecScreen(
@@ -47,5 +44,15 @@ fun DirecScreen(
         Spacer(modifier = Modifier.height(110.dp))
 
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreDirecScreen( ){
+    DirecScreen(term = getDummyDirecTermResponse(),
+        gpse = getDummyDirecGpseResponse(),
+        gps = getDummyDirecGpsResponse(),
+        gp = getDummyDirecGpResponse()
+    )
 }
 

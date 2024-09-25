@@ -1,8 +1,6 @@
-package com.nohjason.minari.screens.profile.directory
+package com.nohjason.minari.screens.profile.directory.direc_cards
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,9 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -23,16 +19,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.profile.Term
-import com.nohjason.minari.screens.profile.TermDifficulty
+import com.nohjason.minari.screens.profile.directory.DirecTerm
+import com.nohjason.minari.screens.profile.directory.DirecTermResponse
+import com.nohjason.minari.screens.profile.profile_data.TermDifficulty
 
 @Composable
 fun DirecTerm(
-    data: Term
+    data: DirecTerm
 ) {
     val isBookmarked = remember { mutableStateOf(false) }
 

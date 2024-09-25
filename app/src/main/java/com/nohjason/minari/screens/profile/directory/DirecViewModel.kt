@@ -1,14 +1,7 @@
 package com.nohjason.minari.screens.profile.directory
 
 import androidx.lifecycle.ViewModel
-import com.nohjason.minari.screens.profile.DirecGpResponse
-import com.nohjason.minari.screens.profile.DirecGpsResponse
-import com.nohjason.minari.screens.profile.DirecGpseResponse
-import com.nohjason.minari.screens.profile.DirecTermResponse
-import com.nohjason.minari.screens.profile.ProfileResponse
-import com.nohjason.minari.screens.quiz.data.QuestionResponse
 import com.nohjason.myapplication.network.RetrofitInstance
-import com.nohjason.myapplication.network.response.TermResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

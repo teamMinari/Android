@@ -24,12 +24,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.profile.WebLink
+import com.nohjason.minari.screens.profile.profile_data.WebLinkData
 
 @Composable
 fun RewardBar(
@@ -38,7 +37,7 @@ fun RewardBar(
     xp: Int,
     level:Int
 ) {
-    val webLink = WebLink()
+    val webLink = WebLinkData()
     val getWebLink = webLink.getTitleAndUrlForLevel(level)
 
 

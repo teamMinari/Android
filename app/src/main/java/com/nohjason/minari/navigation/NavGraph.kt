@@ -7,7 +7,6 @@ import androidx.compose.animation.slideOutHorizontally
 import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -29,13 +28,13 @@ import com.nohjason.minari.screens.login.screen.signup.SelfSignUpLastScreen
 import com.nohjason.minari.screens.login.screen.signup.SelfSignUpScreen
 import com.nohjason.minari.screens.term.TermScreen
 import com.nohjason.minari.screens.news.News
-import com.nohjason.minari.screens.profile.ProfileViewModel
+import com.nohjason.minari.screens.profile.profile_data.ProfileViewModel
 import com.nohjason.minari.screens.profile.name_style.Style
 import com.nohjason.minari.screens.rout.Grape
 import com.nohjason.minari.screens.rout.Grapes
 import com.nohjason.minari.screens.rout.Rout
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
-import com.nohjason.minari.screens.profile.DirecScreen
+import com.nohjason.minari.screens.profile.directory.DirecScreen
 import com.nohjason.minari.screens.profile.alias.AliasScreen
 import com.nohjason.minari.screens.profile.directory.DirecViewModel
 import com.nohjason.minari.screens.quiz.quiz_end.QuizEndScreen
@@ -54,8 +53,6 @@ fun NavGraph(
 ) {
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
-    val profileViewModel: ProfileViewModel = viewModel()
-    val quizViewModel: QuizViewModel = viewModel()
     val direcViewModel: DirecViewModel = viewModel()
     LaunchedEffect(Unit) {
         direcViewModel.getGpse()
@@ -180,6 +177,27 @@ fun NavGraph(
         }
 
 
+        // 로그인
+        composable(
+            route = Screens.Signup.rout,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(700)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> -fullWidth },
+                    animationSpec = tween(700)
+                )
+            }
+        ) {
+            SelfSignUpScreen(
+                navController = navController
+            )
+        }
+
         //퀴즈
         composable(
             route = "Select_O",
@@ -205,27 +223,6 @@ fun NavGraph(
             SeletX(navHostController = navController, quizViewModel = quizViewModel)
         }
 
-        // 로그인
-        composable(
-            route = Screens.Signup.rout,
-            enterTransition = {
-                slideInHorizontally(
-                    initialOffsetX = { fullWidth -> fullWidth },
-                    animationSpec = tween(700)
-                )
-            },
-            exitTransition = {
-                slideOutHorizontally(
-                    targetOffsetX = { fullWidth -> -fullWidth },
-                    animationSpec = tween(700)
-                )
-            }
-        ) {
-            SelfSignUpScreen(
-                navController = navController
-            )
-        }
-
         composable(
             "quizplay",
             enterTransition = {
@@ -235,16 +232,7 @@ fun NavGraph(
                 )
             }
         ) {
-            // playData가 null이 아닌지 확인 후 전달
             QuizPlayScreen(navHostController = navController, quizViewModel = quizViewModel)
-        }
-
-        composable(
-            route = Screens.Question.rout,
-        ) {
-            Questionnaire(
-                navController = navController
-            )
         }
 
         composable(
@@ -257,6 +245,16 @@ fun NavGraph(
             }
         ) {
             QuizEndScreen(quizViewModel = quizViewModel, navController = navController)
+        }
+
+
+        //모르는거
+        composable(
+            route = Screens.Question.rout,
+        ) {
+            Questionnaire(
+                navController = navController
+            )
         }
     }
 }

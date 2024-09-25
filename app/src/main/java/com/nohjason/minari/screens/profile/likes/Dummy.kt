@@ -1,6 +1,6 @@
 package com.nohjason.minari.screens.profile.likes
 
-import com.nohjason.minari.screens.profile.LikeList
+import com.nohjason.minari.screens.profile.profile_data.LikeList
 
 
 object Dummy {
