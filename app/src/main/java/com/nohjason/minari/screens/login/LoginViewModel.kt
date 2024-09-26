@@ -48,43 +48,6 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-//    fun login(id: String, password: String) {
-//        viewModelScope.launch {
-//            try {
-//                val response = api.login(LoginRequest(id, password))
-//                _loginResponse.value = response
-//                Log.d("TAG", "login: 로그인 성공")
-//            } catch (e: IOException) {
-//                // 네트워크 연결 오류 처리
-//                Log.e("TAG", "login: Network connection error", e)
-//                _loginResponse.value = LoginRequest(
-//                    success = false,
-//                    status = "network_error",
-//                    message = "Network connection error",
-//                    data = listOf(Token("", ""))
-//                )
-//            } catch (e: HttpException) {
-//                // 서버 응답 오류 처리
-//                Log.e("TAG", "login: Server error ${e.code()}", e)
-//                _loginResponse.value = LoginResponse(
-//                    success = false,
-//                    status = "server_error",
-//                    message = "Server error: ${e.message()}",
-//                    data = listOf(Token("", ""))
-//                )
-//            } catch (e: Exception) {
-//                // 일반적인 예외 처리
-//                Log.e("TAG", "login: Unexpected error", e)
-//                _loginResponse.value = LoginResponse(
-//                    success = false,
-//                    status = "error",
-//                    message = "Unexpected error occurred",
-//                    data = listOf(Token("", ""))
-//                )
-//            }
-//        }
-//    }
-
     private val _registerResponse = MutableStateFlow<RegisterResponse?>(null)
     val registerResponse: StateFlow<RegisterResponse?> = _registerResponse
 

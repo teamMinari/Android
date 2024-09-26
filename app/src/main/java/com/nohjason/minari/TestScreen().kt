@@ -32,13 +32,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 
 @Composable
@@ -46,16 +49,11 @@ fun NewsFeedScreen() {
     Column {
         // Top App Bar
         TopAppBar(
-            title = { Text(text = "For You") },
-            actions = {
-                IconButton(onClick = { /* TODO */ }) {
-                    Icon(Icons.Default.Search, contentDescription = "Search")
-                }
-            }
+            title = { Text(text = "News") },
         )
 
         // Tabs
-        val tabs = listOf("Follow", "For You", "World", "Sport", "Entert")
+        val tabs = listOf("전체", "금융", "부동산", "증권", "채권")
         var selectedTabIndex by remember { mutableStateOf(1) }
         TabRow(selectedTabIndex = selectedTabIndex) {
             tabs.forEachIndexed { index, title ->
@@ -95,12 +93,15 @@ fun NewsItem(newsItem: NewsItemData) {
         Spacer(modifier = Modifier.height(4.dp))
         if (newsItem.imageUrl.isNotEmpty()) {
             Image(
-                painter = rememberImagePainter(newsItem.imageUrl),
+//                painter = rememberAsyncImagePainter(newsItem.imageUrl),
+//                painter = rememberAsyncImagePainter(R.drawable.ic_launcher_background),
+                painter = painterResource(id = R.drawable.ic_launcher_background),
                 contentDescription = newsItem.title,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(180.dp)
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop
             )
         }
         Spacer(modifier = Modifier.height(4.dp))
@@ -125,19 +126,19 @@ data class NewsItemData(
 val newsList = listOf(
     NewsItemData(
         title = "Brexit isn't as clear cut as it might appear...",
-        imageUrl = "https://example.com/image1.jpg",
+        imageUrl = "https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp",
         category = "USA",
         comments = 144
     ),
     NewsItemData(
         title = "UK government launches 'ambitious' air pollution plan",
-        imageUrl = "",
+        imageUrl = "https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp",
         category = "Word",
         comments = 233
     ),
     NewsItemData(
         title = "Divorce could knock Jeff Bezos out of world's richest spot",
-        imageUrl = "https://example.com/image2.jpg",
+        imageUrl = "https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp",
         category = "Entertainment",
         comments = 233
     ),
