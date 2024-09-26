@@ -1,7 +1,6 @@
 package com.nohjason.minari.screens.profile.likes
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,10 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonColors
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
@@ -35,13 +31,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.profile.LikeList
-import com.nohjason.minari.screens.profile.directory.DirecTerm
+import com.nohjason.minari.screens.profile.profile_data.LikeList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

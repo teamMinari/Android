@@ -13,13 +13,13 @@ import com.nohjason.minari.screens.login.response.LoginRequest
 import com.nohjason.minari.screens.login.response.LoginResponse
 import com.nohjason.minari.screens.login.response.RegisterRequest
 import com.nohjason.minari.screens.login.response.RegisterResponse
-import com.nohjason.minari.screens.profile.DirecGpResponse
-import com.nohjason.minari.screens.profile.DirecGpsResponse
-import com.nohjason.minari.screens.profile.DirecGpseResponse
-import com.nohjason.minari.screens.profile.DirecTermResponse
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpResponse
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpsResponse
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpseResponse
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecTermResponse
 import com.nohjason.minari.screens.rout.response.GetAllNews
 import com.nohjason.minari.screens.rout.response.LikesResponse
-import com.nohjason.minari.screens.profile.ProfileResponse
+import com.nohjason.minari.screens.profile.profile_data.ProfileResponse
 import com.nohjason.minari.screens.quiz.data.QuestionResponse
 import com.nohjason.myapplication.network.response.Term
 import com.nohjason.myapplication.network.response.TermResponse
@@ -127,36 +127,37 @@ interface ApiService {
         @Header("Authorization") token: String,
     ): Response<GetAllLikesTerm>
 
+    //프로필 정보
     @GET("/member/profile")
     suspend fun getProfile(
         @Header("Authorization") token: String
     ): Response<ProfileResponse>
 
-
-////////////////
+    //퀴즈 문제
     @GET("/questions/level/{level}")
     suspend fun getQuestion(
         @Header("Authorization") token: String,
         @Path("level") level: Int
     ): QuestionResponse
 
+    //저장목록
     @GET("/likes/term")
     suspend fun getDiercTerm(
         @Header("Authorization") token: String
     ): DirecTermResponse
 
     @GET("/likes/gpse")
-    suspend fun getGpse(
+    suspend fun getDiercGpse(
         @Header("Authorization") token: String
     ): DirecGpseResponse
 
     @GET("/likes/gps")
-    suspend fun getGps(
+    suspend fun getDiercGps(
         @Header("Authorization") token: String
     ): DirecGpsResponse
 
     @GET("/likes/gp")
-    suspend fun getGp(
+    suspend fun getDierctGp(
         @Header("Authorization") token: String
     ): DirecGpResponse
 }

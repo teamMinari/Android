@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.profile.element
+package com.nohjason.minari.screens.profile.profile_element
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

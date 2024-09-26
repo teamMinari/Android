@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.profile.directory
+package com.nohjason.minari.screens.profile.directory_screen.direc_cards
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
@@ -28,55 +27,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.profile.Gp
-import com.nohjason.minari.screens.profile.Gps
-import com.nohjason.minari.screens.profile.Gpse
-
-@Composable
-fun DirecGpse(
-    data: Gpse
-){
-    val isBookmarked = remember { mutableStateOf(false) }
-    Row(
-        modifier = Modifier
-            .width(260.dp) // Row가 부모의 가로 전체를 차지하도록 설정
-    ){
-        Text(
-            text = data.gpseName,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-        Text(
-            text = "(${data.gpseTime}분)",
-            modifier = Modifier
-                .weight(1f)
-        )
-        Icon(
-            painter = painterResource(
-                id = if (isBookmarked.value) R.drawable.ic_book_mark_deactivate
-                else R.drawable.minari_book_mark
-            ),
-            contentDescription = null,
-            tint = Color.Unspecified,
-            modifier = Modifier
-                .clickable {
-                    isBookmarked.value = !isBookmarked.value
-                    //서버에 아이디 전송
-                }
-        )
-    }
-}
-
-
-
-
-
-
-
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGps
 
 @Composable
 fun DirecGps(
-    data: Gps
+    data: DirecGps
 ){
     val isBookmarked = remember { mutableStateOf(false) }
     val TpList = data.gpsTpList
@@ -154,56 +109,6 @@ fun Tp(text: String){
             color = Color.White,
             fontSize = 10.sp,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp)
-        )
-    }
-}
-
-
-
-
-
-
-
-
-
-
-@Composable
-fun DirecGp(
-    data: Gp
-){
-    val isBookmarked = remember { mutableStateOf(false) }
-    Row(modifier = Modifier
-        .width(260.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        AsyncImage(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(end = 10.dp),
-            model = data.gpImg,
-            contentDescription = null
-        )
-
-        Text(
-            text = data.gpName,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            fontSize = 15.sp,
-            fontWeight = FontWeight.SemiBold
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        Icon(
-            painter = painterResource(
-                id = if (isBookmarked.value) R.drawable.ic_book_mark_deactivate
-                else R.drawable.minari_book_mark
-            ),
-            contentDescription = null,
-            tint = Color.Unspecified,
-            modifier = Modifier
-                .clickable {
-                    isBookmarked.value = !isBookmarked.value
-                    //서버에 아이디 전송
-                }
         )
     }
 }

@@ -16,7 +16,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.nohjason.minari.NewsFeedScreen
 import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
@@ -30,16 +29,16 @@ import com.nohjason.minari.screens.login.screen.signup.SelfSignUpLastScreen
 import com.nohjason.minari.screens.login.screen.signup.SelfSignUpScreen
 import com.nohjason.minari.screens.term.TermScreen
 import com.nohjason.minari.screens.news.News
-import com.nohjason.minari.screens.profile.ProfileViewModel
-import com.nohjason.minari.screens.profile.name_style.Style
+import com.nohjason.minari.screens.profile.alias_screen.AliasScreen
+import com.nohjason.minari.screens.profile.directory_screen.DirecScreen
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecViewModel
+import com.nohjason.minari.screens.profile.profile_data.DummyProfileData.profileData
+import com.nohjason.minari.screens.profile.profile_data.ProfileViewModel
 import com.nohjason.minari.screens.rout.Grape
 import com.nohjason.minari.screens.rout.Grapes
 import com.nohjason.minari.screens.rout.Rout
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
-import com.nohjason.minari.screens.profile.DirecScreen
-import com.nohjason.minari.screens.profile.alias.AliasScreen
-import com.nohjason.minari.screens.profile.directory.DirecViewModel
-import com.nohjason.minari.screens.quiz.quiz_end.QuizEndScreen
+import com.nohjason.minari.screens.quiz.quiz_end_screen.QuizEndScreen
 import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.quiz_play.SeletO
 import com.nohjason.minari.screens.quiz.quiz_play.SeletX
@@ -55,15 +54,6 @@ fun NavGraph(
 ) {
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
-    val profileViewModel: ProfileViewModel = viewModel()
-    val quizViewModel: QuizViewModel = viewModel()
-    val direcViewModel: DirecViewModel = viewModel()
-    LaunchedEffect(Unit) {
-        direcViewModel.getGpse(token)
-        direcViewModel.getGps(token)
-        direcViewModel.getGp(token)
-        direcViewModel.getDorecTerm(token)
-    }
     val context = LocalContext.current
 //    val data by profileViewModel.profileData.collectAsState()
     val data = profileViewModel.profileData.collectAsState().value
@@ -102,30 +92,6 @@ fun NavGraph(
         // 뉴스
         composable(BottomScreen.News.rout) {
             News(navController = navController)
-//            NewsFeedScreen()
-        }
-
-        composable("myDirectory") {
-            val termResponse = direcViewModel.termData.collectAsState().value
-            val gpseResponse = direcViewModel.gpseData.collectAsState().value
-            val gpsResponse = direcViewModel.gpsData.collectAsState().value
-            val gpResponse = direcViewModel.gpData.collectAsState().value
-            DirecScreen(
-                term = termResponse,
-                gpse = gpseResponse,
-                gps = gpsResponse,
-                gp = gpResponse
-            )
-        }
-
-        composable("myAlias") {
-            println(data)
-            if (data == null) {
-                HomeScreen(navController = navController)
-                Toast.makeText(context, "데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
-            } else {
-                AliasScreen(level = data.level, exp = data.exp)
-            }
         }
 
         // 홈
@@ -137,7 +103,7 @@ fun NavGraph(
 
         // 퀴즈
         composable(BottomScreen.Quiz.rout) {
-            QuizMainScreen(navHostController = navController, quizViewModel = quizViewModel)
+            QuizMainScreen(navHostController = navController, quizViewModel = quizViewModel, token=token)
         }
 
         // 프로필
@@ -145,7 +111,20 @@ fun NavGraph(
             LaunchedEffect(Unit) {
                 profileViewModel.getProfile(token)
             }
-            ProfileMAinScreen(navHostController = navController, profileData = data)
+            ProfileMAinScreen(navHostController = navController, profileData = profileData)
+        }
+
+        //저장목록
+        composable(Screens.Directory.rout) {
+            DirecScreen(
+                direcViewModel = DirecViewModel(),
+                token = token
+            )
+        }
+
+        //칭호
+        composable(Screens.Alias.rout){
+            AliasScreen(level = profileData.level, exp = profileData.exp, navController = navController)
         }
 
         // 포도알
@@ -174,38 +153,6 @@ fun NavGraph(
             TermScreen(text, navController = navController)
         }
 
-        // 칭호
-        composable(Screens.Style.rout) {
-            Style(
-                navController = navController,
-            )
-        }
-
-
-        //퀴즈
-        composable(
-            route = "Select_O",
-            enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(500)
-                )
-            }
-        ) {
-            SeletO(navHostController = navController, quizViewModel = quizViewModel)
-        }
-
-        composable(
-            "Select_X",
-            enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(500)
-                )
-            }
-        ) {
-            SeletX(navHostController = navController, quizViewModel = quizViewModel)
-        }
 
         // 로그인
         composable(
@@ -228,6 +175,9 @@ fun NavGraph(
             )
         }
 
+
+
+        //퀴즈
         composable(
             "quizplay",
             enterTransition = {
@@ -237,18 +187,30 @@ fun NavGraph(
                 )
             }
         ) {
-            // playData가 null이 아닌지 확인 후 전달
+            SeletO(navHostController = navController, quizViewModel = quizViewModel)
+        }
+        composable(
+            Screens.QuizSelectX.rout,
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
+                )
+            }
+        ) {
+            SeletX(navHostController = navController, quizViewModel = quizViewModel)
+        }
+        composable(
+            Screens.QuizPlaycreen.rout,
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
+                )
+            }
+        ) {
             QuizPlayScreen(navHostController = navController, quizViewModel = quizViewModel)
         }
-
-        composable(
-            route = Screens.Question.rout,
-        ) {
-            Questionnaire(
-                navController = navController
-            )
-        }
-
         composable(
             Screens.QuizEndScreen.rout,
             enterTransition = {
@@ -259,6 +221,18 @@ fun NavGraph(
             }
         ) {
             QuizEndScreen(quizViewModel = quizViewModel, navController = navController)
+        }
+
+
+
+
+        //모르는거
+        composable(
+            route = Screens.Question.rout,
+        ) {
+            Questionnaire(
+                navController = navController
+            )
         }
     }
 }

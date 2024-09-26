@@ -1,6 +1,5 @@
-package com.nohjason.minari.screens.quiz.quiz_end
+package com.nohjason.minari.screens.quiz.quiz_end_screen
 
-import android.icu.text.CaseMap.Title
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,13 +26,13 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
+import com.nohjason.minari.screens.ui.titlebar.TitleBar
 import com.nohjason.minari.ui.theme.MinariBlue
 
 @Composable

@@ -29,11 +29,6 @@ sealed class Screens(
         title = "LastSignup",
     )
 
-    data object Style : Screens(
-        rout = "userstyle",
-        title = "UserStyle",
-    )
-
     data object Grape : Screens(
         rout = "grape",
         title = "Grape",
@@ -48,8 +43,33 @@ sealed class Screens(
         title = "Term",
     )
 
+    //퀴즈
+    data object QuizPlaycreen : Screens(
+        rout = "quizplay",
+        title = "quizplay",
+    )
     data object QuizEndScreen : Screens(
         rout = "quizend",
         title = "QuizEnd",
+    )
+    data object QuizSelectO : Screens(
+        rout = "Select_O",
+        title = "Select_O",
+    )
+    data object QuizSelectX : Screens(
+        rout = "Select_X",
+        title = "Select_X",
+    )
+
+    //저장목록
+    data object Directory: Screens(
+        rout = "myDirectory",
+        title = "Directory"
+    )
+
+    //칭호
+    data object Alias: Screens(
+        rout = "myAlias",
+        title = "Alias"
     )
 }

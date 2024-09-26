@@ -34,7 +34,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.quiz.QuizButton
-import com.nohjason.minari.screens.quiz.QuizeViewModel
 import com.nohjason.minari.screens.quiz.data.Dummy.easyQuestionResponse
 import com.nohjason.minari.screens.quiz.data.Dummy.hardQuestionResponse
 import com.nohjason.minari.screens.quiz.data.Dummy.nomalQuestionResponse
@@ -50,7 +49,8 @@ import kotlinx.coroutines.withContext
 @Composable
 fun QuizMainScreen(
     navHostController: NavHostController,
-    quizViewModel: QuizViewModel = viewModel()
+    quizViewModel: QuizViewModel = viewModel(),
+    token: String
 ) {
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()//코루틴
@@ -129,7 +129,7 @@ fun QuizMainScreen(
 
                 //서버코드
 //                coroutineScope.launch {
-//                    val qtAll = quizViewModel.getQuestion(1)
+//                    val qtAll = quizViewModel.getQuestion(1, token)
 //
 //                    val dataList = selectPlayData(qestionAll = qtAll)
 //                    quizViewModel.initializePlayData(data = dataList)
@@ -153,7 +153,7 @@ fun QuizMainScreen(
 
 //                //서버코드
 //                coroutineScope.launch {
-//                    val qtAll = quizViewModel.getQuestion(1)
+//                    val qtAll = quizViewModel.getQuestion(2, token)
 //
 //                    val dataList = selectPlayData(qestionAll = qtAll)
 //                    quizViewModel.initializePlayData(data = dataList)
@@ -179,13 +179,13 @@ fun QuizMainScreen(
 
 //                //서버코드
 //                coroutineScope.launch {
-//                    val qtAll = quizViewModel.getQuestion(1)
+//                    val qtAll = quizViewModel.getQuestion(3, token)
 //
 //                    val dataList = selectPlayData(qestionAll = qtAll)
 //                    quizViewModel.initializePlayData(data = dataList)
 //                    navHostController.navigate("quizplay")
 //                }
-            },
+            }
         )
     }
 }

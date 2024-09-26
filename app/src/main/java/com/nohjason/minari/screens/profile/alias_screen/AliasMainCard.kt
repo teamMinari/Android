@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.profile.alias
+package com.nohjason.minari.screens.profile.alias_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -22,14 +22,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.nohjason.minari.screens.profile.WebLink
+import com.nohjason.minari.screens.profile.profile_data.WebLinkData
 
 @Composable
 fun AliasMainCard(
     level: Int,
     exp: Int,
 ){
-    val webLink = WebLink()
+    val webLink = WebLinkData()
     val getWebLink = webLink.getTitleAndUrlForLevel(level)
     val progress = (exp / 100.toFloat()).coerceIn(0f, 1f)
     Box(

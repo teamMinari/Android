@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.profile.alias
+package com.nohjason.minari.screens.profile.alias_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material3.Divider
@@ -25,16 +27,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.profile.likes.Like
-import com.nohjason.minari.screens.quiz.quiz_end.TitleBar
+import com.nohjason.minari.screens.ui.titlebar.TitleBar
 
 @Composable
 fun AliasScreen(
     level: Int,
-    exp: Int
+    exp: Int,
+    navController: NavController
 ){
-
+    val scrollState = rememberScrollState()
     val nameList = remember {
         List(30) { index -> "Title $index" }
     }
@@ -42,12 +45,14 @@ fun AliasScreen(
     Column (
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF5F6FA)),
+            .background(Color(0xFFF5F6FA))
+            .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         TitleBar(
             title = "칭호보기",
-            imgResId =  R.drawable.ic_noun
+            imgResId =  R.drawable.ic_noun,
+            onClick = { navController.popBackStack() }
         )
 
         Row(
@@ -119,5 +124,5 @@ fun AliasScreen(
 @Preview
 @Composable
 fun PreAliaScreen(){
-    AliasScreen(level = 3, exp = 50)
+
 }

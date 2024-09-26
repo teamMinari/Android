@@ -1,6 +1,6 @@
-package com.nohjason.minari.screens.profile
+package com.nohjason.minari.screens.profile.profile_data
 
-class WebLink {
+class WebLinkData {
     // 레벨에 따라 타이틀과 URL을 반환하는 함수
     fun getTitleAndUrlForLevel(level: Int): TitleAndUrl {
         return when (level) {

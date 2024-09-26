@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.profile
+package com.nohjason.minari.screens.profile.directory_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -8,24 +8,35 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.nohjason.minari.screens.profile.directory.TermList
-import com.nohjason.minari.screens.profile.directory.TutorialList
-import com.nohjason.minari.screens.quiz.quiz_end.TitleBar
-import com.nohjason.myapplication.network.response.TermResponse
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecViewModel
+import com.nohjason.minari.screens.ui.titlebar.TitleBar
 
 @Composable
 fun DirecScreen(
-    term: DirecTermResponse?,
-    gpse: DirecGpseResponse?,
-    gps: DirecGpsResponse?,
-    gp: DirecGpResponse?,
-//    title: String (후에는 서버에서 값을 받아와야한다.)
+    direcViewModel: DirecViewModel,
+    token: String,
 ){
+
+    LaunchedEffect(Unit) {
+        direcViewModel.getDirecGp(token)
+        direcViewModel.getDirecGps(token)
+        direcViewModel.getDirecGpse(token)
+        direcViewModel.getDirecTerm(token)
+    }
+    val term = direcViewModel.direcTermData.collectAsState().value
+    val gpse = direcViewModel.direcGpseData.collectAsState().value
+    val gps = direcViewModel.direcGpsData.collectAsState().value
+    val gp = direcViewModel.direcGpData.collectAsState().value
+
+
     val scrollState = rememberScrollState()
+
     Column (
         modifier = Modifier
             .background(color = Color(0xFFF5F6FA))
@@ -47,5 +58,11 @@ fun DirecScreen(
         Spacer(modifier = Modifier.height(110.dp))
 
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreDirecScreen( ){
+
 }
 

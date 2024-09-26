@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 
 class QuizViewModel : ViewModel() {
 
-    suspend fun getQuestion(level: Int, token: String): QuestionResponse {
+    suspend fun getQuestion(level: Int, token:String): QuestionResponse {
         // Retrofit 인스턴스를 가져옴
         val apiService = RetrofitInstance.api
 
@@ -18,7 +18,7 @@ class QuizViewModel : ViewModel() {
             try {
                 // GET 요청을 보내고 응답을 받아옴
                 val response = apiService.getQuestion(
-                    token,
+                    token = token,
                     level =  level// 요청할 레벨
                 )
 //                println("서버가 활성화됨"+response)
@@ -31,25 +31,24 @@ class QuizViewModel : ViewModel() {
         }
     }
 
-    suspend fun postPoint(level: Int, token: String): QuestionResponse {
-        // Retrofit 인스턴스를 가져옴
-        val apiService = RetrofitInstance.api
-
-        return withContext(Dispatchers.IO) {
-            try {
-                // GET 요청을 보내고 응답을 받아옴
-                val response = apiService.getQuestion(
-                    token,
-                    level =  level// 요청할 레벨
-                )
-                response // 서버 응답 반환
-            } catch (e: Exception) {
-                // 기타 예외 처리
-                println("Error: ${e.message}")
-                throw e // 필요에 따라 다시 던질 수 있음
-            }
-        }
-    }
+//    suspend fun postPoint(point: Int, token: String): QuestionResponse {
+//        // Retrofit 인스턴스를 가져옴
+//        val apiService = RetrofitInstance.api
+//
+//        return withContext(Dispatchers.IO) {
+//            try {
+//                // GET 요청을 보내고 응답을 받아옴
+//                val response = apiService.getQuestion(
+//                    level =  level// 요청할 레벨
+//                )
+//                response // 서버 응답 반환
+//            } catch (e: Exception) {
+//                // 기타 예외 처리
+//                println("Error: ${e.message}")
+//                throw e // 필요에 따라 다시 던질 수 있음
+//            }
+//        }
+//    }
 
 
     // PlayData를 관리하기 위한 상태
@@ -96,6 +95,8 @@ class QuizViewModel : ViewModel() {
             }
         }
     }
+
+
 }
 
 
