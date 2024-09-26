@@ -46,9 +46,8 @@ interface ApiService {
 
     @PATCH("/likes/toggle")
     suspend fun addDeleteTerm(
-        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
+        @Header("Authorization") token: String,
         @Query("word") word: String,
-        @Header("Authorization") token: String
     ): AddDeleteTerm
 
     @GET("/likes/my")
@@ -137,27 +136,27 @@ interface ApiService {
 ////////////////
     @GET("/questions/level/{level}")
     suspend fun getQuestion(
-        @Header("Authorization") Authorization: String,
+        @Header("Authorization") token: String,
         @Path("level") level: Int
     ): QuestionResponse
 
     @GET("/likes/term")
     suspend fun getDiercTerm(
-        @Header("Authorization") Authorization: String
+        @Header("Authorization") token: String
     ): DirecTermResponse
 
     @GET("/likes/gpse")
     suspend fun getGpse(
-        @Header("Authorization") Authorization: String
+        @Header("Authorization") token: String
     ): DirecGpseResponse
 
     @GET("/likes/gps")
     suspend fun getGps(
-        @Header("Authorization") Authorization: String
+        @Header("Authorization") token: String
     ): DirecGpsResponse
 
     @GET("/likes/gp")
     suspend fun getGp(
-        @Header("Authorization") Authorization: String
+        @Header("Authorization") token: String
     ): DirecGpResponse
 }
