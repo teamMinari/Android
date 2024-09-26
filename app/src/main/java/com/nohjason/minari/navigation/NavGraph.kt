@@ -7,6 +7,7 @@ import androidx.compose.animation.slideOutHorizontally
 import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -28,14 +29,15 @@ import com.nohjason.minari.screens.login.screen.signup.SelfSignUpLastScreen
 import com.nohjason.minari.screens.login.screen.signup.SelfSignUpScreen
 import com.nohjason.minari.screens.term.TermScreen
 import com.nohjason.minari.screens.news.News
+import com.nohjason.minari.screens.profile.alias_screen.AliasScreen
+import com.nohjason.minari.screens.profile.directory_screen.DirecScreen
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecViewModel
+import com.nohjason.minari.screens.profile.profile_data.DummyProfileData.profileData
 import com.nohjason.minari.screens.profile.profile_data.ProfileViewModel
 import com.nohjason.minari.screens.rout.Grape
 import com.nohjason.minari.screens.rout.Grapes
 import com.nohjason.minari.screens.rout.Rout
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
-import com.nohjason.minari.screens.profile.directory_screen.DirecScreen
-import com.nohjason.minari.screens.profile.alias_screen.AliasScreen
-import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecViewModel
 import com.nohjason.minari.screens.quiz.quiz_end_screen.QuizEndScreen
 import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.quiz_play.SeletO
@@ -47,15 +49,15 @@ import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
 fun NavGraph(
     navController: NavHostController,
     loginViewModel: LoginViewModel,
+    profileViewModel: ProfileViewModel = viewModel(),
+    quizViewModel: QuizViewModel = viewModel()
 ) {
-    val direcViewModel: DirecViewModel = viewModel()
-    val quizViewModel: QuizViewModel = viewModel()
-    val profileViewModel: ProfileViewModel = viewModel()
-
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
     val context = LocalContext.current
-    val profileData = profileViewModel.profileData.collectAsState().value
+//    val data by profileViewModel.profileData.collectAsState()
+    val data = profileViewModel.profileData.collectAsState().value
+
 
 
 
@@ -92,7 +94,6 @@ fun NavGraph(
             News(navController = navController)
         }
 
-
         // 홈
         composable(BottomScreen.Home.rout) {
             HomeScreen(
@@ -102,9 +103,8 @@ fun NavGraph(
 
         // 퀴즈
         composable(BottomScreen.Quiz.rout) {
-            QuizMainScreen(navHostController = navController, quizViewModel = quizViewModel, token = token)
+            QuizMainScreen(navHostController = navController, quizViewModel = quizViewModel, token=token)
         }
-
 
         // 프로필
         composable(BottomScreen.Profile.rout) {
@@ -117,21 +117,15 @@ fun NavGraph(
         //저장목록
         composable(Screens.Directory.rout) {
             DirecScreen(
-                direcViewModel = direcViewModel,
+                direcViewModel = DirecViewModel(),
                 token = token
             )
         }
 
-        //칭호Screen
-        composable(Screens.Alias.rout) {
-            if (profileData == null) {
-                HomeScreen(navController = navController)
-                Toast.makeText(context, "데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
-            } else {
-                AliasScreen(level = profileData.level, exp = profileData.exp, navController = navController)
-            }
+        //칭호
+        composable(Screens.Alias.rout){
+            AliasScreen(level = profileData.level, exp = profileData.exp, navController = navController)
         }
-
 
         // 포도알
         composable(Screens.Grapes.rout + "/{id}") { backStackEntry ->
@@ -159,6 +153,7 @@ fun NavGraph(
             TermScreen(text, navController = navController)
         }
 
+
         // 로그인
         composable(
             route = Screens.Signup.rout,
@@ -184,7 +179,7 @@ fun NavGraph(
 
         //퀴즈
         composable(
-            route = Screens.QuizSelectO.rout,
+            "quizplay",
             enterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Left,

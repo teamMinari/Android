@@ -46,9 +46,8 @@ interface ApiService {
 
     @PATCH("/likes/toggle")
     suspend fun addDeleteTerm(
-        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
+        @Header("Authorization") token: String,
         @Query("word") word: String,
-        @Header("Authorization") token: String
     ): AddDeleteTerm
 
     @GET("/likes/my")

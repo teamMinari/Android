@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.profile.directory_screen.direc_data
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.nohjason.myapplication.network.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
@@ -20,11 +21,10 @@ class DirecViewModel  : ViewModel() {
             try {
                 // GET 요청을 보내고 응답을 받아옴
                 val response = apiService.getDiercTerm(token)
-                println("용어"+response)
+                Log.d("TAG", "getDirecTerm: 저장목록 용어 서버 통신 성공")
                 response // 서버 응답 반환
             } catch (e: Exception) {
-                // 기타 예외 처리
-                println("Error: ${e.message}")
+                Log.e("TAG", "getDirecTerm: 저장목록 용어 오류", e)
                 throw e // 필요에 따라 다시 던질 수 있음
             }
         }
@@ -44,11 +44,11 @@ class DirecViewModel  : ViewModel() {
             try {
                 // GET 요청을 보내고 응답을 받아옴
                 val response = apiService.getDiercGpse(token)
-                println("Gpse임"+response)
+                Log.d("TAG", "getDirecGpse: 저장목록 포도씨 서버 통신 성공")
                 response // 서버 응답 반환
             } catch (e: Exception) {
                 // 기타 예외 처리
-                println("Error: ${e.message}")
+                Log.e("TAG", "getDirecGpse: 저장목록 포도씨 오류", e)
                 throw e // 필요에 따라 다시 던질 수 있음
             }
         }
@@ -68,11 +68,11 @@ class DirecViewModel  : ViewModel() {
             try {
                 // GET 요청을 보내고 응답을 받아옴
                 val response = apiService.getDiercGps(token)
-                println("Gps임"+response)
+                Log.d("TAG", "getDirecGps: 저장목록 포도알 서버 통신 성공")
                 response // 서버 응답 반환
             } catch (e: Exception) {
                 // 기타 예외 처리
-                println("Error: ${e.message}")
+                Log.e("TAG", "getDirecGps: 저장목록 포도알 오류", e)
                 throw e // 필요에 따라 다시 던질 수 있음
             }
         }
@@ -91,11 +91,12 @@ class DirecViewModel  : ViewModel() {
             try {
                 // GET 요청을 보내고 응답을 받아옴
                 val response = apiService.getDierctGp(token)
+                Log.d("TAG", "getDirecGp: 저장목록 포도송이 서버 통신 성공")
                 println("Gp임"+response)
                 response // 서버 응답 반환
             } catch (e: Exception) {
                 // 기타 예외 처리
-                println("Error: ${e.message}")
+                Log.e("TAG", "getDirecGp: 저장목록 포도송이 오류", e)
                 throw e // 필요에 따라 다시 던질 수 있음
             }
         }

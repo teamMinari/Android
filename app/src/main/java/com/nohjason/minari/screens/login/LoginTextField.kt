@@ -6,6 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -25,6 +26,9 @@ fun LoginTextField(
     visibility: Boolean,
     onClick: () -> Unit,
 ) {
+    var isFocused by remember { mutableStateOf(false) }
+    var isVisiblePassword by remember { mutableStateOf(visibility) }
+
     val imageVector = when (icon_name) {
         "이메일" -> R.drawable.ic_email
         "비밀번호" -> R.drawable.ic_password
@@ -33,7 +37,7 @@ fun LoginTextField(
         // 필요한 다른 아이콘들에 대해서도 추가 가능
         else -> R.drawable.ic_noun // 기본값으로 설정할 아이콘 지정
     }
-    var isVisiblePassword by remember { mutableStateOf(visibility) } // visibility 초기화
+
     Column (
         modifier = Modifier.width(320.dp)
     ){
@@ -45,7 +49,7 @@ fun LoginTextField(
                 painterResource(id = imageVector),
                 contentDescription = "",
                 modifier = Modifier.size(20.dp),
-                tint = MinariBlue,
+                tint = if (isFocused) Color(0xFF000842) else Color(0xFFD7D8E0)
             )
             Spacer(modifier = Modifier.width(15.dp))
             BasicTextField(
@@ -53,7 +57,10 @@ fun LoginTextField(
                 onValueChange = onValueChange,
                 modifier = Modifier
                     .weight(0.5f)
-                    .padding(top = 10.dp), // Fill remaining space
+                    .padding(top = 10.dp)
+                    .onFocusChanged { focusState ->
+                        isFocused = focusState.isFocused
+                    }, // Fill remaining space
                 visualTransformation = if (isVisiblePassword) VisualTransformation.None else PasswordVisualTransformation(),
                 decorationBox = { innerTextField ->
                     Box {
@@ -70,19 +77,21 @@ fun LoginTextField(
                     if (isVisiblePassword) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_visibility),
-                            contentDescription = "비밀번호 숨기기"
+                            contentDescription = "비밀번호 숨기기",
+                            tint = Color.Unspecified
                         )
                     } else {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_visibility_off),
-                            contentDescription = "비밀번호 보이기"
+                            contentDescription = "비밀번호 보이기",
+                            tint = Color.Unspecified
                         )
                     }
                 }
             }
         }
         Divider(
-            color = Color(0xFF999999),
+            color = if (isFocused) Color(0xFF000842) else Color(0xFFD7D8E0),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
