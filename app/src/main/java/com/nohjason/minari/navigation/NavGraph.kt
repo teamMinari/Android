@@ -16,6 +16,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.nohjason.minari.NewsFeedScreen
 import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
@@ -100,7 +101,8 @@ fun NavGraph(
 
         // 뉴스
         composable(BottomScreen.News.rout) {
-            News(navController = navController)
+//            News(navController = navController)
+            NewsFeedScreen()
         }
 
         composable("myDirectory") {
