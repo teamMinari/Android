@@ -1,77 +1,69 @@
 package com.nohjason.minari
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavHostController
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.nohjason.minari.navigation.BottomBarScreen
-import com.nohjason.minari.navigation.BottomNavGraph
+import com.nohjason.minari.navigation.bottombar.BottomBar
+import com.nohjason.minari.navigation.NavGraph
+import com.nohjason.minari.screens.login.LoginViewModel
+import com.nohjason.minari.screens.login.Screens
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    loginViewModel: LoginViewModel
+) {
     val navController = rememberNavController()
-    Scaffold(
-        bottomBar = { BottomBar(navController = navController) }
-    ) {
-        BottomNavGraph(navController = navController)
-    }
-}
-
-@Composable
-fun BottomBar(navController: NavHostController) {
-    val screens = listOf(
-        BottomBarScreen.Dictionary,
-        BottomBarScreen.Home,
-        BottomBarScreen.Quiz,
-        BottomBarScreen.Profile,
-    )
-
     val navBackStackEntry by navController.currentBackStackEntryAsState()
+    var showBottomBar by remember { mutableStateOf(true) }
+
+    LaunchedEffect(key1 = navController) {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            showBottomBar = when (destination.route) {
+                "quizplay" -> false
+                "Select_O" -> false
+                "Select_X" -> false
+                Screens.Login.rout -> false
+                else -> true
+            }
+        }
+    }
+
     val currentDestination = navBackStackEntry?.destination
 
-    BottomNavigation {
-        screens.forEach { screen ->
-            AddItem(
-                screen = screen,
-                currentDestination = currentDestination,
-                navController = navController
+    Scaffold(
+        bottomBar = {
+            if (currentDestination?.route !in listOf(
+                    Screens.FirstScreen.rout,
+                    Screens.Login.rout,
+                    Screens.Signup.rout,
+                    Screens.Question.rout,
+                    Screens.LastSignup.rout,
+                )
+            ) {
+                BottomBar(
+                    navController = navController,
+                    navBackStackEntry = navBackStackEntry
+                )
+            }
+        }
+    ) { innerPadding ->
+        Column(modifier = Modifier.padding(innerPadding)) {
+            NavGraph(
+                navController = navController,
+//                viewModel = viewModel,
+                loginViewModel = loginViewModel
             )
         }
     }
-}
-
-@Composable
-fun RowScope.AddItem(
-    screen: BottomBarScreen,
-    currentDestination: NavDestination?,
-    navController: NavHostController
-) {
-    BottomNavigationItem(
-        label = {
-            Text(text = screen.title)
-        },
-        icon = {
-            Icon(
-                imageVector = screen.icon,
-                contentDescription = null
-            )
-        },
-        selected = currentDestination?.hierarchy?.any {
-            it.route == screen.rout
-        } == true,
-        onClick = {
-            navController.navigate(screen.rout)
-        }
-    )
 }

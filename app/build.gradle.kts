@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    id("com.google.gms.google-services")
-    id("kotlin-kapt")
+//    id("com.google.gms.google-services")
+//    id("kotlin-kapt")
 }
 
 android {
@@ -52,17 +52,48 @@ android {
 }
 
 dependencies {
+    // Markdown
+    implementation("com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc06")
+
+    // Coil
+//    implementation ("io.coil-kt:coil:2.6.0")
+    implementation ("io.coil-kt:coil-compose:2.6.0")
+
+    // Pager
+    implementation ("com.google.accompanist:accompanist-pager:0.28.0")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.28.0")
+
+    // EncryptedSharedPreferences
+    implementation ("androidx.security:security-crypto:1.1.0-alpha06")
+
+    //Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.google.code.gson:gson:2.8.6")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // Coroutin
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
+
+    // Room
+//    implementation("androidx.room:room-runtime:2.6.1")
+//    implementation("androidx.room:room-ktx:2.6.1")
+//    implementation(libs.androidx.runtime.livedata)
+//    annotationProcessor("androidx.room:room-compiler:2.6.1")
+//    kapt ("androidx.room:room-compiler:2.5.0")
+
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.android.gms:play-services-auth:21.0.0")
-
-    implementation("androidx.compose.material:material:1.6.5")
-
-    implementation("io.coil-kt:coil-compose:2.6.0")
+//    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
+//    implementation("com.google.firebase:firebase-analytics")
+//    implementation("com.google.android.gms:play-services-auth:21.0.0")
+//
+//    implementation("androidx.compose.material:material:1.6.5")
+//
+//    implementation("io.coil-kt:coil-compose:2.6.0")
 
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("androidx.navigation:navigation-runtime-ktx:$2.7.7")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -74,6 +105,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.database.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

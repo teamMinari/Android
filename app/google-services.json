@@ -1,33 +1,78 @@
 {
   "project_info": {
-    "project_number": "788912090239",
-    "project_id": "tutorial-415513",
-    "storage_bucket": "tutorial-415513.appspot.com"
+    "project_number": "1005368978614",
+    "project_id": "minari-d014a",
+    "storage_bucket": "minari-d014a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:788912090239:android:198ea8d9e8d48a5013e34a",
+        "mobilesdk_app_id": "1:1005368978614:android:db18f9c4827b9c9b8dca17",
         "android_client_info": {
-          "package_name": "com.nohjason.minari"
+          "package_name": "com.minari.chungfordo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "788912090239-l4varrmurrkdqj8tujspek5jucu4u0r6.apps.googleusercontent.com",
+          "client_id": "1005368978614-s6un4tq3tg3eu4d62oin40f6d9ndcg0t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.minari.chungfordo",
+            "certificate_hash": "f71730dc64608bc8fd56c1c09005138e0ac020d4"
+          }
+        },
+        {
+          "client_id": "1005368978614-11d4d8ti0jdded3bimhp8n0cmr5gtjl6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAyrxpEM_RmlMHVeoUhgSe_pnibIbp9HuY"
+          "current_key": "AIzaSyCODNa70p1IrXBbFFc9j5Jt5Vj-b174gjs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "788912090239-l4varrmurrkdqj8tujspek5jucu4u0r6.apps.googleusercontent.com",
+              "client_id": "1005368978614-11d4d8ti0jdded3bimhp8n0cmr5gtjl6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1005368978614:android:3fdccdd8f633d86b8dca17",
+        "android_client_info": {
+          "package_name": "com.nohjason.minari"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1005368978614-fv4emmg5pkk8h5b9v8dj8snmscqh43h3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nohjason.minari",
+            "certificate_hash": "ef5e840ffb5c4237c2722a827e7332b656a0810f"
+          }
+        },
+        {
+          "client_id": "1005368978614-11d4d8ti0jdded3bimhp8n0cmr5gtjl6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCODNa70p1IrXBbFFc9j5Jt5Vj-b174gjs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1005368978614-11d4d8ti0jdded3bimhp8n0cmr5gtjl6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
