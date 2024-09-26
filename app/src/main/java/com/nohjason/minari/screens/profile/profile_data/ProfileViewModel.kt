@@ -28,11 +28,17 @@ class ProfileViewModel : ViewModel() {
                     Log.d("TAG", "getProflie: 전체 포도송이 서버 통신 성공")
                 } else {
                     // 서버 응답 에러 처리
-                    Log.e("TAG", "getAllGps: 서버 응답 에러 - 코드: ${response.code()}")
+                    Log.e("TAG", "getProflie: 서버 응답 에러 - 코드: ${response.code()}")
                 }
-            } catch (e: Exception) {
+            } catch (e: IOException) {
                 // 네트워크 오류 처리
-                Log.e("TAG", "getAllGps: 알 수 없는 오류", e)
+                Log.e("TAG", "getProflie: 네트워크 오류", e)
+            } catch (e: HttpException) {
+                // HTTP 오류 처리
+                Log.e("TAG", "getProflie: HTTP 오류 - 코드: ${e.code()}", e)
+            } catch (e: Exception) {
+                // 기타 예외 처리
+                Log.e("TAG", "getProflie: 알 수 없는 오류", e)
             }
         }
     }
