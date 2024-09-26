@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,10 +53,13 @@ fun SelfLoginScreen(
     navController: NavController,
     loginViewModel: LoginViewModel
 ) {
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 25.dp, vertical = 14.dp),
+            .padding(horizontal = 25.dp, vertical = 14.dp)
+            .verticalScroll(scrollState),
     ) {
         Image(
             painterResource(id = R.drawable.grape),
@@ -157,11 +162,12 @@ fun SelfLoginScreen(
         }
 
         Spacer(modifier = Modifier.weight(0.6f))
+        Spacer(modifier = Modifier.weight(0.6f))
     }
 }
 
 @Preview(showSystemUi = true)
 @Composable
-fun Test() {
+fun PreLogin() {
     SelfLoginScreen(navController = rememberNavController(), loginViewModel = viewModel())
 }
