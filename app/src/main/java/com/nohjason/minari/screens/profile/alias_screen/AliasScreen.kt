@@ -27,13 +27,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.ui.titlebar.TitleBar
 
 @Composable
 fun AliasScreen(
     level: Int,
-    exp: Int
+    exp: Int,
+    navController: NavController
 ){
     val scrollState = rememberScrollState()
     val nameList = remember {
@@ -49,7 +51,8 @@ fun AliasScreen(
     ){
         TitleBar(
             title = "칭호보기",
-            imgResId =  R.drawable.ic_noun
+            imgResId =  R.drawable.ic_noun,
+            onClick = { navController.popBackStack() }
         )
 
         Row(
@@ -121,5 +124,5 @@ fun AliasScreen(
 @Preview
 @Composable
 fun PreAliaScreen(){
-    AliasScreen(level = 3, exp = 50)
+
 }

@@ -36,7 +36,6 @@ import com.nohjason.minari.screens.quiz.data.QuizViewModel
 import com.nohjason.minari.screens.profile.directory_screen.DirecScreen
 import com.nohjason.minari.screens.profile.alias_screen.AliasScreen
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecViewModel
-import com.nohjason.minari.screens.profile.name_style.Style
 import com.nohjason.minari.screens.quiz.quiz_end_screen.QuizEndScreen
 import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.quiz_play.SeletO
@@ -116,7 +115,7 @@ fun NavGraph(
         }
 
         //저장목록
-        composable("myDirectory") {
+        composable(Screens.Directory.rout) {
             DirecScreen(
                 direcViewModel = direcViewModel,
                 token = token
@@ -124,12 +123,12 @@ fun NavGraph(
         }
 
         //칭호Screen
-        composable("myAlias") {
+        composable(Screens.Alias.rout) {
             if (profileData == null) {
                 HomeScreen(navController = navController)
                 Toast.makeText(context, "데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
             } else {
-                AliasScreen(level = profileData.level, exp = profileData.exp)
+                AliasScreen(level = profileData.level, exp = profileData.exp, navController = navController)
             }
         }
 
@@ -160,14 +159,6 @@ fun NavGraph(
             TermScreen(text, navController = navController)
         }
 
-        // 칭호
-        composable(Screens.Style.rout) {
-            Style(
-                navController = navController,
-            )
-        }
-
-
         // 로그인
         composable(
             route = Screens.Signup.rout,
@@ -189,9 +180,11 @@ fun NavGraph(
             )
         }
 
+
+
         //퀴즈
         composable(
-            route = "Select_O",
+            route = Screens.QuizSelectO.rout,
             enterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Left,
@@ -201,9 +194,8 @@ fun NavGraph(
         ) {
             SeletO(navHostController = navController, quizViewModel = quizViewModel)
         }
-
         composable(
-            "Select_X",
+            Screens.QuizSelectX.rout,
             enterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Left,
@@ -213,9 +205,8 @@ fun NavGraph(
         ) {
             SeletX(navHostController = navController, quizViewModel = quizViewModel)
         }
-
         composable(
-            "quizplay",
+            Screens.QuizPlaycreen.rout,
             enterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Left,
@@ -225,7 +216,6 @@ fun NavGraph(
         ) {
             QuizPlayScreen(navHostController = navController, quizViewModel = quizViewModel)
         }
-
         composable(
             Screens.QuizEndScreen.rout,
             enterTransition = {
@@ -237,6 +227,8 @@ fun NavGraph(
         ) {
             QuizEndScreen(quizViewModel = quizViewModel, navController = navController)
         }
+
+
 
 
         //모르는거

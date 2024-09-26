@@ -34,7 +34,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.quiz.QuizButton
-import com.nohjason.minari.screens.quiz.QuizeViewModel
 import com.nohjason.minari.screens.quiz.data.Dummy.easyQuestionResponse
 import com.nohjason.minari.screens.quiz.data.Dummy.hardQuestionResponse
 import com.nohjason.minari.screens.quiz.data.Dummy.nomalQuestionResponse
@@ -50,7 +49,8 @@ import kotlinx.coroutines.withContext
 @Composable
 fun QuizMainScreen(
     navHostController: NavHostController,
-    quizViewModel: QuizViewModel = viewModel()
+    quizViewModel: QuizViewModel = viewModel(),
+    token: String
 ) {
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()//코루틴
@@ -123,18 +123,18 @@ fun QuizMainScreen(
             coment = "제일 쉬운 난이도",
             onClick = {
                 //더미코드
-                val dataList = selectPlayData(qestionAll = easyQuestionResponse)
-                quizViewModel.initializePlayData(data = dataList)
-                navHostController.navigate("quizplay")
+//                val dataList = selectPlayData(qestionAll = easyQuestionResponse)
+//                quizViewModel.initializePlayData(data = dataList)
+//                navHostController.navigate("quizplay")
 
                 //서버코드
-//                coroutineScope.launch {
-//                    val qtAll = quizViewModel.getQuestion(1)
-//
-//                    val dataList = selectPlayData(qestionAll = qtAll)
-//                    quizViewModel.initializePlayData(data = dataList)
-//                    navHostController.navigate("quizplay")
-//                }
+                coroutineScope.launch {
+                    val qtAll = quizViewModel.getQuestion(1, token)
+
+                    val dataList = selectPlayData(qestionAll = qtAll)
+                    quizViewModel.initializePlayData(data = dataList)
+                    navHostController.navigate("quizplay")
+                }
             },
         )
         Spacer(modifier = Modifier.height(30.dp))

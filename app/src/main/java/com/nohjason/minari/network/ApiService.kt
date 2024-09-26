@@ -136,14 +136,14 @@ interface ApiService {
     //퀴즈 문제
     @GET("/questions/level/{level}")
     suspend fun getQuestion(
-        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcyNzQ2NDksImV4cCI6MTcyNzM2MTA0OX0.7j-9kpq7s7tJJcpM41Q_Nw3BJx2JIYwQRkCnoyqjntY",
+        @Header("Authorization") token: String,
         @Path("level") level: Int
     ): QuestionResponse
 
-    //저장모록
+    //저장목록
     @GET("/likes/term")
     suspend fun getDiercTerm(
-        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcyNzQ2NDksImV4cCI6MTcyNzM2MTA0OX0.7j-9kpq7s7tJJcpM41Q_Nw3BJx2JIYwQRkCnoyqjntY",
+        @Header("Authorization") token: String
     ): DirecTermResponse
 
     @GET("/likes/gpse")
