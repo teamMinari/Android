@@ -102,7 +102,7 @@ fun NavGraph(
 
         // 퀴즈
         composable(BottomScreen.Quiz.rout) {
-            QuizMainScreen(navHostController = navController, quizViewModel = quizViewModel)
+            QuizMainScreen(navHostController = navController, quizViewModel = quizViewModel, token = token)
         }
 
 

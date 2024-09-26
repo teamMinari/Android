@@ -128,6 +128,7 @@ interface ApiService {
         @Header("Authorization") token: String,
     ): Response<GetAllLikesTerm>
 
+    //프로필 정보
     @GET("/member/profile")
     suspend fun getProfile(
         @Header("Authorization") token: String
