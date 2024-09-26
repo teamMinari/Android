@@ -29,15 +29,15 @@ import com.nohjason.minari.screens.login.screen.signup.SelfSignUpScreen
 import com.nohjason.minari.screens.term.TermScreen
 import com.nohjason.minari.screens.news.News
 import com.nohjason.minari.screens.profile.profile_data.ProfileViewModel
-import com.nohjason.minari.screens.profile.name_style.Style
 import com.nohjason.minari.screens.rout.Grape
 import com.nohjason.minari.screens.rout.Grapes
 import com.nohjason.minari.screens.rout.Rout
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
-import com.nohjason.minari.screens.profile.directory.DirecScreen
-import com.nohjason.minari.screens.profile.alias.AliasScreen
-import com.nohjason.minari.screens.profile.directory.DirecViewModel
-import com.nohjason.minari.screens.quiz.quiz_end.QuizEndScreen
+import com.nohjason.minari.screens.profile.directory_screen.DirecScreen
+import com.nohjason.minari.screens.profile.alias_screen.AliasScreen
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecViewModel
+import com.nohjason.minari.screens.profile.name_style.Style
+import com.nohjason.minari.screens.quiz.quiz_end_screen.QuizEndScreen
 import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.quiz_play.SeletO
 import com.nohjason.minari.screens.quiz.quiz_play.SeletX
@@ -48,22 +48,15 @@ import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
 fun NavGraph(
     navController: NavHostController,
     loginViewModel: LoginViewModel,
-    profileViewModel: ProfileViewModel = viewModel(),
-    quizViewModel: QuizViewModel = viewModel()
 ) {
+    val direcViewModel: DirecViewModel = viewModel()
+    val quizViewModel: QuizViewModel = viewModel()
+    val profileViewModel: ProfileViewModel = viewModel()
+
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
-    val direcViewModel: DirecViewModel = viewModel()
-    LaunchedEffect(Unit) {
-        direcViewModel.getGpse()
-        direcViewModel.getGps()
-        direcViewModel.getGp()
-        direcViewModel.getDorecTerm()
-    }
     val context = LocalContext.current
-//    val data by profileViewModel.profileData.collectAsState()
-    val data = profileViewModel.profileData.collectAsState().value
-
+    val profileData = profileViewModel.profileData.collectAsState().value
 
 
 
@@ -100,28 +93,6 @@ fun NavGraph(
             News(navController = navController)
         }
 
-        composable("myDirectory") {
-            val termResponse = direcViewModel.termData.collectAsState().value
-            val gpseResponse = direcViewModel.gpseData.collectAsState().value
-            val gpsResponse = direcViewModel.gpsData.collectAsState().value
-            val gpResponse = direcViewModel.gpData.collectAsState().value
-            DirecScreen(
-                term = termResponse,
-                gpse = gpseResponse,
-                gps = gpsResponse,
-                gp = gpResponse
-            )
-        }
-
-        composable("myAlias") {
-            println(data)
-            if (data == null) {
-                HomeScreen(navController = navController)
-                Toast.makeText(context, "데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
-            } else {
-                AliasScreen(level = data.level, exp = data.exp)
-            }
-        }
 
         // 홈
         composable(BottomScreen.Home.rout) {
@@ -135,13 +106,33 @@ fun NavGraph(
             QuizMainScreen(navHostController = navController, quizViewModel = quizViewModel)
         }
 
+
         // 프로필
         composable(BottomScreen.Profile.rout) {
             LaunchedEffect(Unit) {
                 profileViewModel.getProfile(token)
             }
-            ProfileMAinScreen(navHostController = navController, profileData = data)
+            ProfileMAinScreen(navHostController = navController, profileData = profileData)
         }
+
+        //저장목록
+        composable("myDirectory") {
+            DirecScreen(
+                direcViewModel = direcViewModel,
+                token = token
+            )
+        }
+
+        //칭호Screen
+        composable("myAlias") {
+            if (profileData == null) {
+                HomeScreen(navController = navController)
+                Toast.makeText(context, "데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
+            } else {
+                AliasScreen(level = profileData.level, exp = profileData.exp)
+            }
+        }
+
 
         // 포도알
         composable(Screens.Grapes.rout + "/{id}") { backStackEntry ->

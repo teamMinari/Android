@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.profile.alias
+package com.nohjason.minari.screens.profile.alias_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

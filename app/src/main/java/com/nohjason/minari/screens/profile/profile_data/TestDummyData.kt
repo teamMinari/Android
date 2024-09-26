@@ -1,13 +1,13 @@
 package com.nohjason.minari.screens.profile.profile_data
 
-import com.nohjason.minari.screens.profile.directory.DirecGp
-import com.nohjason.minari.screens.profile.directory.DirecGpResponse
-import com.nohjason.minari.screens.profile.directory.DirecGps
-import com.nohjason.minari.screens.profile.directory.DirecGpsResponse
-import com.nohjason.minari.screens.profile.directory.DirecGpse
-import com.nohjason.minari.screens.profile.directory.DirecGpseResponse
-import com.nohjason.minari.screens.profile.directory.DirecTerm
-import com.nohjason.minari.screens.profile.directory.DirecTermResponse
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGp
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpResponse
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGps
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpsResponse
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpse
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpseResponse
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecTerm
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecTermResponse
 
 // ProfileData 더미 데이터
 object DummyProfileData {

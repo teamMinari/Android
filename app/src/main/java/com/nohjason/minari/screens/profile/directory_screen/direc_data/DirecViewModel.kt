@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.profile.directory
+package com.nohjason.minari.screens.profile.directory_screen.direc_data
 
 import androidx.lifecycle.ViewModel
 import com.nohjason.myapplication.network.RetrofitInstance
@@ -8,20 +8,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
 
 class DirecViewModel  : ViewModel() {
-    private val _termData = MutableStateFlow<DirecTermResponse?>(null)
-    val termData: StateFlow<DirecTermResponse?> get() = _termData
+    private val _direcTermData = MutableStateFlow<DirecTermResponse?>(null)
+    val direcTermData: StateFlow<DirecTermResponse?> get() = _direcTermData
 
-    fun initializeTermData(data: DirecTermResponse) {
-        _termData.value = data
-    }
-    suspend fun getDorecTerm(): DirecTermResponse {
+
+    suspend fun getDirecTerm(token: String): DirecTermResponse {
         // Retrofit 인스턴스를 가져옴
         val apiService = RetrofitInstance.api
 
         return withContext(Dispatchers.IO) {
             try {
                 // GET 요청을 보내고 응답을 받아옴
-                val response = apiService.getDiercTerm()
+                val response = apiService.getDiercTerm(token)
                 println("용어"+response)
                 response // 서버 응답 반환
             } catch (e: Exception) {
@@ -34,20 +32,18 @@ class DirecViewModel  : ViewModel() {
 
 
 
-    private val _gpseData = MutableStateFlow<DirecGpseResponse?>(null)
-    val gpseData: StateFlow<DirecGpseResponse?> get() = _gpseData
+    private val _direcGpseData = MutableStateFlow<DirecGpseResponse?>(null)
+    val direcGpseData: StateFlow<DirecGpseResponse?> get() = _direcGpseData
 
-    fun initializeGpseData(data: DirecGpseResponse) {
-        _gpseData.value = data
-    }
-    suspend fun getGpse(): DirecGpseResponse {
+
+    suspend fun getDirecGpse(token: String): DirecGpseResponse {
         // Retrofit 인스턴스를 가져옴
         val apiService = RetrofitInstance.api
 
         return withContext(Dispatchers.IO) {
             try {
                 // GET 요청을 보내고 응답을 받아옴
-                val response = apiService.getGpse()
+                val response = apiService.getDiercGpse(token)
                 println("Gpse임"+response)
                 response // 서버 응답 반환
             } catch (e: Exception) {
@@ -60,20 +56,18 @@ class DirecViewModel  : ViewModel() {
 
 
 
-    private val _gpsData = MutableStateFlow<DirecGpsResponse?>(null)
-    val gpsData: StateFlow<DirecGpsResponse?> get() = _gpsData
+    private val _direcGpsData = MutableStateFlow<DirecGpsResponse?>(null)
+    val direcGpsData: StateFlow<DirecGpsResponse?> get() = _direcGpsData
 
-    fun initializeGpsData(data: DirecGpsResponse) {
-        _gpsData.value = data
-    }
-    suspend fun getGps(): DirecGpsResponse {
+
+    suspend fun getDirecGps(token: String): DirecGpsResponse {
         // Retrofit 인스턴스를 가져옴
         val apiService = RetrofitInstance.api
 
         return withContext(Dispatchers.IO) {
             try {
                 // GET 요청을 보내고 응답을 받아옴
-                val response = apiService.getGps()
+                val response = apiService.getDiercGps(token)
                 println("Gps임"+response)
                 response // 서버 응답 반환
             } catch (e: Exception) {
@@ -85,20 +79,18 @@ class DirecViewModel  : ViewModel() {
     }
 
 
-    private val _gpData = MutableStateFlow<DirecGpResponse?>(null)
-    val gpData: StateFlow<DirecGpResponse?> get() = _gpData
+    private val _gpDirecData = MutableStateFlow<DirecGpResponse?>(null)
+    val direcGpData: StateFlow<DirecGpResponse?> get() = _gpDirecData
 
-    fun initializeGpData(data: DirecGpResponse) {
-        _gpData.value = data
-    }
-    suspend fun getGp(): DirecGpResponse {
+
+    suspend fun getDirecGp(token: String): DirecGpResponse {
         // Retrofit 인스턴스를 가져옴
         val apiService = RetrofitInstance.api
 
         return withContext(Dispatchers.IO) {
             try {
                 // GET 요청을 보내고 응답을 받아옴
-                val response = apiService.getGp()
+                val response = apiService.getDierctGp(token)
                 println("Gp임"+response)
                 response // 서버 응답 반환
             } catch (e: Exception) {

@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.profile.directory
+package com.nohjason.minari.screens.profile.directory_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -17,10 +17,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nohjason.minari.screens.profile.directory.direc_cards.DirecGp
-import com.nohjason.minari.screens.profile.directory.direc_cards.DirecGps
-import com.nohjason.minari.screens.profile.directory.direc_cards.DirecGpse
-import com.nohjason.minari.screens.profile.directory.direc_cards.DirecTerm
+import com.nohjason.minari.screens.profile.directory_screen.direc_cards.DirecGp
+import com.nohjason.minari.screens.profile.directory_screen.direc_cards.DirecGps
+import com.nohjason.minari.screens.profile.directory_screen.direc_cards.DirecGpse
+import com.nohjason.minari.screens.profile.directory_screen.direc_cards.DirecTerm
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGp
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGps
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpse
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecTerm
 
 @Composable
 fun TutorialList(

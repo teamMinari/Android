@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.quiz.quiz_end
+package com.nohjason.minari.screens.quiz.quiz_end_screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

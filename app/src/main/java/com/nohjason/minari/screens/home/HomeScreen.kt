@@ -71,7 +71,7 @@ import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.profile.profile_data.ProfileViewModel
-import com.nohjason.minari.screens.profile.element.RewardBar
+import com.nohjason.minari.screens.profile.profile_element.RewardBar
 import com.nohjason.minari.screens.rout.GrapeViewModel
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariBlue

@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.profile.directory
+package com.nohjason.minari.screens.profile.directory_screen.direc_data
 
 import com.nohjason.minari.screens.profile.profile_data.TermDifficulty
 

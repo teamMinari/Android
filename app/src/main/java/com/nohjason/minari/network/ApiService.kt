@@ -13,10 +13,10 @@ import com.nohjason.minari.screens.login.response.LoginRequest
 import com.nohjason.minari.screens.login.response.LoginResponse
 import com.nohjason.minari.screens.login.response.RegisterRequest
 import com.nohjason.minari.screens.login.response.RegisterResponse
-import com.nohjason.minari.screens.profile.directory.DirecGpResponse
-import com.nohjason.minari.screens.profile.directory.DirecGpsResponse
-import com.nohjason.minari.screens.profile.directory.DirecGpseResponse
-import com.nohjason.minari.screens.profile.directory.DirecTermResponse
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpResponse
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpsResponse
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpseResponse
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecTermResponse
 import com.nohjason.minari.screens.rout.response.GetAllNews
 import com.nohjason.minari.screens.rout.response.LikesResponse
 import com.nohjason.minari.screens.profile.profile_data.ProfileResponse
@@ -133,31 +133,31 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Response<ProfileResponse>
 
-
-
+    //퀴즈 문제
     @GET("/questions/level/{level}")
     suspend fun getQuestion(
         @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcyNzQ2NDksImV4cCI6MTcyNzM2MTA0OX0.7j-9kpq7s7tJJcpM41Q_Nw3BJx2JIYwQRkCnoyqjntY",
         @Path("level") level: Int
     ): QuestionResponse
 
+    //저장모록
     @GET("/likes/term")
     suspend fun getDiercTerm(
         @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcyNzQ2NDksImV4cCI6MTcyNzM2MTA0OX0.7j-9kpq7s7tJJcpM41Q_Nw3BJx2JIYwQRkCnoyqjntY",
     ): DirecTermResponse
 
     @GET("/likes/gpse")
-    suspend fun getGpse(
-        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcyNzQ2NDksImV4cCI6MTcyNzM2MTA0OX0.7j-9kpq7s7tJJcpM41Q_Nw3BJx2JIYwQRkCnoyqjntY",
+    suspend fun getDiercGpse(
+        @Header("Authorization") token: String
     ): DirecGpseResponse
 
     @GET("/likes/gps")
-    suspend fun getGps(
-        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcyNzQ2NDksImV4cCI6MTcyNzM2MTA0OX0.7j-9kpq7s7tJJcpM41Q_Nw3BJx2JIYwQRkCnoyqjntY",
+    suspend fun getDiercGps(
+        @Header("Authorization") token: String
     ): DirecGpsResponse
 
     @GET("/likes/gp")
-    suspend fun getGp(
-        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcyNzQ2NDksImV4cCI6MTcyNzM2MTA0OX0.7j-9kpq7s7tJJcpM41Q_Nw3BJx2JIYwQRkCnoyqjntY",
+    suspend fun getDierctGp(
+        @Header("Authorization") token: String
     ): DirecGpResponse
 }

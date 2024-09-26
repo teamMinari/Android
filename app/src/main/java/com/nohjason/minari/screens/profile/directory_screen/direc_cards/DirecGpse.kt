@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.profile.directory.direc_cards
+package com.nohjason.minari.screens.profile.directory_screen.direc_cards
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -11,10 +11,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.profile.directory.DirecGpse
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpse
 
 @Composable
 fun DirecGpse(
@@ -28,12 +29,14 @@ fun DirecGpse(
         Text(
             text = data.gpseName,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            fontWeight = FontWeight.Medium
         )
         Text(
             text = "(${data.gpseTime}분)",
             modifier = Modifier
                 .weight(1f),
+            fontWeight = FontWeight.Medium,
             color = Color(0xFFB2B2B2)
         )
         Icon(

@@ -27,9 +27,9 @@ import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.screens.profile.profile_data.ProfileResponse
 import com.nohjason.minari.screens.profile.profile_data.ProfileViewModel
-import com.nohjason.minari.screens.profile.element.ProfileButton
-import com.nohjason.minari.screens.profile.element.ProfileInfor
-import com.nohjason.minari.screens.profile.element.RewardBar
+import com.nohjason.minari.screens.profile.profile_element.ProfileButton
+import com.nohjason.minari.screens.profile.profile_element.ProfileInfor
+import com.nohjason.minari.screens.profile.profile_element.RewardBar
 import com.nohjason.minari.screens.profile.likes.Dummy.likeDummy
 import com.nohjason.minari.screens.profile.likes.LikeList
 

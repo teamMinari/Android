@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.profile.directory.direc_cards
+package com.nohjason.minari.screens.profile.directory_screen.direc_cards
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -22,8 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.profile.directory.DirecTerm
-import com.nohjason.minari.screens.profile.directory.DirecTermResponse
+import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecTerm
 import com.nohjason.minari.screens.profile.profile_data.TermDifficulty
 
 @Composable

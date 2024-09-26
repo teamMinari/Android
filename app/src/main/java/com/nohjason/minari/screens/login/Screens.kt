@@ -52,4 +52,10 @@ sealed class Screens(
         rout = "quizend",
         title = "QuizEnd",
     )
+
+    //저장목록
+    data object Directory: Screens(
+        rout = "myDirectory",
+        title = "Directory"
+    )
 }
