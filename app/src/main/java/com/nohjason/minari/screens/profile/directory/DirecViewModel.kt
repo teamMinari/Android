@@ -21,14 +21,14 @@ class DirecViewModel  : ViewModel() {
     fun initializeTermData(data: DirecTermResponse) {
         _termData.value = data
     }
-    suspend fun getDorecTerm(): DirecTermResponse {
+    suspend fun getDorecTerm(token: String): DirecTermResponse {
         // Retrofit 인스턴스를 가져옴
         val apiService = RetrofitInstance.api
 
         return withContext(Dispatchers.IO) {
             try {
                 // GET 요청을 보내고 응답을 받아옴
-                val response = apiService.getDiercTerm()
+                val response = apiService.getDiercTerm(token)
                 println("용어"+response)
                 response // 서버 응답 반환
             } catch (e: Exception) {
@@ -47,14 +47,14 @@ class DirecViewModel  : ViewModel() {
     fun initializeGpseData(data: DirecGpseResponse) {
         _gpseData.value = data
     }
-    suspend fun getGpse(): DirecGpseResponse {
+    suspend fun getGpse(token: String): DirecGpseResponse {
         // Retrofit 인스턴스를 가져옴
         val apiService = RetrofitInstance.api
 
         return withContext(Dispatchers.IO) {
             try {
                 // GET 요청을 보내고 응답을 받아옴
-                val response = apiService.getGpse()
+                val response = apiService.getGpse(token)
                 println("Gpse임"+response)
                 response // 서버 응답 반환
             } catch (e: Exception) {
@@ -73,14 +73,14 @@ class DirecViewModel  : ViewModel() {
     fun initializeGpsData(data: DirecGpsResponse) {
         _gpsData.value = data
     }
-    suspend fun getGps(): DirecGpsResponse {
+    suspend fun getGps(token: String): DirecGpsResponse {
         // Retrofit 인스턴스를 가져옴
         val apiService = RetrofitInstance.api
 
         return withContext(Dispatchers.IO) {
             try {
                 // GET 요청을 보내고 응답을 받아옴
-                val response = apiService.getGps()
+                val response = apiService.getGps(token)
                 println("Gps임"+response)
                 response // 서버 응답 반환
             } catch (e: Exception) {
@@ -98,14 +98,14 @@ class DirecViewModel  : ViewModel() {
     fun initializeGpData(data: DirecGpResponse) {
         _gpData.value = data
     }
-    suspend fun getGp(): DirecGpResponse {
+    suspend fun getGp(token: String): DirecGpResponse {
         // Retrofit 인스턴스를 가져옴
         val apiService = RetrofitInstance.api
 
         return withContext(Dispatchers.IO) {
             try {
                 // GET 요청을 보내고 응답을 받아옴
-                val response = apiService.getGp()
+                val response = apiService.getGp(token)
                 println("Gp임"+response)
                 response // 서버 응답 반환
             } catch (e: Exception) {

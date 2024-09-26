@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 
 class QuizViewModel : ViewModel() {
 
-    suspend fun getQuestion(level: Int): QuestionResponse {
+    suspend fun getQuestion(level: Int, token: String): QuestionResponse {
         // Retrofit 인스턴스를 가져옴
         val apiService = RetrofitInstance.api
 
@@ -18,6 +18,7 @@ class QuizViewModel : ViewModel() {
             try {
                 // GET 요청을 보내고 응답을 받아옴
                 val response = apiService.getQuestion(
+                    token,
                     level =  level// 요청할 레벨
                 )
 //                println("서버가 활성화됨"+response)
@@ -30,7 +31,7 @@ class QuizViewModel : ViewModel() {
         }
     }
 
-    suspend fun postPoint(level: Int): QuestionResponse {
+    suspend fun postPoint(level: Int, token: String): QuestionResponse {
         // Retrofit 인스턴스를 가져옴
         val apiService = RetrofitInstance.api
 
@@ -38,6 +39,7 @@ class QuizViewModel : ViewModel() {
             try {
                 // GET 요청을 보내고 응답을 받아옴
                 val response = apiService.getQuestion(
+                    token,
                     level =  level// 요청할 레벨
                 )
                 response // 서버 응답 반환

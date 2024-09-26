@@ -134,30 +134,30 @@ interface ApiService {
     ): Response<ProfileResponse>
 
 
-
+////////////////
     @GET("/questions/level/{level}")
     suspend fun getQuestion(
-        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjYxMzY2MzgsImV4cCI6MTcyNjIyMzAzOH0.kUqZInuvOuSvxmL_kRXSBoJ725F5URKufOy0L7QRWBM",
+        @Header("Authorization") Authorization: String,
         @Path("level") level: Int
     ): QuestionResponse
 
     @GET("/likes/term")
     suspend fun getDiercTerm(
-        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
+        @Header("Authorization") Authorization: String
     ): DirecTermResponse
 
     @GET("/likes/gpse")
     suspend fun getGpse(
-        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
+        @Header("Authorization") Authorization: String
     ): DirecGpseResponse
 
     @GET("/likes/gps")
     suspend fun getGps(
-        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
+        @Header("Authorization") Authorization: String
     ): DirecGpsResponse
 
     @GET("/likes/gp")
     suspend fun getGp(
-        @Header("Authorization") Authorization: String = "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJST0xFX1VTRVIiLCJzdWIiOiJyaGRpZGRsNjY5MUBnbWFpbC5jb20iLCJpYXQiOjE3MjcwNzQyODAsImV4cCI6MTcyNzE2MDY4MH0._PEUQnz1VtDZdX_0KpiPVVso6uUeFPw6YuEMUxU8Stk",
+        @Header("Authorization") Authorization: String
     ): DirecGpResponse
 }

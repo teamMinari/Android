@@ -59,10 +59,10 @@ fun NavGraph(
     val quizViewModel: QuizViewModel = viewModel()
     val direcViewModel: DirecViewModel = viewModel()
     LaunchedEffect(Unit) {
-        direcViewModel.getGpse()
-        direcViewModel.getGps()
-        direcViewModel.getGp()
-        direcViewModel.getDorecTerm()
+        direcViewModel.getGpse(token)
+        direcViewModel.getGps(token)
+        direcViewModel.getGp(token)
+        direcViewModel.getDorecTerm(token)
     }
     val context = LocalContext.current
 //    val data by profileViewModel.profileData.collectAsState()
@@ -101,8 +101,8 @@ fun NavGraph(
 
         // 뉴스
         composable(BottomScreen.News.rout) {
-//            News(navController = navController)
-            NewsFeedScreen()
+            News(navController = navController)
+//            NewsFeedScreen()
         }
 
         composable("myDirectory") {
