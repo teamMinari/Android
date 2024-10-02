@@ -12,11 +12,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,6 +40,7 @@ import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
+import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariWhite
 import com.nohjason.minari.screens.rout.GrapeViewModel
@@ -71,13 +72,13 @@ fun TermScreen(
                     MinariTextField(
                         modifier = Modifier
                             .clip(CircleShape)
-                            .background(Color(0xFFF6F6F6))
+                            .background(Color.White)
                             .padding(6.dp),
                         value = text,
                         onValueChange = { text = it },
                         onClick = {
                             grapeViewModel.getTerm(token, text)
-                            navController.navigate("test/${text}")
+                            navController.navigate(Screens.Term.rout + "/${text}")
                         }
                     )
                 },

@@ -1,9 +1,12 @@
 package com.nohjason.minari.network
 
+import com.google.android.gms.common.internal.safeparcel.SafeParcelable.Param
 import com.nohjason.minari.network.response.AddDeleteTerm
 import com.nohjason.minari.network.response.BookResponse
 import com.nohjason.minari.network.response.GetAllLikesTerm
+import com.nohjason.minari.network.response.GetAllTermsResponse
 import com.nohjason.minari.network.response.GetTerm
+import com.nohjason.minari.network.response.QuizData
 import com.nohjason.minari.network.response.Quize
 import com.nohjason.minari.network.response.rout.Grape
 import com.nohjason.minari.network.response.rout.GrapeSeed
@@ -21,28 +24,23 @@ import com.nohjason.minari.screens.rout.response.GetAllNews
 import com.nohjason.minari.screens.rout.response.LikesResponse
 import com.nohjason.minari.screens.profile.profile_data.ProfileResponse
 import com.nohjason.minari.screens.quiz.data.QuestionResponse
-import com.nohjason.myapplication.network.response.Term
-import com.nohjason.myapplication.network.response.TermResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("/terms/all")
-    suspend fun getTerms(
-        @Header("Authorization") token: String
-    ): List<TermResponse>
-
     @GET("/terms")
-    suspend fun getOneTerm(
-        @Query("termNm") termNm: String,
+    suspend fun getAlTerms(
         @Header("Authorization") token: String,
-    ): Term
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+    ): Response<GetAllTermsResponse>
 
     @PATCH("/likes/toggle")
     suspend fun addDeleteTerm(
@@ -140,6 +138,12 @@ interface ApiService {
         @Path("level") level: Int
     ): QuestionResponse
 
+    @PUT("/questions")
+    suspend fun quizUpdate(
+        @Header("Authorization") token: String,
+        @Query("qtIdx") qtIdx: Int
+    ): Response<QuizData>
+
     //저장목록
     @GET("/likes/term")
     suspend fun getDiercTerm(
@@ -161,5 +165,3 @@ interface ApiService {
         @Header("Authorization") token: String
     ): DirecGpResponse
 }
-
-// test

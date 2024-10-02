@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.login.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,10 +19,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
+import com.nohjason.minari.firebase.SignInState
 import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.ui.text.MinariText
@@ -39,8 +43,17 @@ import com.nohjason.minari.ui.theme.rixfont
 
 @Composable
 fun LoginScreen(
+    state: SignInState,
+    onSignInClick: () -> Unit,
     navController: NavHostController,
 ) {
+    val context = LocalContext.current
+    LaunchedEffect(key1 = state.signInError) {
+        state.signInError?.let { error ->
+            Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -115,13 +128,7 @@ fun LoginScreen(
             )
         }
 
-        IconButton(onClick = {
-            navController.navigate(BottomScreen.Home.rout) {
-                popUpTo(navController.graph.id) {
-                    inclusive = true
-                }
-            }
-        }) {
+        IconButton(onClick = { onSignInClick() }) {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_radio_button_unchecked_24),
                 contentDescription = null
@@ -134,5 +141,5 @@ fun LoginScreen(
 @Preview(showSystemUi = true)
 @Composable
 fun Test() {
-    LoginScreen(navController = rememberNavController())
+//    LoginScreen(navController = rememberNavController())
 }

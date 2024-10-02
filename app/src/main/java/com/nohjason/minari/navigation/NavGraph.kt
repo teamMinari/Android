@@ -5,17 +5,28 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
+import android.content.Context
+import android.content.IntentSender
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.google.android.gms.auth.api.identity.Identity
+import com.nohjason.minari.firebase.GoogleAuthUiClient
+import com.nohjason.minari.firebase.SignInViewModel
 import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
@@ -43,18 +54,27 @@ import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.quiz_play.SeletO
 import com.nohjason.minari.screens.quiz.quiz_play.SeletX
 import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
+import kotlinx.coroutines.launch
 
 @SuppressLint("ComposableDestinationInComposeScope")
 @Composable
 fun NavGraph(
+    applicationContext: Context,
+    lifecycleScope: LifecycleCoroutineScope,
     navController: NavHostController,
     loginViewModel: LoginViewModel,
     profileViewModel: ProfileViewModel = viewModel(),
     quizViewModel: QuizViewModel = viewModel()
 ) {
+    val context = LocalContext.current
+    val googleAuthUiClient by lazy {
+        GoogleAuthUiClient(
+            context = applicationContext,
+            oneTapClient = Identity.getSignInClient(applicationContext)
+        )
+    }
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
-    val context = LocalContext.current
 //    val data by profileViewModel.profileData.collectAsState()
     val data = profileViewModel.profileData.collectAsState().value
 
@@ -67,8 +87,46 @@ fun NavGraph(
     ) {
 
         composable(Screens.FirstScreen.rout) {
+            val viewModel = viewModel<SignInViewModel>()
+            val state by viewModel.state.collectAsState()
+
+            val launcher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.StartIntentSenderForResult(),
+                onResult = { result ->
+                    if(result.resultCode == RESULT_OK) {
+                        lifecycleScope.launch {
+                            val signInResult = googleAuthUiClient.signInwithIntent(
+                                intent = result.data ?: return@launch
+                            )
+                            viewModel.onSignInResult(signInResult)
+                        }
+                    }
+                }
+            )
+
+            LaunchedEffect(key1 = state.isSignInSuccessful) {
+                if (state.isSignInSuccessful) {
+                    Toast.makeText(
+                        applicationContext,
+                        "Sign in successful",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
             LoginScreen(
                 navController = navController,
+                state = state,
+                onSignInClick = {
+                    Log.d("TAG", "NavGraph: ?")
+                    lifecycleScope.launch {
+                        val signInIntentSender = googleAuthUiClient.signIn()
+                        launcher.launch(
+                            IntentSenderRequest.Builder(
+                                signInIntentSender ?: return@launch
+                            ).build()
+                        )
+                    }
+                }
             )
         }
 
@@ -103,7 +161,11 @@ fun NavGraph(
 
         // 퀴즈
         composable(BottomScreen.Quiz.rout) {
-            QuizMainScreen(navHostController = navController, quizViewModel = quizViewModel, token=token)
+            QuizMainScreen(
+                navHostController = navController,
+                quizViewModel = quizViewModel,
+                token = token
+            )
         }
 
         // 프로필
@@ -123,8 +185,12 @@ fun NavGraph(
         }
 
         //칭호
-        composable(Screens.Alias.rout){
-            AliasScreen(level = profileData.level, exp = profileData.exp, navController = navController)
+        composable(Screens.Alias.rout) {
+            AliasScreen(
+                level = profileData.level,
+                exp = profileData.exp,
+                navController = navController
+            )
         }
 
         // 포도알
@@ -176,7 +242,6 @@ fun NavGraph(
         }
 
 
-
         //퀴즈
         composable(
             "quizplay",
@@ -222,8 +287,6 @@ fun NavGraph(
         ) {
             QuizEndScreen(quizViewModel = quizViewModel, navController = navController)
         }
-
-
 
 
         //모르는거

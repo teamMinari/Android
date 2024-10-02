@@ -8,5 +8,6 @@ buildscript {
 plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.jetbrainsKotlinAndroid) apply false
+    alias(libs.plugins.googleGmsGoogleServices) apply false
 //    id("com.google.gms.google-services") version "4.3.13" apply false
 }
