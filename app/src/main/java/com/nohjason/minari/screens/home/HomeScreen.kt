@@ -92,7 +92,7 @@ fun HomeScreen(
     navController: NavController,
     viewModel: GrapeViewModel = viewModel(),
     profileViewModel: ProfileViewModel = viewModel(),
-    mainViewModel: MainViewModel = viewModel()
+    mainViewModel: MainViewModel = viewModel(),
 ) {
     val context = LocalContext.current
     var text by remember { mutableStateOf("test") }

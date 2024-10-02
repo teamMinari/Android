@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -148,8 +150,7 @@ fun Grape(
                     .collect { isLastItemVisible ->
                         if (isLastItemVisible) {
                             coroutineScope.launch {
-                                Toast.makeText(context, "마지막 아이템에 도달했습니다!", Toast.LENGTH_SHORT)
-                                    .show()
+                                Log.d("TAG", "Grape: 끝")
                             }
                         }
                     }
@@ -323,7 +324,6 @@ fun GrapeSeedQuize(
     if (quize != null) {
         var state by remember { mutableStateOf(false) }
         var selectedAnswer by remember { mutableStateOf<String?>(null) }
-        val background_color = ""
 
         Column(
             modifier = Modifier
@@ -358,6 +358,7 @@ fun GrapeSeedQuize(
                             text = quize.data.qtTip
                         )
                     }
+                    Spacer(modifier = Modifier.height(10.dp))
                     Row {
                         val correctAnswer = quize.data.qtCmt == "x"
                         Box(
@@ -366,7 +367,9 @@ fun GrapeSeedQuize(
                                 .height(40.dp)
                                 .clip(RoundedCornerShape(10.dp))
                                 .background(
-                                    if(selectedAnswer == "x") Color(0xFFFC7C7C) else Color(0xFFF6D0D1)
+                                    if (selectedAnswer == "x") Color(0xFFFC7C7C) else Color(
+                                        0xFFF6D0D1
+                                    )
                                 )
                                 .clickable {
                                     if (selectedAnswer != "x") {
@@ -398,7 +401,9 @@ fun GrapeSeedQuize(
                                 .height(40.dp)
                                 .clip(RoundedCornerShape(10.dp))
                                 .background(
-                                    if(selectedAnswer == "o") Color(0xFF7CB3FC) else Color(0xFFDFE8F6)
+                                    if (selectedAnswer == "o") Color(0xFF7CB3FC) else Color(
+                                        0xFFDFE8F6
+                                    )
                                 )
                                 .clickable {
                                     if (selectedAnswer != "o") {

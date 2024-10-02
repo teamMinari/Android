@@ -1,6 +1,5 @@
 package com.nohjason.minari.network
 
-import com.google.android.gms.common.internal.safeparcel.SafeParcelable.Param
 import com.nohjason.minari.network.response.AddDeleteTerm
 import com.nohjason.minari.network.response.BookResponse
 import com.nohjason.minari.network.response.GetAllLikesTerm
@@ -24,6 +23,8 @@ import com.nohjason.minari.screens.rout.response.GetAllNews
 import com.nohjason.minari.screens.rout.response.LikesResponse
 import com.nohjason.minari.screens.profile.profile_data.ProfileResponse
 import com.nohjason.minari.screens.quiz.data.QuestionResponse
+import okhttp3.ResponseBody
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -118,6 +119,12 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("termNm") termNm: String
     ): Response<GetTerm>
+
+    @GET("/termary/summarize/{termNm}")
+    suspend fun getEasyTerm(
+        @Header("Authorization") token: String,
+        @Path("termNm") termNm: String
+    ): Response<ResponseBody>
 
     // 용어 좋아요 전체 가져오기
     @GET("/likes/term")

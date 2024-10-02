@@ -1,12 +1,10 @@
 package com.nohjason.minari.screens.rout
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.nohjason.minari.network.response.GetAllLikesTerm
 import com.nohjason.minari.network.response.GetTerm
-import com.nohjason.minari.network.response.TermLikes
 import com.nohjason.minari.network.response.rout.Grape
 import com.nohjason.minari.network.response.rout.GrapeSeed
 import com.nohjason.minari.network.response.rout.Grapes
@@ -18,8 +16,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
 import retrofit2.HttpException
 import java.io.IOException
+import androidx.compose.runtime.State
+import com.nohjason.myapplication.network.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class GrapeViewModel: ViewModel() {
     private val _route = MutableStateFlow<GrapesAll?>(null) // 초기값은 null로 설정
@@ -206,62 +210,63 @@ class GrapeViewModel: ViewModel() {
         }
     }
 
-    private val _getAllLikesTerm = MutableStateFlow<GetAllLikesTerm?>(null)
-    val getAllLikesTerm: StateFlow<GetAllLikesTerm?> = _getAllLikesTerm
-
-    fun getAllLikesTerm(token: String) {
-        viewModelScope.launch {
-            try {
-                val response = withContext(Dispatchers.IO) {
-                    api.getAllLikesTerm(token)
-                }
-                if (response.isSuccessful) {
-                    _getAllLikesTerm.value = response.body()
-                    Log.d("TAG", "getAllLikesTerm: 좋아요 서버 통신 성공")
-                } else {
-                    // 서버 응답 에러 처리
-                    Log.e("TAG", "getAllLikesTerm: 서버 응답 에러 - 코드: ${response.code()}")
-                }
-            } catch (e: IOException) {
-                // 네트워크 오류 처리
-                Log.e("TAG", "getAllLikesTerm: 네트워크 오류", e)
-            } catch (e: HttpException) {
-                // HTTP 오류 처리
-                Log.e("TAG", "getAllLikesTerm: HTTP 오류 - 코드: ${e.code()}", e)
-            } catch (e: Exception) {
-                // 기타 예외 처리
-                Log.e("TAG", "getAllLikesTerm: 알 수 없는 오류", e)
-            }
-        }
-    }
-//    private val _getLikesGps = MutableStateFlow<LikesGps?>(null)
-//    val getLikesGps: StateFlow<LikesGps?> = _getLikesGps
+//    private val _getAllLikesTerm = MutableStateFlow<GetAllLikesTerm?>(null)
+//    val getAllLikesTerm: StateFlow<GetAllLikesTerm?> = _getAllLikesTerm
 //
-//    fun getLikesGps(token: String) {
+//    fun getAllLikesTerm(token: String) {
 //        viewModelScope.launch {
 //            try {
 //                val response = withContext(Dispatchers.IO) {
-//                    api.likesGps(token)
+//                    api.getAllLikesTerm(token)
 //                }
 //                if (response.isSuccessful) {
-//                    _getLikesGps.value = response.body()
-//                    Log.d("TAG", "likesGpse: 포도씨 좋아요 서버 통신 성공")
+//                    _getAllLikesTerm.value = response.body()
+//                    Log.d("TAG", "getAllLikesTerm: 좋아요 서버 통신 성공")
 //                } else {
 //                    // 서버 응답 에러 처리
-//                    Log.e("TAG", "likesGpse: 서버 응답 에러 - 코드: ${response.code()}")
+//                    Log.e("TAG", "getAllLikesTerm: 서버 응답 에러 - 코드: ${response.code()}")
 //                }
 //            } catch (e: IOException) {
 //                // 네트워크 오류 처리
-//                Log.e("TAG", "likesGpse: 네트워크 오류", e)
+//                Log.e("TAG", "getAllLikesTerm: 네트워크 오류", e)
 //            } catch (e: HttpException) {
 //                // HTTP 오류 처리
-//                Log.e("TAG", "likesGpse: HTTP 오류 - 코드: ${e.code()}", e)
+//                Log.e("TAG", "getAllLikesTerm: HTTP 오류 - 코드: ${e.code()}", e)
 //            } catch (e: Exception) {
 //                // 기타 예외 처리
-//                Log.e("TAG", "likesGpse: 알 수 없는 오류", e)
+//                Log.e("TAG", "getAllLikesTerm: 알 수 없는 오류", e)
 //            }
 //        }
 //    }
+
+    private val _getEasyTerm = MutableStateFlow<String?>(null) // String으로 수정
+    val getEasyTerm: StateFlow<String?> = _getEasyTerm
+
+    fun getEasyTerm(token: String, termNm: String) {
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    api.getEasyTerm(token, termNm)
+                }
+                if (response.isSuccessful) {
+                    _getEasyTerm.value = response.body()?.string()  // ResponseBody를 문자열로 변환
+                    Log.d("TAG", "getEasyTerm: 서버 통신 성공")
+                } else {
+                    // 서버 응답 에러 처리
+                    Log.e("TAG", "getEasyTerm: 서버 응답 에러 - 코드: ${response.code()}")
+                }
+            } catch (e: IOException) {
+                // 네트워크 오류 처리
+                Log.e("TAG", "getEasyTerm: 네트워크 오류", e)
+            } catch (e: HttpException) {
+                // HTTP 오류 처리
+                Log.e("TAG", "getEasyTerm: HTTP 오류 - 코드: ${e.code()}", e)
+            } catch (e: Exception) {
+                // 기타 예외 처리
+                Log.e("TAG", "getEasyTerm: 알 수 없는 오류", e)
+            }
+        }
+    }
 
 //    private val _likesGpse = MutableStateFlow<LikesResponse?>(null)
 //    val likesGpse: StateFlow<LikesResponse?> = _likesGpse
