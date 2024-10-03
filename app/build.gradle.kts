@@ -52,6 +52,8 @@ android {
 }
 
 dependencies {
+    implementation ("androidx.work:work-runtime-ktx:2.7.1")
+
     // Markdown
     implementation("com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc06")
 

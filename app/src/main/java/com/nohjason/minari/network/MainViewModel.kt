@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nohjason.minari.network.response.GetAllTermsResponse
+import com.nohjason.minari.network.response.Term
 import com.nohjason.myapplication.network.RetrofitInstance.api
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
