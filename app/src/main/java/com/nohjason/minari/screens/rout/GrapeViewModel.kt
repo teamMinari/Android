@@ -84,8 +84,8 @@ class GrapeViewModel: ViewModel() {
         }
     }
 
-    private val _grape = MutableStateFlow<Grape?>(null)
-    val allGp: StateFlow<Grape?> = _grape
+    private val _grapeMap = MutableStateFlow<Map<Int, Grape>>(emptyMap())
+    val allGpMap: StateFlow<Map<Int, Grape>> = _grapeMap
 
     fun getAllGrape(token: String, gpId: Int) {
         viewModelScope.launch {
@@ -94,20 +94,20 @@ class GrapeViewModel: ViewModel() {
                     api.getAllGrape(token = token, gpId = gpId)
                 }
                 if (response.isSuccessful) {
-                    _grape.value = response.body()
-                    Log.d("TAG", "getAllGrape: 모든 포도씨 서버 통신 성공")
+                    response.body()?.let { grape ->
+                        _grapeMap.value = _grapeMap.value.toMutableMap().apply {
+                            put(gpId, grape)
+                        }
+                        Log.d("TAG", "getAllGrape: 포도씨 서버 통신 성공 - gpId: $gpId")
+                    }
                 } else {
-                    // 서버 응답 에러 처리
                     Log.e("TAG", "getAllGrape: 서버 응답 에러 - 코드: ${response.code()}")
                 }
             } catch (e: IOException) {
-                // 네트워크 오류 처리
                 Log.e("TAG", "getAllGrape: 네트워크 오류", e)
             } catch (e: HttpException) {
-                // HTTP 오류 처리
                 Log.e("TAG", "getAllGrape: HTTP 오류 - 코드: ${e.code()}", e)
             } catch (e: Exception) {
-                // 기타 예외 처리
                 Log.e("TAG", "getAllGrape: 알 수 없는 오류", e)
             }
         }

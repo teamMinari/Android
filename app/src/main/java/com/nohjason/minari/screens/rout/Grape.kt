@@ -40,6 +40,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Bottom
+import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -114,7 +116,6 @@ fun Grape(
             LaunchedEffect(key1 = Unit) {
                 quizeViewModel.getQuize(token, gpse!!.data.gpseQtId)
             }
-
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -124,13 +125,15 @@ fun Grape(
                 state = listState
             ) {
                 item {
-                    Value(gpse = gpse!!, token = token, gpseId = gpseId)
-                }
-                item {
-                    ChangeText(token, navController, gpse!!.data.gpseContent)
-                }
-                item {
-                    GrapeSeedQuize(quize)
+                    Column(
+                        modifier = Modifier
+                            .fillParentMaxSize()
+                            .background(Color.White)
+                    ) {
+                        Value(gpse = gpse!!, token = token, gpseId = gpseId)
+                        ChangeText(token, navController, gpse!!.data.gpseContent)
+                        GrapeSeedQuize(quize)
+                    }
                 }
             }
 
@@ -159,7 +162,9 @@ fun Grape(
                     }
             }
         } else {
-            CircularProgressIndicator(modifier = Modifier.size(50.dp))
+            Box(modifier = Modifier.fillMaxSize()) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
         }
     }
 }
@@ -231,7 +236,6 @@ fun Value(
 ) {
     Column(
         modifier = Modifier
-            .background(Color.White)
             .fillMaxWidth()
             .padding(horizontal = 25.dp, vertical = 10.dp)
     ) {
@@ -291,7 +295,6 @@ fun ChangeText(
 ) {
     Column(
         modifier = Modifier
-            .background(Color.White)
             .fillMaxWidth()
             .padding(25.dp)
     ) {
@@ -328,107 +331,102 @@ fun GrapeSeedQuize(
         var state by remember { mutableStateOf(false) }
         var selectedAnswer by remember { mutableStateOf<String?>(null) }
 
-        Column(
+        Box(
             modifier = Modifier
-                .background(Color.White)
+                .padding(horizontal = 25.dp, vertical = 10.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(20.dp))
+                .background(Color(0xFFF3F4F6))
+                .padding(vertical = 10.dp, horizontal = 23.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .padding(horizontal = 25.dp, vertical = 10.dp)
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(Color(0xFFF3F4F6))
-                    .padding(vertical = 10.dp, horizontal = 23.dp)
-            ) {
-                Column {
+            Column {
+                Text(
+                    text = "Quiz.",
+                    fontFamily = pretendard_bold,
+                    fontSize = 20.sp
+                )
+                Text(
+                    text = quize.data.qtContents,
+                    fontSize = 20.sp
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                if (state) {
                     Text(
-                        text = "Quiz.",
+                        text = "Tip ⭐️",
                         fontFamily = pretendard_bold,
-                        fontSize = 20.sp
+                        fontSize = 18.sp
                     )
                     Text(
-                        text = quize.data.qtContents,
-                        fontSize = 20.sp
+                        text = quize.data.qtTip
                     )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    if (state) {
-                        Text(
-                            text = "Tip ⭐️",
-                            fontFamily = pretendard_bold,
-                            fontSize = 18.sp
-                        )
-                        Text(
-                            text = quize.data.qtTip
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Row {
+                    val correctAnswer = quize.data.qtCmt == "x"
+                    Box(
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .height(40.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(
+                                if (selectedAnswer == "x") Color(0xFFFC7C7C) else Color(
+                                    0xFFF6D0D1
+                                )
+                            )
+                            .clickable {
+                                if (selectedAnswer != "x") {
+                                    selectedAnswer = "x"
+                                    state = true
+                                    if (correctAnswer) {
+                                        Log.d("TAG", "GrapeSeedQuize: 정답")
+                                    } else {
+                                        Log.d("TAG", "GrapeSeedQuize: 오답")
+                                    }
+                                }
+                            }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .align(Alignment.Center),
+                            tint = if (selectedAnswer == "x") Color.White else Color(0xFFDDBBBC)
                         )
                     }
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Row {
-                        val correctAnswer = quize.data.qtCmt == "x"
-                        Box(
-                            modifier = Modifier
-                                .weight(0.5f)
-                                .height(40.dp)
-                                .clip(RoundedCornerShape(10.dp))
-                                .background(
-                                    if (selectedAnswer == "x") Color(0xFFFC7C7C) else Color(
-                                        0xFFF6D0D1
-                                    )
+
+                    Spacer(modifier = Modifier.width(10.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .height(40.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(
+                                if (selectedAnswer == "o") Color(0xFF7CB3FC) else Color(
+                                    0xFFDFE8F6
                                 )
-                                .clickable {
-                                    if (selectedAnswer != "x") {
-                                        selectedAnswer = "x"
-                                        state = true
-                                        if (correctAnswer) {
-                                            Log.d("TAG", "GrapeSeedQuize: 정답")
-                                        } else {
-                                            Log.d("TAG", "GrapeSeedQuize: 오답")
-                                        }
+                            )
+                            .clickable {
+                                if (selectedAnswer != "o") {
+                                    selectedAnswer = "o"
+                                    state = true
+                                    if (!correctAnswer) {
+                                        Log.d("TAG", "GrapeSeedQuize: 정답")
+                                    } else {
+                                        Log.d("TAG", "GrapeSeedQuize: 오답")
                                     }
                                 }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .align(Alignment.Center),
-                                tint = if(selectedAnswer == "x") Color.White else Color(0xFFDDBBBC)
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.width(10.dp))
-
-                        Box(
+                            }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Done,
+                            contentDescription = null,
                             modifier = Modifier
-                                .weight(0.5f)
-                                .height(40.dp)
-                                .clip(RoundedCornerShape(10.dp))
-                                .background(
-                                    if (selectedAnswer == "o") Color(0xFF7CB3FC) else Color(
-                                        0xFFDFE8F6
-                                    )
-                                )
-                                .clickable {
-                                    if (selectedAnswer != "o") {
-                                        selectedAnswer = "o"
-                                        state = true
-                                        if (!correctAnswer) {
-                                            Log.d("TAG", "GrapeSeedQuize: 정답")
-                                        } else {
-                                            Log.d("TAG", "GrapeSeedQuize: 오답")
-                                        }
-                                    }
-                                }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Done,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .align(Alignment.Center),
-                                tint = if(selectedAnswer == "o") Color.White else Color(0xFFC9D1DD)
-                            )
-                        }
+                                .fillMaxSize()
+                                .align(Alignment.Center),
+                            tint = if (selectedAnswer == "o") Color.White else Color(0xFFC9D1DD)
+                        )
                     }
                 }
             }

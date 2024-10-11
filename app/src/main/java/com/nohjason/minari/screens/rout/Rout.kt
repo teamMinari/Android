@@ -121,6 +121,9 @@ fun Rout(
                     list = item.gpTpList
                 )
             }
+            item {
+                Spacer(modifier = Modifier.height(20.dp))
+            }
         } else {
             item {
                 Box(modifier = Modifier.fillParentMaxWidth()) {
@@ -131,6 +134,7 @@ fun Rout(
     }
 }
 
+// 포도송이
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Gps(
