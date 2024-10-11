@@ -1,11 +1,11 @@
 package com.nohjason.minari.network
 
 import com.nohjason.minari.network.response.AddDeleteTerm
-import com.nohjason.minari.network.response.BookResponse
 import com.nohjason.minari.network.response.FinishLearn
 import com.nohjason.minari.network.response.GetAllLikesTerm
 import com.nohjason.minari.network.response.GetAllTermsResponse
 import com.nohjason.minari.network.response.GetTerm
+import com.nohjason.minari.network.response.HotNewsResponse
 import com.nohjason.minari.network.response.QuizData
 import com.nohjason.minari.network.response.Quize
 import com.nohjason.minari.network.response.rout.Grape
@@ -25,7 +25,6 @@ import com.nohjason.minari.screens.rout.response.LikesResponse
 import com.nohjason.minari.screens.profile.profile_data.ProfileResponse
 import com.nohjason.minari.screens.quiz.data.QuestionResponse
 import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -108,6 +107,13 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Query("category") category: String,
     ): Response<GetAllNews>
+
+    // 뉴스 가져오기
+    @GET("/news")
+    suspend fun getHotNews(
+        @Header("Authorization") token: String,
+        @Query("category") category: String = "HOT_NEWS",
+    ): Response<HotNewsResponse>
 
     // 단어 용어 가져오기
     @GET("/terms/name/{termNm}")

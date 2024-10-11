@@ -78,22 +78,20 @@ fun News(
                         }
                         .padding(horizontal = 20.dp),
                 ) {
-                    if (item.thumbnail != null) {
-                        Box(
-                            modifier = Modifier
-                                .height(70.dp)
+                    Box(
+                        modifier = Modifier
+                            .height(70.dp)
 //                                .padding(horizontal = 20.dp)
-                                .clip(RoundedCornerShape(10.dp))
-                        ) {
-                            AsyncImage(
-                                model = item.thumbnail,
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.width(110.dp)
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(10.dp))
+                            .clip(RoundedCornerShape(10.dp))
+                    ) {
+                        AsyncImage(
+                            model = item.thumbnail,
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.width(110.dp)
+                        )
                     }
+                    Spacer(modifier = Modifier.width(10.dp))
                     Text(text = item.title, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 }
             }
