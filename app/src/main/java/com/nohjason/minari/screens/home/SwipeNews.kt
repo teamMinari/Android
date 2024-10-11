@@ -2,16 +2,19 @@ package com.nohjason.minari.screens.home
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -85,40 +89,52 @@ fun SwipeNews(
                             context.startActivity(intent)
                         },
                 )
-                Column(
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp)
-                        .align(Alignment.BottomCenter)
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color(0x33D9D9D9),  // 시작 색상
+                                    Color(0xFF000000)   // 끝 색상
+                                )
+                            )
+                        )
                 ) {
-                    Box(
+                    Column(
                         modifier = Modifier
-                            .clip(CircleShape)
-                            .border(1.dp, Color.White, CircleShape)
-                            .padding(horizontal = 5.dp)
+                            .fillMaxWidth()
+                            .padding(20.dp)
+                            .align(Alignment.BottomCenter)
                     ) {
+                        Box(
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .border(1.dp, Color.White, CircleShape)
+                                .padding(horizontal = 5.dp)
+                        ) {
+                            Text(
+                                text = "🔥HOT",
+                                fontSize = 13.sp,
+                                fontFamily = pretendard_semibold,
+                                color = Color.White
+                            )
+                        }
+                        Spacer(modifier = Modifier.weight(0.1f))
                         Text(
-                            text = "🔥HOT",
-                            fontSize = 13.sp,
-                            fontFamily = pretendard_semibold,
-                            color = Color.White
+                            text = "${news.uploadTime}",
+                            color = Color.White,
+                            fontSize = 10.sp,
+                            fontFamily = pretendard_regular
+                        )
+                        Text(
+                            text = news.title,
+                            color = Color.White,
+                            fontSize = 15.sp,
+                            fontFamily = pretendard_bold,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
-                    Spacer(modifier = Modifier.weight(0.1f))
-                    Text(
-                        text = "${news.uploadTime}",
-                        color = Color.White,
-                        fontSize = 10.sp,
-                        fontFamily = pretendard_regular
-                    )
-                    Text(
-                        text = news.title,
-                        color = Color.White,
-                        fontSize = 15.sp,
-                        fontFamily = pretendard_bold,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
-                    )
                 }
             }
         }
