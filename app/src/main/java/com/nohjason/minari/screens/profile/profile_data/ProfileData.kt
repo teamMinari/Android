@@ -22,7 +22,6 @@ data class LikeList(
     val name: List<String>
 )
 
-
 enum class TermDifficulty {
     LV_1,
     LV_2,

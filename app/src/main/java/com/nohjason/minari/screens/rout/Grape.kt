@@ -63,6 +63,7 @@ import com.nohjason.minari.screens.quiz.QuizeViewModel
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariWhite
 import com.nohjason.minari.ui.theme.pretendard_bold
+import com.nohjason.myapplication.network.MainViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
@@ -70,6 +71,7 @@ import kotlinx.coroutines.launch
 fun Grape(
     grapeViewModel: GrapeViewModel = viewModel(),
     quizeViewModel: QuizeViewModel = viewModel(),
+    mainViewModel: MainViewModel = viewModel(),
     navController: NavController,
     gpseId: Int,
     title: String,
@@ -108,11 +110,9 @@ fun Grape(
         if (gpse != null) {
             val listState = rememberLazyListState()
             val coroutineScope = rememberCoroutineScope()
-            val context = LocalContext.current
             val quize by quizeViewModel.quize.collectAsState()
             LaunchedEffect(key1 = Unit) {
                 quizeViewModel.getQuize(token, gpse!!.data.gpseQtId)
-                Log.d("TAG", "quize: ${quize}")
             }
 
             LazyColumn(
@@ -127,7 +127,7 @@ fun Grape(
                     Value(gpse = gpse!!, token = token, gpseId = gpseId)
                 }
                 item {
-                    ChangeText(token, navController)
+                    ChangeText(token, navController, gpse!!.data.gpseContent)
                 }
                 item {
                     GrapeSeedQuize(quize)
@@ -150,7 +150,10 @@ fun Grape(
                     .collect { isLastItemVisible ->
                         if (isLastItemVisible) {
                             coroutineScope.launch {
-                                Log.d("TAG", "Grape: 끝")
+                                if (!(gpse!!.data.gpseTF)) {
+                                    mainViewModel.finishLearn(token, "GRAPESEED", gpseId)
+                                }
+                                Log.d("TAG", "Grape: 끝\n${gpseId}")
                             }
                         }
                     }
@@ -283,6 +286,7 @@ fun Value(
 fun ChangeText(
     token: String,
     navController: NavController,
+    text: String,
     grapeViewModel: GrapeViewModel = viewModel(),
 ) {
     Column(
@@ -305,8 +309,7 @@ fun ChangeText(
 //                        RichText(
 //                            state = richTextState.setMarkdown(markdown),
 //                        )
-        val text =
-            "[[test]](https://encykorea.aks.ac.kr/Article/E0002781)란 무엇일까요?\n\n경제란 인간의 공동생활을 위한 물적 기초가 되는 재화와 용역을 생산 · 분배 · 소비하는 활동과 그것을 통하여 형성되는 사회관계의 총체를 가리키는 용어입니다.\n\n이렇게 많은 제도들을 활용하여 돈을 저축하기만 하는것이 아니라 \n\n[[현명]](https://encykorea.aks.ac.kr/Article/E0002781)하게 불릴 수 있는 능력이 있어야 합니다.\n\n이번 [[포도송이]](https://encykorea.aks.ac.kr/Article/E0002781) 에서는 경제에 대한 기본지식도 배우지만, 뱡금 같은 예시처럼 스스로 자산을 운용할 수 있는 기초지식을 중점으로 다룹니다."
+
         ClickableReferenceText(
             text = text,
             onClick = { clickedText ->
@@ -432,30 +435,3 @@ fun GrapeSeedQuize(
         }
     }
 }
-
-//@Preview
-//@Composable
-//private fun Test() {
-//    Column {
-//        Box(modifier = Modifier
-//            .weight(0.5f)
-//            .background(Color(0xFFF6D0D1))) {
-//            Icon(
-//                imageVector = Icons.Default.Close,
-//                contentDescription = null,
-//                modifier = Modifier.fillMaxSize(),
-//                tint = Color(0xFFDDBBBC)
-//            )
-//        }
-//        Box(modifier = Modifier
-//            .weight(0.5f)
-//            .background(Color(0xFFDFE8F6))) {
-//            Icon(
-//                imageVector = Icons.Default.Done,
-//                contentDescription = null,
-//                modifier = Modifier.fillMaxSize(),
-//                tint = Color(0xFFC9D1DD)
-//            )
-//        }
-//    }
-//}

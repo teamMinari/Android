@@ -1,9 +1,5 @@
 package com.nohjason.minari.screens.home
 
-import android.app.AlertDialog
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -11,7 +7,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -55,11 +50,9 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -67,16 +60,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import coil.compose.AsyncImage
 //import coil.compose.AsyncImage
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.nohjason.minari.R
-import com.nohjason.minari.network.response.GetAllTermsResponse
-import com.nohjason.minari.network.response.Term
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.screens.home.todayterm.TodayTerm
@@ -88,20 +73,14 @@ import com.nohjason.minari.screens.rout.GrapeViewModel
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGradation
-import com.nohjason.minari.ui.theme.pretendard_bold
-import com.nohjason.minari.ui.theme.pretendard_medium
-import com.nohjason.minari.ui.theme.pretendard_regular
 import com.nohjason.minari.ui.theme.pretendard_semibold
 import com.nohjason.myapplication.network.MainViewModel
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: GrapeViewModel = viewModel(),
+    grapeViewModel: GrapeViewModel = viewModel(),
     profileViewModel: ProfileViewModel = viewModel(),
     mainViewModel: MainViewModel = viewModel(),
 ) {
@@ -113,7 +92,6 @@ fun HomeScreen(
     val getAllTerms by mainViewModel.getAllTerms.collectAsState()
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
-
 
     LaunchedEffect(Unit) {
         profileViewModel.getProfile(token)
@@ -146,8 +124,9 @@ fun HomeScreen(
                         value = text,
                         onValueChange = { text = it },
                         onClick = {
-                            viewModel.getTerm(token, text)
+                            grapeViewModel.getTerm(token, text)
                             navController.navigate(Screens.Term.rout + "/${text}")
+                            Log.d("TAG", "HomeScreen: "+Screens.Term.rout+"/${text}")
                         },
                     )
                 },
@@ -265,10 +244,10 @@ fun HomeScreen(
                     }
                 }
             }
-            if (getAllTerms != null) {
+            if (getAllTerms != null ) {
                 val randomItems = getRandomItems(context, getAllTerms!!)
                 items(randomItems){ item ->
-                    TodayTerm(item = item)
+                    TodayTerm(navController, item = item)
                 }
             }
         }

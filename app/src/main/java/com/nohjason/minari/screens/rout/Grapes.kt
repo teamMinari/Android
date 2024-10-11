@@ -57,11 +57,13 @@ import com.nohjason.minari.ui.theme.pretendard_bold
 import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_regular
 import com.nohjason.minari.ui.theme.pretendard_semibold
+import com.nohjason.myapplication.network.MainViewModel
 
 @Composable
 fun Grapes(
     navController: NavController,
     viewModel: GrapeViewModel = viewModel(),
+    mainViewModel: MainViewModel = viewModel(),
     id: Int,
 ) {
     val preferences = getPreferences()
@@ -73,6 +75,7 @@ fun Grapes(
             gpsId = id
         )
     }
+
     Scaffold(
         topBar = {
             androidx.compose.material.TopAppBar(
@@ -211,10 +214,16 @@ fun Gpse(
     gpseCnt: Int,
     gpseCntMax: Int,
     viewModel: GrapeViewModel = viewModel(),
+    mainViewModel: MainViewModel = viewModel(),
     token: String,
     likesClick: () -> Unit
 ) {
     var isExpanded by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        if (gpseCnt == gpseCntMax) {
+            mainViewModel.finishLearn(token, "GRAPE", gpId)
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -295,9 +304,10 @@ fun Gpse(
                 if (grape != null) {
                     grape!!.data.forEach {
                         Row(
-                            modifier = Modifier.clickable {
-                            navController.navigate(Screens.Grape.rout + "/${it.gpseId}/$title")
-                            }
+                            modifier = Modifier
+                                .clickable {
+                                    navController.navigate(Screens.Grape.rout + "/${it.gpseId}/$title")
+                                }
                         ) {
                             Text(
                                 text = it.gpseNm,

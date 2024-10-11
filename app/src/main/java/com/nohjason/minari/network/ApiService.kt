@@ -2,6 +2,7 @@ package com.nohjason.minari.network
 
 import com.nohjason.minari.network.response.AddDeleteTerm
 import com.nohjason.minari.network.response.BookResponse
+import com.nohjason.minari.network.response.FinishLearn
 import com.nohjason.minari.network.response.GetAllLikesTerm
 import com.nohjason.minari.network.response.GetAllTermsResponse
 import com.nohjason.minari.network.response.GetTerm
@@ -48,11 +49,6 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Query("word") word: String,
     ): AddDeleteTerm
-
-    @GET("/likes/my")
-    suspend fun getBookTerms(
-        @Header("Authorization") token: String
-    ): BookResponse
 
     // login
     @POST("/member/login")
@@ -137,6 +133,14 @@ interface ApiService {
     suspend fun getProfile(
         @Header("Authorization") token: String
     ): Response<ProfileResponse>
+
+    //사용자 학습 완료
+    @PATCH("/learn")
+    suspend fun finishLearn(
+        @Header("Authorization") token: String,
+        @Query("category") category: String,
+        @Query("id") id: Int,
+    ): Response<FinishLearn>
 
     //퀴즈 문제
     @GET("/questions/level/{level}")

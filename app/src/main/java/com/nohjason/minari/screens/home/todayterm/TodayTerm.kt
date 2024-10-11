@@ -11,23 +11,35 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.nohjason.minari.R
 import com.nohjason.minari.network.response.GetAllTermsResponse
+import com.nohjason.minari.network.response.GetTerm
 import com.nohjason.minari.network.response.Term
+import com.nohjason.minari.preferences.getFromPreferences
+import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.screens.login.Screens
+import com.nohjason.minari.screens.rout.GrapeViewModel
 import com.nohjason.minari.ui.theme.pretendard_medium
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -35,22 +47,22 @@ import java.util.Locale
 
 @Composable
 fun TodayTerm(
-    navController: NavController = rememberNavController(),
-    item: Term
+    navController: NavController,
+    item: Term,
 ) {
     Box(
         modifier = Modifier
             .padding(horizontal = 20.dp)
             .fillMaxWidth()
             .background(Color.White)
+            .clickable {
+                navController.navigate(Screens.Term.rout + "/${item.termNm}")
+            }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .padding(horizontal = 20.dp, vertical = 10.dp)
-                .clickable {
-                    navController.navigate(Screens.Term.rout + "/${item.termNm}")
-                }
         ) {
             Text(
                 text = item.termNm,
@@ -59,7 +71,6 @@ fun TodayTerm(
             )
             Spacer(modifier = Modifier.width(10.dp))
             val difficulty = item.termDifficulty[3].digitToInt()
-            Log.d("TAG", "HomeScreen: $difficulty")
             for (i in 1..difficulty) {
                 Icon(
                     painter = painterResource(id = R.drawable.star),
@@ -70,11 +81,6 @@ fun TodayTerm(
                 )
             }
             Spacer(modifier = Modifier.weight(0.1f))
-            Icon(
-                painter = painterResource(id = R.drawable.book_mark),
-                contentDescription = null,
-                tint = Color.Unspecified
-            )
         }
     }
 }
