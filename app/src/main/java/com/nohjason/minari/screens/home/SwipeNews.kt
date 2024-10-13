@@ -47,11 +47,11 @@ import com.nohjason.minari.ui.theme.pretendard_semibold
 fun SwipeNews(
     newsViewModel: NewsViewModel = viewModel()
 ) {
-    val getHotNews by newsViewModel.getHotNews.collectAsState()
+    val getHotNews by newsViewModel.getAllNews.collectAsState()
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
     LaunchedEffect(Unit) {
-        newsViewModel.getHotNews(token)
+        newsViewModel.getAllNews(token, "HOT_NEWS")
     }
     val context = LocalContext.current
     val pagerState = rememberPagerState()

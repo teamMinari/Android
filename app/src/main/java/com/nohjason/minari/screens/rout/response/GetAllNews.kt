@@ -11,4 +11,5 @@ data class Data(
     val url: String,
     val company: String,
     val thumbnail: String,
+    val uploadTime: String
 )

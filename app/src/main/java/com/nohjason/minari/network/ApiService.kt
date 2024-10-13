@@ -5,7 +5,6 @@ import com.nohjason.minari.network.response.FinishLearn
 import com.nohjason.minari.network.response.GetAllLikesTerm
 import com.nohjason.minari.network.response.GetAllTermsResponse
 import com.nohjason.minari.network.response.GetTerm
-import com.nohjason.minari.network.response.HotNewsResponse
 import com.nohjason.minari.network.response.QuizData
 import com.nohjason.minari.network.response.Quize
 import com.nohjason.minari.network.response.rout.Grape
@@ -107,13 +106,6 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Query("category") category: String,
     ): Response<GetAllNews>
-
-    // 뉴스 가져오기
-    @GET("/news")
-    suspend fun getHotNews(
-        @Header("Authorization") token: String,
-        @Query("category") category: String = "HOT_NEWS",
-    ): Response<HotNewsResponse>
 
     // 단어 용어 가져오기
     @GET("/terms/name/{termNm}")
