@@ -72,7 +72,7 @@ fun Grapes(
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
     val gps by viewModel.gpsDetail.collectAsState()
-    LaunchedEffect(key1 = Unit) {
+    LaunchedEffect(key1 = Unit, gps) {
         viewModel.getGps(token = token, gpsId = id)
     }
 
@@ -190,7 +190,7 @@ fun Grapes(
                         gpseCnt = item.gpseCnt,
                         gpseCntMax = item.gpseCntMax,
                         viewModel = viewModel,
-//                        likesClick = { viewModel.likes(token, "GRAPE", item.gpId) },
+                        likesClick = { viewModel.likes(token, "GRAPE", item.gpId) },
                         state = if (item == gps!!.data.gpList.first()) true else false
                     )
                 }
@@ -218,7 +218,7 @@ fun Gpse(
     viewModel: GrapeViewModel = viewModel(),
     mainViewModel: MainViewModel = viewModel(),
     token: String,
-//    likesClick: () -> Unit,
+    likesClick: () -> Unit,
     state: Boolean
 ) {
     var isExpanded by remember { mutableStateOf(state) }
@@ -294,15 +294,15 @@ fun Gpse(
                     model = gpImg,
                     contentDescription = null
                 )
-//                Icon(
-//                    painter = painterResource(id = R.drawable.book_mark),
-//                    contentDescription = null,
-//                    tint = if (gpLike) MinariBlue else Color.Gray,
-//                    modifier = Modifier
-//                        .padding(top = 10.dp)
-//                        .size(20.dp)
-//                        .clickable { likesClick() }
-//                )
+                Icon(
+                    painter = painterResource(id = R.drawable.book_mark),
+                    contentDescription = null,
+                    tint = if (gpLike) MinariBlue else Color.Gray,
+                    modifier = Modifier
+                        .padding(top = 10.dp)
+                        .size(20.dp)
+                        .clickable { likesClick() }
+                )
             }
 
             // 확장 시 보여줄 추가 정보
