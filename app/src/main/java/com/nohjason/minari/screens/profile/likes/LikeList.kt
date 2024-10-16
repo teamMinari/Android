@@ -177,22 +177,22 @@ fun LikeList(
 //                        }
 
                         // termItem
-                        termItem?.take(2)?.let {
-                            it.forEachIndexed { index, data ->
-                                DirecTerm(data = data)
-                                Spacer(modifier = Modifier.height(15.dp))
-                                // 마지막 요소일 경우 Divider를 표시하지 않음
-                                if (index < it.size - 1) { // 마지막 요소가 아닐 때만 Divider 추가
-                                    Divider(
-                                        color = Color(0xFFECEFFB),
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(1.dp)
-                                    )
-                                    Spacer(modifier = Modifier.height(15.dp))
-                                }
-                            }
-                        }
+//                        termItem?.take(2)?.let {
+//                            it.forEachIndexed { index, data ->
+//                                DirecTerm(data = data)
+//                                Spacer(modifier = Modifier.height(15.dp))
+//                                // 마지막 요소일 경우 Divider를 표시하지 않음
+//                                if (index < it.size - 1) { // 마지막 요소가 아닐 때만 Divider 추가
+//                                    Divider(
+//                                        color = Color(0xFFECEFFB),
+//                                        modifier = Modifier
+//                                            .fillMaxWidth()
+//                                            .height(1.dp)
+//                                    )
+//                                    Spacer(modifier = Modifier.height(15.dp))
+//                                }
+//                            }
+//                        }
                     }
 
                         //카드 저장목록
