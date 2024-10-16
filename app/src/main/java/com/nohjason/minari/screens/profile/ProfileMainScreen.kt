@@ -64,10 +64,6 @@ fun ProfileMAinScreen(
     direcViewModel.getDirecGp(token) // Gp 데이터 호출
 
     val data = profileViewModel.profileData.collectAsState().value
-    val direcTermData = direcViewModel.direcTermData.collectAsState().value
-    val direcGpseData = direcViewModel.direcGpseData.collectAsState().value // Gpse 데이터 추가
-    val direcGpsData = direcViewModel.direcGpsData.collectAsState().value // Gps 데이터 추가
-    val direcGpData = direcViewModel.direcGpData.collectAsState().value // Gp 데이터 추가
 
     val scrollState = rememberScrollState()
 
@@ -138,9 +134,11 @@ fun ProfileMAinScreen(
         }
 
         //저장목록
-        direcTermData?.let { termData ->
-            LikeList(direcViewModel = direcViewModel, navHostController = navHostController, token = token)
-        }
+        LikeList(
+            direcViewModel = direcViewModel,
+            navHostController = navHostController,
+            token = token
+        )
 
         Spacer(modifier = Modifier.height(25.dp))
     }

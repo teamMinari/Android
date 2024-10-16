@@ -36,6 +36,7 @@ import androidx.navigation.NavHostController
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.screens.login.Screens
+import com.nohjason.minari.screens.quiz.QuizPopup
 import com.nohjason.minari.screens.quiz.clickOnce
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 
@@ -45,6 +46,8 @@ fun SeletO(
     navHostController: NavHostController,
     quizViewModel: QuizViewModel = viewModel()
 ) {
+    var showPopup by remember { mutableStateOf(false) }
+
     BackHandler(enabled = true){}
 
     val playData = quizViewModel.playData.value
@@ -198,6 +201,25 @@ fun SeletO(
                 kotlinx.coroutines.delay(1000L)
                 isClickable = true
             }
+        }
+
+        BackHandler(enabled = true){
+            showPopup = true
+        }
+
+        if (showPopup) {
+            QuizPopup(
+                onDismissRequest = {
+                    showPopup = false
+                }, // 취소
+                onConfirmation = {
+                    showPopup = false
+                    navHostController.navigate(BottomScreen.Quiz.rout)
+                },  // 확인
+                dialogTitle = "뒤로 돌아가기",
+                dialogText = "정말로 퀴즈를 종료시겠습니까?",
+                icon = painterResource(id = R.drawable.ic_x)
+            )
         }
     }
 }
