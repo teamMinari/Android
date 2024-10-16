@@ -42,27 +42,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
-import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.profile.directory_screen.direc_cards.DirecGp
 import com.nohjason.minari.screens.profile.directory_screen.direc_cards.DirecGps
 import com.nohjason.minari.screens.profile.directory_screen.direc_cards.DirecGpse
 import com.nohjason.minari.screens.profile.directory_screen.direc_cards.DirecTerm
-import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGp
-import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpResponse
-import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGps
-import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpsResponse
-import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpse
-import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpseResponse
-import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecTerm
-import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecTermResponse
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecViewModel
-import com.nohjason.minari.screens.profile.directory_screen.direc_data.getDummyDirecGpResponse
-import com.nohjason.minari.screens.profile.directory_screen.direc_data.getDummyDirecGpsResponse
-import com.nohjason.minari.screens.profile.directory_screen.direc_data.getDummyDirecGpseResponse
-import com.nohjason.minari.screens.profile.directory_screen.direc_data.getDummyDirecTermResponse
-import com.nohjason.minari.screens.profile.profile_data.LikeListData
-import com.nohjason.minari.screens.quiz.quiz_main.selectPlayData
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,8 +56,9 @@ fun LikeList(
     token: String
 ) {
     val termItem = direcViewModel.direcTermData.collectAsState().value?.data
-
-
+    val gpseItem = direcViewModel.direcGpseData.collectAsState().value?.data
+    val gpsItem = direcViewModel.direcGpsData.collectAsState().value?.data
+    val gpItem = direcViewModel.direcGpData.collectAsState().value?.data
 
     Box(
         modifier = Modifier
@@ -89,55 +74,60 @@ fun LikeList(
                 .padding(horizontal = 24.dp),
 //            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row (
-                modifier = Modifier.padding(top = 14.dp)
-            ){
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_list),
-                    contentDescription = null,
-                    tint = Color.Unspecified,
-                    modifier = Modifier
-                )
-                Text(
-                    text = "저장 목록",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 15.sp,
-                    modifier = Modifier.padding(start = 10.dp)
-                )
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(23.dp))
-
+//            Row(
+//                modifier = Modifier.padding(top = 14.dp)
+//            ) {
+//                Icon(
+//                    painter = painterResource(id = R.drawable.ic_list),
+//                    contentDescription = null,
+//                    tint = Color.Unspecified,
+//                    modifier = Modifier
+//                )
+//                Text(
+//                    text = "저장 목록",
+//                    fontWeight = FontWeight.SemiBold,
+//                    fontSize = 15.sp,
+//                    modifier = Modifier.padding(start = 10.dp)
+//                )
+//            }
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .wrapContentHeight(),
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//                Spacer(modifier = Modifier.height(23.dp))
+//
 //                if (gpseItem != null || gpsItem != null || gpItem != null) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        // termItem
-//                        gpsItem?.take(2)?.let {
-//                            it.forEachIndexed { index, data ->
-//                                DirecGps(data = data)
-//                                Spacer(modifier = Modifier.height(15.dp))
-//                                // 마지막 요소일 경우 Divider를 표시하지 않음
-//                                if (index < it.size - 1) { // 마지막 요소가 아닐 때만 Divider 추가
-//                                    Divider(
-//                                        color = Color(0xFFECEFFB),
-//                                        modifier = Modifier
-//                                            .fillMaxWidth()
-//                                            .height(1.dp)
-//                                    )
+//                    Column(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .wrapContentHeight(),
+//                        horizontalAlignment = Alignment.CenterHorizontally
+//                    ) {
+//                        Spacer(modifier = Modifier.height(10.dp))
+//
+//                        // termItem
+//                        try {
+//                            gpsItem?.take(2)?.let {
+//                                it.forEachIndexed { index, data ->
+//                                    DirecGps(data = data)
 //                                    Spacer(modifier = Modifier.height(15.dp))
+//                                    // 마지막 요소일 경우 Divider를 표시하지 않음
+//                                    if (index < it.size - 1) { // 마지막 요소가 아닐 때만 Divider 추가
+//                                        Divider(
+//                                            color = Color(0xFFECEFFB),
+//                                            modifier = Modifier
+//                                                .fillMaxWidth()
+//                                                .height(1.dp)
+//                                        )
+//                                        Spacer(modifier = Modifier.height(15.dp))
+//                                    }
 //                                }
 //                            }
+//                        } catch (e: Exception) {
+//
+//
 //                        }
 //
 //                        // gpItem
@@ -175,43 +165,39 @@ fun LikeList(
 //                                }
 //                            }
 //                        }
+//
+//                        // termItem
+//                        termItem?.take(2)?.let {
+//                            it.forEachIndexed { index, data ->
+//                                DirecTerm(data = data)
+//                                Spacer(modifier = Modifier.height(15.dp))
+//                                // 마지막 요소일 경우 Divider를 표시하지 않음
+//                                if (index < it.size - 1) { // 마지막 요소가 아닐 때만 Divider 추가
+//                                    Divider(
+//                                        color = Color(0xFFECEFFB),
+//                                        modifier = Modifier
+//                                            .fillMaxWidth()
+//                                            .height(1.dp)
+//                                    )
+//                                    Spacer(modifier = Modifier.height(15.dp))
+//                                }
+//                            }
+//                        }
+//                    }
 
-                        // termItem
-                        termItem?.take(2)?.let {
-                            it.forEachIndexed { index, data ->
-                                DirecTerm(data = data)
-                                Spacer(modifier = Modifier.height(15.dp))
-                                // 마지막 요소일 경우 Divider를 표시하지 않음
-                                if (index < it.size - 1) { // 마지막 요소가 아닐 때만 Divider 추가
-                                    Divider(
-                                        color = Color(0xFFECEFFB),
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(1.dp)
-                                    )
-                                    Spacer(modifier = Modifier.height(15.dp))
-                                }
-                            }
-                        }
-                    }
-
-                        //카드 저장목록
-                        Text(
-                            text = "더보기",
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .clickable {
-                                    navHostController.navigate("myDirectory")
-                                },
-                        )
-                        Spacer(modifier = Modifier.height(23.dp))
-                    }
-//                } else{
-//                    Text(text = "저장된 요소가 없습니다.")
+                    //카드 저장목록
+                    Text(
+                        text = "더보기",
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .clickable {
+                                navHostController.navigate("myDirectory")
+                            },
+                    )
+                    Spacer(modifier = Modifier.height(23.dp))
 //                }
-            }
-//            Spacer(modifier = Modifier.height(14.dp)) // Spacer 추가하여 버튼과 리스트 사이에 공간 추가
-//        }
+//            }
+        }
     }
 }
 

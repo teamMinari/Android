@@ -22,6 +22,12 @@ fun DirecScreen(
     direcViewModel: DirecViewModel,
     token: String,
 ){
+    direcViewModel.getDirecTerm(token) // Term 데이터 호출
+    direcViewModel.getDirecGpse(token) // Gpse 데이터 호출
+    direcViewModel.getDirecGps(token) // Gps 데이터 호출
+    direcViewModel.getDirecGp(token) // Gp 데이터 호출
+
+
     val scrollState = rememberScrollState()
 
     Column (
