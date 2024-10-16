@@ -42,13 +42,14 @@ fun TutorialList(
             .fillMaxWidth()
             .background(Color.White)
     ){
+        Text(
+            text = "튜토리얼",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 23.dp, top = 15.dp, start = 20.dp)
+        )
+
         if (gpseItem != null || gpsItem != null || gpItem != null) {
-            Text(
-                text = "튜토리얼",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 23.dp, top = 15.dp, start = 20.dp)
-            )
 
             Column(
                 modifier = Modifier
@@ -57,13 +58,15 @@ fun TutorialList(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 // gpsItem
-                gpsItem?.data.let {
-                    it?.forEachIndexed { index, data ->
+                gpsItem?.data?.let { it ->
+                    it.forEachIndexed { index, data ->
                         DirecGps(data = data)
-                        if (index < it.size - 1 || gpsItem != null || gpItem != null) {
+                        // Divider 추가 (마지막 요소가 아닐 때만)
+                        if (index < it.size - 1 || gpseItem != null || gpItem != null) {
                             Spacer(modifier = Modifier.height(15.dp))
                             Divider(
-                                color = Color(0xFFECEFFB), modifier = Modifier
+                                color = Color(0xFFECEFFB),
+                                modifier = Modifier
                                     .fillMaxWidth()
                                     .height(1.dp)
                             )
@@ -73,13 +76,15 @@ fun TutorialList(
                 }
 
                 // gpItem
-                gpItem?.data.let {
-                    it?.forEachIndexed { index, data ->
+                gpItem?.data?.let { it ->
+                    it.forEachIndexed { index, data ->
                         DirecGp(data = data)
                         Spacer(modifier = Modifier.height(15.dp))
+                        // Divider 추가 (마지막 요소가 아닐 때만)
                         if (index < it.size - 1 || gpsItem == null) {
                             Divider(
-                                color = Color(0xFFECEFFB), modifier = Modifier
+                                color = Color(0xFFECEFFB),
+                                modifier = Modifier
                                     .fillMaxWidth()
                                     .height(1.dp)
                             )
@@ -89,13 +94,15 @@ fun TutorialList(
                 }
 
                 // gpseItem
-                gpseItem?.data.let {
-                    it?.forEachIndexed { index, data ->
+                gpseItem?.data?.let { it ->
+                    it.forEachIndexed { index, data ->
                         DirecGpse(data = data)
+                        // Divider 추가 (마지막 요소가 아닐 때만)
                         if (index < it.size - 1 || gpsItem != null || gpItem != null) {
                             Spacer(modifier = Modifier.height(15.dp))
                             Divider(
-                                color = Color(0xFFECEFFB), modifier = Modifier
+                                color = Color(0xFFECEFFB),
+                                modifier = Modifier
                                     .fillMaxWidth()
                                     .height(1.dp)
                             )
@@ -103,36 +110,33 @@ fun TutorialList(
                         }
                     }
                 }
-                
             }
         }
     }
 }
 
 
-
 @Composable
-fun  TermList(
+fun TermList(
     direcViewModel: DirecViewModel
-){
+) {
     val term = direcViewModel.direcTermData.collectAsState().value
     val termItem = term?.data
-    Log.d("DirecList", "Term: "+term)
-    Log.d("DirecList", "TermItem: "+term)
 
-    if (termItem != null){
-        Column (
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+    ) {
+        Text(
+            text = "용어",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-        ) {
-            Text(
-                text = "용어",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(bottom = 23.dp, top = 15.dp, end = 308.dp)
-            )
+                .padding(bottom = 23.dp, top = 15.dp, end = 308.dp)
+        )
+        if (termItem != null) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -142,10 +146,12 @@ fun  TermList(
                 termItem.let {
                     it.forEachIndexed { index, data ->
                         DirecTerm(data = data)
+                        // Divider 추가 (마지막 요소가 아닐 때만)
                         if (index < it.size - 1) {
                             Spacer(modifier = Modifier.height(15.dp))
                             Divider(
-                                color = Color(0xFFECEFFB), modifier = Modifier
+                                color = Color(0xFFECEFFB),
+                                modifier = Modifier
                                     .fillMaxWidth()
                                     .height(1.dp)
                             )
@@ -155,69 +161,5 @@ fun  TermList(
                 }
             }
         }
-    } else{
-        Text(text = "없음")
     }
 }
-
-
-
-
-//@Preview
-//@Composable
-//fun PreDirec(){
-//    val sampleGpse = listOf(
-//        DirecGpse(
-//            gpseId = 1,
-//            gpseName = "10대 - 경제 관련 서비스",
-//            gpseTime = 2,
-//            gpseLike = true
-//        ),
-//        DirecGpse(
-//            gpseId = 2,
-//            gpseName = "20대 - 경제 관련 서비스",
-//            gpseTime = 3,
-//            gpseLike = false
-//        )
-//    )
-//
-//    val sampleGps = listOf(
-//        DirecGps(
-//            gpsId = 1,
-//            gpsContent = "경제 시작하기",
-//            gpsImg = "https://i.ibb.co/Jc8BB5N/Group-1648-1.png",
-//            gpsLike = true,
-//            gpsTpList = listOf("초급", "중급", "고급")
-//        ),
-//        DirecGps(
-//            gpsId = 2,
-//            gpsContent = "경제 이론",
-//            gpsImg = "https://i.ibb.co/Jc8BB5N/Group-1648-1.png",
-//            gpsLike = false,
-//            gpsTpList = listOf("기초", "중급")
-//        )
-//    )
-//
-//    val sampleGp = listOf(
-//        DirecGp(
-//            gpId = 1,
-//            gpName = "경제 프로젝트 1",
-//            gpImg = "https://i.ibb.co/Jc8BB5N/Group-1648-1.png",
-//            gpLike = true
-//        ),
-//        DirecGp(
-//            gpId = 2,
-//            gpName = "경제 프로젝트 2",
-//            gpImg = "https://i.ibb.co/Jc8BB5N/Group-1648-1.png",
-//            gpLike = false
-//        )
-//    )
-//
-//    TutorialList(
-//        gpseItem = sampleGpse,
-//        gpsItem = sampleGps,
-//        gpItem = sampleGp
-//    )
-//}
-//
-//
