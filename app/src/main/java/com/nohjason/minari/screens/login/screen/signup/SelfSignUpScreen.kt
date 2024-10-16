@@ -95,8 +95,7 @@ fun SelfSignUpScreen(
             text = "이메일 주소를 입력하세요",
             onValueChange = { email = it },
             visibility = true
-        ) {
-        }
+        )
 
         Spacer(modifier = Modifier.weight(0.1f))
 
@@ -109,7 +108,7 @@ fun SelfSignUpScreen(
             text = "아이디를 입력하세요",
             onValueChange = { id = it },
             visibility = true
-        ) {}
+        )
 
         Spacer(modifier = Modifier.weight(0.1f))
 
@@ -121,7 +120,7 @@ fun SelfSignUpScreen(
             text = "비밀번호를 입력하세요",
             onValueChange = { password = it },
             visibility = false
-        ) {}
+        )
 
         Spacer(modifier = Modifier.weight(0.1f))
 
@@ -134,7 +133,7 @@ fun SelfSignUpScreen(
             text = "비밀번호를 다시 입력하세요",
             onValueChange = { repassword = it },
             visibility = false
-        ) {}
+        )
 
 
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"

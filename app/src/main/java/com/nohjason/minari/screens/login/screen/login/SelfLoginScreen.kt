@@ -102,6 +102,7 @@ fun SelfLoginScreen(
 
             var id by remember { mutableStateOf("adminacc") }
             LoginTextField(
+                modifier = Modifier,
                 value = id,
                 icon_name = "아이디",
                 text = "아이디을 입력하세요",
@@ -113,6 +114,7 @@ fun SelfLoginScreen(
 
             var password by rememberSaveable { mutableStateOf("rlaghwns00!!") }
             LoginTextField(
+                modifier = Modifier,
                 value = password,
                 icon_name = "비밀번호",
                 text = "비밀번호를 입력하세요",

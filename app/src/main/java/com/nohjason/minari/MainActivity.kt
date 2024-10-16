@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
 import com.nohjason.minari.screens.login.LoginViewModel
 //import com.nohjason.minari.screens.profile.my_dictionary.db.MainViewModel
 import com.nohjason.minari.ui.theme.MinariTheme

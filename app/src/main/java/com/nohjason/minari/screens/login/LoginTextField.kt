@@ -19,6 +19,7 @@ import com.nohjason.minari.ui.theme.MinariBlue
 
 @Composable
 fun LoginTextField(
+    modifier: Modifier,
     value: String,
     icon_name: String,
     text: String,
@@ -99,15 +100,15 @@ fun LoginTextField(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreText() {
-    var email by remember { mutableStateOf("") }
-    LoginTextField(
-        value = email,
-        icon_name = "비밀번호",
-        text = "비밀번호",
-        onValueChange = { email = it },
-        visibility = true,
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreText() {
+//    var email by remember { mutableStateOf("") }
+//    LoginTextField(
+//        value = email,
+//        icon_name = "비밀번호",
+//        text = "비밀번호",
+//        onValueChange = { email = it },
+//        visibility = true,
+//    )
+//}

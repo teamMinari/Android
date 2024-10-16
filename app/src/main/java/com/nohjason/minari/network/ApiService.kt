@@ -1,6 +1,7 @@
 package com.nohjason.minari.network
 
 import com.nohjason.minari.network.response.AddDeleteTerm
+import com.nohjason.minari.network.response.BookResponse
 import com.nohjason.minari.network.response.FinishLearn
 import com.nohjason.minari.network.response.GetAllLikesTerm
 import com.nohjason.minari.network.response.GetAllTermsResponse
@@ -19,9 +20,12 @@ import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpRe
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpsResponse
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpseResponse
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecTermResponse
+import com.nohjason.minari.screens.profile.profile_data.LogOutResponse
 import com.nohjason.minari.screens.rout.response.GetAllNews
 import com.nohjason.minari.screens.rout.response.LikesResponse
 import com.nohjason.minari.screens.profile.profile_data.ProfileResponse
+import com.nohjason.minari.screens.quiz.data.PointRequest
+import com.nohjason.minari.screens.quiz.data.PointResponse
 import com.nohjason.minari.screens.quiz.data.QuestionResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -36,10 +40,10 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("/terms/all")
-    suspend fun getTerms(
-        @Header("Authorization") token: String
-    ): List<TermResponse>
+//    @GET("/terms/all")
+//    suspend fun getTerms(
+//        @Header("Authorization") token: String
+//    ): List<TermR>
 
     @GET("/terms")
     suspend fun getAlTerms(
@@ -175,7 +179,7 @@ interface ApiService {
     @GET("/likes/term")
     suspend fun getDiercTerm(
         @Header("Authorization") token: String
-    ): DirecTermResponse
+    ): Response<DirecTermResponse>
 
     @GET("/likes/gpse")
     suspend fun getDiercGpse(
