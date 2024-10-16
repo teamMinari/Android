@@ -1,9 +1,11 @@
 package com.nohjason.minari.network
 
 import com.nohjason.minari.network.response.AddDeleteTerm
-import com.nohjason.minari.network.response.BookResponse
+import com.nohjason.minari.network.response.FinishLearn
 import com.nohjason.minari.network.response.GetAllLikesTerm
+import com.nohjason.minari.network.response.GetAllTermsResponse
 import com.nohjason.minari.network.response.GetTerm
+import com.nohjason.minari.network.response.QuizData
 import com.nohjason.minari.network.response.Quize
 import com.nohjason.minari.network.response.rout.Grape
 import com.nohjason.minari.network.response.rout.GrapeSeed
@@ -12,26 +14,24 @@ import com.nohjason.minari.network.response.rout.GrapesAll
 import com.nohjason.minari.screens.login.response.LoginRequest
 import com.nohjason.minari.screens.login.response.LoginResponse
 import com.nohjason.minari.screens.login.response.RegisterRequest
-import com.nohjason.minari.screens.login.response.RegisterResponse
+import com.nohjason.minari.screens.login.response.SignUpResponse
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpResponse
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpsResponse
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpseResponse
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecTermResponse
-import com.nohjason.minari.screens.profile.profile_data.LogOutResponse
 import com.nohjason.minari.screens.rout.response.GetAllNews
 import com.nohjason.minari.screens.rout.response.LikesResponse
 import com.nohjason.minari.screens.profile.profile_data.ProfileResponse
-import com.nohjason.minari.screens.quiz.data.PointRequest
-import com.nohjason.minari.screens.quiz.data.PointResponse
 import com.nohjason.minari.screens.quiz.data.QuestionResponse
-import com.nohjason.myapplication.network.response.Term
-import com.nohjason.myapplication.network.response.TermResponse
+import okhttp3.ResponseBody
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -42,10 +42,11 @@ interface ApiService {
     ): List<TermResponse>
 
     @GET("/terms")
-    suspend fun getOneTerm(
-        @Query("termNm") termNm: String,
+    suspend fun getAlTerms(
         @Header("Authorization") token: String,
-    ): Term
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+    ): Response<GetAllTermsResponse>
 
     @PATCH("/likes/toggle")
     suspend fun addDeleteTerm(
@@ -65,9 +66,10 @@ interface ApiService {
     ): Response<LoginResponse>
 
     @POST("/member/register")
-    suspend fun register(
-        @Body registerResponse: RegisterRequest
-    ): RegisterResponse
+    fun signUp(@Body request: RegisterRequest): Call<SignUpResponse>
+//    suspend fun register(
+//        @Body registerResponse: RegisterRequest
+//    ): SignUpResponse
 
     // 포도송이 전체 조회
     @GET("/gps")
@@ -124,6 +126,12 @@ interface ApiService {
         @Path("termNm") termNm: String
     ): Response<GetTerm>
 
+    @GET("/termary/summarize/{termNm}")
+    suspend fun getEasyTerm(
+        @Header("Authorization") token: String,
+        @Path("termNm") termNm: String
+    ): Response<ResponseBody>
+
     // 용어 좋아요 전체 가져오기
     @GET("/likes/term")
     suspend fun getAllLikesTerm(
@@ -135,6 +143,14 @@ interface ApiService {
     suspend fun getProfile(
         @Header("Authorization") token: String
     ): Response<ProfileResponse>
+
+    //사용자 학습 완료
+    @PATCH("/learn")
+    suspend fun finishLearn(
+        @Header("Authorization") token: String,
+        @Query("category") category: String,
+        @Query("id") id: Int,
+    ): Response<FinishLearn>
 
     //퀴즈 문제
     @GET("/questions/level/{level}")
@@ -149,11 +165,17 @@ interface ApiService {
         @Body pointRequest: PointRequest
     ):  Response<PointResponse>
 
+    @PUT("/questions")
+    suspend fun quizUpdate(
+        @Header("Authorization") token: String,
+        @Query("qtIdx") qtIdx: Int
+    ): Response<QuizData>
+
     //저장목록
     @GET("/likes/term")
     suspend fun getDiercTerm(
         @Header("Authorization") token: String
-    ): Response<DirecTermResponse>
+    ): DirecTermResponse
 
     @GET("/likes/gpse")
     suspend fun getDiercGpse(

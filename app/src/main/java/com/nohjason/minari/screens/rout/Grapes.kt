@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -31,12 +32,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.traceEventEnd
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,6 +49,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.nohjason.minari.R
+import com.nohjason.minari.network.response.rout.Grape
 import com.nohjason.minari.network.response.rout.GrapeData
 import com.nohjason.minari.network.response.rout.GrapeSeedLessData
 import com.nohjason.minari.preferences.getFromPreferences
@@ -57,6 +61,7 @@ import com.nohjason.minari.ui.theme.pretendard_bold
 import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_regular
 import com.nohjason.minari.ui.theme.pretendard_semibold
+import com.nohjason.myapplication.network.MainViewModel
 
 @Composable
 fun Grapes(
@@ -67,12 +72,10 @@ fun Grapes(
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
     val gps by viewModel.gpsDetail.collectAsState()
-    LaunchedEffect(key1 = Unit) {
-        viewModel.getGps(
-            token = token,
-            gpsId = id
-        )
+    LaunchedEffect(key1 = Unit, gps) {
+        viewModel.getGps(token = token, gpsId = id)
     }
+
     Scaffold(
         topBar = {
             androidx.compose.material.TopAppBar(
@@ -105,6 +108,7 @@ fun Grapes(
                     .padding(innerPadding),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
+                Log.d("TAG", "Grapes: ${gps!!.data.gpList.first()}\n${gps!!.data.gpList.last()}")
                 item {
                     Column(
                         modifier = Modifier
@@ -172,21 +176,22 @@ fun Grapes(
                         }
                     }
                 }
-
                 items(gps!!.data.gpList) { item ->
                     Gpse(
-                        navController,
-                        gpImg = item.gpImg,
+                        navController = navController,
+                        token = token,
                         title = gps!!.data.gpsName,
                         gpId = item.gpId,
                         gpNm = item.gpNm,
+                        gpImg = item.gpImg,
                         exp = item.gpExp,
                         gpTm = item.gpTm,
                         gpLike = item.gpLike,
                         gpseCnt = item.gpseCnt,
                         gpseCntMax = item.gpseCntMax,
-                        token = token,
-                        likesClick = { viewModel.likes(token, "GRAPE", item.gpId) }
+                        viewModel = viewModel,
+                        likesClick = { viewModel.likes(token, "GRAPE", item.gpId) },
+                        state = if (item == gps!!.data.gpList.first()) true else false
                     )
                 }
             }
@@ -211,10 +216,25 @@ fun Gpse(
     gpseCnt: Int,
     gpseCntMax: Int,
     viewModel: GrapeViewModel = viewModel(),
+    mainViewModel: MainViewModel = viewModel(),
     token: String,
-    likesClick: () -> Unit
+    likesClick: () -> Unit,
+    state: Boolean
 ) {
-    var isExpanded by remember { mutableStateOf(false) }
+    var isExpanded by remember { mutableStateOf(state) }
+    val grape = viewModel.allGpMap.collectAsState().value[gpId] // 해당 gpId에 대한 데이터만 참조
+
+    LaunchedEffect(key1 = isExpanded) {
+        if (isExpanded && grape == null) {
+            viewModel.getAllGrape(token = token, gpId = gpId)
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        if (gpseCnt == gpseCntMax) {
+            mainViewModel.finishLearn(token, "GRAPE", gpId)
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -224,7 +244,10 @@ fun Gpse(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(20.dp))
-                .clickable { isExpanded = !isExpanded } // 클릭 시 확장 상태 토글
+                .clickable {
+                    isExpanded = !isExpanded
+                    Log.d("TAG", "Gpse: $gpId")
+                } // 클릭 시 확장 상태 토글
                 .background(Color.White)
                 .padding(vertical = 10.dp, horizontal = 20.dp)
         ) {
@@ -282,22 +305,17 @@ fun Gpse(
                 )
             }
 
-            val grape by viewModel.allGp.collectAsState()
-            LaunchedEffect(key1 = Unit) {
-                viewModel.getAllGrape(
-                    token = token,
-                    gpId = gpId
-                )
-            }
-            // Box가 확장되었을 때만 보이는 내용
+            // 확장 시 보여줄 추가 정보
             if (isExpanded) {
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+
                 if (grape != null) {
-                    grape!!.data.forEach {
+                    grape.data.forEach {
                         Row(
-                            modifier = Modifier.clickable {
-                            navController.navigate(Screens.Grape.rout + "/${it.gpseId}/$title")
-                            }
+                            modifier = Modifier
+                                .clickable {
+                                    navController.navigate(Screens.Grape.rout + "/${it.gpseId}/$title")
+                                }
                         ) {
                             Text(
                                 text = it.gpseNm,
@@ -308,8 +326,10 @@ fun Gpse(
                         }
                     }
                 } else {
-                    CircularProgressIndicator(modifier = Modifier.size(50.dp))
+                    CircularProgressIndicator(modifier = Modifier.size(24.dp))
                 }
+
+                Spacer(modifier = Modifier.height(8.dp))
             }
 
             Box(

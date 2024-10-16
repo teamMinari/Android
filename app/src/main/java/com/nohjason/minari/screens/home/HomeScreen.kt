@@ -1,14 +1,12 @@
 package com.nohjason.minari.screens.home
 
-import android.content.Intent
-import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -35,7 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -51,24 +50,22 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
+import androidx.navigation.compose.rememberNavController
 //import coil.compose.AsyncImage
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
 import com.nohjason.minari.R
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
+import com.nohjason.minari.screens.home.todayterm.TodayTerm
+import com.nohjason.minari.screens.home.todayterm.getRandomItems
 import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.profile.profile_data.ProfileViewModel
 import com.nohjason.minari.screens.profile.profile_element.RewardBar
@@ -76,28 +73,29 @@ import com.nohjason.minari.screens.rout.GrapeViewModel
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGradation
-import com.nohjason.minari.ui.theme.pretendard_bold
-import com.nohjason.minari.ui.theme.pretendard_medium
-import com.nohjason.minari.ui.theme.pretendard_regular
 import com.nohjason.minari.ui.theme.pretendard_semibold
+import com.nohjason.myapplication.network.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: GrapeViewModel = viewModel(),
-    profileViewModel: ProfileViewModel = viewModel()
+    grapeViewModel: GrapeViewModel = viewModel(),
+    profileViewModel: ProfileViewModel = viewModel(),
+    mainViewModel: MainViewModel = viewModel(),
 ) {
-    var text by remember { mutableStateOf("") }
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val context = LocalContext.current
-    var backPressedTime by rememberSaveable { mutableStateOf(0L) }
+    var text by remember { mutableStateOf("test") }
+    var backPressedTime by rememberSaveable { mutableLongStateOf(0L) }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val data by profileViewModel.profileData.collectAsState()
+    val getAllTerms by mainViewModel.getAllTerms.collectAsState()
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
 
     LaunchedEffect(Unit) {
         profileViewModel.getProfile(token)
+        mainViewModel.getAllTerms(token, 0, 1000)
     }
 
     BackHandler(onBack = {
@@ -105,7 +103,7 @@ fun HomeScreen(
         if (currentTime - backPressedTime < 2000) {
             (context as ComponentActivity).finish()
         } else {
-            Toast.makeText(context, "Press back again to exit", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "한 번 더 누르면 앱을 끌 수 있어요'", Toast.LENGTH_SHORT).show()
             backPressedTime = currentTime
         }
     })
@@ -116,31 +114,25 @@ fun HomeScreen(
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = Color.White,
-//                    titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
                     MinariTextField(
                         modifier = Modifier
                             .clip(CircleShape)
-                            .background(Color(0xFFF6F6F6))
+                            .background(Color.White)
                             .padding(6.dp),
                         value = text,
                         onValueChange = { text = it },
                         onClick = {
-                            viewModel.getTerm(token, text)
-                            navController.navigate(Screens.Term.rout + "/${text}")
-                        }
+                            grapeViewModel.getTerm(token, text)
+                            navController.navigate(Screens.Term.rout + "/${text.replace("/", "@")}")
+                        },
                     )
                 },
                 scrollBehavior = scrollBehavior,
             )
         }
     ) { innerPadding ->
-        var itemCount by remember { mutableStateOf(5) }
-        val allItems = remember { List(20) { index -> "Item ${index + 1}" } }
-        val items = allItems.take(itemCount)
-
-        val selectedItems = remember { mutableStateListOf<Int>() }
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -250,130 +242,11 @@ fun HomeScreen(
                     }
                 }
             }
-            items(5) { item ->
-                Box(
-                    modifier = Modifier
-                        .fillParentMaxWidth()
-                        .background(Color.White)
-                        .padding(horizontal = 20.dp)
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp)
-                    ) {
-                        Text(
-                            text = "가산금리",
-                            fontSize = 17.sp,
-                            fontFamily = pretendard_medium
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        for (i in 1..2) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.star),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(13.dp),
-                                tint = Color.Unspecified
-                            )
-                        }
-                        Spacer(modifier = Modifier.weight(0.1f))
-                        Icon(
-                            painter = painterResource(id = R.drawable.book_mark),
-                            contentDescription = null,
-                            tint = Color.Unspecified
-                        )
-                    }
+            if (getAllTerms != null ) {
+                val randomItems = getRandomItems(context, getAllTerms!!)
+                items(randomItems){ item ->
+                    TodayTerm(navController, item = item)
                 }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalPagerApi::class)
-@Composable
-fun SwipeNews() {
-    val context = LocalContext.current
-    val pagerState = rememberPagerState()
-    val list: List<ShowNews> = listOf(
-        ShowNews(
-            "https://imgnews.pstatic.net/image/032/2024/09/09/0003320025_001_20240909212314102.jpg?type=w647",
-            "오후 9:00",
-            "차·포 뗀 법안에도 플랫폼 업계는 “과하다”…사후 규제엔 ‘반색’",
-            "https://n.news.naver.com/mnews/article/032/0003320025"
-        ),
-        ShowNews(
-            "https://imgnews.pstatic.net/image/009/2024/09/09/0005363178_001_20240909213611393.jpg?type=w647",
-            "오후 9:26",
-            "“전기료 이게 맞아?” 집집마다 난리…역대급 폭염의 뒤끝, 서늘하네",
-            "https://n.news.naver.com/mnews/article/009/0005363178"
-        )
-    )
-    HorizontalPager(
-        count = list.size, // 아이템 개수
-        state = pagerState,
-        itemSpacing = 20.dp // 페이지 간의 간격을 설정
-    ) { page ->
-        val news = list[page]
-        // 페이지 내용
-        Box(
-            modifier = Modifier
-                .height(200.dp)
-                .padding(horizontal = 20.dp)
-                .drawColoredShadow(
-                    color = Color.Black,
-                    alpha = 0.3f,
-                    borderRadius = 10.dp,
-                    shadowRadius = 8.dp,
-                    offsetX = 5.dp,
-                    offsetY = 5.dp
-                )
-                .clip(RoundedCornerShape(10.dp))
-        ) {
-            AsyncImage(
-                model = news.img,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(news.link))
-                        context.startActivity(intent)
-                    },
-            )
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp)
-                    .align(Alignment.BottomCenter)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .border(1.dp, Color.White, CircleShape)
-                        .padding(horizontal = 5.dp)
-                ) {
-                    Text(
-                        text = "🔥HOT",
-                        fontSize = 13.sp,
-                        fontFamily = pretendard_semibold,
-                        color = Color.White
-                    )
-                }
-                Spacer(modifier = Modifier.weight(0.1f))
-                Text(
-                    text = news.time,
-                    color = Color.White,
-                    fontSize = 10.sp,
-                    fontFamily = pretendard_regular
-                )
-                Text(
-                    text = news.title,
-                    color = Color.White,
-                    fontSize = 15.sp,
-                    fontFamily = pretendard_bold,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
             }
         }
     }
@@ -399,9 +272,10 @@ fun CircularProgressIndicator(
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.width(10.dp))
-                Box(modifier = Modifier
-                    .clip(CircleShape)
-                    .background(MinariBlue)
+                Box(
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .background(MinariBlue)
                 ) {
                     Text(
                         text = status,
@@ -476,10 +350,8 @@ fun Modifier.drawColoredShadow(
     }
 }
 
-data class ShowNews(
-    val img: String,
-    val time: String,
-    val title: String,
-    val link: String
-)
-
+@Preview
+@Composable
+private fun Test() {
+    HomeScreen(navController = rememberNavController())
+}

@@ -3,7 +3,6 @@ package com.nohjason.minari.screens.news
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nohjason.minari.network.response.rout.GrapeSeed
 import com.nohjason.minari.screens.rout.response.GetAllNews
 import com.nohjason.myapplication.network.RetrofitInstance.api
 import kotlinx.coroutines.Dispatchers

@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-//    id("com.google.gms.google-services")
-//    id("kotlin-kapt")
+    alias(libs.plugins.googleGmsGoogleServices)
+    id("kotlin-kapt")
 }
 
 android {
@@ -55,6 +55,8 @@ dependencies {
     //safe area
     implementation("androidx.core:core-ktx:1.13.1")
 
+    implementation ("androidx.work:work-runtime-ktx:2.7.1")
+
     // Markdown
     implementation("com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc06")
 
@@ -86,13 +88,13 @@ dependencies {
 //    kapt ("androidx.room:room-compiler:2.5.0")
 
     // Firebase
-//    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
-//    implementation("com.google.firebase:firebase-analytics")
-//    implementation("com.google.android.gms:play-services-auth:21.0.0")
-//
-//    implementation("androidx.compose.material:material:1.6.5")
-//
-//    implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
+
+    implementation("androidx.compose.material:material:1.6.5")
+
+    implementation("io.coil-kt:coil-compose:2.6.0")
 
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.7")
@@ -109,6 +111,8 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database.ktx)
+    implementation(libs.play.services.auth)
+    implementation(libs.androidx.work.runtime.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -5,17 +5,29 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
+import android.content.Context
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.google.android.gms.auth.api.identity.Identity
+import com.nohjason.minari.firebase.GoogleAuthUiClient
+import com.nohjason.minari.firebase.SignInViewModel
 import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
@@ -44,19 +56,29 @@ import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.quiz_play.SeletO
 import com.nohjason.minari.screens.quiz.quiz_play.SeletX
 import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
+import kotlinx.coroutines.launch
 
 @SuppressLint("ComposableDestinationInComposeScope")
 @Composable
 fun NavGraph(
+    applicationContext: Context,
+    lifecycleScope: LifecycleCoroutineScope,
     navController: NavHostController,
     loginViewModel: LoginViewModel,
     profileViewModel: ProfileViewModel = viewModel(),
-    quizViewModel: QuizViewModel = viewModel(),
+    quizViewModel: QuizViewModel = viewModel()
 ) {
+    val context = LocalContext.current
+    val googleAuthUiClient by lazy {
+        GoogleAuthUiClient(
+            context = applicationContext,
+            oneTapClient = Identity.getSignInClient(applicationContext)
+        )
+    }
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
-    val context = LocalContext.current
-    val preferencesManager = PreferencesManager(context)
+//    val data by profileViewModel.profileData.collectAsState()
+    val data = profileViewModel.profileData.collectAsState().value
 
 
 
@@ -64,11 +86,50 @@ fun NavGraph(
     NavHost(
         navController = navController,
         startDestination = Screens.FirstScreen.rout,
+        enterTransition = { fadeIn(animationSpec = tween(0)) }
     ) {
 
         composable(Screens.FirstScreen.rout) {
+            val viewModel = viewModel<SignInViewModel>()
+            val state by viewModel.state.collectAsState()
+
+            val launcher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.StartIntentSenderForResult(),
+                onResult = { result ->
+                    if (result.resultCode == RESULT_OK) {
+                        lifecycleScope.launch {
+                            val signInResult = googleAuthUiClient.signInwithIntent(
+                                intent = result.data ?: return@launch
+                            )
+                            viewModel.onSignInResult(signInResult)
+                        }
+                    }
+                }
+            )
+
+            LaunchedEffect(key1 = state.isSignInSuccessful) {
+                if (state.isSignInSuccessful) {
+                    Toast.makeText(
+                        applicationContext,
+                        "Sign in successful",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
             LoginScreen(
                 navController = navController,
+                state = state,
+                onSignInClick = {
+                    Log.d("TAG", "NavGraph: ?")
+                    lifecycleScope.launch {
+                        val signInIntentSender = googleAuthUiClient.signIn()
+                        launcher.launch(
+                            IntentSenderRequest.Builder(
+                                signInIntentSender ?: return@launch
+                            ).build()
+                        )
+                    }
+                }
             )
         }
 
@@ -90,7 +151,9 @@ fun NavGraph(
         }
 
         // 뉴스
-        composable(BottomScreen.News.rout) {
+        composable(
+            BottomScreen.News.rout,
+        ) {
             News(navController = navController)
         }
 
@@ -103,7 +166,11 @@ fun NavGraph(
 
         // 퀴즈
         composable(BottomScreen.Quiz.rout) {
-            QuizMainScreen(navHostController = navController, quizViewModel = quizViewModel, token=token)
+            QuizMainScreen(
+                navHostController = navController,
+                quizViewModel = quizViewModel,
+                token = token
+            )
         }
 
         // 프로필
@@ -153,9 +220,9 @@ fun NavGraph(
         // 용어
         composable(Screens.Term.rout + "/{text}") { backStackEntry ->
             val text = backStackEntry.arguments?.getString("text") ?: ""
+            text.replace("@", "/")
             TermScreen(text, navController = navController)
         }
-
 
         // 로그인
         composable(
@@ -192,7 +259,6 @@ fun NavGraph(
         ) {
             SeletO(navHostController = navController, quizViewModel = quizViewModel)
         }
-
         composable(
             Screens.QuizSelectX.rout,
             enterTransition = {
@@ -204,7 +270,6 @@ fun NavGraph(
         ) {
             SeletX(navHostController = navController, quizViewModel = quizViewModel)
         }
-
         composable(
             Screens.QuizPlaycreen.rout,
             enterTransition = {
@@ -216,7 +281,6 @@ fun NavGraph(
         ) {
             QuizPlayScreen(navHostController = navController, quizViewModel = quizViewModel)
         }
-
         composable(
             Screens.QuizEndScreen.rout,
             enterTransition = {

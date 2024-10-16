@@ -50,6 +50,7 @@ import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.pretendard_extra_bold
 import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_semibold
+import com.nohjason.myapplication.network.MainViewModel
 
 @Composable
 fun Rout(
@@ -59,8 +60,13 @@ fun Rout(
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
     val route by viewModel.route.collectAsState()
+    val gps by viewModel.gpsDetail.collectAsState()
+
     LaunchedEffect(key1 = Unit) {
         viewModel.getAllGps(token = token)
+        if (gps != null && gps!!.data.gpCnt == gps!!.data.gpCntMax) {
+            Log.d("TAG", "Rout: 학습완료")
+        }
     }
     BackHandler(onBack = {
         navController.popBackStack(BottomScreen.Home.rout, inclusive = false)
@@ -96,18 +102,6 @@ fun Rout(
                 )
             }
         }
-//        val list: List<GpsData> = createDummyGpsData()
-//        items(list) { item ->
-//            Gps(
-//                onClick = { navController.navigate(Test.Grapes.rout+"/0") },
-//                iconClick = { /*TODO*/ },
-//                like = item.gpsLike,
-//                name = item.gpsName,
-//                time = item.gpsTime,
-//                content = item.gpsContent,
-//                list = item.gpTpList
-//            )
-//        }
         if (route != null) {
             if (route!!.data.size == 0) {
                 item {
@@ -127,6 +121,9 @@ fun Rout(
                     list = item.gpTpList
                 )
             }
+            item {
+                Spacer(modifier = Modifier.height(20.dp))
+            }
         } else {
             item {
                 Box(modifier = Modifier.fillParentMaxWidth()) {
@@ -137,19 +134,7 @@ fun Rout(
     }
 }
 
-fun createDummyGpsData(): List<GpsData> {
-    return listOf(
-        GpsData(
-            gpsId = 1,
-            gpsName = "돈이 움직이는 세상",
-            gpsContent = "",
-            gpsTime = 10,
-            gpsLike = false,
-            gpTpList = listOf("BEGINNER")
-        )
-    )
-}
-
+// 포도송이
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Gps(

@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitInstance {
-    private const val BASE_URL = "https://cheongfordo.kr/"
+    private const val BASE_URL = "https://cheongfordo.kr/"  // 서버의 베이스 URL로 변경
 
     val api: ApiService by lazy {
         Retrofit.Builder()
@@ -16,4 +16,3 @@ object RetrofitInstance {
             .create(ApiService::class.java)
     }
 }
-
