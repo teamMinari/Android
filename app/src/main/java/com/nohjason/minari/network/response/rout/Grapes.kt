@@ -25,9 +25,10 @@ data class GpsData(
     val gpsId: Int,
     val gpsName: String,
     val gpsContent: String,
-    val gpsTime: Long,
+    val gpsTime: Int,
     val gpsLike: Boolean,
-    val gpTpList: List<String>
+    val gpsAgeGroup: String,
+    val gpsWork: String
 )
 
 
@@ -45,7 +46,8 @@ data class GrapesData (
     val gpsImg: String,
     val gpCnt: Int,
     val gpCntMax: Int,
-    val gpTpList: List<String>,
+    val gpsAgeGroup: String,
+    val gpsWork: String,
     val gpList: List<GrapeData>,
 )
 
