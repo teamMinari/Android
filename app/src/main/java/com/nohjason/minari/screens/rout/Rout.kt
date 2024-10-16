@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.rout
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -49,12 +50,14 @@ import com.nohjason.minari.ui.theme.pretendard_extra_bold
 import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_semibold
 
+@SuppressLint("CommitPrefEdits")
 @Composable
 fun Rout(
     navController: NavController,
     viewModel: GrapeViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
 ) {
     val preferences = getPreferences()
+    val editor = preferences.edit()
     val token = getFromPreferences(preferences, "token")
     val route by viewModel.route.collectAsState()
     val gps by viewModel.gpsDetail.collectAsState()
@@ -103,7 +106,11 @@ fun Rout(
             Log.d("TAG", "Rout: $route")
             items(route!!.data) { item ->
                 Gps(
-                    onClick = { navController.navigate(Screens.Grapes.rout + "/${item.gpsId}") },
+                    onClick = {
+                        editor.putInt("gpsId", item.gpsId)
+                        editor.apply()
+                        navController.navigate(Screens.Grapes.rout + "/${item.gpsId}")
+                    },
                     iconClick = { viewModel.likes(token, "GRAPES", item.gpsId) },
                     like = item.gpsLike,
                     name = item.gpsName,
@@ -182,10 +189,12 @@ fun Gps(
                     modifier = Modifier.padding(vertical = 5.dp),
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
-                    Box(modifier = Modifier
-                        .clip(CircleShape)
-                        .background(MinariBlue)
-                        .padding(horizontal = 10.dp, vertical = 2.dp)) {
+                    Box(
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .background(MinariBlue)
+                            .padding(horizontal = 10.dp, vertical = 2.dp)
+                    ) {
                         Text(
                             text = gpsAgeGroup,
                             fontFamily = pretendard_medium,
@@ -193,10 +202,12 @@ fun Gps(
                             modifier = Modifier.align(Alignment.Center)
                         )
                     }
-                    Box(modifier = Modifier
-                        .clip(CircleShape)
-                        .background(MinariBlue)
-                        .padding(horizontal = 10.dp, vertical = 2.dp)) {
+                    Box(
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .background(MinariBlue)
+                            .padding(horizontal = 10.dp, vertical = 2.dp)
+                    ) {
                         Text(
                             text = gpsWork,
                             fontFamily = pretendard_medium,

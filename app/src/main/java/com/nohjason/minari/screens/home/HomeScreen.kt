@@ -62,6 +62,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 //import coil.compose.AsyncImage
 import com.nohjason.minari.R
+import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.screens.home.todayterm.TodayTerm
@@ -75,6 +76,7 @@ import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGradation
 import com.nohjason.minari.ui.theme.pretendard_semibold
 import com.nohjason.myapplication.network.MainViewModel
+import org.checkerframework.common.subtyping.qual.Bottom
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -141,6 +143,7 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
+                val gpsId = preferences.getInt("gpsId", 0)
                 Column {
                     Box(
                         modifier = Modifier
@@ -160,9 +163,11 @@ fun HomeScreen(
                                 contentDescription = null,
                             )
                             CircularProgressIndicator(
-                                percentage = 0.75f,
-                                title = "경제의 시작",
-                                status = "학습중"
+                                percentage = 0.10f,
+//                                title = "경제의 시작",
+                                title = if(gpsId != 0) "학습하러 가기" else "튜토리얼 보기",
+//                                status = "학습중"
+                                status = if(gpsId != 0) "학습하러 가기" else "튜토리얼 보기"
                             )
                         }
                     }
@@ -177,7 +182,13 @@ fun HomeScreen(
                                 offsetY = 5.dp
                             )
                             .clip(CircleShape)
-                            .clickable { }
+                            .clickable {
+                                if (gpsId != 0) {
+                                    navController.navigate(Screens.Grapes.rout + "/${gpsId}")
+                                } else {
+                                    navController.navigate(BottomScreen.Rout.rout)
+                                }
+                            }
                             .height(55.dp)
                             .background(
                                 brush = Brush.linearGradient(
@@ -193,7 +204,7 @@ fun HomeScreen(
                         Text(
                             modifier = Modifier
                                 .align(Alignment.Center),
-                            text = "학습하러 가기",
+                            text = if(gpsId != 0) "학습하러 가기" else "튜토리얼 보기",
                             color = Color.White,
                             fontSize = 20.sp,
                             fontFamily = pretendard_semibold
