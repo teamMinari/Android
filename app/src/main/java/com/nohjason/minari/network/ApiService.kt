@@ -184,17 +184,17 @@ interface ApiService {
     @GET("/likes/gpse")
     suspend fun getDiercGpse(
         @Header("Authorization") token: String
-    ): DirecGpseResponse
+    ): Response<DirecGpseResponse>
 
     @GET("/likes/gps")
     suspend fun getDiercGps(
         @Header("Authorization") token: String
-    ): DirecGpsResponse
+    ): Response<DirecGpsResponse>
 
     @GET("/likes/gp")
     suspend fun getDierctGp(
         @Header("Authorization") token: String
-    ): DirecGpResponse
+    ): Response<DirecGpResponse>
 
     //로그아웃
     @GET("/member/logout")

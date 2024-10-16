@@ -73,7 +73,6 @@ fun LikeList(
 ) {
     val termItem = direcViewModel.direcTermData.collectAsState().value?.data
 
-//    Log.d("LikeList", "term 데이터 체크: ${termItem}")
 
 
     Box(

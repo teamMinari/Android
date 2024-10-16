@@ -3,6 +3,7 @@ package com.nohjason.minari.screens.quiz.quiz_play
 
 import android.annotation.SuppressLint
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -51,6 +52,8 @@ fun SeletX(
     navHostController: NavHostController,
     quizViewModel: QuizViewModel = viewModel()
 ) {
+    BackHandler(enabled = true){}
+
     val playData = quizViewModel.playData.value
 
     val qtNum = playData?.qtNum ?: 0

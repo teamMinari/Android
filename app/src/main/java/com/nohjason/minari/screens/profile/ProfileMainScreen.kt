@@ -57,27 +57,17 @@ fun ProfileMAinScreen(
     token : String,
 //    preferencesManager: PreferencesManager
 ) {
-    val data = profileViewModel.profileData.collectAsState().value
-
+    profileViewModel.getProfile(token)
     direcViewModel.getDirecTerm(token) // Term 데이터 호출
+    direcViewModel.getDirecGpse(token) // Gpse 데이터 호출
+    direcViewModel.getDirecGps(token) // Gps 데이터 호출
+    direcViewModel.getDirecGp(token) // Gp 데이터 호출
 
+    val data = profileViewModel.profileData.collectAsState().value
     val direcTermData = direcViewModel.direcTermData.collectAsState().value
     val direcGpseData = direcViewModel.direcGpseData.collectAsState().value // Gpse 데이터 추가
     val direcGpsData = direcViewModel.direcGpsData.collectAsState().value // Gps 데이터 추가
     val direcGpData = direcViewModel.direcGpData.collectAsState().value // Gp 데이터 추가
-
-    LaunchedEffect(Unit) {
-        profileViewModel.getProfile(token)
-        direcViewModel.getDirecGpse(token) // Gpse 데이터 호출
-        direcViewModel.getDirecGps(token) // Gps 데이터 호출
-        direcViewModel.getDirecGp(token) // Gp 데이터 호출
-    }
-
-    Log.d("ProfileMain", "profile 데이터: "+ data)
-    Log.d("ProfileMain", "direcTermData 데이터 체크: "+ direcTermData)
-    Log.d("ProfileMain", "direcGpsData 데이터 체크: $direcGpsData")
-    Log.d("ProfileMain", "irecGpData 데이터 체크: $direcGpData")
-    Log.d("ProfileMain", "irecGpseData 데이터 체크: $direcGpseData")
 
     val scrollState = rememberScrollState()
 

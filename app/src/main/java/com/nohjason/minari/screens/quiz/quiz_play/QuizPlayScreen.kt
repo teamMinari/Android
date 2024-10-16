@@ -3,6 +3,7 @@ package com.nohjason.minari.screens.quiz.quiz_play
 import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,6 +46,7 @@ fun QuizPlayScreen(
     navHostController: NavHostController,
     quizViewModel: QuizViewModel = viewModel()
 ){
+    BackHandler(enabled = true){}
 
     val playData by quizViewModel.playData.collectAsState()
 //    println("플레이화면 데이터확인 "+ playData)

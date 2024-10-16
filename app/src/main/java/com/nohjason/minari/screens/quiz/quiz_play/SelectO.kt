@@ -2,6 +2,7 @@ package com.nohjason.minari.screens.quiz.quiz_play
 
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -44,6 +45,8 @@ fun SeletO(
     navHostController: NavHostController,
     quizViewModel: QuizViewModel = viewModel()
 ) {
+    BackHandler(enabled = true){}
+
     val playData = quizViewModel.playData.value
 
     val qtNum = playData?.qtNum ?: 0

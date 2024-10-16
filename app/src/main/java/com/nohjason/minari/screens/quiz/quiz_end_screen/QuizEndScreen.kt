@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.quiz.quiz_end_screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -47,6 +48,8 @@ fun QuizEndScreen(
     val point = playData?.point ?: 0
     val current = playData?.userCurrent ?: 0
     val reqPoint = PointRequest( pointToAdd = point)
+
+    BackHandler(enabled = true){}
 
     Column (
         modifier = Modifier
