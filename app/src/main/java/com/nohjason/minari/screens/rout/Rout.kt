@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.rout
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -16,7 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -42,7 +42,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomScreen
-import com.nohjason.minari.network.response.rout.GpsData
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.screens.login.Screens
@@ -50,14 +49,15 @@ import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.pretendard_extra_bold
 import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_semibold
-import com.nohjason.myapplication.network.MainViewModel
 
+@SuppressLint("CommitPrefEdits")
 @Composable
 fun Rout(
     navController: NavController,
     viewModel: GrapeViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
 ) {
     val preferences = getPreferences()
+    val editor = preferences.edit()
     val token = getFromPreferences(preferences, "token")
     val route by viewModel.route.collectAsState()
     val gps by viewModel.gpsDetail.collectAsState()
@@ -103,22 +103,21 @@ fun Rout(
             }
         }
         if (route != null) {
-            if (route!!.data.size == 0) {
-                item {
-                    Box(modifier = Modifier.fillParentMaxWidth()) {
-                        Text(text = "아직 없음", modifier = Modifier.align(Alignment.Center))
-                    }
-                }
-            }
+            Log.d("TAG", "Rout: $route")
             items(route!!.data) { item ->
                 Gps(
-                    onClick = { navController.navigate(Screens.Grapes.rout + "/${item.gpsId}") },
+                    onClick = {
+                        editor.putInt("gpsId", item.gpsId)
+                        editor.apply()
+                        navController.navigate(Screens.Grapes.rout + "/${item.gpsId}")
+                    },
                     iconClick = { viewModel.likes(token, "GRAPES", item.gpsId) },
                     like = item.gpsLike,
                     name = item.gpsName,
                     time = item.gpsTime,
                     content = item.gpsContent,
-                    list = item.gpTpList
+                    gpsAgeGroup = item.gpsAgeGroup ?: "",
+                    gpsWork = item.gpsWork ?: ""
                 )
             }
             item {
@@ -142,10 +141,12 @@ fun Gps(
     iconClick: () -> Unit,
     like: Boolean,
     name: String,
-    time: Long,
+    time: Int,
     content: String,
-    list: List<String>
+    gpsAgeGroup: String,
+    gpsWork: String,
 ) {
+    Log.d("TAG", "Gps: $gpsAgeGroup, $gpsWork")
     Card(
         shape = RoundedCornerShape(16.dp),
         elevation = 4.dp,
@@ -183,19 +184,32 @@ fun Gps(
                 Spacer(modifier = Modifier.width(5.dp))
                 Text(text = "${time}분", fontFamily = pretendard_medium, fontSize = 12.sp)
             }
-            LazyRow(
-                modifier = Modifier.padding(vertical = 5.dp),
-                horizontalArrangement = Arrangement.spacedBy(5.dp)
-            ) {
-                items(list) { item ->
+            if (gpsAgeGroup != "" && gpsWork != "") {
+                Row(
+                    modifier = Modifier.padding(vertical = 5.dp),
+                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                ) {
                     Box(
                         modifier = Modifier
                             .clip(CircleShape)
                             .background(MinariBlue)
-                            .padding(horizontal = 10.dp, vertical = 2.dp),
+                            .padding(horizontal = 10.dp, vertical = 2.dp)
                     ) {
                         Text(
-                            text = item,
+                            text = gpsAgeGroup,
+                            fontFamily = pretendard_medium,
+                            color = Color.White,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                    Box(
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .background(MinariBlue)
+                            .padding(horizontal = 10.dp, vertical = 2.dp)
+                    ) {
+                        Text(
+                            text = gpsWork,
                             fontFamily = pretendard_medium,
                             color = Color.White,
                             modifier = Modifier.align(Alignment.Center)
