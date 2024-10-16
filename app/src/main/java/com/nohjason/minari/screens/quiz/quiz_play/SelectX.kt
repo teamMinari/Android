@@ -42,6 +42,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
+import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.quiz.QuizPopup
 import com.nohjason.minari.screens.quiz.clickOnce
@@ -225,7 +226,7 @@ fun SeletX(
                 }, // 취소
                 onConfirmation = {
                     showPopup = false
-                    navHostController.navigate(Screens.Question.rout)
+                    navHostController.navigate(BottomScreen.Quiz.rout)
                 },  // 확인
                 dialogTitle = "뒤로 돌아가기",
                 dialogText = "정말로 퀴즈를 종료시겠습니까?",
