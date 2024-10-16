@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomScreen
+import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.quiz.data.PointRequest
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 import com.nohjason.minari.screens.ui.titlebar.TitleBar
@@ -49,7 +50,9 @@ fun QuizEndScreen(
     val current = playData?.userCurrent ?: 0
     val reqPoint = PointRequest( pointToAdd = point)
 
-    BackHandler(enabled = true){}
+    BackHandler(enabled = true){
+        navController.navigate(BottomScreen.Quiz.rout)
+    }
 
     Column (
         modifier = Modifier
