@@ -201,7 +201,7 @@ fun LikeList(
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier
                                 .clickable {
-                                    navHostController.navigate("myDirectory")
+//                                    navHostController.navigate("myDirectory")
                                 },
                         )
                         Spacer(modifier = Modifier.height(23.dp))
