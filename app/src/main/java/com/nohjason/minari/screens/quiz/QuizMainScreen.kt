@@ -155,18 +155,18 @@ fun QuizMainScreen(
             coment = "공부 좀 했다면 이건 어떤가요?",
             onClick = {
                 //더미코드
-//                val dataList = selectPlayData(qestionAll = nomalQuestionResponse, level = 2)
-//                quizViewModel.initializePlayData(data = dataList)
-//                navHostController.navigate("quizplay")
+                val dataList = selectPlayData(qestionAll = nomalQuestionResponse, level = 2)
+                quizViewModel.initializePlayData(data = dataList)
+                navHostController.navigate("quizplay")
 
                 //서버코드
-                coroutineScope.launch {
-                    val qtAll = quizViewModel.getQuestion(2, token)
-
-                    val dataList = selectPlayData(qestionAll = qtAll, level = 2)
-                    quizViewModel.initializePlayData(data = dataList)
-                    navHostController.navigate("quizplay")
-                }
+//                coroutineScope.launch {
+//                    val qtAll = quizViewModel.getQuestion(2, token)
+//
+//                    val dataList = selectPlayData(qestionAll = qtAll, level = 2)
+//                    quizViewModel.initializePlayData(data = dataList)
+//                    navHostController.navigate("quizplay")
+//                }
             }
         )
 
@@ -180,19 +180,19 @@ fun QuizMainScreen(
             coment = "이건 모를걸요!",
             onClick = {
 //                더미코드
-//                val dataList = selectPlayData(qestionAll = hardQuestionResponse, level = 3)
-//                quizViewModel.initializePlayData(data = dataList)
-//                navHostController.navigate("quizplay")
+                val dataList = selectPlayData(qestionAll = hardQuestionResponse, level = 3)
+                quizViewModel.initializePlayData(data = dataList)
+                navHostController.navigate("quizplay")
 
 
                 //서버코드
-                coroutineScope.launch {
-                    val qtAll = quizViewModel.getQuestion(3, token)
-
-                    val dataList = selectPlayData(qestionAll = qtAll, level = 3)
-                    quizViewModel.initializePlayData(data = dataList)
-                    navHostController.navigate("quizplay")
-                }
+//                coroutineScope.launch {
+//                    val qtAll = quizViewModel.getQuestion(3, token)
+//
+//                    val dataList = selectPlayData(qestionAll = qtAll, level = 3)
+//                    quizViewModel.initializePlayData(data = dataList)
+//                    navHostController.navigate("quizplay")
+//                }
             }
         )
     }
