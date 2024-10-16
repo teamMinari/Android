@@ -295,7 +295,6 @@ fun NavGraph(
 
 
 
-
         //모르는거
         composable(
             route = Screens.Question.rout,

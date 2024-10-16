@@ -28,6 +28,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,6 +61,8 @@ import com.nohjason.minari.screens.profile.directory_screen.direc_data.getDummyD
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.getDummyDirecGpseResponse
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.getDummyDirecTermResponse
 import com.nohjason.minari.screens.profile.profile_data.LikeListData
+import com.nohjason.minari.screens.quiz.quiz_main.selectPlayData
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,18 +71,9 @@ fun LikeList(
     navHostController: NavHostController,
     token: String
 ) {
-    LaunchedEffect(Unit) {
-//        direcViewModel.getDirecGp(token)
-//        direcViewModel.getDirecGp(token)
-//        direcViewModel.getDirecGps(token)
-//        direcViewModel.getDirecGpse(token)
-    }
-    val data = direcViewModel.direcTermData.collectAsState().value
-//    Log.d("LikeListTerm", "LikeDataTerm: "+data)
     val termItem = direcViewModel.direcTermData.collectAsState().value?.data
-    val gpsItem = direcViewModel.direcGpsData.collectAsState().value?.data
-    val gpseItem = direcViewModel.direcGpseData.collectAsState().value?.data
-    val gpItem = direcViewModel.direcGpData.collectAsState().value?.data
+
+//    Log.d("LikeList", "term 데이터 체크: ${termItem}")
 
 
     Box(
@@ -130,58 +124,58 @@ fun LikeList(
                         Spacer(modifier = Modifier.height(10.dp))
 
                         // termItem
-                        gpsItem?.take(2)?.let {
-                            it.forEachIndexed { index, data ->
-                                DirecGps(data = data)
-                                Spacer(modifier = Modifier.height(15.dp))
-                                // 마지막 요소일 경우 Divider를 표시하지 않음
-                                if (index < it.size - 1) { // 마지막 요소가 아닐 때만 Divider 추가
-                                    Divider(
-                                        color = Color(0xFFECEFFB),
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(1.dp)
-                                    )
-                                    Spacer(modifier = Modifier.height(15.dp))
-                                }
-                            }
-                        }
-
-                        // gpItem
-                        gpItem?.take(2)?.let {
-                            it.forEachIndexed { index, data ->
-                                DirecGp(data = data)
-                                Spacer(modifier = Modifier.height(15.dp))
-                                // 마지막 요소일 경우 Divider를 표시하지 않음
-                                if (index < it.size - 1) { // 마지막 요소가 아닐 때만 Divider 추가
-                                    Divider(
-                                        color = Color(0xFFECEFFB),
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(1.dp)
-                                    )
-                                    Spacer(modifier = Modifier.height(15.dp))
-                                }
-                            }
-                        }
-
-                        // gpseItem
-                        gpseItem?.take(2)?.let {
-                            it.forEachIndexed { index, data ->
-                                DirecGpse(data = data)
-                                Spacer(modifier = Modifier.height(15.dp))
-                                // 마지막 요소일 경우 Divider를 표시하지 않음
-                                if (index < it.size - 1) { // 마지막 요소가 아닐 때만 Divider 추가
-                                    Divider(
-                                        color = Color(0xFFECEFFB),
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(1.dp)
-                                    )
-                                    Spacer(modifier = Modifier.height(15.dp))
-                                }
-                            }
-                        }
+//                        gpsItem?.take(2)?.let {
+//                            it.forEachIndexed { index, data ->
+//                                DirecGps(data = data)
+//                                Spacer(modifier = Modifier.height(15.dp))
+//                                // 마지막 요소일 경우 Divider를 표시하지 않음
+//                                if (index < it.size - 1) { // 마지막 요소가 아닐 때만 Divider 추가
+//                                    Divider(
+//                                        color = Color(0xFFECEFFB),
+//                                        modifier = Modifier
+//                                            .fillMaxWidth()
+//                                            .height(1.dp)
+//                                    )
+//                                    Spacer(modifier = Modifier.height(15.dp))
+//                                }
+//                            }
+//                        }
+//
+//                        // gpItem
+//                        gpItem?.take(2)?.let {
+//                            it.forEachIndexed { index, data ->
+//                                DirecGp(data = data)
+//                                Spacer(modifier = Modifier.height(15.dp))
+//                                // 마지막 요소일 경우 Divider를 표시하지 않음
+//                                if (index < it.size - 1) { // 마지막 요소가 아닐 때만 Divider 추가
+//                                    Divider(
+//                                        color = Color(0xFFECEFFB),
+//                                        modifier = Modifier
+//                                            .fillMaxWidth()
+//                                            .height(1.dp)
+//                                    )
+//                                    Spacer(modifier = Modifier.height(15.dp))
+//                                }
+//                            }
+//                        }
+//
+//                        // gpseItem
+//                        gpseItem?.take(2)?.let {
+//                            it.forEachIndexed { index, data ->
+//                                DirecGpse(data = data)
+//                                Spacer(modifier = Modifier.height(15.dp))
+//                                // 마지막 요소일 경우 Divider를 표시하지 않음
+//                                if (index < it.size - 1) { // 마지막 요소가 아닐 때만 Divider 추가
+//                                    Divider(
+//                                        color = Color(0xFFECEFFB),
+//                                        modifier = Modifier
+//                                            .fillMaxWidth()
+//                                            .height(1.dp)
+//                                    )
+//                                    Spacer(modifier = Modifier.height(15.dp))
+//                                }
+//                            }
+//                        }
 
                         // termItem
                         termItem?.take(2)?.let {

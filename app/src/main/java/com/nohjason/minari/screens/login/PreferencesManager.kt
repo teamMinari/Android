@@ -20,9 +20,8 @@ class PreferencesManager(context: Context) {
 
     fun removeData(key: String) {
         val editor = sharedPreferences.edit()
-        editor.remove(key)
-        editor.apply()
-//        editor.commit()
+        editor.clear()
+        editor.commit()
         Log.d("PreferencesManager", "Removed data for key: $key")
     }
 }

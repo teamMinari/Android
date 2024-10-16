@@ -1,4 +1,8 @@
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -14,14 +18,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -38,7 +45,9 @@ import com.nohjason.minari.screens.profile.profile_element.ProfileInfor
 import com.nohjason.minari.screens.profile.profile_element.RewardBar
 import com.nohjason.minari.screens.profile.likes.LikeList
 import com.nohjason.minari.screens.profile.profile_data.LikeListData
+import com.nohjason.minari.screens.quiz.quiz_main.selectPlayData
 import com.nohjason.minari.ui.theme.pretendard_semibold
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileMAinScreen(
@@ -48,16 +57,29 @@ fun ProfileMAinScreen(
     token : String,
 //    preferencesManager: PreferencesManager
 ) {
-    val scrollState = rememberScrollState()
+    val data = profileViewModel.profileData.collectAsState().value
+
+    direcViewModel.getDirecTerm(token) // Term 데이터 호출
+
+    val direcTermData = direcViewModel.direcTermData.collectAsState().value
+    val direcGpseData = direcViewModel.direcGpseData.collectAsState().value // Gpse 데이터 추가
+    val direcGpsData = direcViewModel.direcGpsData.collectAsState().value // Gps 데이터 추가
+    val direcGpData = direcViewModel.direcGpData.collectAsState().value // Gp 데이터 추가
 
     LaunchedEffect(Unit) {
         profileViewModel.getProfile(token)
-        direcViewModel.getDirecTerm(token)
+        direcViewModel.getDirecGpse(token) // Gpse 데이터 호출
+        direcViewModel.getDirecGps(token) // Gps 데이터 호출
+        direcViewModel.getDirecGp(token) // Gp 데이터 호출
     }
-    val data = profileViewModel.profileData.collectAsState().value
-    val direcData = direcViewModel.direcTermData.collectAsState().value
-//    Log.d("ProfileMain", "getDirecTerm: $direcData")
 
+    Log.d("ProfileMain", "profile 데이터: "+ data)
+    Log.d("ProfileMain", "direcTermData 데이터 체크: "+ direcTermData)
+    Log.d("ProfileMain", "direcGpsData 데이터 체크: $direcGpsData")
+    Log.d("ProfileMain", "irecGpData 데이터 체크: $direcGpData")
+    Log.d("ProfileMain", "irecGpseData 데이터 체크: $direcGpseData")
+
+    val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier
@@ -101,13 +123,17 @@ fun ProfileMAinScreen(
             fontSize = 40.sp
         )
 
+        val context = LocalContext.current
         Text(
             text = "소비하러가기>",
             fontSize = 15.sp,
             fontWeight = FontWeight.SemiBold,
             color = Color(0xFF585EEA),
             modifier = Modifier
-                .clickable { /*web뷰*/ }
+                .clickable {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://open.kakao.com/o/sEhpNMTg"))
+                    context.startActivity(intent)
+                }
         )
 
 
@@ -122,7 +148,9 @@ fun ProfileMAinScreen(
         }
 
         //저장목록
-        LikeList(direcViewModel = direcViewModel, navHostController = navHostController, token=token)
+        direcTermData?.let { termData ->
+            LikeList(direcViewModel = direcViewModel, navHostController = navHostController, token = token)
+        }
 
         Spacer(modifier = Modifier.height(25.dp))
     }
@@ -134,3 +162,5 @@ fun ProfileMAinScreen(
 fun PreviewProfileMainScreen() {
 
 }
+
+
