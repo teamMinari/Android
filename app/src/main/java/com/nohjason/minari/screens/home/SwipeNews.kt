@@ -138,19 +138,7 @@ fun SwipeNews(
                 }
             }
         }
+    } else {
+        androidx.compose.material3.CircularProgressIndicator()
     }
-//    val list: List<ShowNews> = listOf(
-//        ShowNews(
-//            "https://imgnews.pstatic.net/image/032/2024/09/09/0003320025_001_20240909212314102.jpg?type=w647",
-//            "오후 9:00",
-//            "차·포 뗀 법안에도 플랫폼 업계는 “과하다”…사후 규제엔 ‘반색’",
-//            "https://n.news.naver.com/mnews/article/032/0003320025"
-//        ),
-//        ShowNews(
-//            "https://imgnews.pstatic.net/image/009/2024/09/09/0005363178_001_20240909213611393.jpg?type=w647",
-//            "오후 9:26",
-//            "“전기료 이게 맞아?” 집집마다 난리…역대급 폭염의 뒤끝, 서늘하네",
-//            "https://n.news.naver.com/mnews/article/009/0005363178"
-//        )
-//    )
 }

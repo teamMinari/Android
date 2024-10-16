@@ -7,9 +7,20 @@ data class RegisterRequest(
     val email: String
 )
 
-data class RegisterResponse(
+data class SignUpResponse(
+    val status: Int,
+    val message: String
+)
+
+data class SignUpError(
     val success: Boolean,
     val status: String,
-    val message: String,
-    val data: String? = null
+    val message: String
 )
+
+//data class RegisterResponse(
+//    val success: Boolean,
+//    val status: String,
+//    val message: String,
+////    val data: String? = null
+//)

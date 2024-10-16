@@ -4,15 +4,18 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -31,6 +35,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
+import com.nohjason.minari.navigation.bottombar.BottomScreen
+import com.nohjason.minari.preferences.getPreferences
+import com.nohjason.minari.preferences.saveToPreferences
 import com.nohjason.minari.screens.login.LoginTextField
 import com.nohjason.minari.screens.login.LoginViewModel
 import com.nohjason.minari.screens.login.Screens
@@ -43,12 +50,6 @@ fun SelfSignUpScreen(
     navController: NavController,
     loginViewModel: LoginViewModel = viewModel()
 ) {
-//    val poppinsFamily = FontFamily(
-//        Font(R.font.poppins_semibold, FontWeight.SemiBold),
-//        Font(R.font.poppins_medium, FontWeight.Medium),
-//        Font(R.font.poppins_regular),
-//        Font(R.font.poppins_bold, FontWeight.Bold),)
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -139,57 +140,81 @@ fun SelfSignUpScreen(
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
         var popupMessage by remember { mutableStateOf("") }
         val context = LocalContext.current
+        val signUpResult = loginViewModel.signUpResult.collectAsState()
+        val isLoading = loginViewModel.isLoading.collectAsState(initial = false) // 로딩 상태 가져오기
+        val preferences = getPreferences()
+        val loginResponse by loginViewModel.loginRequest.collectAsState()
+        LaunchedEffect(loginResponse) {
+            if (loginResponse != null ) {
+                saveToPreferences(preferences, "token", loginResponse!!.data.accessToken)
+//                navController.navigate(BottomScreen.Home.rout)
+                Log.d("TAG", "SelfLoginScreen: ${loginResponse!!.data.accessToken}")
+            }
+        }
 
-        val registerResponse by loginViewModel.registerResponse.collectAsState()
-        LaunchedEffect(registerResponse) {
-            registerResponse?.let {
-                Log.d("TAG", "SelfLoginScreen: $it")
-                if (it.success) {
-                    Log.d("TAG", "SelfSingUpScreen: success")
+        LaunchedEffect(signUpResult.value) {
+            if (signUpResult.value != null) {
+                Toast.makeText(context, signUpResult.value, Toast.LENGTH_SHORT).show()
+                if (signUpResult.value!!.contains("성공", ignoreCase = true)) {
+                    // 로그인 화면으로 이동하는 코드
+                    Log.d("TAG", "SelfSignUpScreen: 성공")
                     navController.navigate(Screens.Question.rout)
-                } else {
-                    Log.d("TAG", "SelfSingUpScreen: failed")
-                    Toast.makeText(context, "아이디가 이미 존재합니다", Toast.LENGTH_SHORT).show()
+                    loginViewModel.login(id = id, password = password)
                 }
             }
         }
+
         Spacer(modifier = Modifier.weight(0.1f))
 
-        Button(onClick = {
-            when {
-                id.length > 20 -> {
-                    popupMessage = "아이디는 20자 이하이어야 합니다."
-                    Toast.makeText(context, popupMessage, Toast.LENGTH_SHORT).show()
-                }
-
-                password.length > 20 -> {
-                    popupMessage = "비밀번호는 20자 이하이어야 합니다."
-                    Toast.makeText(context, popupMessage, Toast.LENGTH_SHORT).show()
-                }
-
-                !email.matches(emailPattern.toRegex()) -> {
-                    popupMessage = "올바른 이메일 형식을 입력하세요."
-                    Toast.makeText(context, popupMessage, Toast.LENGTH_SHORT).show()
-                }
-
-                password != repassword -> {
-                    popupMessage = "비밀번호가 일치하지 않습니다."
-                    Toast.makeText(context, popupMessage, Toast.LENGTH_SHORT).show()
-                }
-
-                else -> {
-                    loginViewModel.register(id, password, repassword, email)
-                }
-            }
-        }, colors = ButtonDefaults.buttonColors(containerColor = MinariBlue), modifier = Modifier
-            .wrapContentSize()
-            .width(320.dp)
-            .padding(top = 10.dp, start = 20.dp)
-        ) {
-            Text(text = "회원가입")
-        }
-
         Spacer(modifier = Modifier.weight(1f))
+
+        if (isLoading.value) {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .wrapContentSize()
+                        .align(Alignment.Center)
+                ) // 로딩 중 표시
+            }
+        } else {
+            Button(
+                onClick = {
+                    when {
+                        id.length > 20 -> {
+                            popupMessage = "아이디는 20자 이하이어야 합니다."
+                            Toast.makeText(context, popupMessage, Toast.LENGTH_SHORT).show()
+                        }
+
+                        password.length > 20 -> {
+                            popupMessage = "비밀번호는 20자 이하이어야 합니다."
+                            Toast.makeText(context, popupMessage, Toast.LENGTH_SHORT).show()
+                        }
+
+                        !email.matches(emailPattern.toRegex()) -> {
+                            popupMessage = "올바른 이메일 형식을 입력하세요."
+                            Toast.makeText(context, popupMessage, Toast.LENGTH_SHORT).show()
+                        }
+
+                        password != repassword -> {
+                            popupMessage = "비밀번호가 일치하지 않습니다."
+                            Toast.makeText(context, popupMessage, Toast.LENGTH_SHORT).show()
+                        }
+
+                        else -> {
+                            loginViewModel.signUp(id, password, repassword, email)
+                        }
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = MinariBlue),
+                modifier = Modifier
+                    .wrapContentSize()
+                    .width(320.dp)
+                    .padding(top = 10.dp, start = 20.dp)
+            ) {
+                Text(text = "회원가입")
+            }
+        }
     }
 }
 

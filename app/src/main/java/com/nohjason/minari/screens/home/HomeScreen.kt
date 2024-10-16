@@ -103,7 +103,7 @@ fun HomeScreen(
         if (currentTime - backPressedTime < 2000) {
             (context as ComponentActivity).finish()
         } else {
-            Toast.makeText(context, "Press back again to exit", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "한 번 더 누르면 앱을 끌 수 있어요'", Toast.LENGTH_SHORT).show()
             backPressedTime = currentTime
         }
     })
@@ -125,8 +125,7 @@ fun HomeScreen(
                         onValueChange = { text = it },
                         onClick = {
                             grapeViewModel.getTerm(token, text)
-                            navController.navigate(Screens.Term.rout + "/${text}")
-                            Log.d("TAG", "HomeScreen: "+Screens.Term.rout+"/${text}")
+                            navController.navigate(Screens.Term.rout + "/${text.replace("/", "@")}")
                         },
                     )
                 },
@@ -351,13 +350,6 @@ fun Modifier.drawColoredShadow(
         )
     }
 }
-
-data class ShowNews(
-    val img: String,
-    val time: String,
-    val title: String,
-    val link: String
-)
 
 @Preview
 @Composable

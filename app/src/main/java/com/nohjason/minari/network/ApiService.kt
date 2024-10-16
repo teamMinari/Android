@@ -14,7 +14,7 @@ import com.nohjason.minari.network.response.rout.GrapesAll
 import com.nohjason.minari.screens.login.response.LoginRequest
 import com.nohjason.minari.screens.login.response.LoginResponse
 import com.nohjason.minari.screens.login.response.RegisterRequest
-import com.nohjason.minari.screens.login.response.RegisterResponse
+import com.nohjason.minari.screens.login.response.SignUpResponse
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpResponse
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpsResponse
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpseResponse
@@ -24,6 +24,7 @@ import com.nohjason.minari.screens.rout.response.LikesResponse
 import com.nohjason.minari.screens.profile.profile_data.ProfileResponse
 import com.nohjason.minari.screens.quiz.data.QuestionResponse
 import okhttp3.ResponseBody
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -55,9 +56,10 @@ interface ApiService {
     ): Response<LoginResponse>
 
     @POST("/member/register")
-    suspend fun register(
-        @Body registerResponse: RegisterRequest
-    ): RegisterResponse
+    fun signUp(@Body request: RegisterRequest): Call<SignUpResponse>
+//    suspend fun register(
+//        @Body registerResponse: RegisterRequest
+//    ): SignUpResponse
 
     // 포도송이 전체 조회
     @GET("/gps")

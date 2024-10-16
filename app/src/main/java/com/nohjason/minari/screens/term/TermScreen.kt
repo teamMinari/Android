@@ -88,7 +88,7 @@ fun TermScreen(
                         onClick = {
                             if (text.isNotEmpty()) {
                                 grapeViewModel.getTerm(token, text)
-                                navController.navigate(Screens.Term.rout + "/${text}")
+                                navController.navigate(Screens.Term.rout + "/${text.replace("/", "@")}")
                             }
                         }
                     )

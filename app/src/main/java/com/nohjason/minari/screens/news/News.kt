@@ -81,7 +81,7 @@ fun News(
             SwipeNews()
         }
         item {
-            val tagList = listOf("main", "HOT_NEWS", "산업/재계", "부동산", "글로벌 경제")
+            val tagList = listOf("main", "HOT_NEWS", "economy", "부동산", "글로벌 경제")
             var selectedTag by remember { mutableStateOf<String?>(tagList[0]) } // LazyRow 바깥으로 이동
 
             LazyRow(

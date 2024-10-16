@@ -7,13 +7,13 @@ import androidx.compose.animation.slideOutHorizontally
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.Context
-import android.content.IntentSender
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.fadeIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -84,6 +85,7 @@ fun NavGraph(
     NavHost(
         navController = navController,
         startDestination = Screens.FirstScreen.rout,
+        enterTransition = { fadeIn(animationSpec = tween(0)) }
     ) {
 
         composable(Screens.FirstScreen.rout) {
@@ -93,7 +95,7 @@ fun NavGraph(
             val launcher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.StartIntentSenderForResult(),
                 onResult = { result ->
-                    if(result.resultCode == RESULT_OK) {
+                    if (result.resultCode == RESULT_OK) {
                         lifecycleScope.launch {
                             val signInResult = googleAuthUiClient.signInwithIntent(
                                 intent = result.data ?: return@launch
@@ -148,7 +150,9 @@ fun NavGraph(
         }
 
         // 뉴스
-        composable(BottomScreen.News.rout) {
+        composable(
+            BottomScreen.News.rout,
+        ) {
             News(navController = navController)
         }
 
@@ -216,9 +220,9 @@ fun NavGraph(
         // 용어
         composable(Screens.Term.rout + "/{text}") { backStackEntry ->
             val text = backStackEntry.arguments?.getString("text") ?: ""
+            text.replace("@", "/")
             TermScreen(text, navController = navController)
         }
-
 
         // 로그인
         composable(
@@ -240,7 +244,6 @@ fun NavGraph(
                 navController = navController
             )
         }
-
 
         //퀴즈
         composable(
@@ -287,7 +290,6 @@ fun NavGraph(
         ) {
             QuizEndScreen(quizViewModel = quizViewModel, navController = navController)
         }
-
 
         //모르는거
         composable(
