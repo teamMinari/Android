@@ -253,17 +253,6 @@ fun ProfileInfor(
             fontSize = 12.sp
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Row{
-            Text(
-                text = "관심주제:",
-                color = Color(0xFF363CD5),
-                fontWeight = FontWeight.SemiBold
-            )
-            Text(
-                text = "금융, 글로벌 경제, 채권",
-                fontWeight = FontWeight.Medium
-            )
-        }
     }
 }
 

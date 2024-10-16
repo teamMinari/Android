@@ -22,6 +22,7 @@ import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.login.screen.LoginScreen
 import com.nohjason.minari.screens.login.LoginViewModel
+import com.nohjason.minari.screens.login.PreferencesManager
 import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.login.screen.login.SelfLoginScreen
 import com.nohjason.minari.screens.login.screen.signup.Questionnaire
@@ -50,13 +51,12 @@ fun NavGraph(
     navController: NavHostController,
     loginViewModel: LoginViewModel,
     profileViewModel: ProfileViewModel = viewModel(),
-    quizViewModel: QuizViewModel = viewModel()
+    quizViewModel: QuizViewModel = viewModel(),
 ) {
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
     val context = LocalContext.current
-//    val data by profileViewModel.profileData.collectAsState()
-    val data = profileViewModel.profileData.collectAsState().value
+    val preferencesManager = PreferencesManager(context)
 
 
 
@@ -108,10 +108,13 @@ fun NavGraph(
 
         // 프로필
         composable(BottomScreen.Profile.rout) {
-            LaunchedEffect(Unit) {
-                profileViewModel.getProfile(token)
-            }
-            ProfileMAinScreen(navHostController = navController, profileData = profileData)
+            ProfileMAinScreen(
+                navHostController = navController,
+                profileViewModel = profileViewModel,
+                direcViewModel = DirecViewModel(),
+                token = token,
+//                preferencesManager = preferencesManager
+            )
         }
 
         //저장목록
@@ -124,7 +127,7 @@ fun NavGraph(
 
         //칭호
         composable(Screens.Alias.rout){
-            AliasScreen(level = profileData.level, exp = profileData.exp, navController = navController)
+            AliasScreen(navHostController = navController, profileViewModel = profileViewModel, token = token)
         }
 
         // 포도알
@@ -179,7 +182,7 @@ fun NavGraph(
 
         //퀴즈
         composable(
-            "quizplay",
+            Screens.QuizSelectO.rout,
             enterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Left,
@@ -189,6 +192,7 @@ fun NavGraph(
         ) {
             SeletO(navHostController = navController, quizViewModel = quizViewModel)
         }
+
         composable(
             Screens.QuizSelectX.rout,
             enterTransition = {
@@ -200,6 +204,7 @@ fun NavGraph(
         ) {
             SeletX(navHostController = navController, quizViewModel = quizViewModel)
         }
+
         composable(
             Screens.QuizPlaycreen.rout,
             enterTransition = {
@@ -211,6 +216,7 @@ fun NavGraph(
         ) {
             QuizPlayScreen(navHostController = navController, quizViewModel = quizViewModel)
         }
+
         composable(
             Screens.QuizEndScreen.rout,
             enterTransition = {
@@ -220,7 +226,7 @@ fun NavGraph(
                 )
             }
         ) {
-            QuizEndScreen(quizViewModel = quizViewModel, navController = navController)
+            QuizEndScreen(quizViewModel = quizViewModel, navController = navController, token=token)
         }
 
 

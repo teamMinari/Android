@@ -37,7 +37,7 @@ fun AliasCard(
     val webLink = WebLinkData()
     val getWebLink = webLink.getTitleAndUrlForLevel(level)
     val progress = (exp / 100.toFloat()).coerceIn(0f, 1f)
-//    AsyncImage(model = getWebLink.url, contentDescription = null)
+
     Box(
         modifier = Modifier
             .background(Color.White)
@@ -45,7 +45,8 @@ fun AliasCard(
             .height(65.dp)
     ){
         Row{
-            if (myLevel <= level) {
+            //내 레벨 >= 조건 레벨 / 칭호 이미지 보여주기 여부
+            if (myLevel >= level) {
                 AsyncImage(
                     modifier = Modifier
                         .size(65.dp),
@@ -56,66 +57,68 @@ fun AliasCard(
             Column (
                 modifier = Modifier.padding(start = 12.dp)
             ){
-            if (myLevel <= level) {
-                Row(
-                    modifier = Modifier.padding(top = 4.dp) // 텍스트 사이 간격 조정
-                ) {
+
+                //내 레벨 >= 조건 레벨 / 자기 이름 까기
+                if (myLevel >= level) {
+                    Row(
+                        modifier = Modifier.padding(top = 4.dp)
+                    ) {
+                        Text(
+                            text = "${level}Lv",
+                            color = Color(0xFF363CD5),
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 13.sp
+                        )
+                        Text(
+                            text = getWebLink.title,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 15.sp,
+                            modifier = Modifier.padding(start = 4.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
+                //내 레벨 > 조건 레벨 => 획득
+                if (myLevel > level){
                     Text(
-                        text = "${myLevel}Lv",
+                        text = "획득",
                         color = Color(0xFF363CD5),
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 13.sp
-                    )
-                    Text(
-                        text = getWebLink.title,
-                        fontWeight = FontWeight.SemiBold,
                         fontSize = 15.sp,
-                        modifier = Modifier.padding(start = 4.dp) // 텍스트 사이 간격 조정
-                    )
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-
-
-
-            if (myLevel < level){
-                Text(
-                    text = "획득",
-                    color = Color(0xFF363CD5),
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold,
-                )
-            } else if (myLevel == level){
-                Box(
-                    modifier = Modifier
-                        .width(160.dp)
-                        .height(20.dp) // 이 높이와 일치하게 프로그레스 바의 높이를 설정
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(Color(0xFFE0E7FF)), // 배경색 설정
-                    contentAlignment = Alignment.Center
-                ) {
-                    LinearProgressIndicator(
-                        progress = progress,
-                        color = Color(0xFF5DC067), // 프로그레스 바 색상
-                        backgroundColor = Color(0xFFDADAFD), // 프로그레스 배경색
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(20.dp)
-                    )
-
-                    Text(
-                        text = "${exp}xp",
-                        color = Color(0xFF407C46),
-                        fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(horizontal = 8.dp)
                     )
+                    //내 레벨 = 조건 레벨 => 그래프
+                } else if (myLevel == level){
+                    Box(
+                        modifier = Modifier
+                            .width(160.dp)
+                            .height(20.dp) // 이 높이와 일치하게 프로그레스 바의 높이를 설정
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(Color(0xFFE0E7FF)), // 배경색 설정
+                        contentAlignment = Alignment.Center
+                    ) {
+                        LinearProgressIndicator(
+                            progress = progress,
+                            color = Color(0xFF5DC067), // 프로그레스 바 색상
+                            backgroundColor = Color(0xFFDADAFD), // 프로그레스 배경색
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(20.dp)
+                        )
+
+                        Text(
+                            text = "${exp}xp",
+                            color = Color(0xFF407C46),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(horizontal = 8.dp)
+                        )
+                    }
                 }
             }
-        }
 
-            if(myLevel > level){
-                // 아이콘을 중앙에 배치하기 위해 Box를 추가
+            //내 레벨 < 조건 레벨 => 몰?루
+            if(myLevel < level){
                 Box(
                     modifier = Modifier
                             .size(65.dp)
@@ -130,17 +133,16 @@ fun AliasCard(
                     )
                 }
 
-                // 텍스트를 적절히 보이도록 Row의 크기와 배치 조정
                 Column(
                     modifier = Modifier
                         .padding(start = 12.dp)
                         .fillMaxWidth()
                 ) {
                     Row(
-                        modifier = Modifier.padding(top = 4.dp) // 텍스트 사이 간격 조정
+                        modifier = Modifier.padding(top = 4.dp)
                     ) {
                         Text(
-                            text = "${myLevel}Lv",
+                            text = "${level}Lv",
                             color = Color(0xFF363CD5),
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 13.sp
@@ -149,10 +151,10 @@ fun AliasCard(
                             text = "???",
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 15.sp,
-                            modifier = Modifier.padding(start = 4.dp) // 텍스트 사이 간격 조정
+                            modifier = Modifier.padding(start = 4.dp)
                         )
                     }
-                    Spacer(modifier = Modifier.height(8.dp)) // 위아래 여백 조정
+                    Spacer(modifier = Modifier.height(8.dp))
                     Box(
                         modifier = Modifier
                             .width(160.dp)

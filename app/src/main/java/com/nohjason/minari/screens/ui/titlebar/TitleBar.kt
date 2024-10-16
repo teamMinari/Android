@@ -50,13 +50,14 @@ fun TitleBar(
                 modifier = Modifier
                     .width(12.dp)
                     .height(18.dp)
-                    .clickable { onClick },
+                    .clickable { onClick?.invoke() },
                 painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = null,
                 tint = Color.Unspecified
             )
             if (imgResId != null){
                 Icon(
+                    tint = Color.Unspecified,
                     painter = painterResource(id = imgResId),
                     contentDescription = null,
                     modifier = Modifier

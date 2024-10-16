@@ -1,10 +1,10 @@
 package com.nohjason.minari.screens.profile.likes
 
-import com.nohjason.minari.screens.profile.profile_data.LikeList
+import com.nohjason.minari.screens.profile.profile_data.LikeListData
 
 
 object Dummy {
-    val likeDummy = LikeList(
+    val likeDummy = LikeListData(
         name = listOf(
             "🔥자주 까먹는 단어 모음",
             "💡아이디어 참고 뉴스",

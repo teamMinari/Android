@@ -52,6 +52,9 @@ android {
 }
 
 dependencies {
+    //safe area
+    implementation("androidx.core:core-ktx:1.13.1")
+
     // Markdown
     implementation("com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc06")
 

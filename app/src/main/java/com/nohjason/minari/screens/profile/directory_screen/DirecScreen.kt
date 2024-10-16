@@ -22,19 +22,6 @@ fun DirecScreen(
     direcViewModel: DirecViewModel,
     token: String,
 ){
-
-    LaunchedEffect(Unit) {
-        direcViewModel.getDirecGp(token)
-        direcViewModel.getDirecGps(token)
-        direcViewModel.getDirecGpse(token)
-        direcViewModel.getDirecTerm(token)
-    }
-    val term = direcViewModel.direcTermData.collectAsState().value
-    val gpse = direcViewModel.direcGpseData.collectAsState().value
-    val gps = direcViewModel.direcGpsData.collectAsState().value
-    val gp = direcViewModel.direcGpData.collectAsState().value
-
-
     val scrollState = rememberScrollState()
 
     Column (
@@ -48,13 +35,12 @@ fun DirecScreen(
         )
         Spacer(modifier = Modifier.height(15.dp))
 
-        TutorialList(
-            gpseItem = gpse?.data,
-            gpsItem = gps?.data,
-            gpItem = gp?.data
-        )
+        TutorialList(direcViewModel = direcViewModel)
+
         Spacer(modifier = Modifier.height(15.dp))
-        TermList(termItem = term?.data)
+
+        TermList(direcViewModel = direcViewModel)
+
         Spacer(modifier = Modifier.height(110.dp))
 
     }

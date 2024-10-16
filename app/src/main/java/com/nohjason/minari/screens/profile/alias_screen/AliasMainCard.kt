@@ -31,7 +31,7 @@ fun AliasMainCard(
 ){
     val webLink = WebLinkData()
     val getWebLink = webLink.getTitleAndUrlForLevel(level)
-    val progress = (exp / 100.toFloat()).coerceIn(0f, 1f)
+    val progress = (exp / 100.toFloat()).coerceIn(0f, 1f) //퍼센테이지
     Box(
         modifier = Modifier
             .background(Color.White)
@@ -51,7 +51,7 @@ fun AliasMainCard(
             ){
                 Row {
                     Text(
-                        text = "'${getWebLink.title}'획득하기",
+                        text = "'${getWebLink.title}' 획득하기",
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 15.sp
                     )

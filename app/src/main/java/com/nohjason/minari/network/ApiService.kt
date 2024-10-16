@@ -17,9 +17,12 @@ import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpRe
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpsResponse
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpseResponse
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecTermResponse
+import com.nohjason.minari.screens.profile.profile_data.LogOutResponse
 import com.nohjason.minari.screens.rout.response.GetAllNews
 import com.nohjason.minari.screens.rout.response.LikesResponse
 import com.nohjason.minari.screens.profile.profile_data.ProfileResponse
+import com.nohjason.minari.screens.quiz.data.PointRequest
+import com.nohjason.minari.screens.quiz.data.PointResponse
 import com.nohjason.minari.screens.quiz.data.QuestionResponse
 import com.nohjason.myapplication.network.response.Term
 import com.nohjason.myapplication.network.response.TermResponse
@@ -140,11 +143,17 @@ interface ApiService {
         @Path("level") level: Int
     ): QuestionResponse
 
+    @POST("/member/givePoint")
+    suspend fun postPoint(
+        @Header("Authorization") token: String,
+        @Body pointRequest: PointRequest
+    ):  Response<PointResponse>
+
     //저장목록
     @GET("/likes/term")
     suspend fun getDiercTerm(
         @Header("Authorization") token: String
-    ): DirecTermResponse
+    ): Response<DirecTermResponse>
 
     @GET("/likes/gpse")
     suspend fun getDiercGpse(
@@ -160,6 +169,10 @@ interface ApiService {
     suspend fun getDierctGp(
         @Header("Authorization") token: String
     ): DirecGpResponse
-}
 
-// test
+    //로그아웃
+    @GET("/member/logout")
+    suspend fun getLogout(
+        @Header("Authorization") token: String
+    ): Response<LogOutResponse>
+}

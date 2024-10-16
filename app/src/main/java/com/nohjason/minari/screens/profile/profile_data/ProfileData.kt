@@ -18,13 +18,17 @@ data class TitleAndUrl(
     val url: String
 )
 
-data class LikeList(
+data class LikeListData(
     val name: List<String>
 )
-
 
 enum class TermDifficulty {
     LV_1,
     LV_2,
     LV_3
 }
+
+data class LogOutResponse(
+    val status: Int,
+    val message: String
+)

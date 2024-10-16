@@ -2,30 +2,45 @@ package com.nohjason.minari.screens.profile.directory_screen.direc_data
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.nohjason.minari.screens.profile.profile_data.ProfileResponse
 import com.nohjason.myapplication.network.RetrofitInstance
+import com.nohjason.myapplication.network.RetrofitInstance.api
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
+import java.io.IOException
 
 class DirecViewModel  : ViewModel() {
-    private val _direcTermData = MutableStateFlow<DirecTermResponse?>(null)
-    val direcTermData: StateFlow<DirecTermResponse?> get() = _direcTermData
 
+    private val _direcTermData = MutableStateFlow<DirecTermResponse?>(null) // 초기값은 null로 설정
+    val direcTermData: StateFlow<DirecTermResponse?> = _direcTermData
 
-    suspend fun getDirecTerm(token: String): DirecTermResponse {
-        // Retrofit 인스턴스를 가져옴
-        val apiService = RetrofitInstance.api
-
-        return withContext(Dispatchers.IO) {
+    fun getDirecTerm(token: String) {
+        viewModelScope.launch {
             try {
-                // GET 요청을 보내고 응답을 받아옴
-                val response = apiService.getDiercTerm(token)
-                Log.d("TAG", "getDirecTerm: 저장목록 용어 서버 통신 성공")
-                response // 서버 응답 반환
+                val response = withContext(Dispatchers.IO) {
+                    api.getDiercTerm(token)
+                }
+                if (response.isSuccessful) {
+                    _direcTermData.value = response.body()
+                    Log.d("TAG", "getDirecTerm: 저장목록 단어 서버 통신 성공")
+                } else {
+                    // 서버 응답 에러 처리
+                    Log.e("TAG", "getDirecTerm: 서버 응답 에러 - 코드: ${response.code()}")
+                }
+            } catch (e: IOException) {
+                // 네트워크 오류 처리
+                Log.e("TAG", "getDirecTerm: 네트워크 오류", e)
+            } catch (e: HttpException) {
+                // HTTP 오류 처리
+                Log.e("TAG", "getDirecTerm: HTTP 오류 - 코드: ${e.code()}", e)
             } catch (e: Exception) {
-                Log.e("TAG", "getDirecTerm: 저장목록 용어 오류", e)
-                throw e // 필요에 따라 다시 던질 수 있음
+                // 기타 예외 처리
+                Log.e("TAG", "getDirecTerm: 알 수 없는 오류", e)
             }
         }
     }
@@ -37,19 +52,17 @@ class DirecViewModel  : ViewModel() {
 
 
     suspend fun getDirecGpse(token: String): DirecGpseResponse {
-        // Retrofit 인스턴스를 가져옴
         val apiService = RetrofitInstance.api
 
         return withContext(Dispatchers.IO) {
             try {
-                // GET 요청을 보내고 응답을 받아옴
                 val response = apiService.getDiercGpse(token)
                 Log.d("TAG", "getDirecGpse: 저장목록 포도씨 서버 통신 성공")
-                response // 서버 응답 반환
+                _direcGpseData.value = response
+                response
             } catch (e: Exception) {
-                // 기타 예외 처리
                 Log.e("TAG", "getDirecGpse: 저장목록 포도씨 오류", e)
-                throw e // 필요에 따라 다시 던질 수 있음
+                throw e
             }
         }
     }
@@ -61,19 +74,17 @@ class DirecViewModel  : ViewModel() {
 
 
     suspend fun getDirecGps(token: String): DirecGpsResponse {
-        // Retrofit 인스턴스를 가져옴
         val apiService = RetrofitInstance.api
 
         return withContext(Dispatchers.IO) {
             try {
-                // GET 요청을 보내고 응답을 받아옴
                 val response = apiService.getDiercGps(token)
                 Log.d("TAG", "getDirecGps: 저장목록 포도알 서버 통신 성공")
-                response // 서버 응답 반환
+                _direcGpsData.value = response
+                response
             } catch (e: Exception) {
-                // 기타 예외 처리
                 Log.e("TAG", "getDirecGps: 저장목록 포도알 오류", e)
-                throw e // 필요에 따라 다시 던질 수 있음
+                throw e
             }
         }
     }
@@ -84,20 +95,17 @@ class DirecViewModel  : ViewModel() {
 
 
     suspend fun getDirecGp(token: String): DirecGpResponse {
-        // Retrofit 인스턴스를 가져옴
         val apiService = RetrofitInstance.api
 
         return withContext(Dispatchers.IO) {
             try {
-                // GET 요청을 보내고 응답을 받아옴
                 val response = apiService.getDierctGp(token)
                 Log.d("TAG", "getDirecGp: 저장목록 포도송이 서버 통신 성공")
-                println("Gp임"+response)
-                response // 서버 응답 반환
+                _gpDirecData.value = response
+                response
             } catch (e: Exception) {
-                // 기타 예외 처리
                 Log.e("TAG", "getDirecGp: 저장목록 포도송이 오류", e)
-                throw e // 필요에 따라 다시 던질 수 있음
+                throw e
             }
         }
     }

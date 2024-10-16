@@ -4,6 +4,8 @@ package com.nohjason.minari.screens.quiz.quiz_play
 import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,22 +21,28 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.login.Screens
+import com.nohjason.minari.screens.quiz.clickOnce
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -161,6 +169,11 @@ fun SeletX(
                 text = qtCmt
             )
         }
+
+
+
+        var isClickable by remember { mutableStateOf(true) }
+
         Button(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -172,15 +185,34 @@ fun SeletX(
                 containerColor = Color(0xFF363CD5)
             ),
             onClick = {
-                if (qtNum + 2 > qtSize) {
-                    navHostController.navigate(Screens.QuizEndScreen.rout)
-                } else {
-                    quizViewModel.nextQuestion()
-                    navHostController.navigate("quizplay")
+                if (isClickable) {
+                    isClickable = false // 클릭 후 다시 클릭하지 못하게 설정
+                    if (qtNum + 2 > qtSize) {
+                        navHostController.navigate(Screens.QuizEndScreen.rout)
+                    } else {
+                        quizViewModel.nextQuestion()
+                        navHostController.navigate("quizplay")
+                    }
                 }
-            }
+            },
+            enabled = isClickable
         ) {
             Text(text = "다음")
         }
+
+// 1초 뒤 다시 클릭 가능하도록 설정
+        if (!isClickable) {
+            LaunchedEffect(Unit) {
+                kotlinx.coroutines.delay(1000L)
+                isClickable = true
+            }
+        }
     }
+}
+
+@Preview
+@Composable
+fun PreSelectX(){
+    val nav = rememberNavController()
+    SeletX(navHostController = nav)
 }

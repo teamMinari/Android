@@ -16,25 +16,24 @@ data class QuestionData(
     val qtDifficulty: String
 )
 
-data class PointResponse(
-    val status: Int,
-    val message: String
-)
-
 data class PlayData(
     //UI의 모델 클래스
     val userCurrent: Int, //정답수
     val point: Int,
     val qtNum: Int,
-    val qtList: List<QuestionData>
+    val qtList: List<QuestionData>,
+    val qtLevel: Int
     //10개 뽑아서 넣은 후 인덱스로 조절
 )
 
+data class PointRequest(
+    val pointToAdd: Int,
+)
 
-data class UserPoint(
-    val status: Int,
-    val message: String,
-    val data: UserData
+data class PointResponse(
+    val idx: Int,
+    val id: String,
+    val point: Int
 )
 
 data class UserData(

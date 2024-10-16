@@ -2,6 +2,7 @@ package com.nohjason.minari.screens.login
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 
 class PreferencesManager(context: Context) {
     private val sharedPreferences: SharedPreferences =
@@ -15,5 +16,13 @@ class PreferencesManager(context: Context) {
 
     fun getData(key: String, defaultValue: String): String {
         return sharedPreferences.getString(key, defaultValue) ?: defaultValue
+    }
+
+    fun removeData(key: String) {
+        val editor = sharedPreferences.edit()
+        editor.remove(key)
+        editor.apply()
+//        editor.commit()
+        Log.d("PreferencesManager", "Removed data for key: $key")
     }
 }

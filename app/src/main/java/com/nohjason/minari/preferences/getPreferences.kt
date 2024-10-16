@@ -2,8 +2,10 @@ package com.nohjason.minari.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import com.nohjason.minari.screens.login.PreferencesManager
 
 @Composable
 fun getPreferences(): SharedPreferences {
@@ -18,6 +20,10 @@ fun saveToPreferences(preferences: SharedPreferences, key: String, value: String
 }
 fun getFromPreferences(preferences: SharedPreferences, key: String, defaultValue: String = ""): String {
     return preferences.getString(key, defaultValue) ?: defaultValue
+}
+fun clearUserToken(preferencesManager: PreferencesManager, key: String) {
+    preferencesManager.removeData(key)
+    Log.d("PreferencesManager", "User token cleared")
 }
 
 @Composable

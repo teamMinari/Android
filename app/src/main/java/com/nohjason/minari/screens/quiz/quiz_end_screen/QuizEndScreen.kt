@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomScreen
+import com.nohjason.minari.screens.quiz.data.PointRequest
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 import com.nohjason.minari.screens.ui.titlebar.TitleBar
 import com.nohjason.minari.ui.theme.MinariBlue
@@ -38,12 +39,15 @@ import com.nohjason.minari.ui.theme.MinariBlue
 @Composable
 fun QuizEndScreen(
     quizViewModel: QuizViewModel,
-    navController: NavController
+    navController: NavController,
+    token: String
 ){
     val playDataState = quizViewModel.playData.collectAsState()
     val playData = playDataState.value
     val point = playData?.point ?: 0
     val current = playData?.userCurrent ?: 0
+    val reqPoint = PointRequest( pointToAdd = point)
+
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -51,6 +55,8 @@ fun QuizEndScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ){
+        quizViewModel.postPoint(token=token, point=reqPoint)
+        println("quizScreen"+reqPoint)
 
         TitleBar(onClick = { navController.navigate(BottomScreen.Quiz.rout) })
         Box(modifier = Modifier.padding(top = 50.dp)) {

@@ -33,10 +33,11 @@ import com.nohjason.minari.screens.profile.profile_data.WebLinkData
 @Composable
 fun RewardBar(
 //    horizontalPaddin: Dp = 20.dp,
-    progress: Float, // 0f to 1f
+//    progress: Float, // 0f to 1f
     xp: Int,
     level:Int
 ) {
+    val progress = 0.5f
     val webLink = WebLinkData()
     val getWebLink = webLink.getTitleAndUrlForLevel(level)
 
@@ -136,7 +137,6 @@ fun RewardBar(
 @Composable
 fun RewardBarPreview() {
     RewardBar(
-        progress = 0.5f, // 0f to 1f
         xp= 100,
         level = 1
     )

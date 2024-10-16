@@ -18,6 +18,8 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,15 +30,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.nohjason.minari.R
+import com.nohjason.minari.navigation.bottombar.BottomScreen
+import com.nohjason.minari.screens.profile.profile_data.ProfileViewModel
+import com.nohjason.minari.screens.profile.profile_element.RewardBar
 import com.nohjason.minari.screens.ui.titlebar.TitleBar
 
 @Composable
 fun AliasScreen(
-    level: Int,
-    exp: Int,
-    navController: NavController
+    profileViewModel: ProfileViewModel,
+    navHostController: NavHostController,
+    token: String
 ){
+    LaunchedEffect(Unit) {
+        profileViewModel.getProfile(token)
+    }
+
+    val data = profileViewModel.profileData.collectAsState().value
     val scrollState = rememberScrollState()
     val nameList = remember {
         List(30) { index -> "Title $index" }
@@ -52,14 +63,16 @@ fun AliasScreen(
         TitleBar(
             title = "칭호보기",
             imgResId =  R.drawable.ic_noun,
-            onClick = { navController.popBackStack() }
+            onClick = {
+                navHostController.popBackStack()
+            }
         )
 
         Row(
             modifier = Modifier.padding(end = 230.dp, top = 35.dp)
         ){
             Icon(
-                painter = painterResource(id = R.drawable.ic_noun),
+                painter = painterResource(id = R.drawable.ic_target),
                 contentDescription = null,
                 tint = Color.Unspecified,
             )
@@ -79,7 +92,9 @@ fun AliasScreen(
                 .background(color = Color.White),
             contentAlignment = Alignment.Center
         ){
-            AliasMainCard(level = level, exp = exp)
+            data?.let { profile ->
+                AliasMainCard(level = data.level, exp = data.exp)
+            }
         }
 
         Box(
@@ -98,31 +113,25 @@ fun AliasScreen(
                     .wrapContentHeight(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.height(20.dp))
 
-                nameList.forEachIndexed { index, data ->
-                    AliasCard(level = level, exp = exp, myLevel = index+1)
+                data?.let { profile ->
+                    nameList.forEachIndexed { index, data ->
+                        Spacer(modifier = Modifier.height(15.dp))
+                        AliasCard(level = index+1, exp = profile.exp, myLevel = profile.level)
+                        Spacer(modifier = Modifier.height(15.dp))
 
-                    Spacer(modifier = Modifier.height(15.dp))
-
-                    if (index < nameList.size - 1) {
-                        Divider(
-                            color = Color(0xFFECEFFB),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(1.dp)
-                        )
+                        if (index < nameList.size - 1) {
+                            Divider(
+                                color = Color(0xFFECEFFB),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(1.dp)
+                            )
+                        }
                     }
-
-                    Spacer(modifier = Modifier.height(15.dp))
                 }
             }
         }
+        Spacer(modifier = Modifier.height(15.dp))
     }
-}
-
-@Preview
-@Composable
-fun PreAliaScreen(){
-
 }

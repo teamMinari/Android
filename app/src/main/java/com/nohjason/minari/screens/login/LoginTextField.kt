@@ -12,19 +12,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nohjason.minari.R
 import com.nohjason.minari.ui.theme.MinariBlue
 
 @Composable
 fun LoginTextField(
-    modifier: Modifier,
     value: String,
     icon_name: String,
     text: String,
     onValueChange: (String) -> Unit,
     visibility: Boolean,
-    onClick: () -> Unit,
 ) {
     var isFocused by remember { mutableStateOf(false) }
     var isVisiblePassword by remember { mutableStateOf(visibility) }
@@ -41,7 +40,6 @@ fun LoginTextField(
     Column (
         modifier = Modifier.width(320.dp)
     ){
-//        Text(text = icon_name, color = Color(0xFF999999), fontWeight = FontWeight.Bold)
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -56,19 +54,21 @@ fun LoginTextField(
                 value = value,
                 onValueChange = onValueChange,
                 modifier = Modifier
-                    .weight(0.5f)
+                    .weight(1f)
                     .padding(top = 10.dp)
                     .onFocusChanged { focusState ->
                         isFocused = focusState.isFocused
-                    }, // Fill remaining space
+                    },
                 visualTransformation = if (isVisiblePassword) VisualTransformation.None else PasswordVisualTransformation(),
                 decorationBox = { innerTextField ->
-                    Box {
-                        innerTextField()
-                        if (value.isEmpty()) {
-                            Text(text = text, color = Color(0xFF000842), modifier = Modifier.padding(bottom =10.dp))
-                        }
+                    innerTextField()
+                    if (value.isEmpty()) {
+                        Text(text = text,
+                            color = Color(0xFF000842),
+                            modifier = Modifier.padding(bottom = 10.dp)
+                        )
                     }
+
                 }
             )
             Spacer(modifier = Modifier.weight(0.1f))
@@ -99,17 +99,15 @@ fun LoginTextField(
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun PreText() {
-//    var email by remember { mutableStateOf("") }
-//    LoginTextField(
-//        modifier = Modifier,
-//        value = email,
-//        icon_name = "비밀번호",
-//        text = "비밀번호",
-//        onValueChange = { email = it },
-//        visibility = true,
-//        onClick = {}
-//    )
-//}
+@Preview(showBackground = true)
+@Composable
+fun PreText() {
+    var email by remember { mutableStateOf("") }
+    LoginTextField(
+        value = email,
+        icon_name = "비밀번호",
+        text = "비밀번호",
+        onValueChange = { email = it },
+        visibility = true,
+    )
+}

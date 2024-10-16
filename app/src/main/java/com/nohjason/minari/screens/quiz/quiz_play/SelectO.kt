@@ -18,6 +18,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,6 +35,7 @@ import androidx.navigation.NavHostController
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.screens.login.Screens
+import com.nohjason.minari.screens.quiz.clickOnce
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -158,6 +160,9 @@ fun SeletO(
                 text = qtCmt
             )
         }
+
+        var isClickable by remember { mutableStateOf(true) }
+
         Button(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -169,15 +174,27 @@ fun SeletO(
                 containerColor = Color(0xFF363CD5)
             ),
             onClick = {
-                if (qtNum + 2 > qtSize) {
-                    navHostController.navigate(Screens.QuizEndScreen.rout)
-                } else {
-                    quizViewModel.nextQuestion()
-                    navHostController.navigate("quizplay")
+                if (isClickable) {
+                    isClickable = false // 클릭 후 다시 클릭하지 못하게 설정
+                    if (qtNum + 2 > qtSize) {
+                        navHostController.navigate(Screens.QuizEndScreen.rout)
+                    } else {
+                        quizViewModel.nextQuestion()
+                        navHostController.navigate("quizplay")
+                    }
                 }
-            }
+            },
+            enabled = isClickable
         ) {
             Text(text = "다음")
+        }
+
+// 1초 뒤 다시 클릭 가능하도록 설정
+        if (!isClickable) {
+            LaunchedEffect(Unit) {
+                kotlinx.coroutines.delay(1000L)
+                isClickable = true
+            }
         }
     }
 }

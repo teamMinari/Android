@@ -1,6 +1,7 @@
 package com.nohjason.minari.screens.quiz.quiz_main
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,8 +11,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -71,13 +75,17 @@ fun QuizMainScreen(
         ) {
             //트로피
             IconButton(
-                onClick = { /*TODO*/ },
-                modifier = Modifier.padding(start = 300.dp, top = 5.dp)
+                onClick = {  navHostController.navigate("myAlias") },
+                modifier = Modifier
+                    .padding(start = 300.dp, top = 5.dp)
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .border(color = Color(0xFFC8CACF), width = 1.dp, shape = CircleShape) // 외곽선 추가
             ) {
                 Icon(
                     modifier = Modifier
-                        .width(40.dp)
-                        .height(40.dp),
+                        .padding(8.dp)
+                        .size(24.dp),
                     painter = painterResource(id = R.drawable.ic_noun),
                     contentDescription = null,
                     tint = Color.Unspecified
@@ -123,7 +131,7 @@ fun QuizMainScreen(
             coment = "제일 쉬운 난이도",
             onClick = {
                 //더미코드
-                val dataList = selectPlayData(qestionAll = easyQuestionResponse)
+                val dataList = selectPlayData(qestionAll = easyQuestionResponse, level = 1)
                 quizViewModel.initializePlayData(data = dataList)
                 navHostController.navigate("quizplay")
 
@@ -131,7 +139,7 @@ fun QuizMainScreen(
 //                coroutineScope.launch {
 //                    val qtAll = quizViewModel.getQuestion(1, token)
 //
-//                    val dataList = selectPlayData(qestionAll = qtAll)
+//                    val dataList = selectPlayData(qestionAll = qtAll, level = 1)
 //                    quizViewModel.initializePlayData(data = dataList)
 //                    navHostController.navigate("quizplay")
 //                }
@@ -147,19 +155,19 @@ fun QuizMainScreen(
             coment = "공부 좀 했다면 이건 어떤가요?",
             onClick = {
                 //더미코드
-                val dataList = selectPlayData(qestionAll = nomalQuestionResponse)
-                quizViewModel.initializePlayData(data = dataList)
-                navHostController.navigate("quizplay")
+//                val dataList = selectPlayData(qestionAll = nomalQuestionResponse, level = 2)
+//                quizViewModel.initializePlayData(data = dataList)
+//                navHostController.navigate("quizplay")
 
-//                //서버코드
-//                coroutineScope.launch {
-//                    val qtAll = quizViewModel.getQuestion(2, token)
-//
-//                    val dataList = selectPlayData(qestionAll = qtAll)
-//                    quizViewModel.initializePlayData(data = dataList)
-//                    navHostController.navigate("quizplay")
-//                }
-            },
+                //서버코드
+                coroutineScope.launch {
+                    val qtAll = quizViewModel.getQuestion(2, token)
+
+                    val dataList = selectPlayData(qestionAll = qtAll, level = 2)
+                    quizViewModel.initializePlayData(data = dataList)
+                    navHostController.navigate("quizplay")
+                }
+            }
         )
 
         Spacer(modifier = Modifier.height(30.dp))
@@ -172,32 +180,32 @@ fun QuizMainScreen(
             coment = "이건 모를걸요!",
             onClick = {
 //                더미코드
-                val dataList = selectPlayData(qestionAll = hardQuestionResponse)
-                quizViewModel.initializePlayData(data = dataList)
-                navHostController.navigate("quizplay")
+//                val dataList = selectPlayData(qestionAll = hardQuestionResponse, level = 3)
+//                quizViewModel.initializePlayData(data = dataList)
+//                navHostController.navigate("quizplay")
 
 
-//                //서버코드
-//                coroutineScope.launch {
-//                    val qtAll = quizViewModel.getQuestion(3, token)
-//
-//                    val dataList = selectPlayData(qestionAll = qtAll)
-//                    quizViewModel.initializePlayData(data = dataList)
-//                    navHostController.navigate("quizplay")
-//                }
+                //서버코드
+                coroutineScope.launch {
+                    val qtAll = quizViewModel.getQuestion(3, token)
+
+                    val dataList = selectPlayData(qestionAll = qtAll, level = 3)
+                    quizViewModel.initializePlayData(data = dataList)
+                    navHostController.navigate("quizplay")
+                }
             }
         )
     }
 }
 
 //데이터 초기화 값
-fun selectPlayData(qestionAll: QuestionResponse): PlayData {
+fun selectPlayData(qestionAll: QuestionResponse, level: Int): PlayData {
     val qtSelected = qestionAll.data.shuffled().take(10)
-    println(qtSelected)
     return PlayData(
         userCurrent = 0,         // 현재 유저 진행 상황, 0으로 초기화
         point = 0,               // 초기 포인트, 0으로 초기화
         qtNum = 0,               // 첫 번째 문제부터 시작, 0으로 초기화
-        qtList = qtSelected // 10개의 질문을 담은 리스트
+        qtList = qtSelected ,
+        qtLevel = level// 10개의 질문을 담은 리스트
     )
 }

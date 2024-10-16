@@ -214,7 +214,6 @@ fun HomeScreen(
                 if (data != null) {
                     val percentage = (50 / 100f)//exp구현 시 변경해야함
                     RewardBar(
-                        progress = percentage,
                         xp = data!!.exp,
                         level = data!!.level
                     )
