@@ -20,6 +20,8 @@ import okhttp3.ResponseBody
 import retrofit2.HttpException
 import java.io.IOException
 import androidx.compose.runtime.State
+import com.nohjason.minari.network.response.GetSearchTerm
+import com.nohjason.minari.network.response.GetTermData
 import com.nohjason.myapplication.network.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
@@ -206,6 +208,35 @@ class GrapeViewModel: ViewModel() {
             } catch (e: Exception) {
                 // 기타 예외 처리
                 Log.e("TAG", "getTerm: 알 수 없는 오류", e)
+            }
+        }
+    }
+
+    private val _getSearchTerm = MutableStateFlow<GetSearchTerm?>(null) // 초기값은 null로 설정
+    val getSearchTerm: StateFlow<GetSearchTerm?> = _getSearchTerm
+
+    fun getSearchTerm(token: String, termNm: String) {
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    api.getSearchTerm(token, termNm)
+                }
+                if (response.isSuccessful) {
+                    _getSearchTerm.value = response.body()
+                    Log.d("TAG", "getSearchTerm: 서버 통신 성공")
+                } else {
+                    // 서버 응답 에러 처리
+                    Log.e("TAG", "getSearchTerm: 서버 응답 에러 - 코드: ${response.code()}")
+                }
+            } catch (e: IOException) {
+                // 네트워크 오류 처리
+                Log.e("TAG", "getSearchTerm: 네트워크 오류", e)
+            } catch (e: HttpException) {
+                // HTTP 오류 처리
+                Log.e("TAG", "getSearchTerm: HTTP 오류 - 코드: ${e.code()}", e)
+            } catch (e: Exception) {
+                // 기타 예외 처리
+                Log.e("TAG", "getSearchTerm: 알 수 없는 오류", e)
             }
         }
     }

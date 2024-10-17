@@ -6,6 +6,12 @@ data class GetTerm(
     val data: GetTermData,
 )
 
+data class GetSearchTerm(
+    val status: Int,
+    val message: String,
+    val data: List<Term>,
+)
+
 data class GetAllLikesTerm(
     val status: Int,
     val message: String,

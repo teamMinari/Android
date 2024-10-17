@@ -74,6 +74,7 @@ fun Rout(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color(0xFFF5F6FA))
             .padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {

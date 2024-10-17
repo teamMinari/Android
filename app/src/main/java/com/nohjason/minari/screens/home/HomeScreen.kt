@@ -1,6 +1,5 @@
 package com.nohjason.minari.screens.home
 
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -23,11 +22,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -68,15 +71,18 @@ import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.screens.home.todayterm.TodayTerm
 import com.nohjason.minari.screens.home.todayterm.getRandomItems
 import com.nohjason.minari.screens.login.Screens
+import com.nohjason.minari.screens.news.SwipeNews
 import com.nohjason.minari.screens.profile.profile_data.ProfileViewModel
 import com.nohjason.minari.screens.profile.profile_element.RewardBar
 import com.nohjason.minari.screens.rout.GrapeViewModel
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGradation
+import com.nohjason.minari.ui.theme.MinariGray
+import com.nohjason.minari.ui.theme.MinariWhite
+import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_semibold
 import com.nohjason.myapplication.network.MainViewModel
-import org.checkerframework.common.subtyping.qual.Bottom
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,7 +93,6 @@ fun HomeScreen(
     mainViewModel: MainViewModel = viewModel(),
 ) {
     val context = LocalContext.current
-    var text by remember { mutableStateOf("test") }
     var backPressedTime by rememberSaveable { mutableLongStateOf(0L) }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val data by profileViewModel.profileData.collectAsState()
@@ -110,31 +115,47 @@ fun HomeScreen(
         }
     })
 
-    Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Color.White,
-                ),
-                title = {
-                    MinariTextField(
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .background(Color.White)
-                            .padding(6.dp),
-                        value = text,
-                        onValueChange = { text = it },
-                        onClick = {
-                            grapeViewModel.getTerm(token, text)
-                            navController.navigate(Screens.Term.rout + "/${text.replace("/", "@")}")
-                        },
+    Scaffold(modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection), topBar = {
+        CenterAlignedTopAppBar(
+            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                containerColor = Color.White,
+            ),
+            title = {
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .clip(CircleShape)
+                        .fillMaxWidth()
+                        .background(MinariWhite)
+                        .clickable { navController.navigate(Screens.Search.rout) }
+                        .padding(horizontal = 10.dp, vertical = 5.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "검색어를 입력해 주세요",
+                        fontFamily = pretendard_medium,
+                        fontSize = 15.sp,
+                        color = Color(0xFFA8A8A8),
                     )
-                },
-                scrollBehavior = scrollBehavior,
-            )
-        }
-    ) { innerPadding ->
+                    Spacer(modifier = Modifier.weight(0.1f))
+                    IconButton(
+                        onClick = {  },
+                        modifier = Modifier.size(30.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "",
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .size(25.dp),
+                            tint = MinariBlue,
+                        )
+                    }
+                }
+            },
+            scrollBehavior = scrollBehavior,
+        )
+    }) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -152,8 +173,7 @@ fun HomeScreen(
                             .background(Color.White)
                     ) {
                         Row(
-                            modifier = Modifier
-                                .align(Alignment.Center),
+                            modifier = Modifier.align(Alignment.Center),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
@@ -165,46 +185,44 @@ fun HomeScreen(
                             CircularProgressIndicator(
                                 percentage = 0.10f,
 //                                title = "경제의 시작",
-                                title = if(gpsId != 0) "학습하러 가기" else "튜토리얼 보기",
+                                title = if (gpsId != 0) "학습하러 가기" else "튜토리얼 보기",
 //                                status = "학습중"
-                                status = if(gpsId != 0) "학습하러 가기" else "튜토리얼 보기"
+                                status = if (gpsId != 0) "학습하러 가기" else "튜토리얼 보기"
                             )
                         }
                     }
-                    Box(
-                        modifier = Modifier
-                            .drawColoredShadow(
-                                color = Color.Black,
-                                alpha = 0.3f,
-                                borderRadius = 100.dp,
-                                shadowRadius = 8.dp,
-                                offsetX = 5.dp,
-                                offsetY = 5.dp
-                            )
-                            .clip(CircleShape)
-                            .clickable {
-                                if (gpsId != 0) {
-                                    navController.navigate(Screens.Grapes.rout + "/${gpsId}")
-                                } else {
-                                    navController.navigate(BottomScreen.Rout.rout)
-                                }
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Box(modifier = Modifier
+                        .drawColoredShadow(
+                            color = Color.Black,
+                            alpha = 0.3f,
+                            borderRadius = 100.dp,
+                            shadowRadius = 8.dp,
+                            offsetX = 5.dp,
+                            offsetY = 5.dp
+                        )
+                        .clip(CircleShape)
+                        .clickable {
+                            if (gpsId != 0) {
+                                navController.navigate(Screens.Grapes.rout + "/${gpsId}")
+                            } else {
+                                navController.navigate(BottomScreen.Rout.rout)
                             }
-                            .height(55.dp)
-                            .background(
-                                brush = Brush.linearGradient(
-                                    colors = MinariGradation,
-                                    start = androidx.compose.ui.geometry.Offset(1300f, 800f),
-                                    end = androidx.compose.ui.geometry.Offset(0f, 0f),
-                                )
+                        }
+                        .height(55.dp)
+                        .background(
+                            brush = Brush.linearGradient(
+                                colors = MinariGradation,
+                                start = androidx.compose.ui.geometry.Offset(1300f, 800f),
+                                end = androidx.compose.ui.geometry.Offset(0f, 0f),
                             )
+                        )
 //                            .align(Alignment.BottomCenter)
-                            .padding(horizontal = 70.dp)
-                            .align(Alignment.CenterHorizontally)
-                    ) {
+                        .padding(horizontal = 70.dp)
+                        .align(Alignment.CenterHorizontally)) {
                         Text(
-                            modifier = Modifier
-                                .align(Alignment.Center),
-                            text = if(gpsId != 0) "학습하러 가기" else "튜토리얼 보기",
+                            modifier = Modifier.align(Alignment.Center),
+                            text = if (gpsId != 0) "학습하러 가기" else "튜토리얼 보기",
                             color = Color.White,
                             fontSize = 20.sp,
                             fontFamily = pretendard_semibold
@@ -217,8 +235,7 @@ fun HomeScreen(
                 if (data != null) {
                     val percentage = (50 / 100f)//exp구현 시 변경해야함
                     RewardBar(
-                        xp = data!!.exp,
-                        level = data!!.level
+                        xp = data!!.exp, level = data!!.level
                     )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
@@ -253,9 +270,9 @@ fun HomeScreen(
                     }
                 }
             }
-            if (getAllTerms != null ) {
+            if (getAllTerms != null) {
                 val randomItems = getRandomItems(context, getAllTerms!!)
-                items(randomItems){ item ->
+                items(randomItems) { item ->
                     TodayTerm(navController, item = item)
                 }
             }
@@ -265,9 +282,7 @@ fun HomeScreen(
 
 @Composable
 fun CircularProgressIndicator(
-    percentage: Float,
-    title: String,
-    status: String
+    percentage: Float, title: String, status: String
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -278,9 +293,7 @@ fun CircularProgressIndicator(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = title,
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.Bold
+                    text = title, fontSize = 17.sp, fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Box(
@@ -297,8 +310,7 @@ fun CircularProgressIndicator(
                 }
             }
             Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
+                contentAlignment = Alignment.Center, modifier = Modifier
                     .size(100.dp)
                     .padding(16.dp)
             ) {
@@ -344,10 +356,7 @@ fun Modifier.drawColoredShadow(
         val frameworkPaint = paint.asFrameworkPaint()
         frameworkPaint.color = transparentColor
         frameworkPaint.setShadowLayer(
-            shadowRadius.toPx(),
-            offsetX.toPx(),
-            offsetY.toPx(),
-            shadowColor
+            shadowRadius.toPx(), offsetX.toPx(), offsetY.toPx(), shadowColor
         )
         it.drawRoundRect(
             0f,

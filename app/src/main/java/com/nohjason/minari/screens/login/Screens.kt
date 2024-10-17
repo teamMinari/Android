@@ -72,4 +72,9 @@ sealed class Screens(
         rout = "myAlias",
         title = "Alias"
     )
+
+    data object Search: Screens(
+        rout = "search",
+        title = "Search"
+    )
 }

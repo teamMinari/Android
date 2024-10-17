@@ -3,7 +3,6 @@ package com.nohjason.minari.screens.term
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,10 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
@@ -52,7 +49,6 @@ import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariWhite
 import com.nohjason.minari.screens.rout.GrapeViewModel
-import com.nohjason.minari.ui.theme.pretendard_bold
 import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_regular
 
@@ -81,7 +77,6 @@ fun TermScreen(
                     MinariTextField(
                         modifier = Modifier
                             .clip(CircleShape)
-                            .background(Color.White)
                             .padding(6.dp),
                         value = text,
                         onValueChange = { text = it },

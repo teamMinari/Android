@@ -1,4 +1,4 @@
-package com.nohjason.minari.screens.home
+package com.nohjason.minari.screens.news
 
 import android.content.Intent
 import android.net.Uri
@@ -8,13 +8,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,7 +35,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
-import com.nohjason.minari.screens.news.NewsViewModel
+import com.nohjason.minari.screens.home.drawColoredShadow
 import com.nohjason.minari.ui.theme.pretendard_bold
 import com.nohjason.minari.ui.theme.pretendard_regular
 import com.nohjason.minari.ui.theme.pretendard_semibold

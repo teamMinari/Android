@@ -56,6 +56,7 @@ import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.quiz_play.SeletO
 import com.nohjason.minari.screens.quiz.quiz_play.SeletX
 import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
+import com.nohjason.minari.screens.search.Search
 import kotlinx.coroutines.launch
 
 @SuppressLint("ComposableDestinationInComposeScope")
@@ -197,6 +198,11 @@ fun NavGraph(
             AliasScreen(navHostController = navController, profileViewModel = profileViewModel, token = token)
         }
 
+        // 튜토리얼
+        composable(Screens.Search.rout) {
+            Search(navController = navController)
+        }
+
         // 포도알
         composable(Screens.Grapes.rout + "/{id}") { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id") ?: "0"
@@ -220,7 +226,6 @@ fun NavGraph(
         // 용어
         composable(Screens.Term.rout + "/{text}") { backStackEntry ->
             val text = backStackEntry.arguments?.getString("text") ?: ""
-            text.replace("@", "/")
             TermScreen(text, navController = navController)
         }
 

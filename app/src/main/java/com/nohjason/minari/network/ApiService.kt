@@ -5,6 +5,7 @@ import com.nohjason.minari.network.response.BookResponse
 import com.nohjason.minari.network.response.FinishLearn
 import com.nohjason.minari.network.response.GetAllLikesTerm
 import com.nohjason.minari.network.response.GetAllTermsResponse
+import com.nohjason.minari.network.response.GetSearchTerm
 import com.nohjason.minari.network.response.GetTerm
 import com.nohjason.minari.network.response.QuizData
 import com.nohjason.minari.network.response.Quize
@@ -40,10 +41,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-//    @GET("/terms/all")
-//    suspend fun getTerms(
-//        @Header("Authorization") token: String
-//    ): List<TermR>
 
     @GET("/terms")
     suspend fun getAlTerms(
@@ -70,10 +67,9 @@ interface ApiService {
     ): Response<LoginResponse>
 
     @POST("/member/register")
-    fun signUp(@Body request: RegisterRequest): Call<SignUpResponse>
-//    suspend fun register(
-//        @Body registerResponse: RegisterRequest
-//    ): SignUpResponse
+    fun signUp(
+        @Body request: RegisterRequest
+    ): Call<SignUpResponse>
 
     // 포도송이 전체 조회
     @GET("/gps")
@@ -129,6 +125,13 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("termNm") termNm: String
     ): Response<GetTerm>
+
+    // 검색된 용어 가져오기
+    @GET("/terms/keyword")
+    suspend fun getSearchTerm(
+        @Header("Authorization") token: String,
+        @Query("keyword") keyword: String
+    ): Response<GetSearchTerm>
 
     @GET("/termary/summarize/{termNm}")
     suspend fun getEasyTerm(
