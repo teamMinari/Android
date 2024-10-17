@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.profile.directory_screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecViewModel
 import com.nohjason.minari.screens.ui.titlebar.TitleBar
 
@@ -21,6 +23,7 @@ import com.nohjason.minari.screens.ui.titlebar.TitleBar
 fun DirecScreen(
     direcViewModel: DirecViewModel,
     token: String,
+    navController: NavController,
 ){
     direcViewModel.getDirecTerm(token) // Term 데이터 호출
     direcViewModel.getDirecGpse(token) // Gpse 데이터 호출
@@ -37,15 +40,15 @@ fun DirecScreen(
             .verticalScroll(scrollState)
     ) {
         TitleBar(
-            title = "저장소 이름",
+            title = "저장목록",
         )
         Spacer(modifier = Modifier.height(15.dp))
 
-        TutorialList(direcViewModel = direcViewModel)
+        TutorialList(direcViewModel = direcViewModel, token = token, navController = navController)
 
         Spacer(modifier = Modifier.height(15.dp))
 
-        TermList(direcViewModel = direcViewModel)
+        TermList(direcViewModel = direcViewModel, token = token, navController = navController)
 
         Spacer(modifier = Modifier.height(110.dp))
 

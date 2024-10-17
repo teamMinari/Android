@@ -2,6 +2,7 @@ package com.nohjason.minari.screens.profile.directory_screen.direc_cards
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -14,17 +15,27 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.nohjason.minari.R
+import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpse
+import com.nohjason.minari.screens.rout.GrapeViewModel
 
 @Composable
 fun DirecGpse(
-    data: DirecGpse
+    data: DirecGpse,
+    token: String,
+    grapeViewModel: GrapeViewModel,
+    navController: NavController
 ){
     val isBookmarked = remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
-            .width(260.dp) // Row가 부모의 가로 전체를 차지하도록 설정
+            .width(300.dp)
+            .clickable {
+                grapeViewModel.getGpse(token = token, gpseId = data.gpseId)
+                navController.navigate(Screens.Grape.rout + "/${data.gpseId}/${data.gpseName}")
+            }
     ){
         Text(
             text = data.gpseName,
@@ -34,11 +45,10 @@ fun DirecGpse(
         )
         Text(
             text = "(${data.gpseTime}분)",
-            modifier = Modifier
-                .weight(1f),
             fontWeight = FontWeight.Medium,
             color = Color(0xFFB2B2B2)
         )
+        Spacer(modifier = Modifier.weight(1f))
         Icon(
             painter = painterResource(
                 id = if (isBookmarked.value) R.drawable.ic_book_mark_deactivate
@@ -49,7 +59,7 @@ fun DirecGpse(
             modifier = Modifier
                 .clickable {
                     isBookmarked.value = !isBookmarked.value
-                    //서버에 아이디 전송
+                    grapeViewModel.likes(token = token, category = "GRAPESEED", id= data.gpseId)
                 }
         )
     }

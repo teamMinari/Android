@@ -13,10 +13,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nohjason.minari.R
@@ -39,12 +41,13 @@ fun TitleBar(
                 ) // Bottom만 stroke 적용
             )
             .height(60.dp)
-            .background(color = Color.White)
-            .padding(top = 28.dp)
+            .background(color = Color.White),
+        verticalAlignment = Alignment.CenterVertically
     ){
         Row(
             modifier = Modifier
-                .padding(start = 16.dp)
+                .padding(start = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ){
             Icon(
                 modifier = Modifier
@@ -83,5 +86,5 @@ fun TitleBar(
 //@Preview
 //@Composable
 //fun PreTitle(){
-//    TitleBar()
+//    TitleBar( title = "ㅎㅇㅎㅇ", imgResId = R.drawable.grape)
 //}

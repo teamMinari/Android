@@ -142,6 +142,35 @@ class GrapeViewModel: ViewModel() {
         }
     }
 
+    private val _gp = MutableStateFlow<Grape?>(null)
+    val gp: StateFlow<Grape?> = _gp
+
+    fun getGp(token: String, gpId: Int) {
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    api.getGp(token = token, gpId = gpId)
+                }
+                if (response.isSuccessful) {
+                    _gp.value = response.body()
+                    Log.d("TAG", "getGp: 포도알 서버 통신 성공")
+                } else {
+                    // 서버 응답 에러 처리
+                    Log.e("TAG", "getGp: 서버 응답 에러 - 코드: ${response.code()}")
+                }
+            } catch (e: IOException) {
+                // 네트워크 오류 처리
+                Log.e("TAG", "getGp: 네트워크 오류", e)
+            } catch (e: HttpException) {
+                // HTTP 오류 처리
+                Log.e("TAG", "getGp: HTTP 오류 - 코드: ${e.code()}", e)
+            } catch (e: Exception) {
+                // 기타 예외 처리
+                Log.e("TAG", "getGp: 알 수 없는 오류", e)
+            }
+        }
+    }
+
     private val _likes = MutableStateFlow<LikesResponse?>(null)
     val likes: StateFlow<LikesResponse?> = _likes
 

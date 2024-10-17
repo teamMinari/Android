@@ -56,6 +56,7 @@ import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.quiz_play.SeletO
 import com.nohjason.minari.screens.quiz.quiz_play.SeletX
 import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
+import com.nohjason.minari.screens.rout.GrapeViewModel
 import kotlinx.coroutines.launch
 
 @SuppressLint("ComposableDestinationInComposeScope")
@@ -65,8 +66,6 @@ fun NavGraph(
     lifecycleScope: LifecycleCoroutineScope,
     navController: NavHostController,
     loginViewModel: LoginViewModel,
-    profileViewModel: ProfileViewModel = viewModel(),
-    quizViewModel: QuizViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val googleAuthUiClient by lazy {
@@ -78,7 +77,6 @@ fun NavGraph(
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
 //    val data by profileViewModel.profileData.collectAsState()
-    val data = profileViewModel.profileData.collectAsState().value
 
 
 
@@ -92,6 +90,7 @@ fun NavGraph(
         composable(Screens.FirstScreen.rout) {
             val viewModel = viewModel<SignInViewModel>()
             val state by viewModel.state.collectAsState()
+            val preferences = getPreferences()
 
             val launcher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.StartIntentSenderForResult(),
@@ -116,6 +115,7 @@ fun NavGraph(
                     ).show()
                 }
             }
+
             LoginScreen(
                 navController = navController,
                 state = state,
@@ -168,7 +168,6 @@ fun NavGraph(
         composable(BottomScreen.Quiz.rout) {
             QuizMainScreen(
                 navHostController = navController,
-                quizViewModel = quizViewModel,
                 token = token
             )
         }
@@ -177,9 +176,8 @@ fun NavGraph(
         composable(BottomScreen.Profile.rout) {
             ProfileMAinScreen(
                 navHostController = navController,
-                profileViewModel = profileViewModel,
-                direcViewModel = DirecViewModel(),
                 token = token,
+                loginViewModel = loginViewModel,
 //                preferencesManager = preferencesManager
             )
         }
@@ -188,13 +186,14 @@ fun NavGraph(
         composable(Screens.Directory.rout) {
             DirecScreen(
                 direcViewModel = DirecViewModel(),
-                token = token
+                token = token,
+                navController = navController
             )
         }
 
         //칭호
         composable(Screens.Alias.rout){
-            AliasScreen(navHostController = navController, profileViewModel = profileViewModel, token = token)
+            AliasScreen(navHostController = navController, token = token)
         }
 
         // 포도알
@@ -257,7 +256,7 @@ fun NavGraph(
                 )
             }
         ) {
-            SeletO(navHostController = navController, quizViewModel = quizViewModel)
+            SeletO(navHostController = navController)
         }
         composable(
             Screens.QuizSelectX.rout,
@@ -268,7 +267,7 @@ fun NavGraph(
                 )
             }
         ) {
-            SeletX(navHostController = navController, quizViewModel = quizViewModel)
+            SeletX(navHostController = navController)
         }
         composable(
             Screens.QuizPlaycreen.rout,
@@ -279,7 +278,7 @@ fun NavGraph(
                 )
             }
         ) {
-            QuizPlayScreen(navHostController = navController, quizViewModel = quizViewModel)
+            QuizPlayScreen(navHostController = navController)
         }
         composable(
             Screens.QuizEndScreen.rout,
@@ -290,7 +289,7 @@ fun NavGraph(
                 )
             }
         ) {
-            QuizEndScreen(quizViewModel = quizViewModel, navController = navController, token=token)
+            QuizEndScreen(navController = navController, token=token)
         }
 
 

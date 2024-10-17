@@ -26,7 +26,8 @@ data class DirecGps(
     val gpsContent: String,
     val gpsImg: String,
     val gpsLike: Boolean,
-    val gpsTpList: List<String> // 문자열 리스트
+    val gpsAgeGroup: String,
+    val gpsWork: String
 )
 
 data class DirecGpResponse(

@@ -81,16 +81,23 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Response<GrapesAll>
 
-    // 포도알 조회
+    // 포도송이 조회
     @GET("/gps/{gpsId}")
     suspend fun getGps(
         @Header("Authorization") token: String,
         @Path("gpsId") gpsId: Int,
     ): Response<Grapes>
 
-    // 포도씨 전체 조회
+    // 포도알 전체 조회
     @GET("/gp/{gpId}")
     suspend fun getAllGrape(
+        @Header("Authorization") token: String,
+        @Path("gpId") gpId: Int,
+    ): Response<Grape>
+
+    //포도알 조회
+    @GET("/gp/{gpId}")
+    suspend fun getGp(
         @Header("Authorization") token: String,
         @Path("gpId") gpId: Int,
     ): Response<Grape>
@@ -102,6 +109,7 @@ interface ApiService {
         @Path("gpseId") gpseId: Int,
     ): Response<GrapeSeed>
 
+    //포도씨 퀴즈 조회
     @GET("/questions/{questionIdx}")
     suspend fun getQuize(
         @Header("Authorization") token: String,
