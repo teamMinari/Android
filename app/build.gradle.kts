@@ -111,6 +111,7 @@ dependencies {
     implementation(libs.firebase.database.ktx)
     implementation(libs.play.services.auth)
     implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

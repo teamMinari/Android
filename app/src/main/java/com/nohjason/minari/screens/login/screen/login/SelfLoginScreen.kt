@@ -100,7 +100,7 @@ fun SelfLoginScreen(
 
             Spacer(modifier = Modifier.height(60.dp))
 
-            var id by remember { mutableStateOf("adminacc") }
+            var id by remember { mutableStateOf("") }
             LoginTextField(
                 modifier = Modifier,
                 value = id,
@@ -112,7 +112,7 @@ fun SelfLoginScreen(
 
             Spacer(modifier = Modifier.height(60.dp))
 
-            var password by rememberSaveable { mutableStateOf("rlaghwns00!!") }
+            var password by rememberSaveable { mutableStateOf("") }
             LoginTextField(
                 modifier = Modifier,
                 value = password,
