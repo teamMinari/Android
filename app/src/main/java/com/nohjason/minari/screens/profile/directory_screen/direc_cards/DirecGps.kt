@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
@@ -25,33 +26,42 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.nohjason.minari.R
+import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGps
+import com.nohjason.minari.screens.rout.GrapeViewModel
 
 @Composable
 fun DirecGps(
-    data: DirecGps
+    data: DirecGps,
+    token: String,
+    grapeViewModel: GrapeViewModel,
+    navController: NavController
 ){
     val isBookmarked = remember { mutableStateOf(false) }
-    val TpList = data.gpsTpList
+
     Row (
-        modifier = Modifier.width(260.dp),
+        modifier = Modifier.width(300.dp).clickable {
+            grapeViewModel.getGps(token= token, gpsId = data.gpsId)
+            navController.navigate(Screens.Grapes.rout + "/${data.gpsId}")
+        },
         horizontalArrangement = Arrangement.Center
     ){
         AsyncImage(
             modifier = Modifier
-                .wrapContentSize(),
+                .width(45.dp)
+                .height(45.dp),
             model = data.gpsImg,
             contentDescription = null
         )
         Column (
-            modifier = Modifier.padding(start = 5.dp)
+            modifier = Modifier.padding(start = 10.dp)
         ){
             Row(
                 modifier = Modifier
-                    .width(260.dp)
-                    .padding(start = 5.dp),
+                    .width(260.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -72,7 +82,7 @@ fun DirecGps(
                     modifier = Modifier
                         .clickable {
                             isBookmarked.value = !isBookmarked.value
-                            //서버에 아이디 전송
+                            grapeViewModel.likes(token = token, category = "GRAPES", id= data.gpsId)
                         }
                 )
             }
@@ -80,13 +90,12 @@ fun DirecGps(
             Row(
                 modifier = Modifier
                     .width(260.dp)
-                    .padding(start = 5.dp)
             ) {
-                TpList.forEachIndexed { index, data ->
-                    Tp(text = data)
-                    if (index < TpList.size - 1) {
-                        Spacer(modifier = Modifier.width(3.dp))
-                    }
+                if(data.gpsWork != null){
+                    Tp(text = data.gpsWork)
+                }
+                if( data.gpsAgeGroup != null){
+                    Tp(text = data.gpsAgeGroup)
                 }
             }
         }

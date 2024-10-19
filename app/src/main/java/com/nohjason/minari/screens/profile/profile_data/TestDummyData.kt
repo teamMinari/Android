@@ -77,26 +77,26 @@ object DummyGpseStatusResponse {
 
 // GpsStatusResponse 더미 데이터
 object DummyGpsStatusResponse {
-    val gpsStatusResponse = DirecGpsResponse(
-        status = 0,
-        message = "Success",
-        data = listOf(
-            DirecGps(
-                gpsId = 1,
-                gpsContent = "Gps Content Example 1",
-                gpsImg = "https://i.ibb.co/kJPp4Cv/image-34.png",
-                gpsLike = true,
-                gpsTpList = listOf("BEGINNER", "INTERMEDIATE")
-            ),
-            DirecGps(
-                gpsId = 2,
-                gpsContent = "Gps Content Example 2",
-                gpsImg = "https://i.ibb.co/kJPp4Cv/image-34.png",
-                gpsLike = false,
-                gpsTpList = listOf("ADVANCED")
-            )
-        )
-    )
+//    val gpsStatusResponse = DirecGpsResponse(
+//        status = 0,
+//        message = "Success",
+//        data = listOf(
+//            DirecGps(
+//                gpsId = 1,
+//                gpsContent = "Gps Content Example 1",
+//                gpsImg = "https://i.ibb.co/kJPp4Cv/image-34.png",
+//                gpsLike = true,
+//                gpsTpList = listOf("BEGINNER", "INTERMEDIATE")
+//            ),
+//            DirecGps(
+//                gpsId = 2,
+//                gpsContent = "Gps Content Example 2",
+//                gpsImg = "https://i.ibb.co/kJPp4Cv/image-34.png",
+//                gpsLike = false,
+//                gpsTpList = listOf("ADVANCED")
+//            )
+//        )
+//    )
 }
 
 // GpStatusResponse 더미 데이터

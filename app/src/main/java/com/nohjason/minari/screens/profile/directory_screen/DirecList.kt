@@ -19,106 +19,75 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nohjason.minari.screens.profile.directory_screen.direc_cards.DirecGp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.nohjason.minari.screens.profile.directory_screen.direc_cards.DirecGps
 import com.nohjason.minari.screens.profile.directory_screen.direc_cards.DirecGpse
 import com.nohjason.minari.screens.profile.directory_screen.direc_cards.DirecTerm
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGp
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGps
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpse
-import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecTerm
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecViewModel
+import com.nohjason.minari.screens.rout.GrapeViewModel
 
 @Composable
 fun TutorialList(
-    direcViewModel: DirecViewModel
-){
-    val gpseItem = direcViewModel.direcGpseData.collectAsState().value
-    val gpsItem = direcViewModel.direcGpsData.collectAsState().value
-    val gpItem = direcViewModel.direcGpData.collectAsState().value
+    direcViewModel: DirecViewModel,
+    grapeViewModel: GrapeViewModel = viewModel(),
+    token: String,
+    navController: NavController
+) {
+    val gpseItem = direcViewModel.direcGpseData.collectAsState().value?.data
+    val gpsItem = direcViewModel.direcGpsData.collectAsState().value?.data
 
-    Column (
+
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
-    ){
-        Text(
-            text = "튜토리얼",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 23.dp, top = 15.dp, start = 20.dp)
-        )
+            .background(Color.White),
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "튜토리얼",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 23.dp, top = 15.dp, start = 20.dp)
+            )
 
-        if (gpseItem != null || gpsItem != null || gpItem != null) {
+            val combinedList = listOfNotNull(gpsItem, gpseItem).flatten()
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // gpsItem
-                gpsItem?.data?.let { it ->
-                    it.forEachIndexed { index, data ->
-                        DirecGps(data = data)
-                        // Divider 추가 (마지막 요소가 아닐 때만)
-                        if (index < it.size - 1 || gpseItem != null || gpItem != null) {
-                            Spacer(modifier = Modifier.height(15.dp))
-                            Divider(
-                                color = Color(0xFFECEFFB),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(1.dp)
-                            )
-                            Spacer(modifier = Modifier.height(15.dp))
-                        }
-                    }
+            combinedList.forEachIndexed { index, data ->
+                when (data) {
+                    is DirecGps -> DirecGps(data = data, token = token, grapeViewModel=grapeViewModel, navController = navController)
+                    is DirecGpse -> DirecGpse(data = data, token = token, grapeViewModel=grapeViewModel, navController = navController)
                 }
 
-                // gpItem
-                gpItem?.data?.let { it ->
-                    it.forEachIndexed { index, data ->
-                        DirecGp(data = data)
-                        Spacer(modifier = Modifier.height(15.dp))
-                        // Divider 추가 (마지막 요소가 아닐 때만)
-                        if (index < it.size - 1 || gpsItem == null) {
-                            Divider(
-                                color = Color(0xFFECEFFB),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(1.dp)
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(15.dp))
-                    }
-                }
+                Spacer(modifier = Modifier.height(15.dp))
 
-                // gpseItem
-                gpseItem?.data?.let { it ->
-                    it.forEachIndexed { index, data ->
-                        DirecGpse(data = data)
-                        // Divider 추가 (마지막 요소가 아닐 때만)
-                        if (index < it.size - 1 || gpsItem != null || gpItem != null) {
-                            Spacer(modifier = Modifier.height(15.dp))
-                            Divider(
-                                color = Color(0xFFECEFFB),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(1.dp)
-                            )
-                            Spacer(modifier = Modifier.height(15.dp))
-                        }
-                    }
+                if (index < combinedList.size - 1) {
+                    Divider(
+                        color = Color(0xFFECEFFB),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(1.dp)
+                    )
+                    Spacer(modifier = Modifier.height(15.dp))
                 }
             }
         }
     }
+
 }
 
 
 @Composable
 fun TermList(
-    direcViewModel: DirecViewModel
+    direcViewModel: DirecViewModel,
+    grapeViewModel: GrapeViewModel = viewModel(),
+    navController: NavController,
+    token: String
 ) {
     val term = direcViewModel.direcTermData.collectAsState().value
     val termItem = term?.data
@@ -133,8 +102,7 @@ fun TermList(
             text = "용어",
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(bottom = 23.dp, top = 15.dp, end = 308.dp)
+            modifier = Modifier.padding(bottom = 23.dp, top = 15.dp, start = 20.dp)
         )
         if (termItem != null) {
             Column(
@@ -145,8 +113,7 @@ fun TermList(
             ) {
                 termItem.let {
                     it.forEachIndexed { index, data ->
-                        DirecTerm(data = data)
-                        // Divider 추가 (마지막 요소가 아닐 때만)
+                        DirecTerm(data = data, token = token, grapeViewModel=grapeViewModel, navController = navController)
                         if (index < it.size - 1) {
                             Spacer(modifier = Modifier.height(15.dp))
                             Divider(
@@ -159,6 +126,7 @@ fun TermList(
                         }
                     }
                 }
+                Spacer(modifier = Modifier.height(15.dp))
             }
         }
     }

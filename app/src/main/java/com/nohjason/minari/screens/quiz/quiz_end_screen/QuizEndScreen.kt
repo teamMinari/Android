@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomScreen
@@ -40,7 +41,7 @@ import com.nohjason.minari.ui.theme.MinariBlue
 
 @Composable
 fun QuizEndScreen(
-    quizViewModel: QuizViewModel,
+    quizViewModel: QuizViewModel = viewModel(),
     navController: NavController,
     token: String
 ){

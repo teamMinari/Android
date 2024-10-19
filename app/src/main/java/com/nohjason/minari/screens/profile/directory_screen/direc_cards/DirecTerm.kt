@@ -21,19 +21,29 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.nohjason.minari.R
+import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecTerm
 import com.nohjason.minari.screens.profile.profile_data.TermDifficulty
+import com.nohjason.minari.screens.rout.GrapeViewModel
 
 @Composable
 fun DirecTerm(
-    data: DirecTerm
+    data: DirecTerm,
+    token: String,
+    grapeViewModel: GrapeViewModel,
+    navController: NavController
 ) {
     val isBookmarked = remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier
-            .width(260.dp) // Row의 너비 설정
+            .width(300.dp)
+            .clickable {
+                grapeViewModel.getTerm(token = token, termNm = data.termNm)
+                navController.navigate(Screens.Term.rout + "/${data.termNm}")
+            }
     ) {
         // 텍스트와 스타 아이콘
         Column(
@@ -89,7 +99,7 @@ fun DirecTerm(
             modifier = Modifier
                 .clickable {
                     isBookmarked.value = !isBookmarked.value
-                    //서버에 아이디 전송
+                    grapeViewModel.likes(token = token, category = "TERM", id= data.termId)
                 }
         )
         Spacer(modifier = Modifier.height(15.dp))

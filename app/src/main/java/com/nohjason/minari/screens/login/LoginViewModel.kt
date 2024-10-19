@@ -15,16 +15,19 @@ import com.nohjason.minari.screens.login.response.SignUpError
 import com.nohjason.minari.screens.login.response.SignUpResponse
 import com.nohjason.myapplication.network.RetrofitInstance
 import com.nohjason.myapplication.network.RetrofitInstance.api
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
+import kotlin.io.encoding.Base64
 
 class LoginViewModel : ViewModel() {
     private val _loginRequest = MutableStateFlow<LoginResponse?>(null)
@@ -54,6 +57,10 @@ class LoginViewModel : ViewModel() {
                 Log.e("TAG", "login: 알 수 없는 오류", e)
             }
         }
+    }
+
+    fun clearLoginRequest() {
+        _loginRequest.value = null
     }
 
     private val _signUpResult = MutableStateFlow<String?>(null)
@@ -89,6 +96,7 @@ class LoginViewModel : ViewModel() {
             }
         })
     }
+
 
 //    private val _registerResponse = MutableStateFlow<RegisterResponse?>(null)
 //    val registerResponse: StateFlow<RegisterResponse?> = _registerResponse

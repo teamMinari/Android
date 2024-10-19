@@ -1,6 +1,7 @@
 package com.nohjason.minari.screens.login.screen.login
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -131,11 +132,7 @@ fun SelfLoginScreen(
             ) {
                 Checkbox(checked = check, onCheckedChange = { check = it })
                 Text(text = "로그인 저장")
-                Spacer(modifier = Modifier.weight(0.1f))
-                Text(
-                    text = "비밀번호를 잊으셨나요?",
-                    modifier = Modifier.clickable {  }
-                )
+                Spacer(modifier = Modifier.weight(1f))
             }
 
             Spacer(modifier = Modifier.height(70.dp))
@@ -149,13 +146,27 @@ fun SelfLoginScreen(
                     Log.d("TAG", "SelfLoginScreen: ${loginResponse!!.data.accessToken}")
                 }
             }
+
+
+            val context = LocalContext.current
+
             Box(
                 modifier = Modifier
                     .width(320.dp)
                     .clip(CircleShape)
                     .background(MinariBlue)
                     .clickable {
-                        loginViewModel.login(id = id, password = password)
+                        when {
+                            id.isEmpty() -> {
+                                Toast.makeText(context, "아이디를 입력하세요.", Toast.LENGTH_SHORT).show()
+                            }
+                            password.isEmpty() -> {
+                                Toast.makeText(context, "비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show()
+                            }
+                            else -> {
+                                loginViewModel.login(id = id, password = password)
+                            }
+                        }
                     }
                     .imePadding()
             ) {

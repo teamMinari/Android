@@ -58,7 +58,7 @@ fun MainScreen(
                 navController = navController,
                 loginViewModel = loginViewModel,
                 lifecycleScope = lifecycleScope,
-                applicationContext = applicationContext
+                applicationContext = applicationContext,
             )
         }
     }

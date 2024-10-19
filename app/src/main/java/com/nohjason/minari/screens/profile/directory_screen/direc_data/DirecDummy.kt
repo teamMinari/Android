@@ -44,28 +44,28 @@ fun getDummyDirecGpseResponse(): DirecGpseResponse {
     )
 }
 
-fun getDummyDirecGpsResponse(): DirecGpsResponse {
-    return DirecGpsResponse(
-        status = 200,
-        message = "Success",
-        data = listOf(
-            DirecGps(
-                gpsId = 1,
-                gpsContent = "GPS 내용 1",
-                gpsImg = "https://i.ibb.co/kJPp4Cv/image-34.png",
-                gpsLike = true,
-                gpsTpList = listOf("항목1", "항목2")
-            ),
-            DirecGps(
-                gpsId = 2,
-                gpsContent = "GPS 내용 2",
-                gpsImg = "https://i.ibb.co/kJPp4Cv/image-34.png",
-                gpsLike = false,
-                gpsTpList = listOf("항목3", "항목4")
-            )
-        )
-    )
-}
+//fun getDummyDirecGpsResponse(): DirecGpsResponse {
+//    return DirecGpsResponse(
+//        status = 200,
+//        message = "Success",
+//        data = listOf(
+//            DirecGps(
+//                gpsId = 1,
+//                gpsContent = "GPS 내용 1",
+//                gpsImg = "https://i.ibb.co/kJPp4Cv/image-34.png",
+//                gpsLike = true,
+//                gpsTpList = listOf("항목1", "항목2")
+//            ),
+//            DirecGps(
+//                gpsId = 2,
+//                gpsContent = "GPS 내용 2",
+//                gpsImg = "https://i.ibb.co/kJPp4Cv/image-34.png",
+//                gpsLike = false,
+//                gpsTpList = listOf("항목3", "항목4")
+//            )
+//        )
+//    )
+//}
 
 fun getDummyDirecGpResponse(): DirecGpResponse {
     return DirecGpResponse(

@@ -21,9 +21,10 @@ fun saveToPreferences(preferences: SharedPreferences, key: String, value: String
 fun getFromPreferences(preferences: SharedPreferences, key: String, defaultValue: String = ""): String {
     return preferences.getString(key, defaultValue) ?: defaultValue
 }
-fun clearUserToken(preferencesManager: PreferencesManager, key: String) {
-    preferencesManager.removeData(key)
-    Log.d("PreferencesManager", "User token cleared")
+fun clearUserToken(preferences: SharedPreferences, key: String) {
+    val editor = preferences.edit()
+    editor.clear()
+    editor.apply()
 }
 
 @Composable

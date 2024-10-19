@@ -180,6 +180,21 @@ fun SelfSignUpScreen(
             Button(
                 onClick = {
                     when {
+                        id.isEmpty() -> {
+                            popupMessage = "아이디를 입력해주세요."
+                            Toast.makeText(context, popupMessage, Toast.LENGTH_SHORT).show()
+                        }
+
+                        password.isEmpty() -> {
+                            popupMessage = "비밀번호를 입력해주세요."
+                            Toast.makeText(context, popupMessage, Toast.LENGTH_SHORT).show()
+                        }
+
+                        email.isEmpty() -> {
+                            popupMessage = "이메일을 입력해주세요."
+                            Toast.makeText(context, popupMessage, Toast.LENGTH_SHORT).show()
+                        }
+
                         id.length > 20 -> {
                             popupMessage = "아이디는 20자 이하이어야 합니다."
                             Toast.makeText(context, popupMessage, Toast.LENGTH_SHORT).show()
