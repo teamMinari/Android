@@ -8,11 +8,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
@@ -33,7 +38,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,10 +52,12 @@ import com.mohamedrejeb.richeditor.ui.material3.RichText
 import com.nohjason.minari.R
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
+import com.nohjason.minari.screens.home.SearchBar
 import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.ui.text.MinariTextField
 import com.nohjason.minari.ui.theme.MinariWhite
 import com.nohjason.minari.screens.rout.GrapeViewModel
+import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_regular
 
@@ -61,7 +70,7 @@ fun TermScreen(
     grapeViewModel: GrapeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val getTerm by grapeViewModel.getTerm.collectAsState()
-    var text by remember { mutableStateOf("") }
+    val getSearchTerm by grapeViewModel.getSearchTerm.collectAsState()
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
 
@@ -74,19 +83,7 @@ fun TermScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    MinariTextField(
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .padding(6.dp),
-                        value = text,
-                        onValueChange = { text = it },
-                        onClick = {
-                            if (text.isNotEmpty()) {
-                                grapeViewModel.getTerm(token, text)
-                                navController.navigate(Screens.Term.rout + "/${text.replace("/", "@")}")
-                            }
-                        }
-                    )
+                    SearchBar(navController = navController)
                 },
             )
         }
@@ -101,11 +98,11 @@ fun TermScreen(
                 .padding(horizontal = 20.dp)
         ) {
             if (getTerm != null) {
+                val item = getTerm!!.data
                 item {
-                    val item = getTerm!!.data
                     Column(
                         modifier = Modifier
-                            .fillParentMaxSize()
+                            .fillParentMaxWidth()
                             .background(Color.White)
                             .padding(horizontal = 20.dp)
                     ) {
@@ -143,7 +140,6 @@ fun TermScreen(
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-//                                text = "가계부실위험지수(HDRI)",
                                 text = item.termNm,
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold
@@ -167,10 +163,19 @@ fun TermScreen(
                             }
                         }
                         Divider(modifier = Modifier.padding(vertical = 20.dp))
+                    }
+                }
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillParentMaxSize()
+                            .background(Color.White)
+                            .padding(horizontal = 20.dp)
+                    ) {
                         Text(
                             text = item.termExplain,
                             fontSize = 13.sp,
-                            fontFamily = pretendard_regular
+                            fontFamily = pretendard_regular,
                         )
                         Row {
                             Spacer(modifier = Modifier.weight(0.1f))
@@ -180,42 +185,43 @@ fun TermScreen(
                                 fontFamily = pretendard_medium
                             )
                         }
-                        if (showDialog) {
-                            val termResponse =
-                                grapeViewModel.getEasyTerm.collectAsState().value // StateFlow로부터 데이터 수집
-                            val richTextState = rememberRichTextState()
-                            val markdown = termResponse ?: "AI가 용어의 해설을\n가지고 오고 있어요!"
-
-                            AlertDialog(
-                                onDismissRequest = { showDialog = false },  // 팝업 외부를 눌렀을 때 닫힘
-                                text = {
-                                    Column(
-                                        horizontalAlignment = Alignment.CenterHorizontally,
-
-                                    ) {
-                                        if (termResponse == null) {
-                                            Image(painter = painterResource(id = R.drawable.ai), contentDescription = null)
-                                        }
-                                        RichText(
-                                            state = richTextState.setMarkdown(markdown),
-                                            fontSize = 15.sp
-                                        )
-                                    }
-                                },
-                                confirmButton = {
-//                                    Button(onClick = { showDialog = false }) {
-//                                        Text("확인")
-//                                    }
-                                },
-                            )
-                        }
                     }
                 }
             } else {
                 item {
                     CircularProgressIndicator()
                 }
+
             }
+        }
+        if (showDialog) {
+            val termResponse =
+                grapeViewModel.getEasyTerm.collectAsState().value // StateFlow로부터 데이터 수집
+            val richTextState = rememberRichTextState()
+            val markdown = termResponse ?: "AI가 용어의 해설을\n가지고 오고 있어요!"
+
+            AlertDialog(
+                onDismissRequest = { showDialog = false },  // 팝업 외부를 눌렀을 때 닫힘
+                text = {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+
+                        ) {
+                        if (termResponse == null) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ai),
+                                contentDescription = null
+                            )
+                        }
+                        RichText(
+                            state = richTextState.setMarkdown(markdown),
+                            fontSize = 15.sp
+                        )
+                    }
+                },
+                confirmButton = {
+                },
+            )
         }
     }
 }
@@ -223,7 +229,7 @@ fun TermScreen(
 @Preview
 @Composable
 fun TermTest() {
-    TermScreen("몰라", rememberNavController())
+    TermScreen("내부등급법", rememberNavController())
 }
 
 @OptIn(ExperimentalRichTextApi::class)

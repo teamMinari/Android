@@ -84,8 +84,10 @@ fun Search(
                                 grapeViewModel.getSearchTerm(token, text)
                             },
                             onClick = {
-                                grapeViewModel.getTerm(token, text)
-                                navController.navigate(Screens.Term.rout + "/${text}")
+                                if (text.isNotEmpty() && getSearchTerm!!.data.isNotEmpty()) {
+                                    grapeViewModel.getTerm(token, text)
+                                    navController.navigate(Screens.Term.rout + "/${text}")
+                                }
                             },
                             fontSize = 20.sp,
                             modifier = Modifier.focusRequester(focusRequester) // FocusRequester 연결

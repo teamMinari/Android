@@ -126,6 +126,12 @@ interface ApiService {
         @Path("termNm") termNm: String
     ): Response<GetTerm>
 
+//    @GET("/terms/{termId}")
+//    suspend fun getTerm(
+//        @Header("Authorization") token: String,
+//        @Path("termId") termId: Int
+//    ): Response<GetTerm>
+
     // 검색된 용어 가져오기
     @GET("/terms/keyword")
     suspend fun getSearchTerm(

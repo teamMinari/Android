@@ -121,37 +121,7 @@ fun HomeScreen(
                 containerColor = Color.White,
             ),
             title = {
-                Row(
-                    modifier = Modifier
-                        .padding(horizontal = 10.dp)
-                        .clip(CircleShape)
-                        .fillMaxWidth()
-                        .background(MinariWhite)
-                        .clickable { navController.navigate(Screens.Search.rout) }
-                        .padding(horizontal = 10.dp, vertical = 5.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "검색어를 입력해 주세요",
-                        fontFamily = pretendard_medium,
-                        fontSize = 15.sp,
-                        color = Color(0xFFA8A8A8),
-                    )
-                    Spacer(modifier = Modifier.weight(0.1f))
-                    IconButton(
-                        onClick = {  },
-                        modifier = Modifier.size(30.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "",
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .size(25.dp),
-                            tint = MinariBlue,
-                        )
-                    }
-                }
+                SearchBar(navController = navController)
             },
             scrollBehavior = scrollBehavior,
         )
@@ -276,6 +246,46 @@ fun HomeScreen(
                     TodayTerm(navController, item = item)
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun SearchBar(
+    placeholderText: String = "검색어를 입력해 주세요",
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    onNavigate: () -> Unit = { navController.navigate(Screens.Search.rout) }
+) {
+    Row(
+        modifier = modifier
+            .padding(horizontal = 10.dp)
+            .clip(CircleShape)
+            .fillMaxWidth()
+            .background(MinariWhite)
+            .clickable { onNavigate() }
+            .padding(horizontal = 10.dp, vertical = 5.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = placeholderText,
+            fontFamily = pretendard_medium,
+            fontSize = 15.sp,
+            color = Color(0xFFA8A8A8),
+        )
+        Spacer(modifier = Modifier.weight(0.1f))
+        IconButton(
+            onClick = {},
+            modifier = Modifier.size(30.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = null,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .size(25.dp),
+                tint = MinariBlue,
+            )
         }
     }
 }
