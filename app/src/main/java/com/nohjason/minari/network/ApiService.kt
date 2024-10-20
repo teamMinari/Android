@@ -129,11 +129,11 @@ interface ApiService {
     ): Response<GetAllNews>
 
     // 단어 용어 가져오기
-    @GET("/terms/name/{termNm}")
-    suspend fun getTerm(
-        @Header("Authorization") token: String,
-        @Path("termNm") termNm: String
-    ): Response<GetTerm>
+//    @GET("/terms/name/{termNm}")
+//    suspend fun getTerm(
+//        @Header("Authorization") token: String,
+//        @Path("termNm") termNm: String
+//    ): Response<GetTerm>
 
 //    @GET("/terms/{termId}")
 //    suspend fun getTerm(

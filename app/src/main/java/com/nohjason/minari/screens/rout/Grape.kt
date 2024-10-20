@@ -316,7 +316,7 @@ fun ChangeText(
         ClickableReferenceText(
             text = text,
             onClick = { clickedText ->
-                grapeViewModel.getTerm(token, clickedText)
+                grapeViewModel.getSearchTerm(token, clickedText)
                 navController.navigate(Screens.Term.rout + "/${clickedText}")
             }
         )

@@ -9,7 +9,7 @@ data class GetTerm(
 data class GetSearchTerm(
     val status: Int,
     val message: String,
-    val data: List<Term>,
+    val data: List<GetTermData>,
 )
 
 data class GetAllLikesTerm(

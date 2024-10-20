@@ -41,7 +41,7 @@ fun DirecTerm(
         modifier = Modifier
             .width(300.dp)
             .clickable {
-                grapeViewModel.getTerm(token = token, termNm = data.termNm)
+                grapeViewModel.getSearchTerm(token = token, termNm = data.termNm)
                 navController.navigate(Screens.Term.rout + "/${data.termNm}")
             }
     ) {

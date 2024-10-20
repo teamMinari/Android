@@ -60,6 +60,7 @@ import com.nohjason.minari.screens.rout.GrapeViewModel
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_regular
+import kotlinx.coroutines.delay
 
 // home스크린에서 받은 글자를 표시하는 테스트 화면
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalRichTextApi::class)
@@ -69,14 +70,16 @@ fun TermScreen(
     navController: NavController,
     grapeViewModel: GrapeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
-    val getTerm by grapeViewModel.getTerm.collectAsState()
     val getSearchTerm by grapeViewModel.getSearchTerm.collectAsState()
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
 
     LaunchedEffect(key1 = Unit) {
-        grapeViewModel.getTerm(token, title)
         grapeViewModel.getEasyTerm(token, title)
+        while (true) {
+            grapeViewModel.getSearchTerm(token, title)
+            delay(1000)
+        }
     }
 
     Scaffold(
@@ -97,8 +100,8 @@ fun TermScreen(
                 .padding(innerPadding)
                 .padding(horizontal = 20.dp)
         ) {
-            if (getTerm != null) {
-                val item = getTerm!!.data
+            if (getSearchTerm != null) {
+                val item = getSearchTerm!!.data
                 item {
                     Column(
                         modifier = Modifier
@@ -111,7 +114,7 @@ fun TermScreen(
                             modifier = Modifier.padding(vertical = 20.dp)
                         ) {
                             LazyRow {
-                                val difficulty = item.termDifficulty[3].toString().toInt()
+                                val difficulty = item[0].termDifficulty[3].toString().toInt()
                                 items(difficulty) {
                                     Icon(
                                         painter = painterResource(id = R.drawable.star),
@@ -131,16 +134,16 @@ fun TermScreen(
                                         grapeViewModel.likes(
                                             token,
                                             "TERM",
-                                            item.termId,
-                                            item.termNm
+                                            item[0].termId,
+                                            item[0].termNm
                                         )
                                     },
-                                tint = if (getTerm!!.data.termLike) Color.Unspecified else Color.Gray
+                                tint = if (getSearchTerm!!.data[0].termLike) Color.Unspecified else Color.Gray
                             )
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = item.termNm,
+                                text = item[0].termNm,
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -173,7 +176,7 @@ fun TermScreen(
                             .padding(horizontal = 20.dp)
                     ) {
                         Text(
-                            text = item.termExplain,
+                            text = item[0].termExplain,
                             fontSize = 13.sp,
                             fontFamily = pretendard_regular,
                         )
