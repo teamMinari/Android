@@ -1,7 +1,6 @@
 package com.nohjason.minari.screens.rout
 
 import android.util.Log
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nohjason.minari.network.response.GetTerm
@@ -16,20 +15,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody
 import retrofit2.HttpException
 import java.io.IOException
-import androidx.compose.runtime.State
 import com.nohjason.minari.network.response.GetSearchTerm
-import com.nohjason.minari.network.response.GetTermData
-import com.nohjason.myapplication.network.RetrofitInstance
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class GrapeViewModel: ViewModel() {
-    private val _route = MutableStateFlow<GrapesAll?>(null) // 초기값은 null로 설정
-    val route: StateFlow<GrapesAll?> = _route
+class GrapeViewModel : ViewModel() {
+
+    fun loadData(token: String) {
+        getGpsCategory(token)
+    }
+
+    private val _getAllGps = MutableStateFlow<GrapesAll?>(null) // 초기값은 null로 설정
+    val getAllGps: StateFlow<GrapesAll?> = _getAllGps
 
     fun getAllGps(token: String) {
         viewModelScope.launch {
@@ -38,8 +35,8 @@ class GrapeViewModel: ViewModel() {
                     api.getAllGps(token = token)
                 }
                 if (response.isSuccessful) {
-                    _route.value = response.body()
-                    Log.d("TAG", "getAllGps: 전체 포도송이 서버 통신 성공")
+                    _getAllGps.value = response.body()
+                    Log.d("TAG", "getAllGps: 전체 카테고리 포도송이 서버 통신 성공")
                 } else {
                     // 서버 응답 에러 처리
                     Log.e("TAG", "getAllGps: 서버 응답 에러 - 코드: ${response.code()}")
@@ -53,6 +50,35 @@ class GrapeViewModel: ViewModel() {
             } catch (e: Exception) {
                 // 기타 예외 처리
                 Log.e("TAG", "getAllGps: 알 수 없는 오류", e)
+            }
+        }
+    }
+
+    private val _getGpsCategory = MutableStateFlow<GrapesAll?>(null) // 초기값은 null로 설정
+    val getGpsCategory: StateFlow<GrapesAll?> = _getGpsCategory
+
+    fun getGpsCategory(token: String, age: String = "", work: String = "") {
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    api.getGpsCategory(token = token, age, work)
+                }
+                if (response.isSuccessful) {
+                    _getGpsCategory.value = response.body()
+                    Log.d("TAG", "getGpsCategory: 전체 카테고리 포도송이 서버 통신 성공")
+                } else {
+                    // 서버 응답 에러 처리
+                    Log.e("TAG", "getGpsCategory: 서버 응답 에러 - 코드: ${response.code()}")
+                }
+            } catch (e: IOException) {
+                // 네트워크 오류 처리
+                Log.e("TAG", "getGpsCategory: 네트워크 오류", e)
+            } catch (e: HttpException) {
+                // HTTP 오류 처리
+                Log.e("TAG", "getGpsCategory: HTTP 오류 - 코드: ${e.code()}", e)
+            } catch (e: Exception) {
+                // 기타 예외 처리
+                Log.e("TAG", "getGpsCategory: 알 수 없는 오류", e)
             }
         }
     }
@@ -144,39 +170,10 @@ class GrapeViewModel: ViewModel() {
         }
     }
 
-    private val _gp = MutableStateFlow<Grape?>(null)
-    val gp: StateFlow<Grape?> = _gp
-
-    fun getGp(token: String, gpId: Int) {
-        viewModelScope.launch {
-            try {
-                val response = withContext(Dispatchers.IO) {
-                    api.getGp(token = token, gpId = gpId)
-                }
-                if (response.isSuccessful) {
-                    _gp.value = response.body()
-                    Log.d("TAG", "getGp: 포도알 서버 통신 성공")
-                } else {
-                    // 서버 응답 에러 처리
-                    Log.e("TAG", "getGp: 서버 응답 에러 - 코드: ${response.code()}")
-                }
-            } catch (e: IOException) {
-                // 네트워크 오류 처리
-                Log.e("TAG", "getGp: 네트워크 오류", e)
-            } catch (e: HttpException) {
-                // HTTP 오류 처리
-                Log.e("TAG", "getGp: HTTP 오류 - 코드: ${e.code()}", e)
-            } catch (e: Exception) {
-                // 기타 예외 처리
-                Log.e("TAG", "getGp: 알 수 없는 오류", e)
-            }
-        }
-    }
-
     private val _likes = MutableStateFlow<LikesResponse?>(null)
-    val likes: StateFlow<LikesResponse?> = _likes
+//    val likes: StateFlow<LikesResponse?> = _likes
 
-    fun likes(token: String, category: String, id: Int, termNm: String = "") {
+    fun likes(token: String, category: String, id: Int, termNm: String = "", age: String = "", work: String = "") {
         viewModelScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) {
@@ -186,10 +183,10 @@ class GrapeViewModel: ViewModel() {
                     _likes.value = response.body()
                     Log.d("TAG", "likesGpse: 좋아요 서버 통신 성공")
                     if (category == "TERM") {
-                        // ?
                         getTerm(token, termNm)
                     } else if (category == "GRAPES") {
-                        getAllGps(token = token)
+                        getAllGps(token)
+                        getGpsCategory(token, age, work)
                     } else if (category == "GRAPE") {
                         getGps(token, id)
                     } else if (category == "GRAPESEED") {
@@ -270,35 +267,6 @@ class GrapeViewModel: ViewModel() {
         }
     }
 
-//    private val _getAllLikesTerm = MutableStateFlow<GetAllLikesTerm?>(null)
-//    val getAllLikesTerm: StateFlow<GetAllLikesTerm?> = _getAllLikesTerm
-//
-//    fun getAllLikesTerm(token: String) {
-//        viewModelScope.launch {
-//            try {
-//                val response = withContext(Dispatchers.IO) {
-//                    api.getAllLikesTerm(token)
-//                }
-//                if (response.isSuccessful) {
-//                    _getAllLikesTerm.value = response.body()
-//                    Log.d("TAG", "getAllLikesTerm: 좋아요 서버 통신 성공")
-//                } else {
-//                    // 서버 응답 에러 처리
-//                    Log.e("TAG", "getAllLikesTerm: 서버 응답 에러 - 코드: ${response.code()}")
-//                }
-//            } catch (e: IOException) {
-//                // 네트워크 오류 처리
-//                Log.e("TAG", "getAllLikesTerm: 네트워크 오류", e)
-//            } catch (e: HttpException) {
-//                // HTTP 오류 처리
-//                Log.e("TAG", "getAllLikesTerm: HTTP 오류 - 코드: ${e.code()}", e)
-//            } catch (e: Exception) {
-//                // 기타 예외 처리
-//                Log.e("TAG", "getAllLikesTerm: 알 수 없는 오류", e)
-//            }
-//        }
-//    }
-
     private val _getEasyTerm = MutableStateFlow<String?>(null) // String으로 수정
     val getEasyTerm: StateFlow<String?> = _getEasyTerm
 
@@ -327,34 +295,4 @@ class GrapeViewModel: ViewModel() {
             }
         }
     }
-
-//    private val _likesGpse = MutableStateFlow<LikesResponse?>(null)
-//    val likesGpse: StateFlow<LikesResponse?> = _likesGpse
-//
-//    fun likes(token: String, category: String, id: Int) {
-//        viewModelScope.launch {
-//            try {
-//                val response = withContext(Dispatchers.IO) {
-//                    api.likes(token, category, id)
-//                }
-//                if (response.isSuccessful) {
-//                    _likesGpse.value = response.body()
-//                    Log.d("TAG", "likesGpse: 포도씨 좋아요 서버 통신 성공")
-//                } else {
-//                    // 서버 응답 에러 처리
-//                    Log.e("TAG", "likesGpse: 서버 응답 에러 - 코드: ${response.code()}")
-//                }
-//            } catch (e: IOException) {
-//                // 네트워크 오류 처리
-//                Log.e("TAG", "likesGpse: 네트워크 오류", e)
-//            } catch (e: HttpException) {
-//                // HTTP 오류 처리
-//                Log.e("TAG", "likesGpse: HTTP 오류 - 코드: ${e.code()}", e)
-//            } catch (e: Exception) {
-//                // 기타 예외 처리
-//                Log.e("TAG", "likesGpse: 알 수 없는 오류", e)
-//            }
-//        }
-//    }
-
 }

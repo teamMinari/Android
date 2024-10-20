@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.home
 
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -99,6 +100,7 @@ fun HomeScreen(
     val getAllTerms by mainViewModel.getAllTerms.collectAsState()
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
+    val gps by grapeViewModel.gpsDetail.collectAsState()
 
     LaunchedEffect(Unit) {
         profileViewModel.getProfile(token)
@@ -134,10 +136,29 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-                val gpsId = preferences.getInt("gpsId", 0)
+//                val gpsId = preferences.getInt("gpsId", 0)
+//                var size: Float = 0.0f
+//                LaunchedEffect(key1 = Unit, gps) {
+//                    grapeViewModel.getGps(token = token, gpsId = gpsId)
+//                }
+//                if (gps != null) {
+//                    Log.d(
+//                        "TAG",
+//                        "HomeScreen: ${(gps!!.data.gpCntMax / gps!!.data.gpCnt) * 100 / 100}"
+//                    )
+//                    size = ((gps!!.data.gpCntMax / gps!!.data.gpCnt) * 100 / 100).toFloat()
+//                }
                 Column {
                     Box(
                         modifier = Modifier
+                            .drawColoredShadow(
+                                color = Color.Black,
+                                alpha = 0.3f,
+                                borderRadius = 100.dp,
+                                shadowRadius = 8.dp,
+                                offsetX = 5.dp,
+                                offsetY = 5.dp
+                            )
                             .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp))
                             .fillMaxWidth()
                             .background(Color.White)
@@ -152,13 +173,23 @@ fun HomeScreen(
                                 painter = painterResource(R.drawable.image_27),
                                 contentDescription = null,
                             )
-                            CircularProgressIndicator(
-                                percentage = 0.10f,
-//                                title = "경제의 시작",
-                                title = if (gpsId != 0) "학습하러 가기" else "튜토리얼 보기",
-//                                status = "학습중"
-                                status = if (gpsId != 0) "학습하러 가기" else "튜토리얼 보기"
-                            )
+//                            if (gpsId != 0) {
+//                                CircularProgressIndicator(
+//                                    percentage = size,
+////                                title = "경제의 시작",
+//                                    title = if (gps != null) gps!!.data.gpsName else "튜토리얼 보기",
+////                                    status = "학습완료"
+//                                    status = if (gps != null) {
+//                                        if (gps!!.data.gpCnt == gps!!.data.gpCntMax) {
+//                                            "학습완료"
+//                                        } else {
+//                                            "학습중"
+//                                        }
+//                                    } else {
+//                                        ""
+//                                    }
+//                                )
+//                            }
                         }
                     }
                     Spacer(modifier = Modifier.height(10.dp))
@@ -173,11 +204,11 @@ fun HomeScreen(
                         )
                         .clip(CircleShape)
                         .clickable {
-                            if (gpsId != 0) {
-                                navController.navigate(Screens.Grapes.rout + "/${gpsId}")
-                            } else {
-                                navController.navigate(BottomScreen.Rout.rout)
-                            }
+//                            if (gpsId != 0) {
+//                                navController.navigate(Screens.Grapes.rout + "/${gpsId}")
+//                            } else {
+//                                navController.navigate(BottomScreen.Rout.rout)
+//                            }
                         }
                         .height(55.dp)
                         .background(
@@ -189,10 +220,12 @@ fun HomeScreen(
                         )
 //                            .align(Alignment.BottomCenter)
                         .padding(horizontal = 70.dp)
-                        .align(Alignment.CenterHorizontally)) {
+                        .align(Alignment.CenterHorizontally)
+                    ) {
                         Text(
                             modifier = Modifier.align(Alignment.Center),
-                            text = if (gpsId != 0) "학습하러 가기" else "튜토리얼 보기",
+//                            text = if (gpsId != 0) "학습하러 가기" else "튜토리얼 보기",
+                            text = "",
                             color = Color.White,
                             fontSize = 20.sp,
                             fontFamily = pretendard_semibold
@@ -296,7 +329,6 @@ fun CircularProgressIndicator(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-//        modifier = Modifier.fillMaxSize()
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Row(
@@ -314,8 +346,8 @@ fun CircularProgressIndicator(
                     Text(
                         text = status,
                         color = Color.White,
-                        fontSize = 10.sp,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                        fontSize = 8.sp,
+                        modifier = Modifier.padding(horizontal = 8.dp)
                     )
                 }
             }
@@ -380,7 +412,8 @@ fun Modifier.drawColoredShadow(
     }
 }
 
-@Preview
+
+@Preview(showSystemUi = true)
 @Composable
 private fun Test() {
     HomeScreen(navController = rememberNavController())

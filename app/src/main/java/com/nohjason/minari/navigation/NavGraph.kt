@@ -77,10 +77,6 @@ fun NavGraph(
     }
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
-//    val data by profileViewModel.profileData.collectAsState()
-
-
-
 
     NavHost(
         navController = navController,

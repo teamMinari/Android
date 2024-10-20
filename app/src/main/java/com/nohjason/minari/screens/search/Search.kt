@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -72,6 +73,8 @@ fun Search(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
+                    val keyboardController = LocalSoftwareKeyboardController.current
+
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -85,7 +88,7 @@ fun Search(
                             },
                             onClick = {
                                 if (text.isNotEmpty() && getSearchTerm!!.data.isNotEmpty()) {
-                                    grapeViewModel.getTerm(token, text)
+                                    keyboardController?.hide() // 키보드 내리기
                                     navController.navigate(Screens.Term.rout + "/${text}")
                                 }
                             },

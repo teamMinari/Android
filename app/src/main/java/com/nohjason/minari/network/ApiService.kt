@@ -74,10 +74,18 @@ interface ApiService {
     // 포도송이 전체 조회
     @GET("/gps")
     suspend fun getAllGps(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
     ): Response<GrapesAll>
 
-    // 포도송이 조회
+    // 포도송이 전체 조회
+    @GET("/gps/category")
+    suspend fun getGpsCategory(
+        @Header("Authorization") token: String,
+        @Query("age") age: String?,
+        @Query("work") work: String?
+    ): Response<GrapesAll>
+
+    // 포도송이일일
     @GET("/gps/{gpsId}")
     suspend fun getGps(
         @Header("Authorization") token: String,
@@ -87,13 +95,6 @@ interface ApiService {
     // 포도알 전체 조회
     @GET("/gp/{gpId}")
     suspend fun getAllGrape(
-        @Header("Authorization") token: String,
-        @Path("gpId") gpId: Int,
-    ): Response<Grape>
-
-    //포도알 조회
-    @GET("/gp/{gpId}")
-    suspend fun getGp(
         @Header("Authorization") token: String,
         @Path("gpId") gpId: Int,
     ): Response<Grape>

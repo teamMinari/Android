@@ -56,8 +56,7 @@ fun TodayTerm(
             .fillMaxWidth()
             .background(Color.White)
             .clickable {
-                Log.d("이성은", "text : ${item.termNm}")
-                navController.navigate(Screens.Term.rout + "/${item.termNm.replace("/", "@")}")
+                navController.navigate(Screens.Term.rout + "/${item.termNm}")
             }
     ) {
         Row(
