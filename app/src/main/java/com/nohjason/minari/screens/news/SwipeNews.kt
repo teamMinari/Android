@@ -35,6 +35,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
+import com.nohjason.minari.preferences.saveToPreferences
 import com.nohjason.minari.screens.home.drawColoredShadow
 import com.nohjason.minari.ui.theme.pretendard_bold
 import com.nohjason.minari.ui.theme.pretendard_regular
@@ -45,11 +46,12 @@ import com.nohjason.minari.ui.theme.pretendard_semibold
 fun SwipeNews(
     newsViewModel: NewsViewModel = viewModel()
 ) {
-    val getHotNews by newsViewModel.getAllNews.collectAsState()
+    val getHotNews by newsViewModel.getHotNews.collectAsState()
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
+
     LaunchedEffect(Unit) {
-        newsViewModel.getAllNews(token, "HOT_NEWS")
+        newsViewModel.getHotNews(token)
     }
     val context = LocalContext.current
     val pagerState = rememberPagerState()

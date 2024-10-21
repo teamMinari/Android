@@ -1,5 +1,6 @@
 package com.nohjason.minari.screens.term
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -101,6 +102,7 @@ fun TermScreen(
                 .padding(horizontal = 20.dp)
         ) {
             if (getSearchTerm != null) {
+                Log.d("TAG", "TermScreen: $title\n$getSearchTerm")
                 val item = getSearchTerm!!.data
                 item {
                     Column(

@@ -43,4 +43,34 @@ class NewsViewModel: ViewModel() {
             }
         }
     }
+
+    private val _getHotNews = MutableStateFlow<GetAllNews?>(null)
+    val getHotNews: StateFlow<GetAllNews?> = _getHotNews
+
+    fun getHotNews(token: String) {
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    Log.d("TAG", "getAllNews: $token")
+                    api.getAllNews(token, "hotNews")
+                }
+                if (response.isSuccessful) {
+                    _getHotNews.value = response.body()
+                    Log.d("TAG", "getAllNews: 모든 뉴스 서버 통신 성공")
+                } else {
+                    // 서버 응답 에러 처리
+                    Log.e("TAG", "getAllNews: 서버 응답 에러 - 코드: ${response.code()}")
+                }
+            } catch (e: IOException) {
+                // 네트워크 오류 처리
+                Log.e("TAG", "getAllNews: 네트워크 오류", e)
+            } catch (e: HttpException) {
+                // HTTP 오류 처리
+                Log.e("TAG", "getAllNews: HTTP 오류 - 코드: ${e.code()}", e)
+            } catch (e: Exception) {
+                // 기타 예외 처리
+                Log.e("TAG", "getAllNews: 알 수 없는 오류", e)
+            }
+        }
+    }
 }

@@ -48,8 +48,10 @@ import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
+import com.nohjason.minari.preferences.saveToPreferences
 import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.ui.theme.MinariBlue
+import com.nohjason.minari.ui.theme.pretendard_bold
 import com.nohjason.minari.ui.theme.pretendard_extra_bold
 import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_semibold
@@ -65,7 +67,6 @@ fun Rout(
     val editor = preferences.edit()
     val token = getFromPreferences(preferences, "token")
     val route by viewModel.getGpsCategory.collectAsState()
-    val gps by viewModel.gpsDetail.collectAsState()
     var selectedAge by remember { mutableStateOf("") }
     var selectedWork by remember { mutableStateOf("") }
 
@@ -76,12 +77,6 @@ fun Rout(
         }
     }
 
-//    LaunchedEffect(Unit, selectedAge, selectedWork) {
-//        viewModel.getGpsCategory(token = token, selectedAge, selectedWork)
-//        if (gps != null && gps!!.data.gpCnt == gps!!.data.gpCntMax) {
-//            Log.d("TAG", "Rout: 학습완료")
-//        }
-//    }
     BackHandler(onBack = {
         navController.popBackStack(BottomScreen.Home.rout, inclusive = false)
     })
@@ -118,21 +113,34 @@ fun Rout(
             }
         }
         item {
-            val age = listOf("TEENS", "TWENTIES", "THIRTIES", "FORTIES", "FIFTIES")
-            val work = listOf("MEMBEROFSOCIETY", "OFFICIAL", "EMPLOYEE", "BUSINESSMAN")
+            val age = mapOf(
+                "10대" to "TEENS",
+                "20대" to "TWENTIES",
+                "30대" to "THIRTIES",
+                "40대" to "FORTIES",
+                "50대" to "FIFTIES"
+            )
+            val work = mapOf(
+                "사회 구성원" to "MEMBEROFSOCIETY",
+                "공무원" to "OFFICIAL",
+                "직원" to "EMPLOYEE",
+                "실업가" to "BUSINESSMAN"
+            )
             Column(
                 modifier = Modifier.fillMaxSize(),
             ) {
-                CategoryButtons(categories = age,
+                CategoryButtons(
+                    categories = age,
                     selectedCategory = selectedAge,
-                    onCategorySelected = { selectedAge = it })
+                    onCategorySelected = { selectedAge = it }
+                )
 
-                Spacer(modifier = Modifier.height(16.dp)) // 구분을 위한 여백
+                Spacer(modifier = Modifier.height(10.dp)) // 구분을 위한 여백
 
-//     Work 카테고리 버튼
                 CategoryButtons(categories = work,
                     selectedCategory = selectedWork,
-                    onCategorySelected = { selectedWork = it })
+                    onCategorySelected = { selectedWork = it }
+                )
             }
         }
         if (route != null) {
@@ -182,7 +190,6 @@ fun Gps(
     gpsAgeGroup: String,
     gpsWork: String,
 ) {
-//    Log.d("TAG", "Gps: $gpsAgeGroup, $gpsWork")
     Card(shape = RoundedCornerShape(16.dp), elevation = 4.dp, onClick = { onClick() }) {
         Column(
             modifier = Modifier
@@ -259,37 +266,42 @@ fun Gps(
     }
 }
 
-// 공통 버튼 렌더링 함수
 @Composable
 fun CategoryButtons(
-    categories: List<String>, // 카테고리 리스트
+    categories: Map<String, String>, // 카테고리 리스트
     selectedCategory: String, // 현재 선택된 카테고리
     onCategorySelected: (String) -> Unit // 카테고리 선택 시 동작
 ) {
     LazyRow(
-        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        items(categories) { category ->
+        items(categories.toList()) { category ->
+            val isSelected = selectedCategory == category.second
             Box(
                 modifier = Modifier
-                    .padding(horizontal = 5.dp)
-                    .clip(RoundedCornerShape(20.dp)) // 둥근 모서리
-                    .background(
-                        if (selectedCategory == category) MinariBlue // 선택된 버튼의 배경색
-                        else Color.Transparent // 선택되지 않은 버튼의 배경색
-                    )
-                    .clickable { onCategorySelected(if (selectedCategory == category) "" else category) }
+                    .clip(CircleShape)
                     .border(
                         1.dp,
-                        if (selectedCategory == category) Color.Transparent else Color.LightGray,
+                        if (isSelected) Color(0x00000000) else Color(0xFFECEFFB),
                         shape = CircleShape
-                    ) // 테두리 설정
+                    )
+                    .background(if (isSelected) Color.Blue else Color.White)
+                    .clickable {
+                        // 같은 카테고리를 클릭하면 해제 (빈 문자열로 설정)
+                        if (isSelected) {
+                            onCategorySelected("") // 선택 해제
+                        } else {
+                            onCategorySelected(category.second) // 새로운 카테고리 선택
+                        }
+                    }
+                    .padding(vertical = 3.dp, horizontal = 20.dp)
             ) {
                 Text(
-                    text = category,
-                    color = if (selectedCategory == category) Color.White else Color.Gray, // 선택된 버튼 텍스트 색상
-                    fontSize = 14.sp,
-                    modifier = Modifier.padding(vertical = 2.dp, horizontal = 5.dp)
+                    text = category.first,
+                    color = if (isSelected) Color.White else Color.Black,
+                    fontSize = 13.sp,
+                    fontFamily = pretendard_bold
                 )
             }
         }

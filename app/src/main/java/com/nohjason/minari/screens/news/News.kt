@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,26 +54,36 @@ fun News(
     newsViewModel: NewsViewModel = viewModel()
 ) {
     val context = LocalContext.current
-    val getallNews by newsViewModel.getAllNews.collectAsState()
+    val getAllNews by newsViewModel.getAllNews.collectAsState()
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
-    var category by remember { mutableStateOf("main") }
+    var category by remember { mutableStateOf("security") }
+
     LaunchedEffect(Unit, category) {
         newsViewModel.getAllNews(token, category)
     }
     BackHandler(onBack = {
         navController.popBackStack(BottomScreen.Home.rout, inclusive = false)
     })
+
     LazyColumn(
-        modifier = Modifier.background(Color(0xFFF5F6FA)).padding(top = 20.dp),
+        modifier = Modifier
+            .background(Color(0xFFF5F6FA))
+            .padding(top = 20.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         item {
             SwipeNews()
         }
         item {
-            val tagList = listOf("main", "HOT_NEWS", "economy", "부동산", "글로벌 경제")
-            var selectedTag by remember { mutableStateOf<String?>(tagList[0]) } // LazyRow 바깥으로 이동
+            val tagList = mapOf(
+                "증권" to "securities",
+                "금융" to "finance",
+                "경제 일반" to "economy",
+                "부동산" to "realEstate",
+                "산업/재계" to "industrialBusiness"
+            )
+            var selectedTag by remember { mutableStateOf(tagList["증권"]) } // LazyRow 바깥으로 이동
 
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -80,17 +91,13 @@ fun News(
                 item {
                     Spacer(modifier = Modifier.width(10.dp))
                 }
-                items(tagList) { tag ->
-                    // 태그 선택 처리 함수
+                items(tagList.toList()) { tag ->
                     fun onTagClick(clickedTag: String) {
-                        // 클릭한 태그가 현재 선택된 태그와 동일한 경우 아무 동작도 하지 않음
                         if (selectedTag != clickedTag) {
                             selectedTag = clickedTag
                         }
                     }
-
-                    val isSelected = selectedTag == tag
-
+                    val isSelected = selectedTag == tag.second
                     Box(
                         modifier = Modifier
                             .clip(CircleShape)
@@ -101,13 +108,13 @@ fun News(
                             )
                             .background(if (isSelected) Color.Blue else Color.White)
                             .clickable {
-                                onTagClick(tag)
-                                category = tag
+                                onTagClick(tag.second)
+                                category = tag.second
                             }
                             .padding(vertical = 5.dp, horizontal = 15.dp)
                     ) {
                         Text(
-                            text = tag,
+                            text = tag.first,
                             color = if (isSelected) Color.White else Color.Black,
                             fontSize = 13.sp,
                             fontFamily = pretendard_bold
@@ -119,8 +126,8 @@ fun News(
                 }
             }
         }
-        if (getallNews != null) {
-            items(getallNews!!.data) { item ->
+        if (getAllNews != null) {
+            items(getAllNews!!.data) { item ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier

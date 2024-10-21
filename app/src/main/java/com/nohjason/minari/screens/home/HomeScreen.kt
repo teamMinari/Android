@@ -57,6 +57,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -136,18 +137,17 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-//                val gpsId = preferences.getInt("gpsId", 0)
-//                var size: Float = 0.0f
-//                LaunchedEffect(key1 = Unit, gps) {
-//                    grapeViewModel.getGps(token = token, gpsId = gpsId)
-//                }
+                val gpsId = preferences.getInt("gpsId", 0)
+                LaunchedEffect(key1 = Unit, gps) {
+                    grapeViewModel.getGps(token = token, gpsId = gpsId)
+                }
+//                var size = 0.0f
 //                if (gps != null) {
-//                    Log.d(
-//                        "TAG",
-//                        "HomeScreen: ${(gps!!.data.gpCntMax / gps!!.data.gpCnt) * 100 / 100}"
-//                    )
-//                    size = ((gps!!.data.gpCntMax / gps!!.data.gpCnt) * 100 / 100).toFloat()
+////                    Log.d("TAG", "HomeScreen: ${(gps!!.data.gpCnt / gps!!.data.gpCntMax)}")
+//                    size = gps!!.data.gpCnt / gps!!.data.gpCntMax.toFloat()
+//                    Log.d("TAG", "HomeScreen: $size")
 //                }
+
                 Column {
                     Box(
                         modifier = Modifier
@@ -174,21 +174,19 @@ fun HomeScreen(
                                 contentDescription = null,
                             )
 //                            if (gpsId != 0) {
-//                                CircularProgressIndicator(
-//                                    percentage = size,
-////                                title = "경제의 시작",
-//                                    title = if (gps != null) gps!!.data.gpsName else "튜토리얼 보기",
-////                                    status = "학습완료"
-//                                    status = if (gps != null) {
-//                                        if (gps!!.data.gpCnt == gps!!.data.gpCntMax) {
-//                                            "학습완료"
-//                                        } else {
-//                                            "학습중"
-//                                        }
-//                                    } else {
-//                                        ""
-//                                    }
-//                                )
+                                CircularProgressIndicator(
+                                    percentage = 0f,
+                                    title = if (gps != null) gps!!.data.gpsName else "튜토리얼\n보기",
+                                    status = if (gps != null) {
+                                        if (gps!!.data.gpCnt == gps!!.data.gpCntMax) {
+                                            "학습완료"
+                                        } else {
+                                            "학습중"
+                                        }
+                                    } else {
+                                        ""
+                                    }
+                                )
 //                            }
                         }
                     }
@@ -204,11 +202,11 @@ fun HomeScreen(
                         )
                         .clip(CircleShape)
                         .clickable {
-//                            if (gpsId != 0) {
-//                                navController.navigate(Screens.Grapes.rout + "/${gpsId}")
-//                            } else {
-//                                navController.navigate(BottomScreen.Rout.rout)
-//                            }
+                            if (gpsId != 0) {
+                                navController.navigate(Screens.Grapes.rout + "/${gpsId}")
+                            } else {
+                                navController.navigate(BottomScreen.Rout.rout)
+                            }
                         }
                         .height(55.dp)
                         .background(
@@ -224,8 +222,7 @@ fun HomeScreen(
                     ) {
                         Text(
                             modifier = Modifier.align(Alignment.Center),
-//                            text = if (gpsId != 0) "학습하러 가기" else "튜토리얼 보기",
-                            text = "",
+                            text = if (gps != null) "학습하러 가기" else "튜토리얼 보기",
                             color = Color.White,
                             fontSize = 20.sp,
                             fontFamily = pretendard_semibold
@@ -325,60 +322,83 @@ fun SearchBar(
 
 @Composable
 fun CircularProgressIndicator(
-    percentage: Float, title: String, status: String
+    percentage: Float, title: String, status: String = ""
 ) {
     Box(
         contentAlignment = Alignment.Center,
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = title, fontSize = 17.sp, fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Box(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(MinariBlue)
-                ) {
-                    Text(
-                        text = status,
-                        color = Color.White,
-                        fontSize = 8.sp,
-                        modifier = Modifier.padding(horizontal = 8.dp)
-                    )
-                }
-            }
+            Text(
+                text = title,
+                fontSize = 17.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.width(90.dp)
+            )
+            Spacer(modifier = Modifier.height(10.dp))
             Box(
-                contentAlignment = Alignment.Center, modifier = Modifier
-                    .size(100.dp)
-                    .padding(16.dp)
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(MinariBlue)
             ) {
-                Canvas(modifier = Modifier.size(100.dp)) {
-                    drawArc(
-                        color = Color.LightGray,
-                        startAngle = -90f,
-                        sweepAngle = 360f,
-                        useCenter = false,
-                        style = Stroke(width = 15f, cap = StrokeCap.Round)
-                    )
-                    drawArc(
-                        color = Color.Blue,
-                        startAngle = -90f,
-                        sweepAngle = 360f * percentage,
-                        useCenter = false,
-                        style = Stroke(width = 15f, cap = StrokeCap.Round)
-                    )
-                }
                 Text(
-                    text = "${(percentage * 100).toInt()}%",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MinariBlue
+                    text = status,
+                    color = Color.White,
+                    fontSize = 8.sp,
+                    modifier = Modifier.padding(horizontal = 8.dp)
                 )
             }
+//            Row(
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Text(
+//                    text = title,
+//                    fontSize = 17.sp,
+//                    fontWeight = FontWeight.Bold,
+//                    textAlign = TextAlign.Center
+//                )
+//                Spacer(modifier = Modifier.width(10.dp))
+//                Box(
+//                    modifier = Modifier
+//                        .clip(CircleShape)
+//                        .background(MinariBlue)
+//                ) {
+//                    Text(
+//                        text = status,
+//                        color = Color.White,
+//                        fontSize = 8.sp,
+//                        modifier = Modifier.padding(horizontal = 8.dp)
+//                    )
+//                }
+//            }
+//            Box(
+//                contentAlignment = Alignment.Center, modifier = Modifier
+//                    .size(100.dp)
+//                    .padding(16.dp)
+//            ) {
+//                Canvas(modifier = Modifier.size(100.dp)) {
+//                    drawArc(
+//                        color = Color.LightGray,
+//                        startAngle = -90f,
+//                        sweepAngle = 360f,
+//                        useCenter = false,
+//                        style = Stroke(width = 15f, cap = StrokeCap.Round)
+//                    )
+//                    drawArc(
+//                        color = Color.Blue,
+//                        startAngle = -90f,
+//                        sweepAngle = 360f * percentage,
+//                        useCenter = false,
+//                        style = Stroke(width = 15f, cap = StrokeCap.Round)
+//                    )
+//                }
+//                Text(
+//                    text = "${(percentage * 100).toInt()}%",
+//                    fontSize = 18.sp,
+//                    fontWeight = FontWeight.Bold,
+//                    color = MinariBlue
+//                )
+//            }
         }
     }
 }

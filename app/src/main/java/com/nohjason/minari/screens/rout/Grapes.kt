@@ -54,6 +54,7 @@ import com.nohjason.minari.network.response.rout.GrapeData
 import com.nohjason.minari.network.response.rout.GrapeSeedLessData
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
+import com.nohjason.minari.preferences.saveToPreferences
 import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariWhite
@@ -73,6 +74,9 @@ fun Grapes(
     val token = getFromPreferences(preferences, "token")
     val gps by viewModel.gpsDetail.collectAsState()
     LaunchedEffect(key1 = Unit, gps) {
+        val editor = preferences.edit()
+        editor.putInt("gpsId", id)
+        editor.apply() // 데이터를 비동기적으로 저장
         viewModel.getGps(token = token, gpsId = id)
     }
 

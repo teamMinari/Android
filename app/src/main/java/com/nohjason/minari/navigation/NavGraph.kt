@@ -219,7 +219,7 @@ fun NavGraph(
 
         // 용어
         composable(Screens.Term.rout + "/{text}") { backStackEntry ->
-            val text = backStackEntry.arguments?.getString("text") ?: ""
+            val text = backStackEntry.arguments?.getString("text")?.replace("@", "/") ?: ""
             TermScreen(text, navController = navController)
         }
 
