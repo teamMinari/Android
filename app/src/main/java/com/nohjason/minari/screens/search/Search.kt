@@ -89,7 +89,7 @@ fun Search(
                             onClick = {
                                 if (text.isNotEmpty() && getSearchTerm!!.data.isNotEmpty()) {
                                     keyboardController?.hide() // 키보드 내리기
-                                    navController.navigate(Screens.Term.rout + "/${text}")
+                                    navController.navigate(Screens.Term.rout + "/${text.replace("/", "@")}")
                                 }
                             },
                             fontSize = 20.sp,

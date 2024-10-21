@@ -95,9 +95,9 @@ fun MinariTextField(
                     if (value.isEmpty()) {
                         Text(
                             text = hint,
-                            color = Color.LightGray,
+                            color = Color(0xFF8C8C8C),
                             fontSize = fontSize,
-                            modifier = Modifier.align(Alignment.CenterStart) // 힌트 텍스트도 중앙 정렬
+                            modifier = Modifier.align(Alignment.CenterStart), // 힌트 텍스트도 중앙 정렬
                         )
                     }
                     innerTextField() // 텍스트 필드 표시

@@ -82,6 +82,7 @@ import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariGradation
 import com.nohjason.minari.ui.theme.MinariGray
 import com.nohjason.minari.ui.theme.MinariWhite
+import com.nohjason.minari.ui.theme.pretendard_bold
 import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_semibold
 import com.nohjason.myapplication.network.MainViewModel
@@ -153,10 +154,10 @@ fun HomeScreen(
                         modifier = Modifier
                             .drawColoredShadow(
                                 color = Color.Black,
-                                alpha = 0.3f,
-                                borderRadius = 100.dp,
+                                alpha = 0.2f,
+                                borderRadius = 30.dp,
                                 shadowRadius = 8.dp,
-                                offsetX = 5.dp,
+                                offsetX = 0.dp,
                                 offsetY = 5.dp
                             )
                             .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp))
@@ -173,6 +174,7 @@ fun HomeScreen(
                                 painter = painterResource(R.drawable.image_27),
                                 contentDescription = null,
                             )
+                            Spacer(modifier = Modifier.width(10.dp))
 //                            if (gpsId != 0) {
                                 CircularProgressIndicator(
                                     percentage = 0f,
@@ -292,16 +294,16 @@ fun SearchBar(
             .padding(horizontal = 10.dp)
             .clip(CircleShape)
             .fillMaxWidth()
-            .background(MinariWhite)
+            .background(Color(0xFFF6F6F6))
             .clickable { onNavigate() }
-            .padding(horizontal = 10.dp, vertical = 5.dp),
+            .padding(horizontal = 13.dp, vertical = 7.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = placeholderText,
-            fontFamily = pretendard_medium,
+            fontFamily = pretendard_bold,
             fontSize = 15.sp,
-            color = Color(0xFFA8A8A8),
+            color = Color(0xFF8C8C8C),
         )
         Spacer(modifier = Modifier.weight(0.1f))
         IconButton(
@@ -330,23 +332,25 @@ fun CircularProgressIndicator(
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = title,
-                fontSize = 17.sp,
+                fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.width(90.dp)
             )
             Spacer(modifier = Modifier.height(10.dp))
-            Box(
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .background(MinariBlue)
-            ) {
-                Text(
-                    text = status,
-                    color = Color.White,
-                    fontSize = 8.sp,
-                    modifier = Modifier.padding(horizontal = 8.dp)
-                )
+            if (status.isNotEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .background(MinariBlue)
+                ) {
+                    Text(
+                        text = status,
+                        color = Color.White,
+                        fontSize = 8.sp,
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
+                }
             }
 //            Row(
 //                verticalAlignment = Alignment.CenterVertically

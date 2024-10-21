@@ -31,6 +31,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.traceEventEnd
 import androidx.compose.ui.Alignment
@@ -55,6 +56,7 @@ import com.nohjason.minari.network.response.rout.GrapeSeedLessData
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.preferences.saveToPreferences
+import com.nohjason.minari.screens.home.drawColoredShadow
 import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.minari.ui.theme.MinariWhite
@@ -205,7 +207,7 @@ fun Gpse(
     likesClick: () -> Unit,
     state: Boolean
 ) {
-    var isExpanded by remember { mutableStateOf(state) }
+    var isExpanded by rememberSaveable { mutableStateOf(state) }
     val grape = viewModel.allGpMap.collectAsState().value[gpId] // 해당 gpId에 대한 데이터만 참조
 
     LaunchedEffect(key1 = isExpanded) {
@@ -300,14 +302,28 @@ fun Gpse(
                                 .clickable {
                                     navController.navigate(Screens.Grape.rout + "/${it.gpseId}/$title")
                                 }
+                                .drawColoredShadow(
+                                    color = Color.Black,
+                                    alpha = 0.1f,
+                                    borderRadius = 10.dp,
+                                    shadowRadius = 10.dp,
+                                    offsetX = 0.dp,
+                                    offsetY = 0.dp
+                                )
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(Color.White)
+                                .padding(vertical = 6.dp, horizontal = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
                                 text = it.gpseNm,
                                 modifier = Modifier.weight(0.1f),
-                                overflow = TextOverflow.Ellipsis
+                                overflow = TextOverflow.Ellipsis,
+                                fontFamily = pretendard_bold
                             )
                             Text(text = "${it.gpseTm}분")
                         }
+                        Spacer(modifier = Modifier.height(10.dp))
                     }
                 } else {
                     CircularProgressIndicator(modifier = Modifier.size(24.dp))
@@ -330,6 +346,212 @@ fun Gpse(
                         .align(Alignment.BottomCenter),
                     tint = Color.Gray
                 )
+            }
+        }
+    }
+}
+/////////////////////////////
+@Preview
+@Composable
+private fun Test() {
+    val grape = listOf(GrapeSeedLessData(0, "test", 0, false))
+    Scaffold(
+        topBar = {
+            androidx.compose.material.TopAppBar(
+                backgroundColor = Color.White,
+                title = {
+                    Text(
+                        text = "test",
+                        fontFamily = pretendard_bold,
+                        fontSize = 23.sp
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+//                        navController.popBackStack()
+                    }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_back),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                }
+            )
+        },
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MinariWhite)
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+//                Log.d("TAG", "Grapes: ${gps!!.data.gpList.first()}\n${gps!!.data.gpList.last()}")
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(0.dp, 0.dp, 20.dp, 20.dp))
+                        .background(Color.White)
+                        .padding(horizontal = 30.dp, vertical = 15.dp)
+                ) {
+                    AsyncImage(
+                        model = "",
+                        contentDescription = null,
+                        modifier = Modifier.size(100.dp)
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "test",
+                            fontFamily = pretendard_bold,
+                            fontSize = 23.sp,
+                            modifier = Modifier.padding(vertical = 5.dp)
+                        )
+                    }
+                    Text(
+                        text = "1분 - 포도송이 - 0/3포도알",
+                        fontFamily = pretendard_regular
+                    )
+                    Text(
+                        text = "test",
+                        fontFamily = pretendard_regular,
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(vertical = 30.dp)
+                    )
+                    Column(modifier = Modifier.padding(vertical = 5.dp)) {
+                        Text(
+                            text = "시작하기전 알면 좋은 배경지식",
+                            fontFamily = pretendard_semibold,
+                            fontSize = 17.sp
+                        )
+                        Text(
+                            text = "없음",
+                            fontFamily = pretendard_regular,
+                            fontSize = 13.sp
+                        )
+                    }
+                }
+            }
+            items(grape) { item ->
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(Color.White)
+                            .padding(vertical = 10.dp, horizontal = 20.dp)
+                    ) {
+                        Row {
+                            Spacer(modifier = Modifier.weight(0.1f))
+                            Box(
+                                modifier = Modifier
+                                    .clip(CircleShape)
+                                    .background(Color(0xFF5DC067))
+                            ) {
+                                Text(
+                                    text = "10xp",
+                                    fontSize = 10.sp,
+                                    fontFamily = pretendard_bold,
+                                    color = Color.White,
+                                    modifier = Modifier
+                                        .align(Alignment.Center)
+                                        .padding(horizontal = 10.dp, vertical = 2.dp)
+                                )
+                            }
+                        }
+                        Row {
+                            Column(
+                                modifier = Modifier
+                                    .padding(horizontal = 10.dp)
+                                    .weight(0.9f),
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                Text(
+                                    text = "qwer",
+                                    fontFamily = pretendard_bold,
+                                    fontSize = 17.sp,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                                Text(
+                                    text = "1분 - 포도알 - 0/3포도씨",
+                                    fontFamily = pretendard_regular,
+                                    fontSize = 12.sp,
+                                    modifier = Modifier.padding(vertical = 5.dp)
+                                )
+                            }
+                            AsyncImage(
+                                model = "",
+                                contentDescription = null
+                            )
+                            Icon(
+                                painter = painterResource(id = R.drawable.book_mark),
+                                contentDescription = null,
+                                tint = Color.Gray,
+                                modifier = Modifier
+                                    .padding(top = 10.dp)
+                                    .size(20.dp)
+                                    .clickable { }
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        grape.forEach {
+                            Row(
+                                modifier = Modifier
+                                    .drawColoredShadow(
+                                        color = Color.Black,
+                                        alpha = 0.1f,
+                                        borderRadius = 10.dp,
+                                        shadowRadius = 10.dp,
+                                        offsetX = 0.dp,
+                                        offsetY = 0.dp
+                                    )
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .background(Color.White)
+                                    .padding(vertical = 6.dp, horizontal = 10.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = it.gpseNm,
+                                    modifier = Modifier.weight(0.1f),
+                                    overflow = TextOverflow.Ellipsis,
+                                    fontFamily = pretendard_bold
+                                )
+                                Text(text = "${it.gpseTm}분")
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 5.dp)
+                                .clickable {
+
+                                }
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_back),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .rotate(-90f)
+                                    .size(15.dp)
+                                    .align(Alignment.BottomCenter),
+                                tint = Color.Gray
+                            )
+                        }
+                    }
+                }
             }
         }
     }

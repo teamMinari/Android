@@ -127,12 +127,29 @@ fun Grape(
                 item {
                     Column(
                         modifier = Modifier
-                            .fillParentMaxSize()
+                            .fillMaxWidth()
                             .background(Color.White)
                     ) {
                         Value(gpse = gpse!!, token = token, gpseId = gpseId)
+                    }
+                }
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.White)
+                    ) {
                         ChangeText(token, navController, gpse!!.data.gpseContent)
+                    }
+                }
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.White)
+                    ) {
                         GrapeSeedQuize(quize)
+                        Spacer(modifier = Modifier.height(200.dp))
                     }
                 }
             }
@@ -267,7 +284,8 @@ fun Value(
             Text(
                 text = gpse.data.gpseName,
                 fontFamily = pretendard_bold,
-                fontSize = 23.sp
+                fontSize = 23.sp,
+                modifier = Modifier.width(230.dp)
             )
             Spacer(modifier = Modifier.width(10.dp))
             Text(text = "${gpse.data.gpseTime}분")
