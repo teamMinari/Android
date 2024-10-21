@@ -14,6 +14,7 @@ import com.nohjason.minari.network.response.rout.Grapes
 import com.nohjason.minari.network.response.rout.GrapesAll
 import com.nohjason.minari.screens.login.response.LoginRequest
 import com.nohjason.minari.screens.login.response.LoginResponse
+import com.nohjason.minari.screens.login.response.RefreshToken
 import com.nohjason.minari.screens.login.response.RegisterRequest
 import com.nohjason.minari.screens.login.response.SignUpResponse
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpResponse
@@ -209,4 +210,10 @@ interface ApiService {
     suspend fun getLogout(
         @Header("Authorization") token: String
     ): Response<LogOutResponse>
+
+    //리프레쉬
+    @POST("/member/refresh")
+    suspend fun refresh(
+        @Body refreshToken: RefreshToken
+    ): Response<LoginResponse>
 }

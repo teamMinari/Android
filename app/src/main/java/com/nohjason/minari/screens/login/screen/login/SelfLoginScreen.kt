@@ -44,6 +44,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomScreen
+import com.nohjason.minari.preferences.TokenProvider
 import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.preferences.saveToPreferences
 import com.nohjason.minari.screens.login.LoginTextField
@@ -137,18 +138,20 @@ fun SelfLoginScreen(
 
             Spacer(modifier = Modifier.height(70.dp))
 
+            val context = LocalContext.current
             val preferences = getPreferences()
             val loginResponse by loginViewModel.loginRequest.collectAsState()
             LaunchedEffect(loginResponse) {
                 if (loginResponse != null ) {
-                    saveToPreferences(preferences, "token", loginResponse!!.data.accessToken)
+//                    saveToPreferences(preferences, "token", loginResponse!!.data.accessToken)
+
+                    //코드 테스트
+                    val tokenProvider = TokenProvider(context)
+                    tokenProvider.saveToken(loginResponse.data.accessToken)
                     navController.navigate(BottomScreen.Home.rout)
                     Log.d("TAG", "SelfLoginScreen: ${loginResponse!!.data.accessToken}")
                 }
             }
-
-
-            val context = LocalContext.current
 
             Box(
                 modifier = Modifier

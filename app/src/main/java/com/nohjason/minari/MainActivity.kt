@@ -13,12 +13,14 @@ import androidx.lifecycle.lifecycleScope
 import com.nohjason.minari.screens.login.LoginViewModel
 //import com.nohjason.minari.screens.profile.my_dictionary.db.MainViewModel
 import com.nohjason.minari.ui.theme.MinariTheme
+import com.nohjason.myapplication.network.RetrofitInstance
 
 class MainActivity : ComponentActivity() {
     private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        RetrofitInstance.initialize(this)
         setContent {
             MinariTheme {
                 // A surface container using the 'background' color from the theme

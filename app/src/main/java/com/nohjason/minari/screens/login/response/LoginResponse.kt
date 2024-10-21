@@ -15,3 +15,7 @@ data class TokenData(
     val accessToken: String,
     val refreshToken: String
 )
+
+data class RefreshToken(
+    val refreshToken: String
+)

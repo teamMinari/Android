@@ -29,12 +29,13 @@ import com.google.android.gms.auth.api.identity.Identity
 import com.nohjason.minari.firebase.GoogleAuthUiClient
 import com.nohjason.minari.firebase.SignInViewModel
 import com.nohjason.minari.navigation.bottombar.BottomScreen
+import com.nohjason.minari.preferences.AuthPreferences
+import com.nohjason.minari.preferences.TokenProvider
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.screens.home.HomeScreen
 import com.nohjason.minari.screens.login.screen.LoginScreen
 import com.nohjason.minari.screens.login.LoginViewModel
-import com.nohjason.minari.screens.login.PreferencesManager
 import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.login.screen.login.SelfLoginScreen
 import com.nohjason.minari.screens.login.screen.signup.Questionnaire
@@ -67,7 +68,6 @@ fun NavGraph(
     navController: NavHostController,
     loginViewModel: LoginViewModel,
 ) {
-    val context = LocalContext.current
     val googleAuthUiClient by lazy {
         GoogleAuthUiClient(
             context = applicationContext,
@@ -76,9 +76,8 @@ fun NavGraph(
     }
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
-//    val data by profileViewModel.profileData.collectAsState()
 
-
+    val tokenValid = is
 
 
     NavHost(
@@ -90,7 +89,6 @@ fun NavGraph(
         composable(Screens.FirstScreen.rout) {
             val viewModel = viewModel<SignInViewModel>()
             val state by viewModel.state.collectAsState()
-            val preferences = getPreferences()
 
             val launcher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.StartIntentSenderForResult(),

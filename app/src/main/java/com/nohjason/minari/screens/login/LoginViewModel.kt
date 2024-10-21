@@ -7,9 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
-import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.screens.login.response.LoginRequest
 import com.nohjason.minari.screens.login.response.LoginResponse
+import com.nohjason.minari.screens.login.response.RefreshToken
 import com.nohjason.minari.screens.login.response.RegisterRequest
 import com.nohjason.minari.screens.login.response.SignUpError
 import com.nohjason.minari.screens.login.response.SignUpResponse
@@ -59,6 +59,7 @@ class LoginViewModel : ViewModel() {
         }
     }
 
+    //로그 아웃
     fun clearLoginRequest() {
         _loginRequest.value = null
     }
@@ -95,6 +96,32 @@ class LoginViewModel : ViewModel() {
                 _signUpResult.value = "Network Error: ${t.message}"
             }
         })
+    }
+
+    fun getToken(refresh: RefreshToken) {
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    api.refresh(refresh)
+                }
+                if (response.isSuccessful) {
+                    _loginRequest.value = response.body()
+                    Log.d("TAG", "refreshLogin: 로그인 서버 통신 성공")
+                } else {
+                    // 서버 응답 에러 처리
+                    Log.e("TAG", "refreshLogin: 서버 응답 에러 - 코드: ${response.code()}")
+                }
+            } catch (e: IOException) {
+                // 네트워크 오류 처리
+                Log.e("TAG", "refreshLogin: 네트워크 오류", e)
+            } catch (e: HttpException) {
+                // HTTP 오류 처리
+                Log.e("TAG", "refreshLogin: HTTP 오류 - 코드: ${e.code()}", e)
+            } catch (e: Exception) {
+                // 기타 예외 처리
+                Log.e("TAG", "refreshLogin: 알 수 없는 오류", e)
+            }
+        }
     }
 
 

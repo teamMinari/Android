@@ -53,6 +53,9 @@ android {
 
 dependencies {
 
+    //Okhttp3
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+
     implementation ("androidx.work:work-runtime-ktx:2.7.1")
 
     // Markdown
