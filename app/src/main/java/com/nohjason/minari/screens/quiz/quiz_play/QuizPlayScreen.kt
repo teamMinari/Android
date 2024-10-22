@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -55,9 +56,8 @@ fun QuizPlayScreen(
     quizViewModel: QuizViewModel
 ){
     var showPopup by remember { mutableStateOf(false) }
-
+    var isTipVisible by remember { mutableStateOf(false) }
     val playData by quizViewModel.playData.collectAsState()
-
     BackHandler(enabled = true){
         showPopup = true
     }
@@ -168,21 +168,37 @@ fun QuizPlayScreen(
 
             //해설-------------------------------
             Row (
-                modifier = Modifier.padding(top = 20.dp)
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .clickable {
+                        isTipVisible = !isTipVisible
+                    }
             ){
-                Icon(painter = painterResource(id = R.drawable.emoji_tip),
-                    contentDescription = null, tint = Color.Unspecified)
+                Icon(
+                    painter = painterResource(id = R.drawable.emoji_tip),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                )
                 Text(
                     fontFamily = pretendard_bold,
                     fontSize = 20.sp,
                     text = "Tip"
                 )
             }
-            Text(
-                modifier = Modifier.padding(4.dp),
-                fontFamily = pretendard_medium,
-                text = qtTip
-            )
+            if (isTipVisible) {
+                Text(
+                    modifier = Modifier.padding(4.dp),
+                    fontFamily = pretendard_medium,
+                    text = qtTip
+                )
+            } else{
+                Text(
+                    modifier = Modifier.padding(4.dp),
+                    fontFamily = pretendard_medium,
+                    text = "tip 아이콘 클릭 시 힌트를 받는 대신 \n 받게 되는 포인트가 줄어들게 됩니다.",
+                    color = Color(0xFF9C9C9C)
+                )
+            }
         }
 
         BackHandler(enabled = true){
