@@ -1,6 +1,7 @@
 package com.nohjason.minari.screens.profile.directory_screen.direc_cards
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -98,7 +99,10 @@ fun DirecTerm(
             contentDescription = null,
             tint = Color.Unspecified,
             modifier = Modifier
-                .clickable {
+                .clickable (
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {
                     isBookmarked.value = !isBookmarked.value
                     grapeViewModel.likes(token = token, category = "TERM", id= data.termId)
                 }
