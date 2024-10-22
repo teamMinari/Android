@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -39,6 +40,9 @@ import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.quiz.QuizPopup
 import com.nohjason.minari.screens.quiz.clickOnce
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
+import com.nohjason.minari.ui.theme.pretendard_bold
+import com.nohjason.minari.ui.theme.pretendard_medium
+import com.nohjason.minari.ui.theme.pretendard_semibold
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -48,7 +52,9 @@ fun SeletO(
 ) {
     var showPopup by remember { mutableStateOf(false) }
 
-    BackHandler(enabled = true){}
+    BackHandler(enabled = true){
+        showPopup = true
+    }
 
     val playData = quizViewModel.playData.value
 
@@ -58,6 +64,11 @@ fun SeletO(
     val qtAnswer = playData?.qtList?.getOrNull(qtNum)?.qtAnswer ?: "No answer available"
     val qtCmt = playData?.qtList?.getOrNull(qtNum)?.qtCmt ?: "No comment available"
     val qtSize = playData?.qtList?.size ?: 9
+
+    if (playData == null) {
+        CircularProgressIndicator()
+        return
+    }
 
     Box(
         modifier = Modifier
@@ -76,14 +87,14 @@ fun SeletO(
                 modifier = Modifier.padding(top = 77.dp),
                 color = Color(0xFF363CD5),
                 fontSize = 25.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontFamily = pretendard_semibold,
                 text = "${qtNum + 1}/10"
             )
             Text(
                 modifier = Modifier
                     .padding(top = 10.dp),
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
+                fontFamily = pretendard_bold,
                 text = qtContents
             )
 
@@ -150,20 +161,22 @@ fun SeletO(
                 if (qtAnswer == true) {
                     Text(
                         text = "정답",
-                        fontWeight = FontWeight.Bold,
+                        fontFamily = pretendard_bold,
                         fontSize = 20.sp
                     )
                 } else {
                     Text(
                         text = "오답",
-                        fontWeight = FontWeight.Bold,
+                        fontFamily = pretendard_bold,
                         fontSize = 20.sp
                     )
                 }
             }
             Text(
                 modifier = Modifier.padding(4.dp),
-                text = qtCmt
+                fontFamily = pretendard_medium,
+                text = qtCmt,
+                fontSize = 15.sp
             )
         }
 
@@ -192,7 +205,11 @@ fun SeletO(
             },
             enabled = isClickable
         ) {
-            Text(text = "다음")
+            Text(
+                text = "다음",
+                fontFamily = pretendard_bold,
+                fontSize = 15.sp
+            )
         }
 
 // 1초 뒤 다시 클릭 가능하도록 설정

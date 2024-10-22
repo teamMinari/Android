@@ -22,6 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nohjason.minari.R
+import com.nohjason.minari.ui.theme.pretendard_bold
+import com.nohjason.minari.ui.theme.pretendard_semibold
 
 @Composable
 fun TitleBar(
@@ -72,7 +74,7 @@ fun TitleBar(
                 Text(
                     text = title,
                     fontSize = 17.sp,
-                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = pretendard_semibold,
                     modifier = Modifier
                         .padding(start = 10.dp)
                 )

@@ -49,6 +49,8 @@ import com.nohjason.minari.screens.profile.profile_element.LikeList
 import com.nohjason.minari.screens.profile.profile_element.ProfileButton
 import com.nohjason.minari.screens.quiz.QuizPopup
 import com.nohjason.minari.screens.rout.GrapeViewModel
+import com.nohjason.minari.ui.theme.pretendard_bold
+import com.nohjason.minari.ui.theme.pretendard_semibold
 import kotlinx.coroutines.launch
 
 @Composable
@@ -59,7 +61,6 @@ fun ProfileMAinScreen(
     grapeViewModel: GrapeViewModel = viewModel(),
     navHostController: NavHostController,
     token : String,
-//    preferencesManager: PreferencesManager
 ) {
 
     profileViewModel.getProfile(token)
@@ -114,7 +115,7 @@ fun ProfileMAinScreen(
 
         Text(
             text = "${data?.point.toString()} P",
-            fontWeight = FontWeight.Bold,
+            fontFamily = pretendard_bold,
             fontSize = 40.sp
         )
 
@@ -122,7 +123,7 @@ fun ProfileMAinScreen(
         Text(
             text = "소비하러가기>",
             fontSize = 15.sp,
-            fontWeight = FontWeight.SemiBold,
+            fontFamily = pretendard_semibold,
             color = Color(0xFF585EEA),
             modifier = Modifier
                 .clickable {

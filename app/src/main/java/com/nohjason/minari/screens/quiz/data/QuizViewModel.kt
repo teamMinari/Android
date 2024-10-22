@@ -30,6 +30,7 @@ class QuizViewModel : ViewModel() {
                 }
                 if (response.isSuccessful) {
                     _questionData.value = response.body()
+                    Log.d("QuizView", "퀴즈 데이터 확인: ${questionData.value}")
                     Log.d("TAG", "getQuiz: 퀴즈 서버 통신 성공")
                 } else {
                     // 서버 응답 에러 처리

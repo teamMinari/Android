@@ -27,6 +27,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
+import com.nohjason.minari.ui.theme.pretendard_bold
+import com.nohjason.minari.ui.theme.pretendard_extra_bold
+import com.nohjason.minari.ui.theme.pretendard_regular
 
 @Composable
 fun QuizButton(
@@ -92,13 +95,15 @@ fun QuizButton(
             )
             Text(
                 modifier = Modifier.padding(bottom = 10.dp),
+                fontFamily = pretendard_regular,
                 text = lavel,
                 color = Color.White
             )
             Text(
                 modifier = Modifier.padding(bottom = 10.dp),
                 text = coment,
-                color = Color.White
+                color = Color.White,
+                fontFamily = pretendard_bold,
             )
         }
     }

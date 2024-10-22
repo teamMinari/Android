@@ -38,6 +38,7 @@ import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.screens.profile.profile_data.ProfileViewModel
 import com.nohjason.minari.screens.profile.profile_element.RewardBar
 import com.nohjason.minari.screens.ui.titlebar.TitleBar
+import com.nohjason.minari.ui.theme.pretendard_semibold
 
 @Composable
 fun AliasScreen(
@@ -86,7 +87,7 @@ fun AliasScreen(
             )
             Text(
                 text ="현재 목표 칭호",
-                fontWeight = FontWeight.SemiBold,
+                fontFamily = pretendard_semibold,
                 modifier = Modifier.padding(start = 5.dp)
             )
         }

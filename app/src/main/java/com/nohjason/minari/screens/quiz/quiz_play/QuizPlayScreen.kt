@@ -44,6 +44,9 @@ import com.nohjason.minari.screens.quiz.QuizPopup
 import com.nohjason.minari.screens.quiz.QuizPopupPreview
 import com.nohjason.minari.screens.quiz.clickOnce
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
+import com.nohjason.minari.ui.theme.pretendard_bold
+import com.nohjason.minari.ui.theme.pretendard_medium
+import com.nohjason.minari.ui.theme.pretendard_semibold
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -54,7 +57,10 @@ fun QuizPlayScreen(
     var showPopup by remember { mutableStateOf(false) }
 
     val playData by quizViewModel.playData.collectAsState()
-    Log.d("QuizPlayScreen", "QuizPlayScreenn: playData 값 ${quizViewModel.playData.value}")
+
+    BackHandler(enabled = true){
+        showPopup = true
+    }
 
     if (playData == null) {
         CircularProgressIndicator()
@@ -87,14 +93,14 @@ fun QuizPlayScreen(
                 modifier = Modifier.padding(top = 77.dp),
                 color = Color(0xFF363CD5),
                 fontSize = 25.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontFamily = pretendard_semibold,
                 text = "${qtNum + 1}/10"
             )
             Text(
                 modifier = Modifier
                     .padding(top = 10.dp),
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
+                fontFamily = pretendard_bold,
                 text = qtContents
             )
 
@@ -167,13 +173,14 @@ fun QuizPlayScreen(
                 Icon(painter = painterResource(id = R.drawable.emoji_tip),
                     contentDescription = null, tint = Color.Unspecified)
                 Text(
-                    fontWeight = FontWeight.Bold,
+                    fontFamily = pretendard_bold,
                     fontSize = 20.sp,
                     text = "Tip"
                 )
             }
             Text(
                 modifier = Modifier.padding(4.dp),
+                fontFamily = pretendard_medium,
                 text = qtTip
             )
         }

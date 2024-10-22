@@ -47,6 +47,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.nohjason.minari.R
+import com.nohjason.minari.ui.theme.pretendard_bold
+import com.nohjason.minari.ui.theme.pretendard_medium
+import com.nohjason.minari.ui.theme.pretendard_regular
+import com.nohjason.minari.ui.theme.pretendard_semibold
 
 @Composable
 fun ProfileInfor(
@@ -214,7 +218,7 @@ fun ProfileInfor(
                 Text(
                     text = "${level}Lv",
                     fontSize = 10.sp,
-                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = pretendard_semibold,
                     color = Color.White,
                     modifier = Modifier.align(Alignment.Center)
                 )
@@ -227,7 +231,7 @@ fun ProfileInfor(
         ){
             Text(
                 text = id,
-                fontWeight = FontWeight.SemiBold,
+                fontFamily = pretendard_semibold,
                 fontSize = 20.sp
             )
             if(title != null){
@@ -241,7 +245,7 @@ fun ProfileInfor(
                 Spacer(modifier = Modifier.width(5.dp))
                 Text(
                     text = title,
-                    fontWeight = FontWeight.Bold,
+                    fontFamily = pretendard_bold,
                     fontSize = 13.sp
                 )
             }
@@ -249,7 +253,7 @@ fun ProfileInfor(
         Spacer(modifier = Modifier.height(3.dp))
         Text(
             text = email,
-            fontWeight = FontWeight.Normal,
+            fontFamily = pretendard_regular,
             fontSize = 12.sp
         )
         Spacer(modifier = Modifier.height(8.dp))

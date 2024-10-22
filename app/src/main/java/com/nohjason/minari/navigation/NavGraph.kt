@@ -45,7 +45,6 @@ import com.nohjason.minari.screens.news.News
 import com.nohjason.minari.screens.profile.alias_screen.AliasScreen
 import com.nohjason.minari.screens.profile.directory_screen.DirecScreen
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecViewModel
-import com.nohjason.minari.screens.profile.profile_data.DummyProfileData.profileData
 import com.nohjason.minari.screens.profile.profile_data.ProfileViewModel
 import com.nohjason.minari.screens.rout.Grape
 import com.nohjason.minari.screens.rout.Grapes
@@ -56,8 +55,6 @@ import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
 import com.nohjason.minari.screens.quiz.quiz_play.SeletO
 import com.nohjason.minari.screens.quiz.quiz_play.SeletX
 import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
-import com.nohjason.minari.screens.search.Search
-import com.nohjason.minari.screens.rout.GrapeViewModel
 import kotlinx.coroutines.launch
 
 @SuppressLint("ComposableDestinationInComposeScope")
@@ -67,7 +64,7 @@ fun NavGraph(
     lifecycleScope: LifecycleCoroutineScope,
     navController: NavHostController,
     loginViewModel: LoginViewModel,
-    quizViewModel: QuizViewModel = viewModel()
+    quizViewModel: QuizViewModel = viewModel(),
 ) {
     val context = LocalContext.current
     val googleAuthUiClient by lazy {
@@ -78,13 +75,9 @@ fun NavGraph(
     }
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
+//    val data by profileViewModel.profileData.collectAsState()
 
-    val startDestination =
-        if (token == null) {
-            Screens.FirstScreen.rout
-        } else {
-            BottomScreen.Home.rout
-        }
+    val startDestination = if (token == null){ Screens.FirstScreen.rout } else{BottomScreen.Home.rout}
 
     NavHost(
         navController = navController,
@@ -95,7 +88,6 @@ fun NavGraph(
         composable(Screens.FirstScreen.rout) {
             val viewModel = viewModel<SignInViewModel>()
             val state by viewModel.state.collectAsState()
-            val preferences = getPreferences()
 
             val launcher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.StartIntentSenderForResult(),
@@ -172,8 +164,8 @@ fun NavGraph(
         composable(BottomScreen.Quiz.rout) {
             QuizMainScreen(
                 navHostController = navController,
-                token = token,
-                quizViewModel = QuizViewModel()
+                quizViewModel = quizViewModel,
+                token = token
             )
         }
 
@@ -181,29 +173,26 @@ fun NavGraph(
         composable(BottomScreen.Profile.rout) {
             ProfileMAinScreen(
                 navHostController = navController,
+                direcViewModel = DirecViewModel(),
                 token = token,
-                loginViewModel = loginViewModel,
-//                preferencesManager = preferencesManager
+                loginViewModel = loginViewModel
             )
         }
 
         //저장목록
         composable(Screens.Directory.rout) {
             DirecScreen(
-                direcViewModel = DirecViewModel(),
                 token = token,
                 navController = navController
             )
         }
 
         //칭호
-        composable(Screens.Alias.rout) {
-            AliasScreen(navHostController = navController, token = token)
-        }
-
-        // 검색 화면
-        composable(Screens.Search.rout) {
-            Search(navController = navController)
+        composable(Screens.Alias.rout){
+            AliasScreen(
+                navHostController = navController,
+                token = token
+            )
         }
 
         // 포도알
@@ -228,7 +217,8 @@ fun NavGraph(
 
         // 용어
         composable(Screens.Term.rout + "/{text}") { backStackEntry ->
-            val text = backStackEntry.arguments?.getString("text")?.replace("@", "/") ?: ""
+            val text = backStackEntry.arguments?.getString("text") ?: ""
+            text.replace("@", "/")
             TermScreen(text, navController = navController)
         }
 
@@ -252,6 +242,7 @@ fun NavGraph(
                 navController = navController
             )
         }
+
 
 
         //퀴즈
@@ -297,8 +288,9 @@ fun NavGraph(
                 )
             }
         ) {
-            QuizEndScreen(navController = navController, token = token, quizViewModel = quizViewModel)
+            QuizEndScreen(quizViewModel = quizViewModel, navController = navController, token=token)
         }
+
 
 
         //모르는거

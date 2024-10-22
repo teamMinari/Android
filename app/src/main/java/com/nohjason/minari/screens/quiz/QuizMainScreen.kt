@@ -25,7 +25,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -56,6 +59,9 @@ import com.nohjason.minari.screens.quiz.data.PlayData
 import com.nohjason.minari.screens.quiz.data.QuestionResponse
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 import com.nohjason.minari.ui.theme.MinariBlue
+import com.nohjason.minari.ui.theme.pretendard_bold
+import com.nohjason.minari.ui.theme.pretendard_extra_bold
+import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.myapplication.network.RetrofitInstance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -71,8 +77,7 @@ fun QuizMainScreen(
 ) {
 
     val scrollState = rememberScrollState()
-    val questionData by quizViewModel.questionData.collectAsState()
-    val coroutineScope = rememberCoroutineScope()
+    var selectedLevel by remember { mutableStateOf(1) }
 
     Column(
         Modifier
@@ -123,14 +128,14 @@ fun QuizMainScreen(
                     )
                     Text(
                         text = "Quiz",
-                        fontWeight = FontWeight.ExtraBold,
+                        fontFamily = pretendard_extra_bold,
                         color = MinariBlue,
                         fontSize = 30.sp
                     )
                 }
                 Text(
                     text = "총 3개의 난이도",
-                    fontWeight = FontWeight.Medium,
+                    fontFamily = pretendard_medium,
                     fontSize = 13.sp
                 )
             }
@@ -146,22 +151,14 @@ fun QuizMainScreen(
             coment = "제일 쉬운 난이도",
             onClick = {
                 //더미코드
-                val dataList = selectPlayData(qestionAll = easyQuestionResponse, level = 2)
-                quizViewModel.initializePlayData(data = dataList)
-                navHostController.navigate("quizplay")
+//                val dataList = selectPlayData(qestionAll = easyQuestionResponse, level = 2)
+//                quizViewModel.initializePlayData(data = dataList)
+//                navHostController.navigate("quizplay")
 
 //                // 서버 코드
-//                quizViewModel.getQuestion(1, token)
-//                val quizData = quizViewModel.questionData.value
-//
-//                if (quizData != null) {
-//                    quizViewModel.initializePlayData(qestionAll = quizData, level = 1)
-//                    Log.d("QuizMainScreen", "QuizMainScreen: playData 값 ${quizViewModel.playData.value}")
-//                    navHostController.navigate(Screens.QuizPlaycreen.rout)
-//                } else {
-//                    Log.e("QuizMainScreen", "QuizMainScreen: quizData가 null입니다.")
-//                }
-
+                selectedLevel = 1
+                quizViewModel.getQuestion(selectedLevel, token)
+                navHostController.navigate(Screens.QuizPlaycreen.rout)
             }
         )
         Spacer(modifier = Modifier.height(30.dp))
@@ -179,13 +176,9 @@ fun QuizMainScreen(
 //                navHostController.navigate("quizplay")
 
                 //서버코드
-//                coroutineScope.launch {
-//                    val qtAll = quizViewModel.getQuestion(2, token)
-//
-//                    val dataList = selectPlayData(qestionAll = qtAll, level = 2)
-//                    quizViewModel.initializePlayData(data = dataList)
-//                    navHostController.navigate("quizplay")
-//                }
+                selectedLevel = 2
+                quizViewModel.getQuestion(selectedLevel, token)
+                navHostController.navigate(Screens.QuizPlaycreen.rout)
             }
         )
 
@@ -205,15 +198,19 @@ fun QuizMainScreen(
 
 
                 //서버코드
-//                coroutineScope.launch {
-//                    val qtAll = quizViewModel.getQuestion(3, token)
-//
-//                    val dataList = selectPlayData(qestionAll = qtAll, level = 3)
-//                    quizViewModel.initializePlayData(data = dataList)
-//                    navHostController.navigate("quizplay")
-//                }
+                selectedLevel = 3
+                quizViewModel.getQuestion(selectedLevel, token)
+                navHostController.navigate(Screens.QuizPlaycreen.rout)
             }
         )
+
+        LaunchedEffect(key1 = quizViewModel.questionData.collectAsState().value, key2 = selectedLevel) {
+            val quizData = quizViewModel.questionData.value
+            if (quizData != null) {
+                val dataList = selectPlayData(qestionAll = quizData, level = selectedLevel)  // 선택된 레벨 사용
+                quizViewModel.initializePlayData(data = dataList)
+            }
+        }
     }
 }
 

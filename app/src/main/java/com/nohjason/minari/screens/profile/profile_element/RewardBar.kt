@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.profile.profile_data.WebLinkData
+import com.nohjason.minari.ui.theme.pretendard_bold
+import com.nohjason.minari.ui.theme.pretendard_semibold
 
 @Composable
 fun RewardBar(
@@ -72,7 +74,7 @@ fun RewardBar(
                     text = "보상",
                     color = Color.Black,
                     fontSize = 15.sp,
-                    fontWeight = FontWeight.SemiBold
+                    fontFamily = pretendard_semibold
                 )
             }
 
@@ -103,7 +105,7 @@ fun RewardBar(
                         text = "${xp}xp",
                         color = Color.White,
                         fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontFamily = pretendard_bold,
                         modifier = Modifier.padding(horizontal = 8.dp)
                     )
                 }

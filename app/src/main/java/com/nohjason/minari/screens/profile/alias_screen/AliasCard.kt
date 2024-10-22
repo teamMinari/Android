@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.profile.profile_data.WebLinkData
+import com.nohjason.minari.ui.theme.pretendard_semibold
 
 @Composable
 fun AliasCard(
@@ -144,12 +145,12 @@ fun AliasCard(
                         Text(
                             text = "${level}Lv",
                             color = Color(0xFF363CD5),
-                            fontWeight = FontWeight.SemiBold,
+                            fontFamily = pretendard_semibold,
                             fontSize = 13.sp
                         )
                         Text(
                             text = "???",
-                            fontWeight = FontWeight.SemiBold,
+                            fontFamily = pretendard_semibold,
                             fontSize = 15.sp,
                             modifier = Modifier.padding(start = 4.dp)
                         )

@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import com.google.common.io.Resources
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomScreen.Home.icon
+import com.nohjason.minari.ui.theme.pretendard_regular
+import com.nohjason.minari.ui.theme.pretendard_semibold
 
 @Composable
 fun QuizPopup(
@@ -51,7 +53,7 @@ fun QuizPopup(
         title = {
             Text(
                 text = dialogTitle,
-                fontWeight = FontWeight.SemiBold
+                fontFamily = pretendard_semibold
             )
         },
         text = {
@@ -61,7 +63,8 @@ fun QuizPopup(
             ) {
                 Text(
                     text = dialogText,
-                    color = Color(0xFF0C21C1)
+                    color = Color(0xFF0C21C1),
+                    fontFamily = pretendard_regular
                 )
             }
         },
@@ -80,7 +83,7 @@ fun QuizPopup(
                     Text(
                         "확인",
                         color = Color(0xFF0C21C1),
-                        fontWeight = FontWeight.SemiBold
+                        fontFamily = pretendard_semibold
                     )
                 }
                 Spacer(modifier = Modifier.width(25.dp))
@@ -97,7 +100,8 @@ fun QuizPopup(
                     Text(
                         "취소",
                         color = Color.Black,
-                        fontWeight = FontWeight.SemiBold
+                        fontFamily = pretendard_semibold
+
                     )
                 }
                 Spacer(modifier = Modifier.width(100.dp)) // 버튼 사이에 여백 추가

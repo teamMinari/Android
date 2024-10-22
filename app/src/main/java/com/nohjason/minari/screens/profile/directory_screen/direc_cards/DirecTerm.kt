@@ -27,6 +27,7 @@ import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecTerm
 import com.nohjason.minari.screens.profile.profile_data.TermDifficulty
 import com.nohjason.minari.screens.rout.GrapeViewModel
+import com.nohjason.minari.ui.theme.pretendard_medium
 
 @Composable
 fun DirecTerm(
@@ -84,7 +85,7 @@ fun DirecTerm(
                 overflow = TextOverflow.Ellipsis,
                 color = Color(0xFF7A7A7A),
                 fontSize = 10.sp,
-                fontWeight = FontWeight.Medium
+                fontFamily = pretendard_medium
             )
         }
         

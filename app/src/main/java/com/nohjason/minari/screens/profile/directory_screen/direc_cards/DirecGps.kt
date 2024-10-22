@@ -32,6 +32,8 @@ import com.nohjason.minari.R
 import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGps
 import com.nohjason.minari.screens.rout.GrapeViewModel
+import com.nohjason.minari.ui.theme.pretendard_regular
+import com.nohjason.minari.ui.theme.pretendard_semibold
 
 @Composable
 fun DirecGps(
@@ -69,7 +71,7 @@ fun DirecGps(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 15.sp,
-                    fontWeight = FontWeight.SemiBold
+                    fontFamily = pretendard_semibold
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Icon(
@@ -117,6 +119,7 @@ fun Tp(text: String){
             text = text,
             color = Color.White,
             fontSize = 10.sp,
+            fontFamily = pretendard_regular,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp)
         )
     }

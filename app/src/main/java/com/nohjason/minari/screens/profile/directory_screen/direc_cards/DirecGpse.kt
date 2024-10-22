@@ -20,6 +20,7 @@ import com.nohjason.minari.R
 import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpse
 import com.nohjason.minari.screens.rout.GrapeViewModel
+import com.nohjason.minari.ui.theme.pretendard_medium
 
 @Composable
 fun DirecGpse(
@@ -41,11 +42,11 @@ fun DirecGpse(
             text = data.gpseName,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            fontWeight = FontWeight.Medium
+            fontFamily = pretendard_medium
         )
         Text(
             text = "(${data.gpseTime}분)",
-            fontWeight = FontWeight.Medium,
+            fontFamily = pretendard_medium,
             color = Color(0xFFB2B2B2)
         )
         Spacer(modifier = Modifier.weight(1f))

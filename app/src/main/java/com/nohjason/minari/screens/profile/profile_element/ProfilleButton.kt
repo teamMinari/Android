@@ -71,7 +71,7 @@ fun ProfileButton(
             modifier = Modifier
                 .padding(top = 40.dp, start = 24.dp),
             text = newtext,
-            fontWeight = FontWeight.SemiBold
+            fontFamily = pretendard_semibold
         )
     }
 
