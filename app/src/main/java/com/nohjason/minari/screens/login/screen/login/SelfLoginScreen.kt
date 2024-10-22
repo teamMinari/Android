@@ -158,6 +158,9 @@ fun SelfLoginScreen(
                     .background(MinariBlue)
                     .clickable {
                         when {
+                            id.isEmpty() && password.isEmpty() -> {
+                                Toast.makeText(context, "아이디와 비밀번호를 입력해주십시오.", Toast.LENGTH_SHORT).show()
+                            }
                             id.isEmpty() -> {
                                 Toast.makeText(context, "아이디를 입력하세요.", Toast.LENGTH_SHORT).show()
                             }

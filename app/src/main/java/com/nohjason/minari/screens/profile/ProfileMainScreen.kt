@@ -3,13 +3,17 @@ import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -36,13 +40,17 @@ import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.preferences.clearUserToken
 import com.nohjason.minari.preferences.getPreferences
 import com.nohjason.minari.screens.login.LoginViewModel
+import com.nohjason.minari.screens.login.Screens
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecViewModel
 import com.nohjason.minari.screens.profile.profile_data.ProfileViewModel
 import com.nohjason.minari.screens.profile.profile_element.ProfileInfor
 import com.nohjason.minari.screens.profile.profile_element.RewardBar
 import com.nohjason.minari.screens.profile.profile_element.LikeList
+import com.nohjason.minari.screens.profile.profile_element.ProfileButton
 import com.nohjason.minari.screens.quiz.QuizPopup
 import com.nohjason.minari.screens.rout.GrapeViewModel
+import com.nohjason.minari.ui.theme.pretendard_bold
+import com.nohjason.minari.ui.theme.pretendard_semibold
 import kotlinx.coroutines.launch
 
 @Composable
@@ -53,8 +61,8 @@ fun ProfileMAinScreen(
     grapeViewModel: GrapeViewModel = viewModel(),
     navHostController: NavHostController,
     token : String,
-//    preferencesManager: PreferencesManager
 ) {
+
     profileViewModel.getProfile(token)
     direcViewModel.getDirecTerm(token) // Term 데이터 호출
     direcViewModel.getDirecGpse(token) // Gpse 데이터 호출
@@ -62,6 +70,11 @@ fun ProfileMAinScreen(
     direcViewModel.getDirecGp(token) // Gp 데이터 호출
 
     val data = profileViewModel.profileData.collectAsState().value
+
+    if (data == null) {
+        CircularProgressIndicator()
+        return
+    }
 
     val scrollState = rememberScrollState()
 
@@ -77,19 +90,17 @@ fun ProfileMAinScreen(
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        IconButton(
-            onClick = {
-                showPopup = true
-            }
-        ) {
-            Icon(
-                modifier = Modifier
-                    .padding(start = 325.dp, top = 35.dp),
-                painter = painterResource(id = R.drawable.ic_log_out),
-                contentDescription = null,
-                tint = Color.Unspecified
-            )
-        }
+        Icon(
+            painter = painterResource(id = R.drawable.ic_log_out),
+            contentDescription =null ,
+            modifier = Modifier
+                .padding(start = 325.dp, top = 35.dp)
+                .clickable (
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ){ showPopup = true },
+            tint = Color.Unspecified
+        )
 
         //프로필
         data?.let { profile ->
@@ -104,7 +115,7 @@ fun ProfileMAinScreen(
 
         Text(
             text = "${data?.point.toString()} P",
-            fontWeight = FontWeight.Bold,
+            fontFamily = pretendard_bold,
             fontSize = 40.sp
         )
 
@@ -112,7 +123,7 @@ fun ProfileMAinScreen(
         Text(
             text = "소비하러가기>",
             fontSize = 15.sp,
-            fontWeight = FontWeight.SemiBold,
+            fontFamily = pretendard_semibold,
             color = Color(0xFF585EEA),
             modifier = Modifier
                 .clickable {
@@ -131,6 +142,22 @@ fun ProfileMAinScreen(
                 level = data.level
                 )
         }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Row {
+            ProfileButton(text = "칭호") {
+                navHostController.navigate(Screens.Alias.rout)
+            }
+
+            Spacer(modifier = Modifier.width(5.dp))
+
+            ProfileButton(text = "관심") {
+                navHostController.navigate(Screens.Question.rout)
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
 
         //저장목록
         LikeList(
@@ -173,11 +200,4 @@ fun ProfileMAinScreen(
     }
 
 }
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewProfileMainScreen() {
-
-}
-
 

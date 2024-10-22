@@ -18,11 +18,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.google.android.gms.auth.api.identity.Identity
+import com.nohjason.minari.firebase.GoogleAuthUiClient
+import com.nohjason.minari.firebase.SignInViewModel
 import com.nohjason.minari.navigation.bottombar.BottomScreen
 import com.nohjason.minari.preferences.getFromPreferences
 import com.nohjason.minari.preferences.getPreferences
@@ -38,6 +43,11 @@ import com.nohjason.minari.screens.news.News
 import com.nohjason.minari.screens.profile.alias_screen.AliasScreen
 import com.nohjason.minari.screens.profile.directory_screen.DirecScreen
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecViewModel
+import com.nohjason.minari.screens.profile.profile_data.ProfileViewModel
+import com.nohjason.minari.screens.rout.Grape
+import com.nohjason.minari.screens.rout.Grapes
+import com.nohjason.minari.screens.rout.Rout
+import com.nohjason.minari.screens.quiz.data.QuizViewModel
 import com.nohjason.minari.screens.quiz.quiz_end_screen.QuizEndScreen
 import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
 import com.nohjason.minari.screens.quiz.quiz_play.QuizPlayScreen
@@ -48,6 +58,7 @@ import com.nohjason.minari.screens.rout.Grapes
 import com.nohjason.minari.screens.rout.Rout
 import com.nohjason.minari.screens.search.Search
 import com.nohjason.minari.screens.term.TermScreen
+import com.nohjason.minari.screens.quiz.quiz_main.QuizMainScreen
 import kotlinx.coroutines.launch
 
 @SuppressLint("ComposableDestinationInComposeScope")
@@ -57,13 +68,14 @@ fun NavGraph(
     lifecycleScope: LifecycleCoroutineScope,
     navController: NavHostController,
     loginViewModel: LoginViewModel,
+    quizViewModel: QuizViewModel = viewModel(),
 ) {
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
 
     NavHost(
         navController = navController,
-        startDestination = Screens.FirstScreen.rout,
+        startDestination = startDestination,
         enterTransition = { fadeIn(animationSpec = tween(0)) }
     ) {
 
@@ -106,6 +118,7 @@ fun NavGraph(
         composable(BottomScreen.Quiz.rout) {
             QuizMainScreen(
                 navHostController = navController,
+                quizViewModel = quizViewModel,
                 token = token
             )
         }
@@ -114,16 +127,15 @@ fun NavGraph(
         composable(BottomScreen.Profile.rout) {
             ProfileMAinScreen(
                 navHostController = navController,
+                direcViewModel = DirecViewModel(),
                 token = token,
-                loginViewModel = loginViewModel,
-//                preferencesManager = preferencesManager
+                loginViewModel = loginViewModel
             )
         }
 
         //저장목록
         composable(Screens.Directory.rout) {
             DirecScreen(
-                direcViewModel = DirecViewModel(),
                 token = token,
                 navController = navController
             )
@@ -137,6 +149,11 @@ fun NavGraph(
         // 검색 화면
         composable(Screens.Search.rout) {
             Search(navController = navController)
+        composable(Screens.Alias.rout){
+            AliasScreen(
+                navHostController = navController,
+                token = token
+            )
         }
 
         // 포도알
@@ -185,7 +202,7 @@ fun NavGraph(
                 )
             }
         ) {
-            SeletO(navHostController = navController)
+            SeletO(navHostController = navController, quizViewModel = quizViewModel)
         }
         composable(
             Screens.QuizSelectX.rout,
@@ -196,7 +213,7 @@ fun NavGraph(
                 )
             }
         ) {
-            SeletX(navHostController = navController)
+            SeletX(navHostController = navController, quizViewModel = quizViewModel)
         }
         composable(
             Screens.QuizPlaycreen.rout,
@@ -207,7 +224,7 @@ fun NavGraph(
                 )
             }
         ) {
-            QuizPlayScreen(navHostController = navController)
+            QuizPlayScreen(navHostController = navController, quizViewModel = quizViewModel)
         }
         composable(
             Screens.QuizEndScreen.rout,
@@ -218,7 +235,7 @@ fun NavGraph(
                 )
             }
         ) {
-            QuizEndScreen(navController = navController, token = token)
+            QuizEndScreen(quizViewModel = quizViewModel, navController = navController, token=token)
         }
 
 

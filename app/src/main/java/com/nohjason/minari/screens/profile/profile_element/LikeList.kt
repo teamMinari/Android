@@ -37,6 +37,8 @@ import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecGpse
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecTerm
 import com.nohjason.minari.screens.profile.directory_screen.direc_data.DirecViewModel
 import com.nohjason.minari.screens.rout.GrapeViewModel
+import com.nohjason.minari.ui.theme.pretendard_bold
+import com.nohjason.minari.ui.theme.pretendard_semibold
 
 
 @Composable
@@ -74,7 +76,7 @@ fun LikeList(
                 )
                 Text(
                     text = "저장 목록",
-                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = pretendard_semibold,
                     fontSize = 15.sp,
                     modifier = Modifier.padding(start = 10.dp)
                 )
@@ -120,7 +122,7 @@ fun LikeList(
                     //카드 저장목록
                     Text(
                         text = "더보기",
-                        fontWeight = FontWeight.Bold,
+                        fontFamily = pretendard_bold,
                         modifier = Modifier
                             .clickable {
                                     navHostController.navigate(Screens.Directory.rout)

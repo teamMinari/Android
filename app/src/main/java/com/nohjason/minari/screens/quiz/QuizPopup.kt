@@ -1,5 +1,7 @@
 package com.nohjason.minari.screens.quiz
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import com.google.common.io.Resources
 import com.nohjason.minari.R
 import com.nohjason.minari.navigation.bottombar.BottomScreen.Home.icon
+import com.nohjason.minari.ui.theme.pretendard_regular
+import com.nohjason.minari.ui.theme.pretendard_semibold
 
 @Composable
 fun QuizPopup(
@@ -48,7 +53,7 @@ fun QuizPopup(
         title = {
             Text(
                 text = dialogTitle,
-                fontWeight = FontWeight.SemiBold
+                fontFamily = pretendard_semibold
             )
         },
         text = {
@@ -58,7 +63,8 @@ fun QuizPopup(
             ) {
                 Text(
                     text = dialogText,
-                    color = Color(0xFF0C21C1)
+                    color = Color(0xFF0C21C1),
+                    fontFamily = pretendard_regular
                 )
             }
         },
@@ -68,7 +74,7 @@ fun QuizPopup(
 
 
         confirmButton = {
-            Row{
+            Row {
                 TextButton(
                     onClick = {
                         onConfirmation()
@@ -77,10 +83,10 @@ fun QuizPopup(
                     Text(
                         "확인",
                         color = Color(0xFF0C21C1),
-                        fontWeight = FontWeight.SemiBold
+                        fontFamily = pretendard_semibold
                     )
-                    Spacer(modifier = Modifier.width(20.dp))
                 }
+                Spacer(modifier = Modifier.width(25.dp))
             }
         },
         dismissButton = {
@@ -88,12 +94,14 @@ fun QuizPopup(
                 TextButton(
                     onClick = {
                         onDismissRequest()
-                    }
+                    },
+                    interactionSource = remember { MutableInteractionSource() }
                 ) {
                     Text(
                         "취소",
                         color = Color.Black,
-                        fontWeight = FontWeight.SemiBold
+                        fontFamily = pretendard_semibold
+
                     )
                 }
                 Spacer(modifier = Modifier.width(100.dp)) // 버튼 사이에 여백 추가

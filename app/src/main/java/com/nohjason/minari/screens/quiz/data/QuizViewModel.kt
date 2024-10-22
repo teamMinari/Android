@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nohjason.minari.screens.profile.profile_data.LogOutResponse
+import com.nohjason.minari.screens.profile.profile_data.ProfileResponse
 import com.nohjason.myapplication.network.RetrofitInstance
 import com.nohjason.myapplication.network.RetrofitInstance.api
 import kotlinx.coroutines.Dispatchers
@@ -18,26 +19,36 @@ import kotlin.random.Random
 
 class QuizViewModel : ViewModel() {
 
-    suspend fun getQuestion(level: Int, token:String): QuestionResponse {
-        // Retrofit 인스턴스를 가져옴
-        val apiService = RetrofitInstance.api
+    private val _questionData = MutableStateFlow<QuestionResponse?>(null) // 초기값은 null로 설정
+    val questionData: StateFlow<QuestionResponse?> = _questionData
 
-        return withContext(Dispatchers.IO) {
+    fun getQuestion(level: Int, token: String) {
+        viewModelScope.launch {
             try {
-                // GET 요청을 보내고 응답을 받아옴
-                val response = apiService.getQuestion(
-                    token = token,
-                    level =  level// 요청할 레벨
-                )
-//                println("서버가 활성화됨"+response)
-                response // 서버 응답 반환
+                val response = withContext(Dispatchers.IO) {
+                    api.getQuestion(token, level)
+                }
+                if (response.isSuccessful) {
+                    _questionData.value = response.body()
+                    Log.d("QuizView", "퀴즈 데이터 확인: ${questionData.value}")
+                    Log.d("TAG", "getQuiz: 퀴즈 서버 통신 성공")
+                } else {
+                    // 서버 응답 에러 처리
+                    Log.e("TAG", "getQuiz: 서버 응답 에러 - 코드: ${response.code()}")
+                }
+            } catch (e: IOException) {
+                // 네트워크 오류 처리
+                Log.e("TAG", "getQuiz: 네트워크 오류", e)
+            } catch (e: HttpException) {
+                // HTTP 오류 처리
+                Log.e("TAG", "getQuiz: HTTP 오류 - 코드: ${e.code()}", e)
             } catch (e: Exception) {
                 // 기타 예외 처리
-                println("Error: ${e.message}")
-                throw e // 필요에 따라 다시 던질 수 있음
+                Log.e("TAG", "getQuiz: 알 수 없는 오류", e)
             }
         }
     }
+
 
     private val _pointData = MutableStateFlow<PointResponse?>(null) // 초기값은 null로 설정
 
@@ -122,6 +133,7 @@ class QuizViewModel : ViewModel() {
             }
         }
     }
+
 
 
 }
