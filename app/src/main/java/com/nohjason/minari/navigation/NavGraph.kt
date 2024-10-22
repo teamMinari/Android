@@ -150,102 +150,102 @@ fun NavGraph(
                     token = token
                 )
             }
+        }
 
-            // 포도알
-            composable(Screens.Grapes.rout + "/{id}") { backStackEntry ->
-                val id = backStackEntry.arguments?.getString("id") ?: "0"
-                Grapes(
-                    id = id.toInt(),
-                    navController = navController,
+        // 포도알
+        composable(Screens.Grapes.rout + "/{id}") { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id") ?: "0"
+            Grapes(
+                id = id.toInt(),
+                navController = navController,
+            )
+        }
+
+        // 포도씨
+        composable(Screens.Grape.rout + "/{id}/{title}") { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id") ?: "0"
+            val title = backStackEntry.arguments?.getString("title") ?: ""
+            Grape(
+                navController = navController,
+                gpseId = id.toInt(),
+                title = title,
+            )
+        }
+
+        // 용어
+        composable(Screens.Term.rout + "/{text}") { backStackEntry ->
+            val text = backStackEntry.arguments?.getString("text")?.replace("@", "/") ?: ""
+            TermScreen(text, navController = navController)
+        }
+
+        // 로그인
+        composable(
+            route = Screens.Signup.rout,
+        ) {
+            SelfSignUpScreen(
+                navController = navController
+            )
+        }
+
+
+        //퀴즈
+        composable(
+            Screens.QuizSelectO.rout,
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
                 )
             }
-
-            // 포도씨
-            composable(Screens.Grape.rout + "/{id}/{title}") { backStackEntry ->
-                val id = backStackEntry.arguments?.getString("id") ?: "0"
-                val title = backStackEntry.arguments?.getString("title") ?: ""
-                Grape(
-                    navController = navController,
-                    gpseId = id.toInt(),
-                    title = title,
+        ) {
+            SeletO(navHostController = navController, quizViewModel = quizViewModel)
+        }
+        composable(
+            Screens.QuizSelectX.rout,
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
                 )
             }
-
-            // 용어
-            composable(Screens.Term.rout + "/{text}") { backStackEntry ->
-                val text = backStackEntry.arguments?.getString("text")?.replace("@", "/") ?: ""
-                TermScreen(text, navController = navController)
-            }
-
-            // 로그인
-            composable(
-                route = Screens.Signup.rout,
-            ) {
-                SelfSignUpScreen(
-                    navController = navController
+        ) {
+            SeletX(navHostController = navController, quizViewModel = quizViewModel)
+        }
+        composable(
+            Screens.QuizPlaycreen.rout,
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
                 )
             }
-
-
-            //퀴즈
-            composable(
-                Screens.QuizSelectO.rout,
-                enterTransition = {
-                    slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Left,
-                        animationSpec = tween(500)
-                    )
-                }
-            ) {
-                SeletO(navHostController = navController, quizViewModel = quizViewModel)
-            }
-            composable(
-                Screens.QuizSelectX.rout,
-                enterTransition = {
-                    slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Left,
-                        animationSpec = tween(500)
-                    )
-                }
-            ) {
-                SeletX(navHostController = navController, quizViewModel = quizViewModel)
-            }
-            composable(
-                Screens.QuizPlaycreen.rout,
-                enterTransition = {
-                    slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Left,
-                        animationSpec = tween(500)
-                    )
-                }
-            ) {
-                QuizPlayScreen(navHostController = navController, quizViewModel = quizViewModel)
-            }
-            composable(
-                Screens.QuizEndScreen.rout,
-                enterTransition = {
-                    slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Left,
-                        animationSpec = tween(500)
-                    )
-                }
-            ) {
-                QuizEndScreen(
-                    quizViewModel = quizViewModel,
-                    navController = navController,
-                    token = token
+        ) {
+            QuizPlayScreen(navHostController = navController, quizViewModel = quizViewModel)
+        }
+        composable(
+            Screens.QuizEndScreen.rout,
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(500)
                 )
             }
+        ) {
+            QuizEndScreen(
+                quizViewModel = quizViewModel,
+                navController = navController,
+                token = token
+            )
+        }
 
 
-            //모르는거
-            composable(
-                route = Screens.Question.rout,
-            ) {
-                Questionnaire(
-                    navController = navController
-                )
-            }
+        //모르는거
+        composable(
+            route = Screens.Question.rout,
+        ) {
+            Questionnaire(
+                navController = navController
+            )
         }
     }
 }
