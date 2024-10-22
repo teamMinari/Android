@@ -74,7 +74,7 @@ fun TitleBar(
                     fontSize = 17.sp,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier
-                        .padding(start = 5.dp)
+                        .padding(start = 10.dp)
                 )
             }
         }

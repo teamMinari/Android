@@ -163,9 +163,7 @@ fun SelfSignUpScreen(
             }
         }
 
-        Spacer(modifier = Modifier.weight(0.1f))
-
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(0.2f))
 
         if (isLoading.value) {
             Box(modifier = Modifier.fillMaxWidth()) {
@@ -180,6 +178,9 @@ fun SelfSignUpScreen(
             Button(
                 onClick = {
                     when {
+                        id.isEmpty() && password.isEmpty() && email.isEmpty() && repassword.isEmpty() -> {
+                            Toast.makeText(context, "값을 입력해주십시오.", Toast.LENGTH_SHORT).show()
+                        }
                         id.isEmpty() -> {
                             popupMessage = "아이디를 입력해주세요."
                             Toast.makeText(context, popupMessage, Toast.LENGTH_SHORT).show()
@@ -229,6 +230,8 @@ fun SelfSignUpScreen(
                 Text(text = "회원가입")
             }
         }
+
+        Spacer(modifier = Modifier.weight(1f))
     }
 }
 

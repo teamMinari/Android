@@ -179,7 +179,7 @@ interface ApiService {
     suspend fun getQuestion(
         @Header("Authorization") token: String,
         @Path("level") level: Int
-    ): QuestionResponse
+    ): Response<QuestionResponse>
 
     @POST("/member/givePoint")
     suspend fun postPoint(

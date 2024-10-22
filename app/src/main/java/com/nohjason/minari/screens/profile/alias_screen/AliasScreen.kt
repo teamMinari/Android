@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material3.Divider
@@ -52,6 +53,12 @@ fun AliasScreen(
     val scrollState = rememberScrollState()
     val nameList = remember {
         List(30) { index -> "Title $index" }
+    }
+
+    if (data == null) {
+        // 로딩 UI를 표시합니다. (예: ProgressIndicator)
+        CircularProgressIndicator()
+        return
     }
 
     Column (

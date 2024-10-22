@@ -52,7 +52,7 @@ import com.nohjason.minari.screens.quiz.data.QuizViewModel
 @Composable
 fun SeletX(
     navHostController: NavHostController,
-    quizViewModel: QuizViewModel = viewModel()
+    quizViewModel: QuizViewModel
 ) {
     var showPopup by remember { mutableStateOf(false) }
 
@@ -234,11 +234,4 @@ fun SeletX(
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun PreSelectX(){
-    val nav = rememberNavController()
-    SeletX(navHostController = nav)
 }

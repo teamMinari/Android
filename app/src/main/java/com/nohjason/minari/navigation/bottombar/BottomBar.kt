@@ -15,6 +15,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import com.nohjason.minari.ui.theme.MinariBlue
+import com.nohjason.minari.ui.theme.pretendard_medium
 import kotlin.math.round
 
 @Composable
@@ -48,13 +49,24 @@ fun BottomBar(
 fun RowScope.AddItem(
     bottomScreen: BottomScreen,
     currentDestination: NavDestination?,
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     BottomNavigationItem(
         icon = {
             Icon(
                 imageVector = bottomScreen.icon(),
                 contentDescription = null
+            )
+        },
+        label = {
+            Text(
+                text = bottomScreen.label, // 여기에 라벨 추가
+                color = if (currentDestination?.hierarchy?.any { it.route == bottomScreen.rout } == true) {
+                    MinariBlue
+                } else {
+                    Color.LightGray
+                },
+                fontFamily = pretendard_medium
             )
         },
         selected = currentDestination?.hierarchy?.any {

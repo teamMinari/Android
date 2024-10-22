@@ -1,5 +1,7 @@
 package com.nohjason.minari.screens.quiz.quiz_main
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +22,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,6 +43,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.R
+import com.nohjason.minari.navigation.bottombar.BottomScreen
+import com.nohjason.minari.preferences.getPreferences
+import com.nohjason.minari.preferences.saveToPreferences
+import com.nohjason.minari.screens.login.Screens
+import com.nohjason.minari.screens.profile.profile_element.ProfileInfor
 import com.nohjason.minari.screens.quiz.QuizButton
 import com.nohjason.minari.screens.quiz.data.Dummy.easyQuestionResponse
 import com.nohjason.minari.screens.quiz.data.Dummy.hardQuestionResponse
@@ -46,18 +57,22 @@ import com.nohjason.minari.screens.quiz.data.QuestionResponse
 import com.nohjason.minari.screens.quiz.data.QuizViewModel
 import com.nohjason.minari.ui.theme.MinariBlue
 import com.nohjason.myapplication.network.RetrofitInstance
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 
 @Composable
 fun QuizMainScreen(
     navHostController: NavHostController,
-    quizViewModel: QuizViewModel = viewModel(),
+    quizViewModel: QuizViewModel,
     token: String
 ) {
+
     val scrollState = rememberScrollState()
-    val coroutineScope = rememberCoroutineScope()//코루틴
+    val questionData by quizViewModel.questionData.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         Modifier
@@ -75,7 +90,7 @@ fun QuizMainScreen(
         ) {
             //트로피
             IconButton(
-                onClick = {  navHostController.navigate("myAlias") },
+                onClick = { navHostController.navigate("myAlias") },
                 modifier = Modifier
                     .padding(start = 300.dp, top = 5.dp)
                     .size(40.dp)
@@ -93,11 +108,11 @@ fun QuizMainScreen(
             }
 
             //퀴즈
-            Column (
+            Column(
                 modifier = Modifier
                     .padding(top = 40.dp, start = 28.dp)
-            ){
-                Row (verticalAlignment = Alignment.CenterVertically){
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         modifier = Modifier
                             .width(25.dp)
@@ -127,23 +142,27 @@ fun QuizMainScreen(
             imgResId = R.drawable.img_easy,
             color1 = Color(0xFF6889FF),
             color2 = Color(0xFFFF64F5),
-            lavel ="LV_1",
+            lavel = "LV_1",
             coment = "제일 쉬운 난이도",
             onClick = {
                 //더미코드
-                val dataList = selectPlayData(qestionAll = easyQuestionResponse, level = 1)
+                val dataList = selectPlayData(qestionAll = easyQuestionResponse, level = 2)
                 quizViewModel.initializePlayData(data = dataList)
                 navHostController.navigate("quizplay")
 
-                //서버코드
-//                coroutineScope.launch {
-//                    val qtAll = quizViewModel.getQuestion(1, token)
+//                // 서버 코드
+//                quizViewModel.getQuestion(1, token)
+//                val quizData = quizViewModel.questionData.value
 //
-//                    val dataList = selectPlayData(qestionAll = qtAll, level = 1)
-//                    quizViewModel.initializePlayData(data = dataList)
-//                    navHostController.navigate("quizplay")
+//                if (quizData != null) {
+//                    quizViewModel.initializePlayData(qestionAll = quizData, level = 1)
+//                    Log.d("QuizMainScreen", "QuizMainScreen: playData 값 ${quizViewModel.playData.value}")
+//                    navHostController.navigate(Screens.QuizPlaycreen.rout)
+//                } else {
+//                    Log.e("QuizMainScreen", "QuizMainScreen: quizData가 null입니다.")
 //                }
-            },
+
+            }
         )
         Spacer(modifier = Modifier.height(30.dp))
         QuizButton(
@@ -151,13 +170,13 @@ fun QuizMainScreen(
             imgResId = R.drawable.img_nomal,
             color1 = Color(0xFF6889FF),
             color2 = Color(0xFF23FF9C),
-            lavel ="LV_2",
+            lavel = "LV_2",
             coment = "공부 좀 했다면 이건 어떤가요?",
             onClick = {
                 //더미코드
-                val dataList = selectPlayData(qestionAll = nomalQuestionResponse, level = 2)
-                quizViewModel.initializePlayData(data = dataList)
-                navHostController.navigate("quizplay")
+//                val dataList = selectPlayData(qestionAll = nomalQuestionResponse, level = 2)
+//                quizViewModel.initializePlayData(data = dataList)
+//                navHostController.navigate("quizplay")
 
                 //서버코드
 //                coroutineScope.launch {
@@ -176,13 +195,13 @@ fun QuizMainScreen(
             imgResId = R.drawable.img_hard,
             color1 = Color(0xFF6889FF),
             color2 = Color(0xFFFF3C52),
-            lavel ="LV_3",
+            lavel = "LV_3",
             coment = "이건 모를걸요!",
             onClick = {
 //                더미코드
-                val dataList = selectPlayData(qestionAll = hardQuestionResponse, level = 3)
-                quizViewModel.initializePlayData(data = dataList)
-                navHostController.navigate("quizplay")
+//                val dataList = selectPlayData(qestionAll = hardQuestionResponse, level = 3)
+//                quizViewModel.initializePlayData(data = dataList)
+//                navHostController.navigate("quizplay")
 
 
                 //서버코드
@@ -198,14 +217,14 @@ fun QuizMainScreen(
     }
 }
 
-//데이터 초기화 값
-fun selectPlayData(qestionAll: QuestionResponse, level: Int): PlayData {
+private fun selectPlayData(qestionAll: QuestionResponse, level: Int): PlayData {
     val qtSelected = qestionAll.data.shuffled().take(10)
     return PlayData(
-        userCurrent = 0,         // 현재 유저 진행 상황, 0으로 초기화
-        point = 0,               // 초기 포인트, 0으로 초기화
-        qtNum = 0,               // 첫 번째 문제부터 시작, 0으로 초기화
-        qtList = qtSelected ,
+        userCurrent = 0,         // 현재 유저 진행 상황
+        point = 0,               // 초기 포인트
+        qtNum = 0,               // 첫 번째 문제부터 시작
+        qtList = qtSelected,
         qtLevel = level// 10개의 질문을 담은 리스트
     )
 }
+

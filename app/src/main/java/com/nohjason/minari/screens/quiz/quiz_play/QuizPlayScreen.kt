@@ -15,11 +15,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,15 +49,20 @@ import com.nohjason.minari.screens.quiz.data.QuizViewModel
 @Composable
 fun QuizPlayScreen(
     navHostController: NavHostController,
-    quizViewModel: QuizViewModel = viewModel()
+    quizViewModel: QuizViewModel
 ){
     var showPopup by remember { mutableStateOf(false) }
 
     val playData by quizViewModel.playData.collectAsState()
-//    println("플레이화면 데이터확인 "+ playData)
+    Log.d("QuizPlayScreen", "QuizPlayScreenn: playData 값 ${quizViewModel.playData.value}")
+
+    if (playData == null) {
+        CircularProgressIndicator()
+        return
+    }
+
 
     val qtNum = playData?.qtNum ?: 0
-
     val qtContents = playData?.qtList?.getOrNull(qtNum)?.qtContents ?: "No content available"
     val qtTip = playData?.qtList?.getOrNull(qtNum)?.qtTip ?: "No tip available"
     val qtAnswer = playData?.qtList?.getOrNull(qtNum)?.qtAnswer ?: false

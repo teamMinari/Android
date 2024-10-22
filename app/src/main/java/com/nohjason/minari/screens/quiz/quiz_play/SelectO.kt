@@ -44,7 +44,7 @@ import com.nohjason.minari.screens.quiz.data.QuizViewModel
 @Composable
 fun SeletO(
     navHostController: NavHostController,
-    quizViewModel: QuizViewModel = viewModel()
+    quizViewModel: QuizViewModel
 ) {
     var showPopup by remember { mutableStateOf(false) }
 

@@ -67,6 +67,7 @@ fun NavGraph(
     lifecycleScope: LifecycleCoroutineScope,
     navController: NavHostController,
     loginViewModel: LoginViewModel,
+    quizViewModel: QuizViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val googleAuthUiClient by lazy {
@@ -78,9 +79,16 @@ fun NavGraph(
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
 
+    val startDestination =
+        if (token == null) {
+            Screens.FirstScreen.rout
+        } else {
+            BottomScreen.Home.rout
+        }
+
     NavHost(
         navController = navController,
-        startDestination = Screens.FirstScreen.rout,
+        startDestination = startDestination,
         enterTransition = { fadeIn(animationSpec = tween(0)) }
     ) {
 
@@ -164,7 +172,8 @@ fun NavGraph(
         composable(BottomScreen.Quiz.rout) {
             QuizMainScreen(
                 navHostController = navController,
-                token = token
+                token = token,
+                quizViewModel = QuizViewModel()
             )
         }
 
@@ -188,7 +197,7 @@ fun NavGraph(
         }
 
         //칭호
-        composable(Screens.Alias.rout){
+        composable(Screens.Alias.rout) {
             AliasScreen(navHostController = navController, token = token)
         }
 
@@ -245,7 +254,6 @@ fun NavGraph(
         }
 
 
-
         //퀴즈
         composable(
             Screens.QuizSelectO.rout,
@@ -256,7 +264,7 @@ fun NavGraph(
                 )
             }
         ) {
-            SeletO(navHostController = navController)
+            SeletO(navHostController = navController, quizViewModel = quizViewModel)
         }
         composable(
             Screens.QuizSelectX.rout,
@@ -267,7 +275,7 @@ fun NavGraph(
                 )
             }
         ) {
-            SeletX(navHostController = navController)
+            SeletX(navHostController = navController, quizViewModel = quizViewModel)
         }
         composable(
             Screens.QuizPlaycreen.rout,
@@ -278,7 +286,7 @@ fun NavGraph(
                 )
             }
         ) {
-            QuizPlayScreen(navHostController = navController)
+            QuizPlayScreen(navHostController = navController, quizViewModel = quizViewModel)
         }
         composable(
             Screens.QuizEndScreen.rout,
@@ -289,9 +297,8 @@ fun NavGraph(
                 )
             }
         ) {
-            QuizEndScreen(navController = navController, token=token)
+            QuizEndScreen(navController = navController, token = token, quizViewModel = quizViewModel)
         }
-
 
 
         //모르는거

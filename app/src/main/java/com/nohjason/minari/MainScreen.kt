@@ -29,7 +29,6 @@ fun MainScreen(
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    var showBottomBar by remember { mutableStateOf(true) }
 
     val currentDestination = navBackStackEntry?.destination
 

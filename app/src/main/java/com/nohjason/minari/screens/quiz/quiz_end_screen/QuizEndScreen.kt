@@ -41,7 +41,7 @@ import com.nohjason.minari.ui.theme.MinariBlue
 
 @Composable
 fun QuizEndScreen(
-    quizViewModel: QuizViewModel = viewModel(),
+    quizViewModel: QuizViewModel,
     navController: NavController,
     token: String
 ){
