@@ -52,22 +52,22 @@ android {
 }
 
 dependencies {
-
-    implementation ("androidx.work:work-runtime-ktx:2.7.1")
+    implementation("com.google.android.gms:play-services-auth:20.4.1")
+    implementation("androidx.work:work-runtime-ktx:2.7.1")
 
     // Markdown
     implementation("com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc06")
 
     // Coil
 //    implementation ("io.coil-kt:coil:2.6.0")
-    implementation ("io.coil-kt:coil-compose:2.6.0")
+    implementation("io.coil-kt:coil-compose:2.6.0")
 
     // Pager
-    implementation ("com.google.accompanist:accompanist-pager:0.28.0")
-    implementation ("com.google.accompanist:accompanist-pager-indicators:0.28.0")
+    implementation("com.google.accompanist:accompanist-pager:0.28.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
 
     // EncryptedSharedPreferences
-    implementation ("androidx.security:security-crypto:1.1.0-alpha06")
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

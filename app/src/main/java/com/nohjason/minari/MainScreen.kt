@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nohjason.minari.navigation.bottombar.BottomBar
@@ -23,7 +24,7 @@ import com.nohjason.minari.screens.login.Screens
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
-    loginViewModel: LoginViewModel,
+    loginViewModel: LoginViewModel = viewModel(),
     lifecycleScope: LifecycleCoroutineScope,
     applicationContext: Context
 ) {

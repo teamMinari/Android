@@ -55,6 +55,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.mohamedrejeb.richeditor.model.rememberRichTextState
+import com.mohamedrejeb.richeditor.ui.material3.RichText
 import com.nohjason.minari.R
 import com.nohjason.minari.network.response.Quize
 import com.nohjason.minari.network.response.rout.GrapeSeed
@@ -139,7 +141,8 @@ fun Grape(
                             .fillMaxWidth()
                             .background(Color.White)
                     ) {
-                        ChangeText(token, navController, gpse!!.data.gpseContent)
+                        Markdown(text = gpse!!.data.gpseContent)
+//                        ChangeText(token, navController, gpse!!.data.gpseContent)
                     }
                 }
                 item {
@@ -305,6 +308,21 @@ fun Value(
 }
 
 @Composable
+fun Markdown(
+    text: String
+) {
+    val richTextState = rememberRichTextState()
+    val markdown = text
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(25.dp)
+    ) {
+        RichText(state = richTextState.setMarkdown(markdown))
+    }
+}
+
+@Composable
 fun ChangeText(
     token: String,
     navController: NavController,
@@ -316,21 +334,6 @@ fun ChangeText(
             .fillMaxWidth()
             .padding(25.dp)
     ) {
-//                        val richTextState = rememberRichTextState()
-//                        val markdown = "경제란 무엇일까요?\n" +
-//                                "\n" +
-//                                "경제란 인간의 공동생활을 위한 물적 기초가 되는 재화와 용역을 생산 · 분배 · 소비하는 활동과 그것을 통하여 형성되는 사회관계의 총체를 가리키는 용어입니다. [[1]](https://encykorea.aks.ac.kr/Article/E0002781)\n" +
-//                                "\n" +
-//                                "이렇게 많은 제도들을 활용하여 돈을 저축하기만 하는것이 아니라\n" +
-//                                "\n" +
-//                                "현명하게 불릴 수 있는 능력이 있어야 합니다.\n" +
-//                                "\n" +
-//                                "이번 포도송이 에서는 경제에 대한 기본지식도 배우지만, 뱡금 같은 예시처럼 스스로 자산을 운용할 수 있는 기초지식을 중점으로 다룹니다."
-//
-//                        RichText(
-//                            state = richTextState.setMarkdown(markdown),
-//                        )
-
         ClickableReferenceText(
             text = text,
             onClick = { clickedText ->

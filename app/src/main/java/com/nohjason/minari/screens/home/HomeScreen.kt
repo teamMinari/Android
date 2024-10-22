@@ -149,32 +149,28 @@ fun HomeScreen(
 //                    Log.d("TAG", "HomeScreen: $size")
 //                }
 
-                Column {
+                Box {
                     Box(
                         modifier = Modifier
-                            .drawColoredShadow(
-                                color = Color.Black,
-                                alpha = 0.2f,
-                                borderRadius = 30.dp,
-                                shadowRadius = 8.dp,
-                                offsetX = 0.dp,
-                                offsetY = 5.dp
-                            )
                             .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp))
                             .fillMaxWidth()
                             .background(Color.White)
                     ) {
-                        Row(
-                            modifier = Modifier.align(Alignment.Center),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Image(
-                                modifier = Modifier.size(140.dp),
-                                painter = painterResource(R.drawable.image_27),
-                                contentDescription = null,
-                            )
-                            Spacer(modifier = Modifier.width(10.dp))
+                            Row(
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Image(
+                                    modifier = Modifier.size(140.dp),
+                                    painter = painterResource(R.drawable.image_27),
+                                    contentDescription = null,
+                                )
+                                Spacer(modifier = Modifier.width(10.dp))
 //                            if (gpsId != 0) {
                                 CircularProgressIndicator(
                                     percentage = 0f,
@@ -189,46 +185,53 @@ fun HomeScreen(
                                         ""
                                     }
                                 )
-//                            }
+                            }
+                            Spacer(modifier = Modifier.height(20.dp))
                         }
                     }
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Box(modifier = Modifier
-                        .drawColoredShadow(
-                            color = Color.Black,
-                            alpha = 0.3f,
-                            borderRadius = 100.dp,
-                            shadowRadius = 8.dp,
-                            offsetX = 5.dp,
-                            offsetY = 5.dp
-                        )
-                        .clip(CircleShape)
-                        .clickable {
-                            if (gpsId != 0) {
-                                navController.navigate(Screens.Grapes.rout + "/${gpsId}")
-                            } else {
-                                navController.navigate(BottomScreen.Rout.rout)
-                            }
-                        }
-                        .height(55.dp)
-                        .background(
-                            brush = Brush.linearGradient(
-                                colors = MinariGradation,
-                                start = androidx.compose.ui.geometry.Offset(1300f, 800f),
-                                end = androidx.compose.ui.geometry.Offset(0f, 0f),
-                            )
-                        )
-//                            .align(Alignment.BottomCenter)
-                        .padding(horizontal = 70.dp)
-                        .align(Alignment.CenterHorizontally)
+                    Column(
+                        modifier = Modifier.align(Alignment.BottomCenter)
                     ) {
-                        Text(
-                            modifier = Modifier.align(Alignment.Center),
-                            text = if (gps != null) "학습하러 가기" else "튜토리얼 보기",
-                            color = Color.White,
-                            fontSize = 20.sp,
-                            fontFamily = pretendard_semibold
-                        )
+                        Spacer(modifier = Modifier.height(130.dp))
+                        Box(
+                            modifier = Modifier
+                                .drawColoredShadow(
+                                    color = Color.Black,
+                                    alpha = 0.3f,
+                                    borderRadius = 100.dp,
+                                    shadowRadius = 8.dp,
+                                    offsetX = 5.dp,
+                                    offsetY = 5.dp
+                                )
+                                .clip(CircleShape)
+                                .clickable {
+                                    Log.d("TAG", "HomeScreen: $gpsId")
+                                    if (gps != null) {
+                                        navController.navigate(Screens.Grapes.rout + "/${gpsId}")
+                                    } else {
+                                        navController.navigate(BottomScreen.Rout.rout)
+                                    }
+                                }
+                                .height(55.dp)
+                                .background(
+                                    brush = Brush.linearGradient(
+                                        colors = MinariGradation,
+                                        start = androidx.compose.ui.geometry.Offset(1300f, 800f),
+                                        end = androidx.compose.ui.geometry.Offset(0f, 0f),
+                                    )
+                                )
+//                                .align(Alignment.BottomCenter)
+                                .padding(horizontal = 70.dp)
+//                            .align(Alignment.CenterHorizontally)
+                        ) {
+                            Text(
+                                modifier = Modifier.align(Alignment.Center),
+                                text = if (gps != null) "학습하러 가기" else "튜토리얼 보기",
+                                color = Color.White,
+                                fontSize = 20.sp,
+                                fontFamily = pretendard_semibold
+                            )
+                        }
                     }
                 }
             }

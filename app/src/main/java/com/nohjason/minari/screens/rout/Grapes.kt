@@ -2,6 +2,7 @@ package com.nohjason.minari.screens.rout
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -65,6 +66,7 @@ import com.nohjason.minari.ui.theme.pretendard_medium
 import com.nohjason.minari.ui.theme.pretendard_regular
 import com.nohjason.minari.ui.theme.pretendard_semibold
 import com.nohjason.myapplication.network.MainViewModel
+import kotlinx.coroutines.delay
 
 @Composable
 fun Grapes(
@@ -79,7 +81,13 @@ fun Grapes(
         val editor = preferences.edit()
         editor.putInt("gpsId", id)
         editor.apply() // 데이터를 비동기적으로 저장
-        viewModel.getGps(token = token, gpsId = id)
+    }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            viewModel.getGps(token = token, gpsId = id)
+            delay(1000) // 1초마다 새로 고침
+        }
     }
 
     Scaffold(
@@ -302,15 +310,8 @@ fun Gpse(
                                 .clickable {
                                     navController.navigate(Screens.Grape.rout + "/${it.gpseId}/$title")
                                 }
-                                .drawColoredShadow(
-                                    color = Color.Black,
-                                    alpha = 0.1f,
-                                    borderRadius = 10.dp,
-                                    shadowRadius = 10.dp,
-                                    offsetX = 0.dp,
-                                    offsetY = 0.dp
-                                )
                                 .clip(RoundedCornerShape(10.dp))
+                                .border(1.dp, Color(0xFFEBEBEB), RoundedCornerShape(10.dp))
                                 .background(Color.White)
                                 .padding(vertical = 6.dp, horizontal = 10.dp),
                             verticalAlignment = Alignment.CenterVertically
