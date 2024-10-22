@@ -68,9 +68,11 @@ fun NavGraph(
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
 
+    val startDestination = if (token != null) {BottomScreen.Home.rout} else {Screens.FirstScreen.rout}
+
     NavHost(
         navController = navController,
-        startDestination = Screens.FirstScreen.rout,
+        startDestination = startDestination,
         enterTransition = { fadeIn(animationSpec = tween(0)) }
     ) {
 

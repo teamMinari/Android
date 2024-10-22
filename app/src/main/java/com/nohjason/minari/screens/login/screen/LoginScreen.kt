@@ -63,13 +63,13 @@ fun LoginScreen(
             }
         }
 
-    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestEmail()
-        .requestIdToken(R.string.gps_id.toString())
-        .requestId()
-        .requestProfile()
-        .build()
-    val client = GoogleSignIn.getClient(context, gso)
+//    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//        .requestEmail()
+//        .requestIdToken(R.string.gps_id.toString())
+//        .requestId()
+//        .requestProfile()
+//        .build()
+//    val client = GoogleSignIn.getClient(context, gso)
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -146,7 +146,7 @@ fun LoginScreen(
         }
 
         IconButton(onClick = {
-            startForResult.launch(client.signInIntent)
+//            startForResult.launch(client.signInIntent)
         }) {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_radio_button_unchecked_24),
