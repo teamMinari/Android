@@ -247,46 +247,30 @@ fun NavGraph(
 
         //퀴즈
         composable(
-            Screens.QuizSelectO.rout,
-            enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(500)
-                )
-            }
+            route = Screens.QuizSelectO.rout,
+            enterTransition = { slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) },
+            exitTransition = { slideOutHorizontally(targetOffsetX = { fullWidth -> -fullWidth }) }
         ) {
             SeletO(navHostController = navController, quizViewModel = quizViewModel)
         }
         composable(
-            Screens.QuizSelectX.rout,
-            enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(500)
-                )
-            }
+            route = Screens.QuizSelectX.rout,
+            enterTransition = { slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) },
+            exitTransition = { slideOutHorizontally(targetOffsetX = { fullWidth -> -fullWidth }) }
         ) {
             SeletX(navHostController = navController, quizViewModel = quizViewModel)
         }
         composable(
-            Screens.QuizPlaycreen.rout,
-            enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(500)
-                )
-            }
+            route = Screens.QuizPlaycreen.rout,
+            enterTransition = { slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) },
+            exitTransition = { slideOutHorizontally(targetOffsetX = { fullWidth -> -fullWidth }) }
         ) {
             QuizPlayScreen(navHostController = navController, quizViewModel = quizViewModel)
         }
         composable(
-            Screens.QuizEndScreen.rout,
-            enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(500)
-                )
-            }
+            route = Screens.QuizEndScreen.rout,
+            enterTransition = { slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) },
+            exitTransition = { slideOutHorizontally(targetOffsetX = { fullWidth -> -fullWidth }) }
         ) {
             QuizEndScreen(quizViewModel = quizViewModel, navController = navController, token=token)
         }

@@ -108,6 +108,24 @@ class QuizViewModel : ViewModel() {
         }
     }
 
+    // 점수 깎는 함수
+    fun minusPoints() {
+        _playData.value?.let { data ->
+            var minusPoint = 0
+            when (data.qtLevel) {
+                1 -> minusPoint = 10
+                2 -> minusPoint = 20
+                else -> minusPoint = 40
+            }
+
+            if (data.point < minusPoint) {
+                updatePoints(0)
+            } else {
+                updatePoints(data.point - minusPoint)
+            }
+        }
+    }
+
     fun updateCurrent(newCurrent: Int) {
         _playData.value?.let { data ->
             _playData.value = data.copy(userCurrent = newCurrent)

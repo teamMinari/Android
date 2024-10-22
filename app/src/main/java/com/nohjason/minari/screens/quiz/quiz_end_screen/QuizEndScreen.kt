@@ -124,7 +124,7 @@ fun QuizEndScreen(
             verticalAlignment = Alignment.CenterVertically
         ){
             Text(
-                text = "My 포인트",
+                text = "획득한 포인트",
                 color = Color.White,
                 fontFamily = pretendard_semibold,
                 fontSize = 20.sp
