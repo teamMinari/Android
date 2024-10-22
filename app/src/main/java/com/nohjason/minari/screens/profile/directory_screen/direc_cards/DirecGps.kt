@@ -2,11 +2,13 @@ package com.nohjason.minari.screens.profile.directory_screen.direc_cards
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -45,7 +47,10 @@ fun DirecGps(
     val isBookmarked = remember { mutableStateOf(false) }
 
     Row (
-        modifier = Modifier.width(300.dp).clickable {
+        modifier = Modifier
+            .width(300.dp)
+            .fillMaxWidth()
+            .clickable {
             grapeViewModel.getGps(token= token, gpsId = data.gpsId)
             navController.navigate(Screens.Grapes.rout + "/${data.gpsId}")
         },
@@ -71,7 +76,8 @@ fun DirecGps(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 15.sp,
-                    fontFamily = pretendard_semibold
+                    fontFamily = pretendard_semibold,
+                    modifier = Modifier.width(200.dp)
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Icon(
@@ -82,7 +88,10 @@ fun DirecGps(
                     contentDescription = null,
                     tint = Color.Unspecified,
                     modifier = Modifier
-                        .clickable {
+                        .clickable (
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+                        ) {
                             isBookmarked.value = !isBookmarked.value
                             grapeViewModel.likes(token = token, category = "GRAPES", id= data.gpsId)
                         }

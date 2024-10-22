@@ -1,6 +1,7 @@
 package com.nohjason.minari.screens.profile.directory_screen.direc_cards
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
@@ -15,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.nohjason.minari.R
 import com.nohjason.minari.screens.login.Screens
@@ -42,12 +44,15 @@ fun DirecGpse(
             text = data.gpseName,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            fontFamily = pretendard_medium
+            fontFamily = pretendard_medium,
+            fontSize = 15.sp,
+            modifier = Modifier.width(230.dp)
         )
         Text(
             text = "(${data.gpseTime}분)",
             fontFamily = pretendard_medium,
-            color = Color(0xFFB2B2B2)
+            color = Color(0xFFB2B2B2),
+            fontSize = 15.sp
         )
         Spacer(modifier = Modifier.weight(1f))
         Icon(
@@ -58,7 +63,10 @@ fun DirecGpse(
             contentDescription = null,
             tint = Color.Unspecified,
             modifier = Modifier
-                .clickable {
+                .clickable (
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {
                     isBookmarked.value = !isBookmarked.value
                     grapeViewModel.likes(token = token, category = "GRAPESEED", id= data.gpseId)
                 }
