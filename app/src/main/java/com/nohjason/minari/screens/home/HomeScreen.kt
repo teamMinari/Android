@@ -204,7 +204,8 @@ fun HomeScreen(
                         )
                         .clip(CircleShape)
                         .clickable {
-                            if (gpsId != 0) {
+                            Log.d("TAG", "HomeScreen: $gpsId")
+                            if (gps != null) {
                                 navController.navigate(Screens.Grapes.rout + "/${gpsId}")
                             } else {
                                 navController.navigate(BottomScreen.Rout.rout)
