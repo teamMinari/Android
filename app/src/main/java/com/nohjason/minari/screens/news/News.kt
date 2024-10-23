@@ -28,6 +28,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,11 +58,15 @@ fun News(
     val getAllNews by newsViewModel.getAllNews.collectAsState()
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
-    var category by remember { mutableStateOf("security") }
 
-    LaunchedEffect(Unit, category) {
-        newsViewModel.getAllNews(token, category)
+    // 카테고리를 rememberSaveable로 상태 유지
+    var category by rememberSaveable { mutableStateOf("security") }
+    var selectedTag by rememberSaveable { mutableStateOf("securities") } // 카테고리 상태를 저장
+
+    LaunchedEffect(selectedTag) { // selectedTag가 변경될 때마다 데이터 로드
+        newsViewModel.getAllNews(token, selectedTag)
     }
+
     BackHandler(onBack = {
         navController.popBackStack(BottomScreen.Home.rout, inclusive = false)
     })
@@ -83,7 +88,6 @@ fun News(
                 "부동산" to "realEstate",
                 "산업/재계" to "industrialBusiness"
             )
-            var selectedTag by remember { mutableStateOf(tagList["증권"]) } // LazyRow 바깥으로 이동
 
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -94,7 +98,7 @@ fun News(
                 items(tagList.toList()) { tag ->
                     fun onTagClick(clickedTag: String) {
                         if (selectedTag != clickedTag) {
-                            selectedTag = clickedTag
+                            selectedTag = clickedTag // 선택된 태그 변경
                         }
                     }
                     val isSelected = selectedTag == tag.second
@@ -108,8 +112,7 @@ fun News(
                             )
                             .background(if (isSelected) Color.Blue else Color.White)
                             .clickable {
-                                onTagClick(tag.second)
-                                category = tag.second
+                                onTagClick(tag.second) // 태그 클릭 시 상태 변경
                             }
                             .padding(vertical = 5.dp, horizontal = 15.dp)
                     ) {
@@ -140,7 +143,6 @@ fun News(
                     Box(
                         modifier = Modifier
                             .height(70.dp)
-//                                .padding(horizontal = 20.dp)
                             .clip(RoundedCornerShape(10.dp))
                     ) {
                         AsyncImage(
