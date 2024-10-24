@@ -2,29 +2,41 @@ package com.nohjason.minari.screens.login
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.nohjason.minari.R
 import com.nohjason.minari.ui.theme.MinariBlue
+import com.nohjason.minari.ui.theme.pretendard_medium
+import com.nohjason.minari.ui.theme.pretendard_regular
 
 @Composable
 fun LoginTextField(
-    modifier: Modifier,
     value: String,
     icon_name: String,
     text: String,
     onValueChange: (String) -> Unit,
     visibility: Boolean,
+    imeAction: ImeAction,
+    onImeAction: () -> Unit,
+    focusRequester: FocusRequester? = null
+
 ) {
     var isFocused by remember { mutableStateOf(false) }
     var isVisiblePassword by remember { mutableStateOf(visibility) }
@@ -57,20 +69,37 @@ fun LoginTextField(
                 modifier = Modifier
                     .weight(1f)
                     .padding(top = 10.dp)
+                    .focusRequester(focusRequester ?: FocusRequester())
                     .onFocusChanged { focusState ->
                         isFocused = focusState.isFocused
                     },
                 visualTransformation = if (isVisiblePassword) VisualTransformation.None else PasswordVisualTransformation(),
                 decorationBox = { innerTextField ->
-                    innerTextField()
-                    if (value.isEmpty()) {
-                        Text(text = text,
-                            color = Color(0xFF000842),
-                            modifier = Modifier.padding(bottom = 10.dp)
-                        )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp)
+                    ) {
+                        innerTextField()
+                        if (value.isEmpty()) {
+                            Text(
+                                text = text,
+                                color = Color(0xFFD7D8E0),
+                                modifier = Modifier
+                                    .padding(bottom = 10.dp)
+                                    .align(Alignment.CenterStart),
+                                fontFamily = pretendard_regular,
+                                fontSize = 15.sp
+                            )
+                        }
                     }
-
-                }
+                },
+                textStyle = TextStyle(
+                    fontFamily = pretendard_regular,
+                    fontSize = 15.sp
+                ),
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction),
+                keyboardActions = KeyboardActions(onAny = { onImeAction() })
             )
             Spacer(modifier = Modifier.weight(0.1f))
             if (icon_name == "비밀번호" || icon_name == "비밀번호 재확인") { // password인 경우에만 보이기/숨기기 아이콘 표시

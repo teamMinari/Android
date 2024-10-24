@@ -26,8 +26,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,6 +53,12 @@ fun SelfSignUpScreen(
     navController: NavController,
     loginViewModel: LoginViewModel = viewModel()
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val passwordFocusRequester = remember { FocusRequester() }
+    val repasswordFocusRequester = remember { FocusRequester() }
+    val idFocusRequester = remember { FocusRequester() }
+    val emailFocusRequester = remember { FocusRequester() }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -89,12 +98,14 @@ fun SelfSignUpScreen(
         var email by remember { mutableStateOf("") }
         // 이메일 입력란을 구현합니다.
         LoginTextField(
-            modifier = Modifier,
             value = email,
             icon_name = "이메일",
             text = "이메일 주소를 입력하세요",
             onValueChange = { email = it },
-            visibility = true
+            visibility = true,
+            imeAction = ImeAction.Next,
+            onImeAction = { idFocusRequester.requestFocus() },
+            focusRequester = emailFocusRequester
         )
 
         Spacer(modifier = Modifier.weight(0.1f))
@@ -102,24 +113,28 @@ fun SelfSignUpScreen(
         var id by remember { mutableStateOf("") }
         // 아이디
         LoginTextField(
-            modifier = Modifier,
             value = id,
             icon_name = "아이디",
             text = "아이디를 입력하세요",
             onValueChange = { id = it },
-            visibility = true
+            visibility = true,
+            imeAction = ImeAction.Next,
+            onImeAction = { passwordFocusRequester.requestFocus() },
+            focusRequester = idFocusRequester
         )
 
         Spacer(modifier = Modifier.weight(0.1f))
 
         var password by remember { mutableStateOf("") }
         LoginTextField(
-            modifier = Modifier,
             value = password,
             icon_name = "비밀번호",
             text = "비밀번호를 입력하세요",
             onValueChange = { password = it },
-            visibility = false
+            visibility = false,
+            imeAction = ImeAction.Next,
+            onImeAction = { repasswordFocusRequester.requestFocus() },
+            focusRequester = passwordFocusRequester
         )
 
         Spacer(modifier = Modifier.weight(0.1f))
@@ -127,12 +142,16 @@ fun SelfSignUpScreen(
         var repassword by remember { mutableStateOf("") }
         // 비밀번호 재입력란
         LoginTextField(
-            modifier = Modifier,
             value = repassword,
             icon_name = "비밀번호 재확인",
             text = "비밀번호를 다시 입력하세요",
             onValueChange = { repassword = it },
-            visibility = false
+            visibility = false,
+            imeAction = ImeAction.Next,
+            onImeAction = {
+                keyboardController?.hide()
+            },
+            focusRequester = repasswordFocusRequester
         )
 
 
