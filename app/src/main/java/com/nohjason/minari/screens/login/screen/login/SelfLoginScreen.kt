@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -34,9 +36,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,13 +67,16 @@ fun SelfLoginScreen(
     loginViewModel: LoginViewModel
 ) {
     val scrollState = rememberScrollState()
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val passwordFocusRequester = remember { FocusRequester() }
 
-    Column (
+
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .padding(top = 40.dp),
@@ -104,24 +114,29 @@ fun SelfLoginScreen(
 
             var id by remember { mutableStateOf("") }
             LoginTextField(
-                modifier = Modifier,
                 value = id,
                 icon_name = "아이디",
                 text = "아이디을 입력하세요",
                 onValueChange = { id = it },
-                visibility = true
+                visibility = true,
+                imeAction = ImeAction.Next,
+                onImeAction = { passwordFocusRequester.requestFocus() }
             )
 
             Spacer(modifier = Modifier.height(60.dp))
 
             var password by rememberSaveable { mutableStateOf("") }
             LoginTextField(
-                modifier = Modifier,
                 value = password,
                 icon_name = "비밀번호",
                 text = "비밀번호를 입력하세요",
                 onValueChange = { password = it },
-                visibility = false
+                visibility = false,
+                imeAction = ImeAction.Done,
+                onImeAction = {
+                    keyboardController?.hide()
+                },
+                focusRequester = passwordFocusRequester
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -141,7 +156,7 @@ fun SelfLoginScreen(
             val preferences = getPreferences()
             val loginResponse by loginViewModel.loginRequest.collectAsState()
             LaunchedEffect(loginResponse) {
-                if (loginResponse != null ) {
+                if (loginResponse != null) {
                     saveToPreferences(preferences, "token", loginResponse!!.data.accessToken)
                     navController.navigate(BottomScreen.Home.rout)
                     Log.d("TAG", "SelfLoginScreen: ${loginResponse!!.data.accessToken}")
@@ -159,14 +174,23 @@ fun SelfLoginScreen(
                     .clickable {
                         when {
                             id.isEmpty() && password.isEmpty() -> {
-                                Toast.makeText(context, "아이디와 비밀번호를 입력해주십시오.", Toast.LENGTH_SHORT).show()
+                                Toast
+                                    .makeText(context, "아이디와 비밀번호를 입력해주십시오.", Toast.LENGTH_SHORT)
+                                    .show()
                             }
+
                             id.isEmpty() -> {
-                                Toast.makeText(context, "아이디를 입력하세요.", Toast.LENGTH_SHORT).show()
+                                Toast
+                                    .makeText(context, "아이디를 입력하세요.", Toast.LENGTH_SHORT)
+                                    .show()
                             }
+
                             password.isEmpty() -> {
-                                Toast.makeText(context, "비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show()
+                                Toast
+                                    .makeText(context, "비밀번호를 입력하세요.", Toast.LENGTH_SHORT)
+                                    .show()
                             }
+
                             else -> {
                                 loginViewModel.login(id = id, password = password)
                             }

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -79,48 +80,59 @@ fun ProfileMAinScreen(
     var showPopup by remember { mutableStateOf(false) }
 
     if (data == null) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_log_out),
-            contentDescription =null ,
+        Box(
             modifier = Modifier
-                .padding(start = 325.dp, top = 35.dp)
-                .clickable (
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ){ showPopup = true },
-            tint = Color.Unspecified
-        )
-        if (showPopup) {
-            QuizPopup(
-                onDismissRequest = {
-                    showPopup = false
-                }, // 취소
-                onConfirmation = {
-                    coroutineScope.launch {
-                        try {
-                            // 로그아웃 요청 처리
-                            profileViewModel.getLogout(token)
-                            clearUserToken(preferences = preferences, key = token)
-                            loginViewModel.clearLoginRequest()
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
 
-                            // 로그아웃 성공 시 화면 전환
-                            navHostController.navigate("firstScreen") {
-                                popUpTo(0) // 뒤로 가기 방지
-                            }
-                            Log.d("TAG", "ProfileMainScreen: 로그아웃 성공 \n loginModelView 데이터 여부 ${loginViewModel.loginRequest}")
-                        } catch (e: Exception) {
-                            Log.e("TAG", "ProfileMainScreen: 로그아웃 실패, 에러: ${e.localizedMessage}")
-                        }
-                    }
-                },  // 확인
-                dialogTitle = "정말로 나가시겠습니까?",
-                dialogText = "다시 로그인하면 접속이 가능합니다.",
-                icon = painterResource(id = R.drawable.ic_x)
+            Icon(
+                painter = painterResource(id = R.drawable.ic_log_out),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(start = 325.dp, top = 35.dp)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) {
+                        showPopup = true
+                    },
+                tint = Color.Unspecified
             )
+
+            if (showPopup) {
+                QuizPopup(
+                    onDismissRequest = {
+                        showPopup = false
+                    },
+                    onConfirmation = {
+                        coroutineScope.launch {
+                            try {
+                                // 로그아웃 요청 처리
+                                profileViewModel.getLogout(token)
+                                clearUserToken(preferences = preferences, key = token)
+                                loginViewModel.clearLoginRequest()
+
+                                // 로그아웃 성공 시 화면 전환
+                                navHostController.navigate("firstScreen") {
+                                    popUpTo(0) // 뒤로 가기 방지
+                                }
+                                Log.d("TAG", "ProfileMainScreen: 로그아웃 성공 \n loginModelView 데이터 여부 ${loginViewModel.loginRequest}")
+                            } catch (e: Exception) {
+                                Log.e("TAG", "ProfileMainScreen: 로그아웃 실패, 에러: ${e.localizedMessage}")
+                            }
+                        }
+                    },
+                    dialogTitle = "정말로 나가시겠습니까?",
+                    dialogText = "다시 로그인하면 접속이 가능합니다.",
+                    icon = painterResource(id = R.drawable.ic_x)
+                )
+            }
         }
-        CircularProgressIndicator()
         return
     }
+
 
     Column(
         modifier = Modifier

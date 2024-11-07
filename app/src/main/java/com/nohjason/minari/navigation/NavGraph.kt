@@ -68,7 +68,11 @@ fun NavGraph(
     val preferences = getPreferences()
     val token = getFromPreferences(preferences, "token")
 
-    val startDestination = if (token != null) {BottomScreen.Home.rout} else {Screens.FirstScreen.rout}
+    val startDestination = if (token.isNullOrEmpty()) {
+        Screens.FirstScreen.rout
+    } else {
+        BottomScreen.Home.rout
+    }
 
     NavHost(
         navController = navController,
