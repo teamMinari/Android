@@ -46,7 +46,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1005368978614:android:3fdccdd8f633d86b8dca17",
         "android_client_info": {
-          "package_name": "com.nohjason.minari"
+          "package_name": "com.nohjason.cheongfordo"
         }
       },
       "oauth_client": [
@@ -54,7 +54,7 @@
           "client_id": "1005368978614-fv4emmg5pkk8h5b9v8dj8snmscqh43h3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.nohjason.minari",
+            "package_name": "com.nohjason.cheongfordo",
             "certificate_hash": "ef5e840ffb5c4237c2722a827e7332b656a0810f"
           }
         },
